@@ -1,6 +1,7 @@
 from dice.repository.dice_repository_impl import DiceRepositoryImpl
 from initializer.domain_initializer import DomainInitializer
 
+# Domain 객체들을 초기화하는 작업
 DomainInitializer.initEachDomain()
 
 
