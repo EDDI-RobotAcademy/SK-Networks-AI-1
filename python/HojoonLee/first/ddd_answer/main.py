@@ -1,4 +1,5 @@
 from dice.repository.dice_repository_impl import DiceRepositoryImpl
+from player.repository.player_repository_impl import PlayerRepositoryImpl
 from initializer.domain_initializer import DomainInitializer
 
 # 도메인 객체들을 초기화하는 작업
@@ -17,3 +18,18 @@ if __name__ == "__main__":
     print(f"첫 번째 주사위 눈금: {firstPlayerDice.getDiceNumber()}")
     print(f"첫 번째 주사위를 굴린 플레이어 id: {firstPlayerDice.getPlayerId()}")
 
+    # 굳이 써야하나? 싶은 부분
+    PlayerNickname2 = 'hj'
+    PlayerNickname3 = 'sy'
+    PlayerId2 = 2
+    PlayerId3 = 3
+
+    # 확실히 필요한 부분
+    playerRepository = PlayerRepositoryImpl.getInstance()
+    playerRepository.match(PlayerId2, PlayerNickname2)
+    playerRepository.match(PlayerId2, PlayerNickname3)
+
+    player2 = playerRepository.getPlayerNickname(PlayerId2)
+    player3 = playerRepository.getPlayerNickname(PlayerId3)
+    print(f"플레이어{PlayerId2}의 닉네임 {player2}")
+    print(f"플레이어{PlayerId3}의 닉네임 {player3}")

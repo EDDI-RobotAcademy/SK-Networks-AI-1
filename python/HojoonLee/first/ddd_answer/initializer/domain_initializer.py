@@ -1,4 +1,5 @@
 from dice.repository.dice_repository_impl import DiceRepositoryImpl
+from player.repository.player_repository_impl import PlayerRepositoryImpl
 
 
 class DomainInitializer:
@@ -11,9 +12,15 @@ class DomainInitializer:
         # 이후 요청 되는 것들은 기존에 만들어진 것을 반환함 (싱글톤 특성)
         DiceRepositoryImpl.getInstance() # 객체 탐색해서 있다면 return instance
         # 앞으로 repo의 instance가 필요하다면, repoimpl에서 구현한 get 기능 가져오기
-
+    
+    @staticmethod
+    def initPlayerDomain():
+        PlayerRepositoryImpl.getInstance()
+        
     @staticmethod
     def initEachDomain():
         # 여러 도메인을 사용할 때 각 도메인 마다의 기능을 위해 초기화 시켜줌
         # product 도메인 따로, account 도메인 따로 초기화..
         DomainInitializer.initDiceDomain()
+        DomainInitializer.initPlayerDomain() # player 도메인 추가
+    
