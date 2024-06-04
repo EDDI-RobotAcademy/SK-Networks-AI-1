@@ -1,5 +1,5 @@
-from board.service.board_service import BoardService
 from board.repository.board_repository_impl import BoardRepositoryImpl
+from board.service.board_service import BoardService
 
 
 class BoardServiceImpl(BoardService):
@@ -9,8 +9,8 @@ class BoardServiceImpl(BoardService):
         if cls.__instance is None:
             cls.__instance = super().__new__(cls)
             cls.__instance.__boardRepository = BoardRepositoryImpl.getInstance()
-        return cls.__instance
 
+        return cls.__instance
 
     @classmethod
     def getInstance(cls):
@@ -19,6 +19,6 @@ class BoardServiceImpl(BoardService):
 
         return cls.__instance
 
-
     def list(self):
-        pass
+        self.__boardRepository.list()
+
