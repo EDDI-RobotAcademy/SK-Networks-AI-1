@@ -2,7 +2,6 @@ class Player:
     __playerId = 0
     __autoIncrementPlayerId = 0
 
-
     def __init__(self, nickname):
         Player.__autoIncrementPlayerId += 1
         self.__playerId = Player.__autoIncrementPlayerId
