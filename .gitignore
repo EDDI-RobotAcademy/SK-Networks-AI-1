@@ -291,3 +291,6 @@ pyrightconfig.json
 # exclude .idea
 .idea
 *.idea
+
+# exclude .DS_Store (MaC)
+.DS_Store
