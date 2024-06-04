@@ -1,6 +1,10 @@
 from player.service.player_service_impl import PlayerServiceImpl
 from game.service.game_service_impl import GameServiceImpl
 
+from initializer.domain_initializer import DomainInitializer
+
+DomainInitializer.initEachDomain()
+
 
 if __name__ == "__main__":
     playerService = PlayerServiceImpl.getInstance()

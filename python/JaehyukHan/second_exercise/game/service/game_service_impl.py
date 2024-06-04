@@ -28,7 +28,6 @@ class GameServiceImpl(GameService):
         self.__diceRepository.rollDice(firstPlayer)
         self.__diceRepository.rollDice(secondPlayer)
 
-
     def findWinner(self, firstPlayer, secondPlayer):
         firstPlayerScore = self.__diceRepository.checkDice(firstPlayer)
         secondPlayerScore = self.__diceRepository.checkDice(secondPlayer)
