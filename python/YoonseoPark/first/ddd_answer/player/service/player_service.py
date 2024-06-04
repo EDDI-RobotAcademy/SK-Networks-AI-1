@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
-class PlayerRepository(ABC):
 
+class PlayerService(ABC):
     @abstractmethod
     def registerPlayer(self, nickname):
         pass
@@ -9,4 +9,3 @@ class PlayerRepository(ABC):
     @abstractmethod
     def findPlayerByNickname(self, nickname):
         pass
-

@@ -1,17 +1,21 @@
 from initializer.domain_initializer import DomainInitializer
-from player.repository.player_repository_impl import PlayerRepositoryImpl
+from player.service.player_service_impl import PlayerServiceImpl
 
 DomainInitializer.initEachDomain()  # Domain 객체들을 초기화
 
 if __name__ == "__main__":
+    firstPlayerNickname = "1번사용자"
 
-    playerRepository = PlayerRepositoryImpl.getInstance()
+    playerService = PlayerServiceImpl.getInstance()
+    playerService.registerPlayer(firstPlayerNickname)
 
-    playerRepository.registerPlayer(1, "홍길동")
-    playerRepository.registerPlayer(2, "김길동")
+    secondPlayerNickname = "2번사용자"
+    playerService.registerPlayer(secondPlayerNickname)
 
-    firstPlayer = playerRepository.getNickname(1)
-    secondPlayer = playerRepository.getNickname(2)
+    firstPlayer = playerService.findPlayerByNickname(firstPlayerNickname)
+    print(f"firstPlayer id: {firstPlayer.getPlayerId()}")
+    print(f"firstPlayer nickname: {firstPlayer.getPlayerNickname()}")
 
-    print(f"첫 번째 플레이어: {firstPlayer}")
-    print(f"두 번째 플레이어: {secondPlayer}")
+    secondPlayer = playerService.findPlayerByNickname(secondPlayerNickname)
+    print(f"secondPlayer id: {secondPlayer.getPlayerId()}")
+    print(f"secondPlayer nickname: {secondPlayer.getPlayerNickname()}")

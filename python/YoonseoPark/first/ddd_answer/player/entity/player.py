@@ -1,17 +1,14 @@
 class Player:
+    __playerId = 0
+    __autoIncrementPlayerId = 0
 
-    def __init__(self):
-        self.__playerId = None
-        self.__nickname = None
-
-    def setPlayerId(self, playerId):
-        self.__playerId = playerId
-
-    def setNickname(self, nickname):
+    def __init__(self, nickname):
+        Player.__autoIncrementPlayerId += 1
+        self.__playerId = Player.__autoIncrementPlayerId
         self.__nickname = nickname
 
     def getPlayerId(self):
         return self.__playerId
 
-    def getNickname(self):
+    def getPlayerNickname(self):
         return self.__nickname
