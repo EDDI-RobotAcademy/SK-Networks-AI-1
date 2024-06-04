@@ -1,1 +1,1 @@
-# UI repo (Vue)
+# ui(vue) repo
