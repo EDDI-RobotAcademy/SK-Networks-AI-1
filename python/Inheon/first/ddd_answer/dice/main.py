@@ -4,7 +4,6 @@ from initializer.domain_initializer import DomainInitializer
 # Domain 객체들을 초기화하는 작업
 DomainInitializer.initEachDomain()
 
-
 if __name__ == "__main__":
     firstPlayerId = 5
 
