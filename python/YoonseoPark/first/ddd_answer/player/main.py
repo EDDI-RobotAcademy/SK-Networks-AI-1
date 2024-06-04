@@ -1,4 +1,4 @@
-from player.initializer.domain_initializer import DomainInitializer
+from initializer.domain_initializer import DomainInitializer
 from player.repository.player_repository_impl import PlayerRepositoryImpl
 
 DomainInitializer.initEachDomain()  # Domain 객체들을 초기화

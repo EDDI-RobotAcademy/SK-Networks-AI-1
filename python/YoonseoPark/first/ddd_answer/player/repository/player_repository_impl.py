@@ -1,6 +1,6 @@
 from player.entity.player import Player
 from player.repository.player_repository import PlayerRepository
-import random
+
 
 class PlayerRepositoryImpl(PlayerRepository):
 
