@@ -32,13 +32,24 @@ class GameServiceImpl(GameService):
         self.__diceRepository.rollDice()
 
         diceList = self.__diceRepository.getDiceList()
-        playerList = self.__playerRepository.list()
-        playerDiceMap = {player.getPlayerNickname(): dice.getDiceNumber() for player, dice in zip(playerList, diceList)}
-        print(playerDiceMap)
+        for dice in diceList:
+            print(f"주사위 눈금: {dice.getDiceNumber()}")
 
-        # 무승부에 대한 처리가 필요함
-        maxDicePlayer = max(playerDiceMap, key=playerDiceMap.get)
-        print(maxDicePlayer)
+        playerList = self.__playerRepository.list()
+        playerDiceMap = {player.getPlayerNickname(): dice.getDiceNumber() \
+                         for player, dice in zip(playerList, diceList)}
 
         self.__gameRepository.save(playerDiceMap)
+
+    def checkDiceGameWinner(self):
+        # SW를 개발 할 때는 당장 눈 앞의 결과도 중요하지만
+        # 비즈니스 지속성을 위해 미래 또한 고려하지 않을 수 없습니다.
+        # 그러므로 '왜 이런 쓸모 없는 행위를 하는 것이지 ?' 라는 관점이 아닌
+        # 추후 이 부분이 확장 될 때 어떤 Domain과 협력할지 보장 할 수 없기 때문에
+        # 아래와 같이 단순히 Repository를 호출하는 경우에도
+        # Service, Repository Layer를 구성합니다.
+        # 한마디로 요약하자면: 확장성
+        self.__gameRepository.checkDiceGameWinner()
+
+
 

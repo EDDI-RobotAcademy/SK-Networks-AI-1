@@ -6,4 +6,7 @@ class GameRepository(ABC):
     def save(self, playerDiceMap):
         pass
 
+    @abstractmethod
+    def checkDiceGameWinner(self):
+        pass
 

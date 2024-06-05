@@ -36,6 +36,7 @@ if __name__ == "__main__":
 
     # -------- 주사위 던지기  --------
     gameService.registerGameResult()
+    gameService.checkDiceGameWinner()
 
 
 
