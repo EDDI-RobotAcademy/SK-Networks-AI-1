@@ -30,4 +30,5 @@ class PlayerRepositoryImpl(PlayerRepository):
 
         return None
 
-
+    def list(self):
+        return self.__playerList
