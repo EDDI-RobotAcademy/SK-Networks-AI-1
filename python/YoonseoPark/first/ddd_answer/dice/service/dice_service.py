@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-class DiceRepository(ABC):
+class DiceService(ABC):
     @abstractmethod
     def rollDice(self):
         pass

@@ -19,7 +19,7 @@ class PlayerRepositoryImpl(PlayerRepository):
 
         return cls.__instance
 
-    def registerPlayer(self, nickname):
+    def register(self, nickname):
         player = Player(nickname)
         self.__playerList.append(player)
 
@@ -30,3 +30,5 @@ class PlayerRepositoryImpl(PlayerRepository):
 
         return None
 
+    def list(self):
+        return self.__playerList
