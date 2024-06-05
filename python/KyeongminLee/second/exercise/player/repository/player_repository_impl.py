@@ -29,3 +29,7 @@ class PlayerRepositoryImpl(PlayerRepository):
                 return player
 
         return None
+
+
+    def list(self):
+        return self.__playerList

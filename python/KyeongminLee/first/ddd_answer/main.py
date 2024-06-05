@@ -6,7 +6,7 @@ DomainInitializer.initEachDomain()
 
 
 if __name__ == "__main__":
-    firstPlayerId = 5
+    firstPlayerId = "001"
 
     diceRepository = DiceRepositoryImpl.getInstance()
     diceRepository.rollDice(firstPlayerId)

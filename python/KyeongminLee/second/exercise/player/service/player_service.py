@@ -8,3 +8,7 @@ class PlayerService(ABC):
     @abstractmethod
     def findPlayerByNickname(self, nickname):
         pass
+
+    @abstractmethod
+    def getPlayerList(self):
+        pass

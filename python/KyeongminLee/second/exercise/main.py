@@ -1,29 +1,39 @@
+from game.service.game_service_impl import GameServiceImpl
 from initializer.domain_initializer import DomainInitializer
 from player.service.player_service_impl import PlayerServiceImpl
+from dice.service.dice_service_impl import DiceServiceImpl
 
 # Domain 객체들을 초기화하는 작업
 DomainInitializer.initEachDomain()
 
-# 조건은 아래와 같습니다.
-# Player는 고유 번호 (playerId)
-# 그리고 닉네임 (nickname) 을 가지고 있습니다.
+def keepPlayerDomainInstance():
+    global playerService
+    playerService = PlayerServiceImpl.getInstance()
 
-# 2명 정도의 Player를 만들고
-# playerId를 통해 nickname을 출력하도록 만들어봅시다!
+def keepDiceDomainInstance():
+    global diceService
+    diceService = DiceServiceImpl.getInstance()
+
+def keepGameDomainInstance():
+    global gameService
+    gameService = GameServiceImpl.getInstance()
+
+def keepDomainInstance():
+    keepPlayerDomainInstance()
+    keepDiceDomainInstance()
+    keepGameDomainInstance()
+
+def createPlayer(nickname):
+    playerService.createPlayer(nickname)
 
 if __name__ == "__main__":
-    firstPlayerNickname = "1번사용자"
+    keepDomainInstance()
 
-    playerService = PlayerServiceImpl.getInstance()
-    playerService.createPlayer(firstPlayerNickname)
+    firstPlayerNickname = "001"
+    createPlayer(firstPlayerNickname)
 
-    secondPlayerNickname = "2번사용자"
-    playerService.createPlayer(secondPlayerNickname)
+    secondPlayerNickname = "002"
+    createPlayer(secondPlayerNickname)
 
-    firstPlayer = playerService.findPlayerByNickname(firstPlayerNickname)
-    print(f"firstPlayer id: {firstPlayer.getPlayerId()}")
-    print(f"firstPlayer nickname: {firstPlayer.getPlayerNickname()}")
-
-    secondPlayer = playerService.findPlayerByNickname(secondPlayerNickname)
-    print(f"secondPlayer id: {secondPlayer.getPlayerId()}")
-    print(f"secondPlayer nickname: {secondPlayer.getPlayerNickname()}")
+    gameService.registerGameResult()
+    gameService.checkDiceGameWinner()

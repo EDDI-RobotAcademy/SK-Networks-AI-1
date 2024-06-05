@@ -9,3 +9,7 @@ class PlayerRepository(ABC):
     @abstractmethod
     def findPlayerByNickname(self, nickname):
         pass
+
+    @abstractmethod
+    def list(self):
+        pass
