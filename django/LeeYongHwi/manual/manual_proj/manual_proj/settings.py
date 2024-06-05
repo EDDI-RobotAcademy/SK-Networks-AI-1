@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "board",            # 추가한 부분
+    "rest_framework",   # 추가한 부분
 ]
 
 MIDDLEWARE = [
