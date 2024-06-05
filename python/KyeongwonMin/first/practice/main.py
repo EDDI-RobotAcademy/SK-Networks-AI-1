@@ -1,1 +1,34 @@
-print("오늘이 정말 처음인가요 ?")
+import random
+
+class Dice:
+    MIN = 1
+    MAX = 6
+
+    def rollDice(self):
+        print('MAX', self.MAX)
+        return random.randint(self.MIN, self.MAX)
+
+dice = Dice()
+dice_number = dice.rollDice()
+
+print("주사위 숫자:", dice_number)
+
+class Player:
+    playerId = 0
+    nickname = None
+
+    def __init__(self, nickname):
+        self.playerId += 1          # Player.playerId += 1 과 동일X, self를 사용하면 자기자신
+        self.nickname = nickname
+
+    def getPlayerId(self):
+        return self.playerId
+
+    def getNickname(self):
+        return self.nickname
+
+firstPlayer = Player("오늘파이썬처음")
+playerId = firstPlayer.getPlayerId()
+nickname = firstPlayer.getNickname()
+print('playerId:', playerId)
+print('nickname:', nickname)
