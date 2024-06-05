@@ -20,3 +20,17 @@ class GameRepositoryImpl(GameRepository):
 
     def save(self, playerDiceMap):
         self.__gameResult = playerDiceMap
+
+    def checkDiceGameWinner(self):
+        maxDiceNumber = max(self.__gameResult.values())
+        maxPlayerList = [player for player, diceNumber in self.__gameResult.items() \
+                         if diceNumber == maxDiceNumber]
+
+        if len(maxPlayerList) > 1:
+            print("무승부입니다!")
+            return
+        
+        # if else 보다는 if if if 형태가 더 좋습니다.
+        # if
+        #   if 형태의 다단 들여쓰기 형식 아님
+        print(f"승자: {maxPlayerList[0]}")
