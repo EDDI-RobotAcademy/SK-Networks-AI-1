@@ -1,8 +1,9 @@
-from Player.repository.player_repository import PlayerRepository
-from Player.entity.player import Player
+from player.repository.player_repository import PlayerRepository
+from player.entity.player import Player
 
 class PlayerRepositoryImpl(PlayerRepository):
     __instance = None
+
     def __new__(cls):
         if cls.__instance is None:
             cls.__instance = super().__new__(cls)
@@ -16,18 +17,14 @@ class PlayerRepositoryImpl(PlayerRepository):
 
         return cls.__instance
 
-    def setPlayer(self, playerId, name):
-        p = Player()
-        p.setPlayerId(number=playerId)
-        p.setNickname(name)
+    def create(self, nickname):
+        p = Player(nickname)
         self.__playerList.append(p)
-    def getNickname(self, playerId):
-        return [plyer.getNickname() for plyer in self.__playerList if plyer.getPlayerId() == playerId]
 
-    def checkPlayer(self, playerId):
+
+    def findPlayerByNickname(self, nickname):
         for p in self.__playerList:
-            if p.getPlayerId() == playerId:
+            if p.getNickname() == nickname:
                 return p
 
         return None
-
