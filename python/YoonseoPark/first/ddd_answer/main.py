@@ -34,7 +34,7 @@ if __name__ == "__main__":
     secondPlayerNickname = "사용자2"
     registerPlayer(secondPlayerNickname)
 
-    # -------- 주사위 던지기  --------
+    # -------- 주사위 던지기 게임  --------
     gameService.registerGameResult()
     gameService.checkDiceGameWinner()
 
