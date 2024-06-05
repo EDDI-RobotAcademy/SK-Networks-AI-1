@@ -1,6 +1,5 @@
 import random
 
-from dice.entity.DiceNumber import DiceNumber
 from dice.entity.dice import Dice
 from dice.repository.dice_repository import DiceRepository
 
