@@ -1,4 +1,4 @@
-import rest_framework import serializers
+from rest_framework import serializers
 
 from board.entity.models import Board
 
