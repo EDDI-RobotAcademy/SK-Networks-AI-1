@@ -1,4 +1,5 @@
 from dice.repository.dice_repository_impl import DiceRepositoryImpl
+from game.repository.game_repository_impl import GameRepositoryImpl
 from game.service.game_service import GameService
 from player.repository.player_repository_impl import PlayerRepositoryImpl
 
@@ -12,7 +13,7 @@ class GameServiceImpl(GameService):
 
             # @Autowired
             # private GameRepository gameRepository
-            # cls.__instance.__gameRepository = GameRepositoryImpl.getInstance()
+            cls.__instance.__gameRepository = GameRepositoryImpl.getInstance()
             cls.__instance.__diceRepository = DiceRepositoryImpl.getInstance()
             cls.__instance.__playerRepository = PlayerRepositoryImpl.getInstance()
 
@@ -30,13 +31,13 @@ class GameServiceImpl(GameService):
         self.__diceRepository.rollDice()
 
         diceList = self.__diceRepository.getDiceList()
-        for dice in diceList:
-            print(f'dice number: {dice.getDiceNumber()}')
-
         playerList = self.__playerRepository.list()
-        for player in playerList:
-            print(f'player nickname: {player.getPlayerNickname()}')
+        playerDiceMap = { player.getPlayerNickname(): dice.getDiceNumber() for player, dice in zip(playerList, diceList) }
 
-        # self.__gameRepository.save()
+        # 무승부에 대한 처리가 필요함
+        maxDicePlayer = max(playerDiceMap, key=playerDiceMap.get)
+        print(maxDicePlayer)
+
+        self.__gameRepository.save(playerDiceMap)
 
 
