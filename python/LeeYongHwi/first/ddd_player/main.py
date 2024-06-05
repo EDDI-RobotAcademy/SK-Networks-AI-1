@@ -3,7 +3,18 @@ from initializer.domain_initializer import DomainInitializer
 
 DomainInitializer.initEachDomain()
 
+def keepDomainInstance():
+    global playerService
+    playerService = PlayerServiceImpl.getInstance()
+
+def createPlayer(nickname):
+    playerService.createPlayer(nickname)
+
 if __name__ == "__main__":
+    keepDomainInstance()
+
+
+
     firstPlayerNickname = "1번사용자"
 
     playerService = PlayerServiceImpl.getInstance()
