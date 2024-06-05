@@ -25,4 +25,9 @@ class PlayerServiceImpl(PlayerService):
     def findPlayerByNickname(self, nickname):
         return self.__playerRepository.findPlayerByNickname(nickname)
 
+    def getPlayerList(self):
+        return self.__playerRepository.list()
+
+
+
 
