@@ -1,7 +1,10 @@
+from product.service.product_service_impl import productServiceImpl
+
+
 class DomainInitializer:
     @staticmethod
-    def productInitializer():
-        pass
+    def initProductDomain():
+        productServiceImpl.getInstance()
     @staticmethod
     def initEachDomain():
-        pass
+        DomainInitializer.initProductDomain()
