@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
 
 
-class GameService(ABC):
+class GameRepository(ABC):
     @abstractmethod
-    def registerGameResult(self):
+    def save(self, playerDiceMap):
         pass
 
     @abstractmethod
