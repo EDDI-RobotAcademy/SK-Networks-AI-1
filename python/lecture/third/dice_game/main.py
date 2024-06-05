@@ -1,4 +1,5 @@
 from dice.service.dice_service_impl import DiceServiceImpl
+from game.service.game_service_impl import GameServiceImpl
 from initializer.domain_initializer import DomainInitializer
 from player.service.player_service_impl import PlayerServiceImpl
 
@@ -19,10 +20,14 @@ def keepDiceDomainInstance():
     global diceService
     diceService = DiceServiceImpl.getInstance()
 
+def keepGameDomainInstance():
+    global gameService
+    gameService = GameServiceImpl.getInstance()
+
 def keepDomainInstance():
     keepPlayerDomainInstance()
     keepDiceDomainInstance()
-
+    keepGameDomainInstance()
 
 def createPlayer(nickname):
     playerService.createPlayer(nickname)
@@ -36,3 +41,5 @@ if __name__ == "__main__":
 
     secondPlayerNickname = "어디르"
     createPlayer(secondPlayerNickname)
+
+    gameService.registerGameResult()
