@@ -8,7 +8,7 @@ class ProductServiceImpl(ProductService):
     def __new__(cls):
         if cls.__instance is None:
             cls.__instance = super().__new__(cls)
-            cls.__instance.__playerRepository = ProductRepositoryImpl.getInstance()
+            cls.__instance.__productRepository = ProductRepositoryImpl.getInstance()
 
         return cls.__instance
 
@@ -19,4 +19,5 @@ class ProductServiceImpl(ProductService):
 
         return cls.__instance
 
-
+    def createProduct(self, productName):
+        self.__productRepository.create(productName)

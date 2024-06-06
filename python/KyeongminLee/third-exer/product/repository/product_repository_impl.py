@@ -1,3 +1,4 @@
+from product.entity.Product import Product
 from product.repository.product_repository import ProductRepository
 
 
@@ -7,6 +8,7 @@ class ProductRepositoryImpl(ProductRepository):
     def __new__(cls):
         if cls.__instance is None:
             cls.__instance = super().__new__(cls)
+            cls.__productList = []
 
         return cls.__instance
 
@@ -16,3 +18,7 @@ class ProductRepositoryImpl(ProductRepository):
             cls.__instance = cls()
 
         return cls.__instance
+
+    def create(self, productName):
+        product = Product(productName)
+        self.__productList.append(product)
