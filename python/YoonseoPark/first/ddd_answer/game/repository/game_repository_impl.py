@@ -1,5 +1,3 @@
-from dice.entity.dice import Dice
-from game.entity.game import Game
 from game.repository.game_repository import GameRepository
 
 
@@ -9,7 +7,7 @@ class GameRepositoryImpl(GameRepository):
     def __new__(cls):
         if cls.__instance is None:
             cls.__instance = super().__new__(cls)
-            cls.__instance.__gameList = []
+            cls.__instance.__gameResult = {}
 
         return  cls.__instance
 
@@ -20,12 +18,22 @@ class GameRepositoryImpl(GameRepository):
 
         return cls.__instance
 
-    def makeGame(self, playerId1, playerId2):
-        game = Game(playerId1, playerId2)
-        self.__gameList.append(game)
+    def save(self, playerDiceMap):
+        self.__gameResult = playerDiceMap
+
+    def checkDiceGameWinner(self):
+        maxDiceNumber = max(self.__gameResult.values())
+        maxPlayerList = [player for player, diceNumber in self.__gameResult.items() \
+                         if diceNumber == maxDiceNumber]
+
+        if len(maxPlayerList) > 1:
+            print("무승부입니다!")
+            return
+
+        # if else 보다는 if if if 형태가 더 좋습니다.
+        # if
+        #   if 형태의 다단 들여쓰기 형식 아님
+        print(f"승자: {maxPlayerList[0]}")
 
 
-    # def getGameResult(self):
-    #     for game in self.__gameList:
-    #         if game.getGameResult() ==
 

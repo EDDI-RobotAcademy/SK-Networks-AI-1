@@ -20,8 +20,11 @@ class PlayerServiceImpl(PlayerService):
         return cls.__instance
 
     def registerPlayer(self, nickname):
-        self.__playerRepository.registerPlayer(nickname)
+        self.__playerRepository.register(nickname)    ####
 
     def findPlayerByNickname(self, nickname):
         return self.__playerRepository.findPlayerByNickname(nickname)
+
+    def getPlayerList(self):
+        return self.__playerRepository.list()
 

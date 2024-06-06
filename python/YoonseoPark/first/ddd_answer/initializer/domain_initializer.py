@@ -18,3 +18,5 @@ class DomainInitializer:
     @staticmethod
     def initEachDomain():
         DomainInitializer.initDiceDomain()
+        DomainInitializer.initPlayerDomain()
+        DomainInitializer.initGameDomain()

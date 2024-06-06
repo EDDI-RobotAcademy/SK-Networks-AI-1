@@ -3,5 +3,9 @@ from abc import ABC, abstractmethod
 
 class GameService(ABC):
     @abstractmethod
-    def makeGame(self, nickname):
+    def registerGameResult(self):
+        pass
+
+    @abstractmethod
+    def checkDiceGameWinner(self):
         pass
