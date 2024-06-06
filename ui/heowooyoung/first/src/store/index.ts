@@ -1,3 +1,4 @@
+import boardModule from '@/board/store/boardModule'
 import { createStore } from 'vuex'
 
 export default createStore({
@@ -10,5 +11,6 @@ export default createStore({
   actions: {
   },
   modules: {
+    boardModule
   }
 })
