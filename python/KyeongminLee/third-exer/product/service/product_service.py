@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 
+
 class ProductService(ABC):
-    @abstractmethod
-    def blah(self):
-        pass
+    # @abstractmethod
+    # def blah(self):
+    #     pass
+    pass

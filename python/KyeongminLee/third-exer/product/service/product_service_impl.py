@@ -7,8 +7,8 @@ class ProductServiceImpl(ProductService):
 
     def __new__(cls):
         if cls.__instance is None:
-            cls.__instance = super.__new__(cls)
-            cls.__instance.__productRepository = ProductRepositoryImpl.getInstance()
+            cls.__instance = super().__new__(cls)
+            cls.__instance.__playerRepository = ProductRepositoryImpl.getInstance()
 
         return cls.__instance
 
@@ -18,3 +18,5 @@ class ProductServiceImpl(ProductService):
             cls.__instance = cls()
 
         return cls.__instance
+
+
