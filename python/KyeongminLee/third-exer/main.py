@@ -1,3 +1,4 @@
+from initializer.domain_initializer import DomainInitializer
 '''
 [문제정의]
 Product Domain을 만들어봅시다.
@@ -6,4 +7,4 @@ Product Domain을 만들어봅시다.
 
 
 if __name__ == "__main__":
-    pass
+    DomainInitializer.initEachDomain()
