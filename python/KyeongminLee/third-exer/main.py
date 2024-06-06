@@ -1,3 +1,4 @@
+from product.entity.Product import Product
 from initializer.domain_initializer import DomainInitializer
 '''
 [문제정의]
@@ -8,3 +9,4 @@ Product Domain을 만들어봅시다.
 
 if __name__ == "__main__":
     DomainInitializer.initEachDomain()
+    
