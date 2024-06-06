@@ -19,9 +19,10 @@ class ProductRepositoryImpl(ProductRepository):
 
         return cls.__instance
 
-    def create(self, productName):
-        product = Product(productName)
-        self.__productList.append(product)
+    def create(self, productNames):
+        for name in productNames:
+            product = Product(name)
+            self.__productList.append(product)
 
     def list(self):
         return [f'{c.getProductCd()}-{c.getProductName()}' for c in self.__productList]

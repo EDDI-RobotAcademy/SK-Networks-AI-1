@@ -19,8 +19,8 @@ class ProductServiceImpl(ProductService):
 
         return cls.__instance
 
-    def createProduct(self, productName):
-        self.__productRepository.create(productName)
+    def createProduct(self, productNames):
+        self.__productRepository.create(productNames)
 
     def getProductList(self):
         return self.__productRepository.list()

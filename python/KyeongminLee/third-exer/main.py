@@ -22,9 +22,7 @@ def createProduct(producntName):
 if __name__ == "__main__":
     keepDomainInstance()
 
-    productName_1 = "아이패드"
-    createProduct(productName_1)
-    productName_2 = "아이폰"
-    createProduct(productName_2)
+    productNames = ["아이패드", "아이폰", "애플워치"]
+    createProduct(productNames)
 
     print(productService.getProductList())
