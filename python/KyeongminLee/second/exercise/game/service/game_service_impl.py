@@ -1,0 +1,53 @@
+from dice.repository.dice_repository_impl import DiceRepositoryImpl
+from game.service.game_service import GameService
+from player.repository.player_repository_impl import PlayerRepositoryImpl
+from game.repository.game_repository_impl import GameRepositoryImpl
+
+
+# 파이썬 상속은 아래와 같이 class A(상속할 클래스) 형태로 상속을 진행
+class GameServiceImpl(GameService):
+    __instance = None
+
+    def __new__(cls):
+        if cls.__instance is None:
+            cls.__instance = super().__new__(cls)
+
+            cls.__instance.__gameRepository = GameRepositoryImpl.getInstance()
+            cls.__instance.__diceRepository = DiceRepositoryImpl.getInstance()
+            cls.__instance.__playerRepository = PlayerRepositoryImpl.getInstance()
+
+
+        return cls.__instance
+
+    @classmethod
+    def getInstance(cls):
+        if cls.__instance is None:
+            cls.__instance = cls()
+
+        return cls.__instance
+
+    # Singleton(싱글톤) 객체를 만들기 위한 기법 끝
+    def registerGameResult(self):
+        self.__diceRepository.rollDice()
+        self.__diceRepository.rollDice()
+
+        diceList = self.__diceRepository.getDiceList()
+        playerList = self.__playerRepository.list()
+        playerDiceMap = {player.getPlayerNickname(): dice.getDiceNumber() for player, dice in zip(playerList, diceList)}
+
+        maxDicePlayer = max(playerDiceMap, key=playerDiceMap.get)
+        print(maxDicePlayer)
+
+        self.__gameRepository.save(playerDiceMap)
+
+
+    def checkDiceGameWinner(self):
+        # 한마디로 요약하자면, 확장성
+        # SW를 개발할 때는 당장 눈앞의 결과도 중요하지만
+        # 비즈니스 지속성을 위해 미래 또한 고려하지 않을 수 없습니다
+        # 그러므로 '왜 이런 쓸모 없는 행위를 하는 것이지?'라는 관점이 아닌
+        # 추후 이 부분이 확장될 때 어떤 Domain과 협력할지 보장할 수 없기 떄문에
+        # 아래와 같이 단순히 Repository를 호출하는 경우에도
+        # Service, Repository Layer를 구성합니다
+        self.__gameRepository.checkDiceGameWinner()
+

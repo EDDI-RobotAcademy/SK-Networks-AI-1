@@ -1,10 +1,10 @@
 import random
 
-
 # 주사위 클래스 생성
 class Dice:
     MIN = 1
     MAX = 6
+
     def rollDice(self):
         return random.randint(self.MIN, self.MAX)
 
@@ -32,6 +32,8 @@ self란?
 '객체가 자기 자신을 지칭하는 것'
 사람의 경우엔 '나'라고 하지만, 객체의 경우엔 자기 자신은 'self'라고 지칭함.
 """
+
+
 class Player:
     playerId = 0
     nickname = None
@@ -60,5 +62,3 @@ secondNickname = secondPlayer.getNickname()
 
 print("second playerId:", secondPlayerId)
 print("second nickname:", secondNickname)
-
-
