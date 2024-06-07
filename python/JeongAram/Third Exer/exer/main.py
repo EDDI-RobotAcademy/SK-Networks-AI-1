@@ -12,7 +12,7 @@ def keepDomainInstance():
     keepProductDomainInstance()
 
 def createProduct(productName):
-    productService.createProduct(productName)
+    productService.createProductList(productName)
 
 
 if __name__ == "__main__":
@@ -21,8 +21,8 @@ if __name__ == "__main__":
     firstProductName = "상품1"
     createProduct(firstProductName)
 
-    secondproductName = "상품2"
-    createProduct(secondproductName)
+    secondProductName = "상품2"
+    createProduct(secondProductName)
 
     for product in productService.getProductList():
-        print(f"상품{product.getProdudctId()}: {product.getProductName()}")
+        print(f"상품{product.getProductId()}: {product.getProductName()}")

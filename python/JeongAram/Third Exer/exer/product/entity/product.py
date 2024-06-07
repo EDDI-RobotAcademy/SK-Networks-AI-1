@@ -7,7 +7,7 @@ class Product:
         self.__productId = Product.__autoIncrementProductId
         self.__productName = productName
 
-    def getProdudctId(self):
+    def getProductId(self):
         return self.__productId
 
     def getProductName(self):
