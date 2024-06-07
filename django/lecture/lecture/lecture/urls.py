@@ -1,5 +1,5 @@
 """
-URL configuration for first_django project.
+URL configuration for lecture project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.0/topics/http/urls/
@@ -15,10 +15,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
-# from django.urls import path, include
-# board에 대한 url 정보 추가
+from django.urls import path
+
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path('board/', include('board.urls')) # board의 url 참고하겠다.
+    path('admin/', admin.site.urls),
 ]
