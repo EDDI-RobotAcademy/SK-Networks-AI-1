@@ -1,3 +1,4 @@
+from product.service.product_service_impl import ProductServiceImpl
 
 
 class DomainInitializer:
