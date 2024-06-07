@@ -20,3 +20,5 @@ const boardModule: BoardModule = {
     actions,
     mutations,
 }
+
+export default boardModule

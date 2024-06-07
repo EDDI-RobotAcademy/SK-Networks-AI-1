@@ -1,7 +1,8 @@
 import { ActionContext } from "vuex"
 import { BoardState } from "./states"
 import { REQUEST_BOARD_LIST_TO_DJANGO } from "./mutation-types"
-import axiosInst from "@/utility/AxiosInstance"
+import axiosInst from "@/utility/axiosInstance"
+import { AxiosResponse } from "axios"
 
 export type BoardActions = {
     requestBoardListToDjango(context: ActionContext<BoardState, any>): Promise<void>
