@@ -25,7 +25,7 @@ const actions: BoardActions = {
             context.commit(REQUEST_BOARD_LIST_TO_DJANGO, data)
         } catch (error) {
             console.error('requestBoardListToDjango(): ' + error)
-            throw error
+            // throw error
         }
     }
 }
