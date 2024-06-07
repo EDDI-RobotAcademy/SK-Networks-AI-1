@@ -1,5 +1,4 @@
-import { compile } from "vue";
-import BoardListPage from "../pages/list/BoardListPage.vue";
+import BoardListPage from "@/board/pages/list/BoardListPage.vue"
 
 const BoardRoutes = [
     {

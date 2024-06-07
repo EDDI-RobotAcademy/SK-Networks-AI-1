@@ -10,5 +10,3 @@ urlpatterns = [
     path('', include(router.urls)),
     path('list/', BoardView.as_view({'get': 'list'}), name='board-list')
 ]
-
-# localhost:8000/board/list
