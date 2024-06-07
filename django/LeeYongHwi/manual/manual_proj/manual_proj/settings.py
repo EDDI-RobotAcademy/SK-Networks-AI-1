@@ -37,11 +37,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "board",            # 추가한 부분
-    "rest_framework",   # 추가한 부분
+    "corsheaders",       # 추가한 부분
+    "rest_framework",    # 추가한 부분
+    "board",             # 추가한 부분
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",        # 추가한 부분
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -51,7 +53,49 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+# pip install python-dotenv(그냥 dotenv가 아닌 python dotenv 설치)
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 ROOT_URLCONF = "manual_proj.urls"
+
+CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', '').split(',')
+CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', '').split(',')
+
+print('CORS_ALLOWED_ORIGINS:', CORS_ALLOWED_ORIGINS)
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8080",
+    "http://127.0.0.1:8080",
+]
+
+# CORS 설정 옵션
+CORS_ALLOW_CREDENTIALS = True
+
+# CORS 헤더와 메서드 추가 설정 (필요 시)
+CORS_ALLOW_METHODS = [
+    'GET',
+    'POST',
+    'PUT',
+    'PATCH',
+    'DELETE',
+    'OPTIONS'
+]
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+
 
 TEMPLATES = [
     {
