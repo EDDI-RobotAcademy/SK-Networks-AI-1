@@ -19,15 +19,15 @@ const actions: BoardActions = {
     async requestBoardListToDjango(context: ActionContext<BoardState, any>): Promise<void> {
         try {
             const res: AxiosResponse<any, any> = 
-                await axiosInst.djangoAxiosInst.get('/board/list')
+                await axiosInst.djangoAxiosInst.get('/board/list');
             
-            const data: Board[] = res.data
-            context.commit(REQUEST_BOARD_LIST_TO_DJANGO, data)
+            const data: Board[] = res.data;
+            context.commit(REQUEST_BOARD_LIST_TO_DJANGO, data);
         } catch (error) {
-            console.error('requestBoardListToDjango(): ' + error)
+            console.error('requestBoardListToDjango(): ' + error);
             // throw error
         }
     }
-}
+};
 
-export default actions
+export default actions;
