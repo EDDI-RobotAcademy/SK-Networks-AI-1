@@ -23,6 +23,6 @@ class ProductListRepositoryImpl(ProductListRepository):
     def getProductList(self):
         self.__productList.clear()
         for product in ProductList:
-            name, price = product.value
-            self.__productList.append(Product(name, price))
+            product_name, product_price = product.value
+            self.__productList.append(Product(product_name, product_price))
         return self.__productList
