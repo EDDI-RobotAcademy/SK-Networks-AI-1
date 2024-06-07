@@ -17,4 +17,4 @@ const env: Env = {
     },
 }
 
-expect default env
+export default env

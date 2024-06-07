@@ -1,4 +1,6 @@
-import state, { BoardState } from "./state"
+import actions, { BoardActions } from "./actions"
+import mutations, { BoardMutations } from "./mutations"
+import state, { BoardState } from "./states"
 
 export interface BoardModule {
     // namespaced가 true가 되면 앞서 *.vue 코드에서 살펴봤듯이
