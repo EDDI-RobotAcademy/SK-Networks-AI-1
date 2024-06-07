@@ -1,6 +1,5 @@
-from repository.product_repository_impl import ProductRepositoryImpl
 from service.product_service import ProductService
-
+from repository.product_repository_impl import ProductRepositoryImpl
 
 class ProductServiceImpl(ProductService):
     __instance = None
@@ -19,14 +18,10 @@ class ProductServiceImpl(ProductService):
 
         return cls.__instance
 
-    def create(self, productname):
-        self.__productRepository.create(productname)
+    def productList(self):
+        return self.__productRepository.list()
 
-    def findProductByProductname(self, productname):
-        return self.__productRepository.findProductByProductName(productname)
 
-    def getProductList(self):
-        return for product in self.__productRepository.getProductlist()
 
 
 
