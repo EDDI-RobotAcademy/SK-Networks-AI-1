@@ -9,3 +9,5 @@ class DomainInitializer:
     @staticmethod
     def initEachDomain():
         DomainInitializer.initPlayerDomain()
+
+    
