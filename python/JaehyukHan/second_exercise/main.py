@@ -27,4 +27,3 @@ if __name__ == "__main__":
 
     else:
         print(f"Winner is {winner.getPlayerId()}")
-
