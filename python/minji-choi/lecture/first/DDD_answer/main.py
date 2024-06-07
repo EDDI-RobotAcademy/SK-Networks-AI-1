@@ -10,10 +10,10 @@ if __name__ == '__main__':
     secondPlayerNickname = '두번째플레이어'
     playerService = PlayerServiceImpl.getInstance()
 
-    # 첫 번째 player
+    # 첫 번째 product
     playerService.createPlayer(firstPlayerNickname)
     firstPlayer = playerService.findPlayerByNickname(firstPlayerNickname)
-    # 두 번째 player
+    # 두 번째 product
     playerService.createPlayer(secondPlayerNickname)
     secondPlayer = playerService.findPlayerByNickname(secondPlayerNickname)
 

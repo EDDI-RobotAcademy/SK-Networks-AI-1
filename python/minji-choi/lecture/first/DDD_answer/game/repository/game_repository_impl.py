@@ -1,6 +1,6 @@
 from game.repository.game_repository import GameRepository
 from game.entity.game import Game
-# from dice.entity.dice.Dice import getPlayerId,
+# from product.entity.product.Dice import getPlayerId,
 
 class GameRepositoryImpl(GameRepository):
     __instance = None

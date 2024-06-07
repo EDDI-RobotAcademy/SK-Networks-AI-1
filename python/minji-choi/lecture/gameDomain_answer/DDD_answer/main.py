@@ -35,5 +35,6 @@ if __name__ == '__main__':
     createPlayer(secondPlayerNickname)
 
     gameService.registerGameResult()
+    gameService.checkDiceGameWinner()
 
 

@@ -31,12 +31,11 @@ class GameServiceImpl(GameService):
         playerList = self.__playerRepository.getList()
 
         playerDiceMap = {player.getNickname():dice.getDiceNumber() for player, dice in zip(playerList, diceList)} # 해쉬를 만든것
-        maxDicePlayer = max(playerDiceMap, key=playerDiceMap.get) # 해쉬에 get하면 value값 나옴
-        print(playerDiceMap)
-
-        if maxDicePlayer == min(playerDiceMap, key=playerDiceMap.get):
-            print('무승부!!')
-        else:
-            print(f'{maxDicePlayer} win!')
-
         self.__gameRepository.save(playerDiceMap)
+
+
+    def checkDiceGameWinner(self):
+        # sw를 개발할 때는 당장 눈 앞의 결과도 중요하지만 비즈니스의 지속성을 위해 미래 또한 고려해야 한다.
+        # 그러므로 단순히 winner를 뽑는 이 행위가 추후 확장 될 때 어떤 domain과 협력할지 보장할 수 없기 떄문에 아래와 같이 단순히 레피지토리를
+        # 호출하는 경우에도 service, repository layer를 구축합니다. 한 마디로 확장성을 고려한 것
+        self.__gameRepository.checkDiceGameWinner()
