@@ -39,3 +39,7 @@ class BoardRepositoryImpl(BoardRepository):
         board = Board(**boardData)
         board.save()
         return board
+
+    def findByBoardId(self, boardId):
+        # boardId를 입력된 boardId로 하겠다는걸 명시하기
+        return Board.objects.get(boardId=boardId) # 실제 boardId에 관한 정보를 가져와라 >> 즉, (pk)값이 반환됨

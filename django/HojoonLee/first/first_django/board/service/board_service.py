@@ -8,3 +8,7 @@ class BoardService(ABC):
     @abstractmethod
     def createBoard(self, boardData):
         pass
+
+    @abstractmethod
+    def readBoard(self, boardId):
+        pass

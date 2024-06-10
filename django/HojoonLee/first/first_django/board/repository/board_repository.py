@@ -8,3 +8,8 @@ class BoardRepository(ABC):
     @abstractmethod
     def create(self, boardData):
         pass
+
+    # read 기능 지원
+    @abstractmethod
+    def findByBoardId(self, boardId):
+        pass

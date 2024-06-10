@@ -4,6 +4,7 @@
     import axiosInst from "@/utility/axiosInstance"
     import { REQUEST_BOARD_LIST_TO_DJANGO } from "./mutation-types"
     export type BoardActions = {
+        requestBoardToDjango(context: ActionContext<BoardState, any>, boardId: number): Promise<void>
         requestBoardListToDjango(context: ActionContext<BoardState, any>): Promise<void>
         requestCreateBoardToDjango(context: ActionContext<BoardState, any>, payload: {
             title: string, writer: string, content: string
@@ -29,13 +30,24 @@
     //     }
     // }
     const actions: BoardActions = {
+        // `` (백틱)을 쓰는 이유: fstring 처럼 {}안에 있는 것을 변수처럼 받아와서 str화 하기 위해
+        async requestBoardToDjango(context: ActionContext<BoardState, any>, boardId: number): Promise<void> {
+            try {
+                const res: AxiosResponse<Board> = await axiosInst.djangoAxiosInst.get(`/board/read/${boardId}`)
+                console.log('data:', res.data)
+                context.commit('REQUEST_BOARD_TO_DJANGO', res.data)
+            } catch (error) {
+                console.error('requestBoardToDjango(): ' + error)
+                throw error
+            }
+        },
         async requestBoardListToDjango(context: ActionContext<BoardState, any>): Promise<void> {
             try {
                 const res: AxiosResponse<any, any> = 
                     await axiosInst.djangoAxiosInst.get('/board/list')
                 
                 const data: Board[] = res.data
-                context.commit(REQUEST_BOARD_LIST_TO_DJANGO, data)
+                context.commit('REQUEST_BOARD_LIST_TO_DJANGO', data)
             } catch (error) {
                 console.error('requestBoardListToDjango(): ' + error)
                 throw error
