@@ -2,11 +2,11 @@
     <v-container>
         <h2>안녕 Vue3 + Vuetify3 + TypeScript 기반 Board App이야</h2>
         <div style="text-align: left; margin: 15px;">
-            <p>
+            
             <router-link :to="{ name: 'BoardRegisterPage' }">
                 게시물 작성
             </router-link>
-            </p>
+            
             <!-- pagedItems가 실제 게시물 데이터임 -->
             <v-data-table
                     v-model:item-per-page="perPage"
@@ -16,11 +16,11 @@
                     class="elevation-1"
                     @click:row="readRow"
                     item-value="boardId"/>
-            <!-- <v-pagination
+            <v-pagination
                     v-model="pagination.page"
                     :length="Math.ceil(boards.length / perPage)"
                     color="primary"
-                    @input="updateItems"/> -->
+                    @input="updateItems"/>
         </div>
     </v-container>
 </template>
@@ -39,7 +39,7 @@ export default {
     },
     computed: {
         ...mapState(boardModule, ['boards']),
-        pageItems () {
+        pagedItems () {
             const startIdx = (this.pagination.page - 1) * this.page
             const endIdx = startIdx + this.perPage
             return this.boards.slice(startIdx, endIdx)
