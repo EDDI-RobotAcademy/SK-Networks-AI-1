@@ -14,4 +14,5 @@ urlpatterns = [
     path('list/', BoardView.as_view({'get': 'list'}), name='board-list'),
     # register는 post 요청이고 이를 수신하면 views.py에 있는 create()를 구동함
     path('register', BoardView.as_view({'post': 'create'}), name='board-register'),
+    path('read/<int:pk>', BoardView.as_view({'get': 'read'}), name='board-read'),
 ]

@@ -7,17 +7,17 @@
                 <v-container>
                     <v-row>
                         <v-col cols="12">
-                            <v-text-field v-model="title" readonly label="제목"/>
+                            <v-text-field v-model="board.title" readonly label="제목"/>
                         </v-col>
                     </v-row>
                     <v-row>
                         <v-col cols="12">
-                            <v-text-field v-model="writer" readonly label="작성자"/>
+                            <v-text-field v-model="board.writer" readonly label="작성자"/>
                         </v-col>
                     </v-row>
                     <v-row>
                         <v-col cols="12">
-                            <v-textarea v-model="content" readonly label="내용" auto-grow/>
+                            <v-textarea v-model="board.content" readonly label="내용" auto-grow/>
                         </v-col>
                     </v-row>
                     <v-row justify="end">
@@ -45,7 +45,7 @@ import { mapActions, mapState } from 'vuex'
 const boardModule = 'boardModule'
 
 export default {
-    props: {
+    props: {    // props : 다른 vue와 데이터를 주고 받기 위한 용도
         boardId: {
             type: String,
             required: true,
@@ -60,9 +60,9 @@ export default {
         async onDelete () {
             console.log('삭제를 누르셨습니다!')
         },
-        created () {
-            this.requestBoardToDjango(this.boardId)
-        },
-    }
+    },
+    created () {
+        this.requestBoardToDjango(this.boardId)
+    },
 }
 </script>

@@ -1,11 +1,16 @@
 <template lang="">
     <v-container>
         <h2>안녕 Vue3 TypeScript 기반 Board App이야</h2>
-        <div style="text-align: left; margin: 15px;">
+        <!-- <div style="text-align: left; margin: 15px;">
             <router-link :to="{ name: 'BoardRegisterPage' }">
                 게시물 작성
             </router-link>
-        </div>
+        </div> -->
+        <v-col cols="auto">
+            <router-link :to="{ name: 'BoardRegisterPage' }">
+                <v-btn color="tertiery">게시물 작성</v-btn>
+            </router-link>
+        </v-col>
         <v-data-table
             v-model:items-per-page="perPage"
             :headers="headerTitle"
@@ -47,7 +52,7 @@ export default {
         ...mapActions(boardModule, ['requestBoardListToDjango']),
         readRow (event, { item }) {
             this.$router.push({
-                name: 'VuetifyBoardReadPage',
+                name: 'BoardReadPage',
                 params: { boardId: item['boardId'].toString() }
             })
         }

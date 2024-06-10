@@ -7,3 +7,7 @@ class BoardRepository(ABC):
     @abstractmethod
     def create(self, boardData):
         pass
+
+    @abstractmethod
+    def findByBoardId(self, boardId):
+        pass

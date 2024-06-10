@@ -34,3 +34,6 @@ class BoardRepositoryImpl(BoardRepository):
         board = Board(**boardData)  # ** 안에 있는 모든 원소 다 가져옴
         board.save()
         return board
+
+    def findByBoardId(self, boardId):
+        return Board.objects.get(boardId=boardId)

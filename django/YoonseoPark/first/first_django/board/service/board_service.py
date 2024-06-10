@@ -10,3 +10,6 @@ class BoardService(ABC):
     def createBoard(self, boardData):
         pass
 
+    @abstractmethod
+    def readBoard(self, boardId):
+        pass
