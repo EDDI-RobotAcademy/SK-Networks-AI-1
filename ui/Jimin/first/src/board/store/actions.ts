@@ -5,7 +5,8 @@ import { REQUEST_BOARD_LIST_TO_DJANGO } from "./mutation-types"
 import axiosInst from "@/utility/axiosInstance"
 
 export type BoardActions = {
-    requestBoardListToDjango(context: ActionContext<BoardState, unknown>): Promise<void>
+    requestBoardToDjango(context: ActionContext<BoardState, any>, boardId: number): Promise<void>
+    requestBoardListToDjango(context: ActionContext<BoardState, any>): Promise<void>
     requestCreateBoardToDjango(context: ActionContext<BoardState, any>, payload: {
         title: string, writer: string, content: string
     }): Promise<AxiosResponse>
@@ -15,6 +16,16 @@ export type BoardActions = {
 // async와 Promise는 비동기 통신을 사용하기 위해 반드시 필요합니다.
 // 비동기 통신과 스레드, 병렬처리, 앞서 살펴봤던 process.env가 모두 연관되어 있습니다.
 const actions: BoardActions = {
+    async requestBoardToDjango(context: ActionContext<BoardState, any>, boardId: number): Promise<void> {
+        try {
+            const res: AxiosResponse<Board> = await axiosInst.djangoAxiosInst.get(`/board/read/${boardId}`);
+            console.log('data:', res.data)
+            context.commit('REQUEST_BOARD_TO_DJANGO', res.data);
+        } catch (error) {
+            console.error('requestBoardToDjango() 문제 발생:', error);
+            throw error
+        }
+    },
     async requestBoardListToDjango(context: ActionContext<BoardState, any>): Promise<void> {
         try {
             const res: AxiosResponse<any, any> = await axiosInst.djangoAxiosInst.get('/board/list')

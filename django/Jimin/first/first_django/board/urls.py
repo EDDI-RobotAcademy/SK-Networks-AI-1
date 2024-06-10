@@ -11,7 +11,8 @@ urlpatterns = [
     # 결론적으로 list는 get 요청으로 오고 이것을 수신하면 controller/views.py에 있는 list()를 구동함
     path('list', BoardView.as_view({'get': 'list'}), name='board-list'),
     # register는 post 요청이고 이를 수신하면 views.py에 있는 create()을 구동함
-    path('register', BoardView.as_view({'post': 'create'}), name='board-register')
+    path('register', BoardView.as_view({'post': 'create'}), name='board-register'),
+    path('read/<int:pk>', BoardView.as_view({'get': 'read'}), name='board-read'),
 ]
 
 # localhost:8000/board/list
