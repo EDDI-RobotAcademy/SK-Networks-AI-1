@@ -2,9 +2,9 @@
     <v-container>
         <h2>안녕 Vue3 + Vuetify3 + TypeScript 기반 Board App이야</h2>
         <div style="text-align: left; margin: 15px;">
-            <p>
+            <router-link :to="{ name : 'BoardRegisterPage'} ">
                 게시물 작성
-            </p>
+            </router-link>
             <!-- pagedItems가 실제 게시물 데이터임 -->
             <v-data-table
                     v-model:item-per-page="perPage"
@@ -22,13 +22,8 @@
         </div>
     </v-container>
 </template>
-
-// npm install axios --legacy-peer-deps
-
 <script>
-// 이것은 vuex 때문에 사용 가능
 import { mapActions, mapState } from 'vuex'
-
 const boardModule = 'boardModule'
 
 export default {

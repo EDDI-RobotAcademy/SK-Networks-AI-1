@@ -21,4 +21,11 @@ class BoardRepositoryImpl(BoardRepository):
     def list(self):
         return Board.objects.all().order_by('-regDate')
 
+    def create(self, boardData):
+        board = Board(**boardData)  # ** 안에 있는 모든 원소 다 가져옴
+        board.save()
+        return board
+    
+    
+
 
