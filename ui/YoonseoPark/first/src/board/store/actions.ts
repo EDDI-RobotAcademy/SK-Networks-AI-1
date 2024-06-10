@@ -4,6 +4,7 @@ import { AxiosResponse } from "axios"
 import axiosInst from "@/utility/axiosInstance"
 
 export type BoardActions = {
+    requestBoardToDjango(context: ActionContext<BoardState, any>, boardId: number): Promise<void>
     requestBoardListToDjango(context: ActionContext<BoardState, any>): Promise<void>
     requestCreateBoardToDjango(context: ActionContext<BoardState, unknown>, payload: {
         title: string, writer: string, content: string
@@ -11,14 +12,25 @@ export type BoardActions = {
 }
 
 const actions: BoardActions = {
+    async requestBoardToDjango(context: ActionContext<BoardState, any>, boardId: number): Promise<void> {
+        try {
+            const res: AxiosResponse<Board> = await axiosInst.djangoAxiosInst.get(`/board/read/${boardId}`);
+            console.log('data:', res.data)
+            context.commit('REQUEST_BOARD_TO_DJANGO', res.data);
+        } catch (error) {
+            console.error('requestBoardToDjango() 문제 발생:', error);
+            throw error
+        }
+    },
     async requestBoardListToDjango(context: ActionContext<BoardState, any>): Promise<void> {
         try {
             const res: AxiosResponse<any, any> = await axiosInst.djangoAxiosInst.get('/board/list/');
+            console.log('data:', res)
             const data: Board[] = res.data;
+            console.log('data:', data)
             context.commit('REQUEST_BOARD_LIST_TO_DJANGO', data);
         } catch (error) {
             console.error('Error fetching board list:', error);
-            // 에러를 처리할 수 있는 추가 로직
             throw error
         }
     },
