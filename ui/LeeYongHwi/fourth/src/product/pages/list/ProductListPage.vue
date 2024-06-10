@@ -48,7 +48,7 @@ export default {
         readRow (event, { item }) {
             this.$router.push({
                 name: 'ProductReadPage',
-                params: { boardId: item['productId'].toString() }
+                params: { productId: item['productId'].toString() }
             })
         }
             },
