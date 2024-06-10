@@ -20,4 +20,8 @@ class ProductView(viewsets.Viewset):
             return Response(ProductSerializer(product).data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
+    def list(self, request):
+        productList = self.productService.list()
+        serializer = ProductSerializer(productList, many=True)
+        return Response(serializer.data)

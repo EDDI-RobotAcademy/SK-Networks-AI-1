@@ -5,3 +5,7 @@ class ProductRepository(ABC):
     @abstractmethod
     def create(self, productData):
         pass
+
+    @abstractmethod
+    def list(self):
+        pass

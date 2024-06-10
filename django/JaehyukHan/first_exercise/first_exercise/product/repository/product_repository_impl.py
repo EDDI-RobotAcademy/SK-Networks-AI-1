@@ -22,3 +22,7 @@ class ProductRepositoryImpl(ProductRepository):
         product = Product(**productData)
         product.save()
         return product
+
+    def list(self):
+        return Product.objects.all().order_by('regDate')
+
