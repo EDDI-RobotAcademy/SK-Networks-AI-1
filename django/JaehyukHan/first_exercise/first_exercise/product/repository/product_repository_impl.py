@@ -26,3 +26,7 @@ class ProductRepositoryImpl(ProductRepository):
     def list(self):
         return Product.objects.all().order_by('regDate')
 
+    def findByProductId(self, productId):
+        return Product.objects.get(productId=productId)
+
+

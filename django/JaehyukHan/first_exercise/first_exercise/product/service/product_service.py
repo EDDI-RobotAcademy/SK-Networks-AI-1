@@ -8,3 +8,7 @@ class ProductService(ABC):
     @abstractmethod
     def list(self):
         pass
+
+    @abstractmethod
+    def readProduct(self, productId):
+        pass

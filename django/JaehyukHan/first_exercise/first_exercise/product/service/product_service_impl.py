@@ -25,6 +25,9 @@ class ProductServiceImpl(ProductService):
     def list(self):
         return self.__productRepository.list()
 
+    def readProduct(self, productId):
+        return self.__productRepository.findByProductId(productId)
+
 
 
 
