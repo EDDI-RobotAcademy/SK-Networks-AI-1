@@ -20,4 +20,10 @@ class BoardServiceImpl(BoardService):
         return cls.__instance
 
     def list(self):
-        self.__boardRepository.list()
+        return self.__boardRepository.list()
+
+    def createBoard(self, boardData):
+        self.__boardRepository.create(boardData)
+
+    def readBoard(self, boardId):
+        return self.__boardRepository.findByBoardId(boardId)
