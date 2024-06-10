@@ -60,9 +60,9 @@ export default {
         async onDelete () {
             console.log('삭제를 누르셨습니다!')
         },
-        created () {
-            this.requestBoardToDjango(this.boardId)
-        },
-    }
+    },
+    created () {
+        this.requestBoardToDjango(this.boardId)
+    },
 }
 </script>
