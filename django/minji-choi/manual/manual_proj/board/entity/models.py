@@ -10,6 +10,7 @@ class Board(models.Model):
     content = models.TextField()
     regDate = models.DateTimeField(auto_now_add=True)
     updDate = models.DateTimeField(auto_now=True)
+
     def __str__(self):
         return self.title
 

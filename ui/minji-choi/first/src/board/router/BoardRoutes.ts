@@ -1,9 +1,10 @@
 import BoardListPage from "@/board/pages/list/BoardListPage.vue"
 import BoardRegisterPage from "@/board/pages/register/BoardRegisterPage.vue"
+import BoardReadPage from "@/board/pages/read/BoardReadPage.vue"
 
 const BoardRoutes = [
     {
-        path: '/board/list/',
+        path: '/board/list',
         name: 'BoardListPage',
         component: BoardListPage,
     },
@@ -11,6 +12,16 @@ const BoardRoutes = [
         path: '/board/register',
         name: 'BoardRegisterPage',
         component: BoardRegisterPage,
+    },
+    {
+        path: '/board/read/:boardId',
+        name: 'BoardReadPage',
+        components: { // 왜 components?
+            default: BoardReadPage,
+        },
+        props: {
+            default: true
+        }
     }
 ]
 
