@@ -19,5 +19,19 @@ class BoardRepositoryImpl(BoardRepository):
         return cls.__instance
 
     def list(self):
-        return Board.objects.all().order_by('-regDate')
+        print(f"list() -> Board", Board)
+        print(f"list() -> Board.objects", Board.objects)
+        print(f"list() -> Board.objects.all()", Board.objects.all())
+
+        boardList = Board.objects.all()
+        for board in boardList:
+            print(f"Board: {board}")
+
+        return Board.objects.all()
+
+    def create(self, boardData):
+        board = Board(**boardData)
+        board.save()
+        return board
+
 
