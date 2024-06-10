@@ -1,4 +1,5 @@
 from product.service.product_service import ProductService
+from product.repository.product_repository_impl import ProductRepositoryImpl
 
 
 class ProductServiceImpl(ProductService):
@@ -7,6 +8,7 @@ class ProductServiceImpl(ProductService):
     def __new__(cls):
         if cls.__instance is None:
             cls.__instance = super().__new__(cls)
+            cls.__instance.__productRepository = ProductRepositoryImpl.getInstance()
 
         return cls.__instance
 
@@ -17,7 +19,10 @@ class ProductServiceImpl(ProductService):
 
         return cls.__instance
 
-    def func1(self):
-        pass
+    def createProduct(self, productData):
+        self.__productRepository.create(productData)
+
+
+
 
 

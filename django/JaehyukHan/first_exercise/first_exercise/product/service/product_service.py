@@ -2,5 +2,5 @@ from abc import ABC, abstractmethod
 
 class ProductService(ABC):
     @abstractmethod
-    def func1(self):
+    def createProduct(self, productData):
         pass

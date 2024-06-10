@@ -12,3 +12,12 @@ class ProductView(viewsets.Viewset):
     queryset = Product.objects.all()
     productService = ProductServiceImpl.getInstance()
 
+    def create(self, request):
+        serializer = ProductSerializer(data=request.data)
+
+        if serializer.is_valid():
+            product = self.productService.createProduct(serializer.validated_data)
+            return Response(ProductSerializer(product).data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
