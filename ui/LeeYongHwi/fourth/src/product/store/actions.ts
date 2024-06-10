@@ -5,6 +5,9 @@ import axiosInst from "@/utility/axiosInstance"
 
 export type ProductActions = {
     requestProductListToDjango(context: ActionContext<ProductState, any>): Promise<void>
+    requestCreateProductToDjango(context: ActionContext<ProductState, unknown>, payload: {
+        productName: string, price: string
+    }): Promise<AxiosResponse>
 }
 
 const actions: ProductActions = {
@@ -21,6 +24,26 @@ const actions: ProductActions = {
             throw error
         }
     },
+    async requestCreateProductToDjango(context: ActionContext<ProductState, unknown>, payload: {
+        productName: string, price: string
+    }): Promise<AxiosResponse> {
+
+        console.log('requestCreateProductToDjango()')
+
+        const { productName, price } = payload
+        console.log('전송할 데이터:', { productName, price })
+
+        try {
+            const res: AxiosResponse = await axiosInst.djangoAxiosInst.post(
+                '/product/register', { productName, price })
+
+            console.log('res:', res.data)
+            return res.data
+        } catch (error) {
+            alert('requestCreateProductToDjango() 문제 발생!')
+            throw error
+        }
+    }
 }
 
 export default actions;

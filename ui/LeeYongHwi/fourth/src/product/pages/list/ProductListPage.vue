@@ -2,9 +2,9 @@
     <v-container>
         <h2>Product List</h2>
         <div style="text-align: left; margin: 15px;">
-            <p>
+            <router-link :to="{ name: 'ProductRegisterPage' }">
                 상품 등록
-            </p>
+            </router-link>
         </div>
         <v-data-table
             v-model:items-per-page="perPage"
