@@ -25,3 +25,6 @@ class ProductRepositoryImpl(ProductRepository):
         product = Product(**productData)
         product.save()
         return product
+
+    def findByProductId(self, productId):
+        return Product.objects.get(productId=productId)

@@ -6,5 +6,7 @@ class Product(models.Model):
     productName = models.CharField(max_length=128, null=False)
     price = models.CharField(max_length=128, null=False)
 
+    def __str__(self):
+        return self.productName
     class Meta:
         db_table = 'product'

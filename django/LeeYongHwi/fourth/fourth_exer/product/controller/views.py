@@ -24,3 +24,8 @@ class ProductView(viewsets.ViewSet):
             return Response(ProductSerializer(product).data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def read(self, request, pk=None):
+        product = self.productService.readProduct(pk)
+        serializer = ProductSerializer(product)
+        return Response(serializer.data)

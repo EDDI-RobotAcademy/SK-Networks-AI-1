@@ -17,7 +17,8 @@
         <v-pagination
             v-model="pagination.page"
             :length="Math.ceil(products.length / perPage)"
-            color="primary"/>
+            color="primary"
+            @input="updateItems"/>
     </v-container>
 </template>
 
@@ -44,6 +45,12 @@ export default {
     },
     methods: {
         ...mapActions(productModule, ['requestProductListToDjango']),
+        readRow (event, { item }) {
+            this.$router.push({
+                name: 'ProductReadPage',
+                params: { boardId: item['productId'].toString() }
+            })
+        }
             },
     data () {
         return {
