@@ -14,11 +14,11 @@
                     class="elevation-1"
                     @click:row="readRow"
                     item-value="boardId"/>
-            <!-- <v-pagination
+            <v-pagination
                     v-model="pagination.page"
                     :length="Math.ceil(boards.length / perPage)"
                     color="primary"
-                    @input="updateItems"/> -->
+                    @input="updateItems"/>
         </div>
     </v-container>
 </template>
@@ -37,7 +37,7 @@ export default {
     },
     computed: {
         ...mapState(boardModule, ['boards']),
-        pageItems () {
+        pagedItems () {
             const startIdx = (this.pagination.page - 1) * this.page
             const endIdx = startIdx + this.perPage
             return this.boards.slice(startIdx, endIdx)
