@@ -8,7 +8,7 @@ from product.serializers import ProductSerializer
 
 
 # Create your views here.
-class ProductView(viewsets.Viewset):
+class ProductView(viewsets.ViewSet):
     queryset = Product.objects.all()
     productService = ProductServiceImpl.getInstance()
 
