@@ -6,18 +6,20 @@
             <v-card-text>
                 <v-container>
                     <v-row>
+                        <!-- 우리가 불러오기로한 board의 title, writer, content 이므로 board. 으로 바꿔줘야 vue에 정보가 뜸 -->
+                         <!-- 왜냐면 readPage 는 boardId만 가져오므로 title, writer, content가 어느것인지 모름 -->
                         <v-col cols="12">
-                            <v-text-field v-model="title" readonly label="제목"/>
+                            <v-text-field v-model="board.title" readonly label="제목"/>
                         </v-col>
                     </v-row>
                     <v-row>
                         <v-col cols="12">
-                            <v-text-field v-model="writer" readonly label="작성자"/>
+                            <v-text-field v-model="board.writer" readonly label="작성자"/>
                         </v-col>
                     </v-row>
                     <v-row>
                         <v-col cols="12">
-                            <v-textarea v-model="content" readonly label="내용" auto-grow/>
+                            <v-textarea v-model="board.content" readonly label="내용" auto-grow/>
                         </v-col>
                     </v-row>
                     <v-row justify="end">
@@ -45,14 +47,15 @@ import { mapActions, mapState } from 'vuex'
 const boardModule = 'boardModule'
 
 export default {
-    props: {
+    props: { // boardList로부터 받아온 것 > boardId
         boardId: {
             type: String,
             required: true,
         }
     },
+    // 낱개정보인 board를 불러옴
     computed: {
-        ...mapState(boardModule, ['board'])
+        ...mapState(boardModule, ['board']) 
     },
     methods: {
         // 'requestDeleteBoardToDjango' 추후 처리 필요
@@ -62,7 +65,7 @@ export default {
         },
     },
     created () {
-            this.requestBoardToDjango(this.boardId)
+            this.requestBoardToDjango(this.boardId) // 생성되자마자 장고에게 요청보냄
     },
 }
 </script>
