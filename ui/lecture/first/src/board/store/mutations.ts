@@ -7,8 +7,9 @@ export interface BoardMutations extends MutationTree<BoardState> {
 }
 
 const mutations: MutationTree<BoardState> = {
-    [REQUEST_BOARD_LIST_TO_DJANGO] (state: BoardState, receiveData: Board[]): void {
-        state.boards = receiveData
+    [REQUEST_BOARD_LIST_TO_DJANGO] (state: BoardState, receivedData: Board[]): void {
+        console.log('mutation -> receivedData:', receivedData)
+        state.boards = receivedData
     }
 }
 
