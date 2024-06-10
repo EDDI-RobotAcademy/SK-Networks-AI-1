@@ -26,3 +26,6 @@ class ProductRepositoryImpl(ProductRepository):
         product = Product(**productData)
         product.save() # 여기서 db에 create한 애가 저장됨
         return product
+
+    def findByProductId(self, productId):
+        return Product.objects.get(productId=productId)

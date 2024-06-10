@@ -9,3 +9,7 @@ class ProductRepository(ABC):
     @abstractmethod
     def create(self, productData):
         pass
+
+    @abstractmethod
+    def findByProductId(self, productId):
+        pass
