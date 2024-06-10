@@ -7,17 +7,17 @@
                 <v-container>
                     <v-row>
                         <v-col cols="12">
-                            <v-text-field v-model="title" readonly label="제목"/>
+                            <v-text-field v-model="board.title" readonly label="제목"/>
                         </v-col>
                     </v-row>
                     <v-row>
                         <v-col cols="12">
-                            <v-text-field v-model="writer" readonly label="작성자"/>
+                            <v-text-field v-model="board.writer" readonly label="작성자"/>
                         </v-col>
                     </v-row>
                     <v-row>
                         <v-col cols="12">
-                            <v-textarea v-model="content" readonly label="내용" auto-grow/>
+                            <v-textarea v-model="board.content" readonly label="내용" auto-grow/>
                         </v-col>
                     </v-row>
                     <v-row justify="end">
