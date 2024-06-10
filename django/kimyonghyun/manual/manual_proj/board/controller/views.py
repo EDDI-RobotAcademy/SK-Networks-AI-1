@@ -3,7 +3,7 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 
 from board.entity.models import Board
-from board.serializer import BoardSerializer
+from board.serializers import BoardSerializer
 from board.service.board_service_impl import BoardServiceImpl
 
 
@@ -16,7 +16,9 @@ class BoardView(viewsets.ViewSet):
 
     def list(self, request):
         boardList = self.boardService.list()
+        print('boardList:', boardList)
         serializer = BoardSerializer(boardList, many=True)
+        print('serialized boardList:', serializer.data)
         return Response(serializer.data)
 
     def create(self, request):
@@ -27,3 +29,8 @@ class BoardView(viewsets.ViewSet):
             return Response(BoardSerializer(board).data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def read(self, request, pk=None):
+        board = self.boardService.readBoard(pk)
+        serializer = BoardSerializer(board)
+        return Response(serializer.data)
