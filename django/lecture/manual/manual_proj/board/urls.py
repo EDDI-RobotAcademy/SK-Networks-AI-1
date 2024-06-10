@@ -9,6 +9,7 @@ router.register(r'board', BoardView)
 urlpatterns = [
     path('', include(router.urls)),
     path('list/', BoardView.as_view({'get': 'list'}), name='board-list'),
+    path('register', BoardView.as_view({'post': 'create'}), name='board-register'),
 ]
 
 # localhost:8000/board/list
