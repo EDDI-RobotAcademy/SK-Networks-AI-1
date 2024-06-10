@@ -45,6 +45,7 @@ import { mapActions, mapState } from 'vuex'
 const boardModule = 'boardModule'
 
 export default {
+    // props : 다른 vue랑 데이터를 주고 받기 위해 사용함 
     props: {
         boardId: {
             type: String,
