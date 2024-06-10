@@ -49,7 +49,7 @@ export default {
         ...mapActions(boardModule, ['requestBoardListToDjango']),
         readRow (event, { item }) {
             this.$router.push({
-                name: 'VuetifyBoardReadPage',
+                name: 'BoardReadPage',
                 params: { boardId: item['boardId'].toString() }
             })
         }
