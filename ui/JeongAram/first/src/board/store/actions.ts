@@ -6,6 +6,9 @@ import { REQUEST_BOARD_LIST_TO_DJANGO } from "./mutation-types"
 
 export type BoardActions = {
     requestBoardListToDjango(context: ActionContext<BoardState, any>): Promise<void>
+    requestCreateBoardToDjango(context: ActionContext<BoardState, unknown>, payload: {
+        title: string, writer: string, content: string
+    }): Promise<AxiosResponse>
 }
 
 // async와 Promise는 비동기 통신을 사용하기 위해 반드시 필요합니다.
@@ -25,9 +28,30 @@ const actions: BoardActions = {
             context.commit(REQUEST_BOARD_LIST_TO_DJANGO, data)
         } catch (error) {
             console.error('requestBoardListToDjango(): ' + error)
-            // throw error
+            // 에러를 처리할 수 있는 추가 로직
+            throw error
+        }
+    },
+    async requestCreateBoardToDjango(context: ActionContext<BoardState, unknown>, payload: {
+        title: string, writer: string, content: string
+    }): Promise<AxiosResponse> {
+
+        console.log('requestCreateBoardToDjango()')
+
+        const{ title, writer, content } = payload
+        console.log('전송할 데이터:', {title, writer, content })
+
+        try {
+            const res: AxiosResponse = await axiosInst.djangoAxiosInst.post(
+                '/board/register', { title, writer, content})
+            
+                console.log('res', res.data)
+                return res.data
+        } catch(error) {
+            alert('requestCreateBoardToDjango() 문제 발생!')
+            throw error
         }
     }
 }
 
-export default actions
+export default actions;
