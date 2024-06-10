@@ -7,6 +7,7 @@ if __name__ == "__main__":
     productService = ProductServiceImpl.getInstance()
     productList = productService.productList()
 
+
     for product in productList:
         print(f"name: {product.getProductName()}, "
               f"price: {product.getPrice()}, "

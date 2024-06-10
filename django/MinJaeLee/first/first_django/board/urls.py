@@ -7,3 +7,4 @@ router = DefaultRouter()
 router.register(r'board', BoardView)
 
 urlpatterns = [path('', include(router.urls)), path('list/', BoardView.as_view({'get': 'list'}), name = 'board-list')]
+# urlpatterns.headers['Access-Control-Allow-Origin']="*"
