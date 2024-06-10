@@ -6,7 +6,7 @@ export interface ProductState {
 export interface Product {
     productId: number
     productName: string
-    price: number
+    price: string
 }
 
 const state: ProductState = {
