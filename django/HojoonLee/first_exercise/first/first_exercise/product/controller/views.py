@@ -12,6 +12,11 @@ class ProductView(viewsets.ViewSet):
     queryset = Product.objects.all() # 보드가 어떻게 되어있든 난 다 조회할거야
     productService = ProductServiceImpl.getInstance()
 
+    def list(self, request):
+        productList = self.productService.list()
+        serializer = ProductSerializer(productList, many=True)
+        return Response(serializer.data)
+
     def create(self, request):
         serializer = ProductSerializer(data=request.data)
         print(request.data)

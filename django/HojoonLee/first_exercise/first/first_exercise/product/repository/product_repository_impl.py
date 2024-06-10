@@ -19,7 +19,10 @@ class ProductRepositoryImpl(ProductRepository):
 
         return cls.__instance
 
+    def list(self):
+        return Product.objects.all().order_by('regDate')
+
     def create(self, productData):
         product = Product(**productData)
-        product.save()
+        product.save() # 여기서 db에 create한 애가 저장됨
         return product
