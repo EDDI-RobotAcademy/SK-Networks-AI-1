@@ -5,6 +5,7 @@ import axiosInst from "@/utility/axiosInstance"
 import { REQUEST_BOARD_LIST_TO_DJANGO } from "./mutation-types"
 
 export type BoardActions = {
+    requestBoardToDjango(context: ActionContext<BoardState, any>, boardId: number): Promise<void>
     requestBoardListToDjango(context: ActionContext<BoardState, any>): Promise<void>
     requestCreateBoardToDjango(context: ActionContext<BoardState, unknown>, payload: {
         title: string, writer: string, content: string
@@ -12,6 +13,16 @@ export type BoardActions = {
 }
 
 const actions: BoardActions = {
+    async requestBoardToDjango(context: ActionContext<BoardState, any>, boardId: number): Promise<void> {
+        try {
+            const res: AxiosResponse<Board> = await axiosInst.djangoAxiosInst.get(`/board/read/${boardId}`);
+            console.log('data:', res.data)
+            context.commit('REQUEST_BOARD_TO_DJANGO', res.data);
+        } catch (error) {
+            console.error('requestBoardToDjango() 문제 발생:', error);
+            throw error
+        }
+    },
     async requestBoardListToDjango(context: ActionContext<BoardState, any>): Promise<void> {
         try {
             const res: AxiosResponse<any, any> = await axiosInst.djangoAxiosInst.get('/board/list/');
