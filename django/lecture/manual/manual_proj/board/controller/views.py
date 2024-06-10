@@ -21,8 +21,6 @@ class BoardView(viewsets.ViewSet):
         print('serialized boardList:', serializer.data)
         return Response(serializer.data)
 
-
-
     def create(self, request):
         serializer = BoardSerializer(data=request.data)
 
