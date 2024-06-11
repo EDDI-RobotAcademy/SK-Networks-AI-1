@@ -2,8 +2,6 @@
     <v-container>
         <v-row>
             <v-col cols="12">
-                <!-- v-model은 기본적으로 양방향으로 데이터를 주고 받을 수 있음 -->
-                 <!-- 그렇기 때문에 v-model='title'은 script 내부에 값을 입력할 수 있다 -->
                 <v-text-field v-model="title" label="제목"/>
             </v-col>
         </v-row>
@@ -19,8 +17,6 @@
         </v-row>
         <v-row>
             <v-col cols="12" class="text-right">
-                <!-- 버튼 작성시 v-btn 사용하며, 클릭 트리거로 @click을 사용 -->
-                <!-- @click='onSubmit'의 경우, 클릭시 onSubmit 함수 구동을 의미함 -->
                 <v-btn class="ml-2" color="primary" @click="onSubmit">작성 완료</v-btn>
                 <v-btn class="ml-1" color="error" @click="onCancel">취소</v-btn>
             </v-col>
@@ -49,7 +45,7 @@ export default {
         // 쉽게 얘기해서 requestCreateBoardToDjango가 boardModule의 action에 정의되어야 한다는 말
         ...mapActions(boardModule, ['requestCreateBoardToDjango']),
         async onSubmit () {
-            console.log('작성 완료 버튼 눌럿지 ?')
+            console.log('작성 완료 버튼 누름')
 
             const payload = {
                 title: this.title,
@@ -60,8 +56,10 @@ export default {
             console.log('payload check:', payload)
 
             const board = await this.requestCreateBoardToDjango(payload)
-            // 글 작성이 완료되었다면 보편적으로 작성한 글을 볼 수 있는 읽기 페이지로 감
-            // 아직 Read 구현 안했으니까 여기서 우선 정지
+            await this.$router.push({
+                name: 'BoardReadPage',
+                params: { boardId: board.boardId.toString()} 
+            })
         },
         async onCancel () {
             console.log('취소 버튼 눌럿지 ?')

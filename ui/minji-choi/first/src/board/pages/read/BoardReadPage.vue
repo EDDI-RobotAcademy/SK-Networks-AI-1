@@ -22,14 +22,16 @@
                     </v-row>
                     <v-row justify="end">
                         <v-col cols="auto">
-                            <v-btn color="primary">수정</v-btn>
+                            <router-link :to="{ name: 'BoardModifyPage', params: {boardId} }">
+                                <v-btn color="primary">수정</v-btn>
+                        </router-link>
                         </v-col>
                         <v-col cols="auto">
-                            <v-btn color="error">삭제</v-btn>
+                            <v-btn color="error" @click="onDelete">삭제</v-btn>
                         </v-col>
                         <v-col cols="auto">
                             <router-link :to="{ name: 'BoardListPage' }">
-                                <v-btn color="secondary">돌아가기</v-btn>
+                                <v-btn color="secondary">목록</v-btn>
                             </router-link>
                         </v-col>
                     </v-row>
@@ -56,13 +58,16 @@ export default {
     },
     methods: {
         // 'requestDeleteBoardToDjango' 추후 처리 필요
-        ...mapActions(boardModule, ['requestBoardToDjango']),
+        ...mapActions(boardModule, ['requestBoardToDjango', 'requestDeleteBoardToDjango']),
         async onDelete () {
             console.log('삭제를 누르셨습니다!')
+            await this.requestDeleteBoardToDjango(this.boardId)
+            await this.$router.push({ name : 'BoardListPage' })
+
         },
     },
     created () {
-            this.requestBoardToDjango(this.boardId)
-        },
+        this.requestBoardToDjango(this.boardId)
+    },
 }
 </script>
