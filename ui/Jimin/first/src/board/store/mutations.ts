@@ -1,15 +1,22 @@
-import { REQUEST_BOARD_LIST_TO_DJANGO } from "./mutation-types";
+import { 
+    REQUEST_BOARD_TO_DJANGO,
+    REQUEST_BOARD_LIST_TO_DJANGO 
+} from "./mutation-types";
 import { BoardState, Board } from "./states";
 import { MutationTree } from "vuex";
 
 export interface BoardMutations extends MutationTree<BoardState> {
-    [REQUEST_BOARD_LIST_TO_DJANGO](state: BoardState, receiveData: Board[]): void
+    [REQUEST_BOARD_LIST_TO_DJANGO](state: BoardState, receivedData: Board[]): void
+    [REQUEST_BOARD_TO_DJANGO](state: BoardState, receivedData: Board): void
 }
 
 // interface의 Boards[]배열에 receiveData를 받는다
 const mutations: MutationTree<BoardState>={
-    [REQUEST_BOARD_LIST_TO_DJANGO](state: BoardState, receiveData: Board[]): void{
-        state.boards = receiveData
+    [REQUEST_BOARD_LIST_TO_DJANGO](state: BoardState, receivedData: Board[]): void{
+        state.boards = receivedData
+    },
+    [REQUEST_BOARD_TO_DJANGO](state: BoardState, receivedData: Board): void{
+        state.board = receivedData
     }
 }
 
