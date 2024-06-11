@@ -28,6 +28,6 @@ class BoardServiceImpl(BoardService):
     def readBoard(self, boardId):
         return self.__boardRepository.findByBoardId(boardId)
 
-
-
+    def removeBoard(self, boardId):
+        return self.__boardRepository.deleteByBoardId(boardId)
 
