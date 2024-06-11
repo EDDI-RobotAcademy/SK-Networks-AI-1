@@ -1,0 +1,2 @@
+class PlayerExistsError(BaseException):
+    pass
