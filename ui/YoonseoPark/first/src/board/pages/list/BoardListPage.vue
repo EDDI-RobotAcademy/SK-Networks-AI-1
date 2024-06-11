@@ -1,16 +1,11 @@
 <template lang="">
     <v-container>
         <h2>안녕 Vue3 TypeScript 기반 Board App이야</h2>
-        <!-- <div style="text-align: left; margin: 15px;">
+        <div style="text-align: left; margin: 15px;">
             <router-link :to="{ name: 'BoardRegisterPage' }">
                 게시물 작성
             </router-link>
-        </div> -->
-        <v-col cols="auto">
-            <router-link :to="{ name: 'BoardRegisterPage' }">
-                <v-btn color="tertiery">게시물 작성</v-btn>
-            </router-link>
-        </v-col>
+        </div>
         <v-data-table
             v-model:items-per-page="perPage"
             :headers="headerTitle"
@@ -26,6 +21,8 @@
             @input="updateItems"/>
     </v-container>
 </template>
+
+// npm install axios --legacy-peer-deps
 
 <script>
 // 이것은 vuex 때문에 사용 가능
@@ -69,7 +66,6 @@ export default {
                 { title: '제목', align: 'end', key: 'title' },
                 { title: '작성자', align: 'end', key: 'writer' },
                 { title: '작성일자', align: 'end', key: 'regDate' },
-                { title: '수정일자', align: 'end', key: 'updDate'}
             ],
             perPage: 5,
             pagination: {

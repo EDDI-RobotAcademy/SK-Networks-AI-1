@@ -2,6 +2,7 @@ import { ActionContext } from "vuex"
 import { Board, BoardState } from "./states"
 import { AxiosResponse } from "axios"
 import axiosInst from "@/utility/axiosInstance"
+import { REQUEST_BOARD_LIST_TO_DJANGO } from "./mutation-types"
 
 export type BoardActions = {
     requestBoardToDjango(context: ActionContext<BoardState, any>, boardId: number): Promise<void>
@@ -61,7 +62,7 @@ const actions: BoardActions = {
             // 고로 개인 정보나 민감한 데이터의 경우 반드시 POST로 전송할 필요가 있음
             // 보낼 때 첫 번째 인자가 '요청할 경로', 두 번째 인자는 데이터 형태로 보냅니다.
             const res: AxiosResponse = await axiosInst.djangoAxiosInst.post(
-                '/board/register', { title, writer, content })
+                '/board/register', { title, writer, content})
 
             console.log('res:', res.data)
             return res.data
@@ -83,7 +84,7 @@ const actions: BoardActions = {
     async requestModifyBoardToDjango(context: ActionContext<BoardState, any>, payload: {
         title: string, content: string, boardId: number
     }): Promise<void> {
-
+        
         const { title, content, boardId } = payload
 
         try {
