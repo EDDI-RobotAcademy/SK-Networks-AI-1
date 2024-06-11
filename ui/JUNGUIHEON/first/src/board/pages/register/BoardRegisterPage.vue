@@ -68,12 +68,16 @@ export default {
             // 글 작성이 완료되었다면 보편적으로 작성한 글을 볼 수 있는 읽기 페이지로 감
             // 아직 Read 구현 안했으니까 여기서 우선 정지
             await this.$router.push({
-                name: 'BoardReadPage',
+                name: 'BoardListPage',
                 params: { boardId: board.boardId.toString() }
             })
         },
         async onCancel () {
             console.log('취소 버튼 눌럿지 ?')
+
+            await this.$router.push({
+                name: 'BoardListPage',
+            })
         }
     }
 }
