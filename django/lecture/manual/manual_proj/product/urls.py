@@ -9,6 +9,7 @@ router.register(r'product', ProductView)
 urlpatterns = [
     path('', include(router.urls)),
     path('list/', ProductView.as_view({'get': 'list'}), name='product-list'),
+    path('register', ProductView.as_view({'post': 'register'}), name='product-register'),
 ]
 
 # localhost:8000/board/list
