@@ -3,7 +3,7 @@ import { Product, ProductState } from "./states"
 import { AxiosResponse, AxiosError } from "axios"
 import axiosInst from "@/utility/axiosInstance"
 import { REQUEST_PRODUCT_LIST_TO_DJANGO, REQUEST_PRODUCT_TO_DJANGO } from "./mutation-types"
-
+import ProductRoutes from '@/product/router/ProductRoutes'
 
 
 export type ProductActions = {
@@ -55,13 +55,15 @@ const actions: ProductActions = {
                 return res.data
         
             } catch (error) {
-                if (error instanceof AxiosError) {
-                    alert('값을 모두 채우고, 가격은 숫자를 입력해주세요.')
-                    throw error
-                } else {
-                    alert('requestCreateProductToDjango() 문제 발생!')
-                    throw error
-                }
+                alert('requestCreateProductToDjango() 문제 발생!')
+                throw error
+                // if (error instanceof AxiosError) {
+                //     alert('값을 모두 채우고, 가격은 숫자를 입력해주세요.')
+                //     // ProductRoutes.push({ name: 'ProductListPage' })
+                // } else {
+                //     alert('requestCreateProductToDjango() 문제 발생!')
+                //     throw error
+                // }
             }
     },
     
