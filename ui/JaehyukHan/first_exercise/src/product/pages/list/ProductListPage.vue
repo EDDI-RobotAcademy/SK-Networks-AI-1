@@ -33,6 +33,11 @@ export default {
     },
     computed: {
         ...mapState(productModule, ['products']),
+        pagedItems () {
+            const startIdx = (this.pagination.page - 1) * this.perPage
+            const endIdx = startIdx + this.perPage
+            return this.products.slice(startIdx, endIdx)
+        }
     },
     mounted () {
         this.requestProductListToDjango()
@@ -50,6 +55,7 @@ export default {
                     key: 'productId',
                 },
                 { title: '상품 이름', align: 'end', key: 'productName' },
+                { title: '상품 가격', align: 'end', key: 'productPrice'},
                 { title: '작성자', align: 'end', key: 'writer' },
                 { title: '작성일자', align: 'end', key: 'regDate' },
             ],
