@@ -22,3 +22,20 @@ class ProductRepositoryImpl(ProductRepository):
         product = Product(**productData)
         product.save()
         return product
+
+    def findByProductId(self, productId):
+        return Product.objects.get(productId=productId)
+
+    def deleteByProductId(self, productId):
+        product = Product.objects.get(productId=productId)
+        product.delete()
+
+    def update(self, product, productData):
+        for key, value in productData.items():
+            print(f"key: {key}, value: {value}")
+            setattr(product, key, value)
+
+        product.save()
+        return product
+
+

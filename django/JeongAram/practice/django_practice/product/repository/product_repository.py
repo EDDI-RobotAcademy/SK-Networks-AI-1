@@ -9,3 +9,16 @@ class ProductRepository(ABC):
     @abstractmethod
     def resister(self, productData):
         pass
+
+    @abstractmethod
+    def findByProductId(self, productId):
+        pass
+
+    @abstractmethod
+    def deleteByProductId(self, productId):
+        pass
+
+    @abstractmethod
+    def update(self, product, productData):
+        pass
+

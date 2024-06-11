@@ -6,5 +6,17 @@ class ProductService(ABC):
         pass
 
     @abstractmethod
-    def resisterProduct(self, productData):
+    def resisterProduct(self, productInfo):
+        pass
+
+    @abstractmethod
+    def readProduct(self, productID):
+        pass
+
+    @abstractmethod
+    def removeProoduct(self, productID):
+        pass
+
+    @abstractmethod
+    def updateProduct(self, productID, productInfo):
         pass
