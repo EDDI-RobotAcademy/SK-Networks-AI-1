@@ -23,11 +23,11 @@ class BoardServiceImpl(BoardService):
         return self.__boardRepository.list()
 
     def createBoard(self, boardData):
-        self.__boardRepository.create(boardData)
+        return self.__boardRepository.create(boardData)
 
     def readBoard(self, boardId):
         return self.__boardRepository.findByBoardId(boardId)
 
-
-
+    def removeBoard(self, boardId):
+        return self.__boardRepository.deleteByBoardId(boardId)
 
