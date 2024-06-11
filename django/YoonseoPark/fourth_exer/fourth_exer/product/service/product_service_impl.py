@@ -22,6 +22,7 @@ class ProductServiceImpl(ProductService):
     def list(self):
         return self.__productRepository.list()
 
-
+    def createProduct(self, productInfo):
+        return self.__productRepository.create(productInfo)
 
 

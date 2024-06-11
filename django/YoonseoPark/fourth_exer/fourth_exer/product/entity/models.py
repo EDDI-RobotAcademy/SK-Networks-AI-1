@@ -1,17 +1,18 @@
 from django.db import models
 
+# Create your models here.
 class Product(models.Model):
-    productId = models.AutoField(primary_key=True)    # AutoField : AutoIncrement 적용
+    productId = models.AutoField(primary_key=True)
     productName = models.CharField(max_length=128, null=False)
-    productDescription = models.TextField()    # 문자의 길이가 길어서 제한하기 어려울 때
+    productDescription = models.TextField()
     productPrice = models.DecimalField(max_digits=10, decimal_places=2)
 
-    registeredDate = models.DateTimeField(auto_now_add=True)   # 등록 시간 자동으로 기록
-    updatedDate = models.DateTimeField(auto_now=True)   # 변경 시간 자동으로 기록
+    # 추후 이미지 관련 필드 추가
+    registeredDate = models.DateTimeField(auto_now_add=True)
+    updatedDate = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.productName
+        return self.title
 
-    # 테이블 이름을 Meta 지정
     class Meta:
         db_table = 'product'
