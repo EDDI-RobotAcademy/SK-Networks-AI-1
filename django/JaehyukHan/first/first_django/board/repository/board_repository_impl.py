@@ -43,4 +43,19 @@ class BoardRepositoryImpl(BoardRepository):
     def findByBoardId(self, boardId):
         return Board.objects.get(boardId=boardId)
 
+    def deleteByBoardId(self, boardId):
+        board = Board.objects.get(boardId=boardId)
+        board.delete()
+
+    def update(self, board, boardData):
+        for key, value in boardData.items():
+            print(f"key: {key}, value: {value}")
+            # 쉽게 생각해보자면 board 라는 Entity가 가지고 있는 속성값 중
+            # 현재 수정 요청에 의해 전달된 정보에 대응되는 key가 가지고 있는 value 값을 갱신시킴
+            setattr(board, key, value)
+
+        board.save()
+        return board
+
+
 
