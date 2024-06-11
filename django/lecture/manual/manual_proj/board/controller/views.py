@@ -38,3 +38,13 @@ class BoardView(viewsets.ViewSet):
     def removeBoard(self, request, pk=None):
         self.boardService.removeBoard(pk)
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def modifyBoard(self, request, pk=None):
+        board = self.boardService.readBoard(pk)
+        serializer = BoardSerializer(board, data=request.data, partial=True)
+
+        if serializer.is_valid():
+            updatedBoard = self.boardService.updateBoard(pk, serializer.validated_data)
+            return Response(BoardSerializer(updatedBoard).data)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
