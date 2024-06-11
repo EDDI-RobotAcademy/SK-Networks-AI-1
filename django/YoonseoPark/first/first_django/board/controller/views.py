@@ -5,11 +5,10 @@ from board.entity.models import Board
 from board.serializers import BoardSerializer
 from board.service.board_service_impl import BoardServiceImpl
 
+
 # Create your views here.
 # viewsets를 사용하려면 rest_framework가 설정되어야 합니다.
 # pip install djangorestframework
-
-
 class BoardView(viewsets.ViewSet):
     queryset = Board.objects.all()
     boardService = BoardServiceImpl.getInstance()
@@ -34,3 +33,18 @@ class BoardView(viewsets.ViewSet):
         board = self.boardService.readBoard(pk)
         serializer = BoardSerializer(board)
         return Response(serializer.data)
+
+    def removeBoard(self, request, pk=None):
+        self.boardService.removeBoard(pk)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def modifyBoard(self, request, pk=None):
+        board = self.boardService.readBoard(pk)
+        serializer = BoardSerializer(board, data=request.data, partial=True)
+        # 전체를 다 사용하는 것이 아니라 부분 정보를 사용하기 때문에 partial=True
+
+        if serializer.is_valid():
+            updatedBoard = self.boardService.updateBoard(pk, serializer.validated_data)
+            return Response(BoardSerializer(updatedBoard).data)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
