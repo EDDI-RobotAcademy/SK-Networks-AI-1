@@ -25,6 +25,8 @@ SECRET_KEY = 'django-insecure-*(kzuib19-+2z_!7a_hx-3p9ym=e-*x#%k$g6o45&xxy-5p0gs
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+ALLOWED_HOSTS = []
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -37,6 +39,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'board',
+    'product'
 ]
 
 MIDDLEWARE = [
@@ -110,9 +113,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'manual_proj.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+# Password validation
+# https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
 DATABASES = {
     'default': {
@@ -124,10 +126,6 @@ DATABASES = {
         'PORT': '3306',
     }
 }
-
-
-# Password validation
-# https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
