@@ -20,7 +20,14 @@ class BoardServiceImpl(BoardService):
         return self.__boardRepository.list()
 
     def createBoard(self, boardData):
-        self.__boardRepository.create(boardData)
+        return self.__boardRepository.create(boardData)
 
     def readBoard(self, boardId):
         return self.__boardRepository.findByBoardId(boardId)
+
+    def removeBoard(self, boardId):
+        return self.__boardRepository.deleteByBoardId(boardId)
+
+    def updateBoard(self, boardId, boardData):
+        board = self.__boardRepository.findByBoardId(boardId) # 일단 해당 보드의 id 찾아서 반환받기
+        return self.__boardRepository.update(board, boardData)
