@@ -1,15 +1,15 @@
 from abc import ABC, abstractmethod
 
 
-class BoardService(ABC):
+class ProductRepository(ABC):
     @abstractmethod
     def list(self):
         pass
 
     @abstractmethod
-    def createBoard(self, boardData):
+    def create(self, productData):
         pass
 
     @abstractmethod
-    def readBoard(self, boardId):
+    def findByProductId(self, productId):
         pass
