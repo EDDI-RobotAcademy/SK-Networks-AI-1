@@ -28,7 +28,7 @@ const actions: ProductActions = {
             console.log('data:', res)
             const data: Product[] = res.data;
             console.log('data:', data)
-            context.commit('REQUEST_Product_LIST_TO_DJANGO', data);
+            context.commit('REQUEST_PRODUCT_LIST_TO_DJANGO', data);
         } catch (error) {
             console.error('Error fetching product list:', error);
         

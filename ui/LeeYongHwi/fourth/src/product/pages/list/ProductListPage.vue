@@ -62,7 +62,7 @@ export default {
                     key: 'productId',
                 },
                 { title: '상품명', align: 'end', key: 'productName' },
-                { title: '상품가격', align: 'end', key: 'price' },
+                { title: '가격', align: 'end', key: 'price' },
             ],
             perPage: 5,
             pagination: {
