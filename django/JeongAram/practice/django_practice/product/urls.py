@@ -1,0 +1,11 @@
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from product.controller.views import ProductView
+router = DefaultRouter()
+router.register(r'product', ProductView)
+urlpatterns = [
+    path('', include(router.urls)),
+    path('list/', ProductView.as_view({'get': 'list'}), name='product-list'),
+    path('resister/', ProductView.as_view({'post': 'create'}), name='product-register')]
+
+# localhost:8000/board/list
