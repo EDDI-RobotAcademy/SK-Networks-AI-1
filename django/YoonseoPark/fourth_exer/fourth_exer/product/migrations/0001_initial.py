@@ -13,10 +13,10 @@ class Migration(migrations.Migration):
             fields=[
                 ("productId", models.AutoField(primary_key=True, serialize=False)),
                 ("productName", models.CharField(max_length=128)),
-                ("price", models.CharField(max_length=32)),
-                ("content", models.TextField()),
-                ("regDate", models.DateTimeField(auto_now_add=True)),
-                ("updDate", models.DateTimeField(auto_now=True)),
+                ("productPrice", models.DecimalField(max_digits=10, decimal_places=2)),
+                ("productDescription", models.TextField()),
+                ("registeredDate", models.DateTimeField(auto_now_add=True)),
+                ("updatedDate", models.DateTimeField(auto_now=True)),
             ],
             options={
                 "db_table": "product",
