@@ -1,4 +1,4 @@
-import actions, { boardActions } from "./actions"
+import actions, { BoardActions } from "./actions"
 import mutations, { BoardMutations } from "./mutations"
 import state, { BoardState } from "./states"
 
@@ -10,7 +10,7 @@ export interface BoardModule {
     // 즉 boardModule 자체를 위와 같이 참조할 수 있다는 의미입니다.
     namespaced: true
     state: BoardState
-    actions: boardActions
+    actions: BoardActions
     mutations: BoardMutations
 }
 
