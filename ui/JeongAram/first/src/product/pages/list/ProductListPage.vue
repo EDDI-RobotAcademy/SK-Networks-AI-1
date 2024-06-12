@@ -6,7 +6,7 @@
                 상품 등록
             </router-link>
         </div>
-            :items="pagedItems"
+    
         <v-row v-if="productList.length > 0">
             <v-col v-for="(product, index) in productList" :key=index cols="12" sm="6" md="4" lg="3">
                 <v-card @click="goToProductReadPage(product.productId)">
