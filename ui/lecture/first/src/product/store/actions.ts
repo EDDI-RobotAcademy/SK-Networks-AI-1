@@ -6,9 +6,8 @@ import { REQUEST_PRODUCT_LIST_TO_DJANGO } from "./mutation-types"
 
 export type ProductActions = {
     requestProductListToDjango(context: ActionContext<ProductState, any>): Promise<void>
-    requestCreateProductToDjango(context: ActionContext<ProductState, unknown>, payload: {
-        productName: string, productPrice: string, productDescription: string
-    }): Promise<AxiosResponse>
+    requestCreateProductToDjango(context: ActionContext<ProductState, unknown>, 
+                                imageFormData: FormData): Promise<AxiosResponse>
 }
 
 const actions: ProductActions = {
@@ -23,23 +22,22 @@ const actions: ProductActions = {
             throw error
         }
     },
-    async requestCreateProductToDjango(context: ActionContext<ProductState, unknown>, payload: {
-        productName: string, productPrice: string, productDescription: string
-    }): Promise<AxiosResponse> {
-
-        console.log('requestCreateBoardToDjango()')
-
-        const { productName, productPrice, productDescription } = payload
-        console.log('전송할 데이터:', { productName, productPrice, productDescription })
-
+    async requestCreateProductToDjango(context: ActionContext<ProductState, unknown>, 
+                                        imageFormData: FormData): Promise<AxiosResponse> {
         try {
-            const res: AxiosResponse = await axiosInst.djangoAxiosInst.post(
-                '/product/register', { productName, productPrice, productDescription})
+            console.log('requestCreateBoardToDjango()')
 
-            console.log('res:', res.data)
-            return res.data
+            const res: AxiosResponse = await axiosInst.djangoAxiosInst.post(
+                '/product/register', imageFormData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+
+            console.log('응답 데이터:', res.data)
+            return res
         } catch (error) {
-            alert('requestCreateBoardToDjango() 문제 발생!')
+            console.error('requestCreateProductToDjango():', error)
             throw error
         }
     },
