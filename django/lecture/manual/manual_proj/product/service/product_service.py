@@ -7,5 +7,5 @@ class ProductService(ABC):
         pass
 
     @abstractmethod
-    def createProduct(self, productInfo):
+    def createProduct(self, productName, productPrice, productDescription, productImage):
         pass
