@@ -1,5 +1,5 @@
 """
-URL configuration for manual_proj project.
+URL configuration for fourth project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.0/topics/http/urls/
@@ -18,9 +18,6 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    # board Domain으로 요청이 들어가는 모든 것을
-    # board 디렉토리 하위의 urls.py에서 관리하겠다는 의미
-    path('board/', include('board.urls')),
-    path('product/', include('product.urls')),
+    path("admin/", admin.site.urls),
+    path('product/',include('product.urls'))
 ]
