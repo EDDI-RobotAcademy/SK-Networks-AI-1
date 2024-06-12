@@ -7,7 +7,7 @@ export interface BoardState {
 }
 
 // TypeScript는 특이한 형식이 있습니다.
-// 어떤 형식이냐? python을 할 때 제일 불편했던 것은 무엇인가요?
+// 어떤 형식이냐 ? python을 할 때 제일 불편했던 것은 무엇인가요 ?
 // TypeScript에서는 다시 타입을 명시하게 됩니다.
 export interface Board {
     boardId: number
@@ -15,11 +15,11 @@ export interface Board {
     writer: string
     content: string
     regDate: string
-    upDate: string
+    updDate: string
 }
 
 // 좋은 점도 있지만 단점이 있습니다.
-// 뭐냐? 너무 엄격하다.
+// 뭐냐 ? 너무 엄격하다.
 // 너무 엄격하다 못해 컴파일이 안됨
 const state: BoardState = {
     boards: [],
