@@ -15,7 +15,6 @@ export interface Product {
     price: number
     writer: string
     content: string
-    productImage: string
     regDate: string
     updDate: string
 }
