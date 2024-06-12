@@ -13,3 +13,11 @@ class BoardService(ABC):
     @abstractmethod
     def readBoard(self, boardId):
         pass
+
+    @abstractmethod
+    def removeBoard(self, boardId):
+        pass
+
+    @abstractmethod
+    def updateBoard(self, boardId, boardData):
+        pass

@@ -1,13 +1,13 @@
 <template>
     <v-container>
-        <h2>Vue3 + Vuetify3 + TypeScript 게시물 읽기!</h2>
+        <h2>Vue3 + Vuetify3 + TypeScript 게시물 수정!</h2>
         <v-card v-if="board">
             <v-card-title>게시물 정보</v-card-title>
             <v-card-text>
                 <v-container>
                     <v-row>
                         <v-col cols="12">
-                            <v-text-field v-model="board.title" readonly label="제목"/>
+                            <v-text-field v-model="title" label="제목"/>
                         </v-col>
                     </v-row>
                     <v-row>
@@ -17,20 +17,15 @@
                     </v-row>
                     <v-row>
                         <v-col cols="12">
-                            <v-textarea v-model="board.content" readonly label="내용" auto-grow/>
+                            <v-textarea v-model="content" label="내용" auto-grow/>
                         </v-col>
                     </v-row>
                     <v-row justify="end">
                         <v-col cols="auto">
-                            <router-link :to="{ name: 'BoardModifyPage', params: { boardId } }">
-                                <v-btn color="primary">수정</v-btn>
-                            </router-link>
+                            <v-btn color="primary" @click="onModify">수정 완료</v-btn>
                         </v-col>
                         <v-col cols="auto">
-                            <v-btn color="error" @click="onDelete">삭제</v-btn>
-                        </v-col>
-                        <v-col cols="auto">
-                            <router-link :to="{ name: 'BoardListPage' }">
+                            <router-link :to="{ name: 'BoardReadPage' }">
                                 <v-btn color="secondary">돌아가기</v-btn>
                             </router-link>
                         </v-col>
@@ -53,20 +48,40 @@ export default {
             required: true,
         }
     },
+    data () {
+        return {
+            title: '',
+            writer: '',
+            content: '',
+        }
+    },
     computed: {
         ...mapState(boardModule, ['board'])
     },
     methods: {
-        // 'requestDeleteBoardToDjango' 추후 처리 필요
-        ...mapActions(boardModule, ['requestBoardToDjango', 'requestDeleteBoardToDjango']),
-        async onDelete () {
-            console.log('삭제를 누르셨습니다!')
-            await this.requestDeleteBoardToDjango(this.boardId)
-            await this.$router.push({ name: 'BoardListPage' })
+        ...mapActions(boardModule, ['requestBoardToDjango', 'requestModifyBoardToDjango']),
+        async onModify () {
+            console.log('수정 완료를 누르셨습니다!')
+
+            const payload = {
+                title: this.title,
+                content: this.content,
+                boardId: this.boardId,
+            }
+
+            await this.requestModifyBoardToDjango(payload)
+            await this.$router.push({ 
+                name: 'BoardReadPage',
+                params: { boardId: this.boardId } 
+            })
         },
     },
     created () {
-        this.requestBoardToDjango(this.boardId)
+        this.requestBoardToDjango(this.boardId).then(() => {
+            this.title = this.board.title
+            this.writer = this.board.writer
+            this.content = this.board.content
+        })
     },
 }
 </script>
