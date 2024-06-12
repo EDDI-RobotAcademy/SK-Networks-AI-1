@@ -17,7 +17,7 @@
                         </template>
                     </v-img>
                     <v-card-title>{{ product.productName }}</v-card-title>
-                    <v-card-subtitle>{{ product.productPrice }}</v-card-subtitle>
+                    <v-card-subtitle>{{`가격 ${product.productPrice}원`}}</v-card-subtitle>
                 </v-card>
             </v-col>
         </v-row>
