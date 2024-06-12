@@ -59,7 +59,7 @@ export default {
                     imageFormData.append('productName', this.productName)
                     imageFormData.append('productPrice', this.productPrice.toString())
                     imageFormData.append('productDescription', this.productDescription)
-                    imageFormData.append('productImage', this.productName)
+                    imageFormData.append('productImage', this.productImage)
 
                     const response = await this.requestCreateProductToDjango(imageFormData)
                     this.uploadedFileName = response.data.imageName
