@@ -16,6 +16,16 @@
             </v-col>
         </v-row>
         <v-row>
+            <v-col cols="12">
+                <v-file-input v-model="productImage" label="이미지 파일" prepend-icon="mdi-camera"/>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col cols="12">
+                <p v-if="uploadedFileName">업르드된 파일: {{ uploadedFileName }}</p>
+            </v-col>
+        </v-row>
+        <v-row>
             <v-col cols="12" class="text-right">
                 <v-btn class="ml-2" color="primary" @click="onSubmit">작성 완료</v-btn>
                 <v-btn class="ml-1" color="error" @click="onCancel">취소</v-btn>
@@ -35,6 +45,8 @@ export default {
             productName: '',
             productPrice: 0,
             productDescription: '',
+            productImage: null,
+            uploadedFileName: '',
         }
     },
     methods: {
@@ -42,19 +54,29 @@ export default {
         async onSubmit () {
             console.log('상품 등록 눌렀음')
 
-            const payload = {
-                productName: this.productName,
-                productPrice: this.productPrice.toString(),
-                productDescription: this.productDescription,
+            try {
+                if (this.productImage) {
+                    const imageFormData = new FormData()
+                    imageFormData.append('productName', this.productName)
+                    imageFormData.append('productPrice', this.productPrice.toString())
+                    imageFormData.append('productDescription', this.productDescription)
+                    imageFormData.append('productImage', this.productImage)
+
+                    const response = await this.requestCreateProductToDjango(imageFormData)
+                    this.uploadedFileName = response.data.imageName
+                    this.$router.push({ name: 'ProductListPage' })
+                } else {
+                    console.log('이미지 파일을 선택하세요!')
+                }
+            } catch (error) {
+                console.log('파일 처리 과정에서 에러 발생:', error)
             }
-
-            console.log('payload check:', payload)
-
-            const product = await this.requestCreateProductToDjango(payload)
             // 상품 상세 정보 읽기
         },
         async onCancel () {
             console.log('취소 버튼 눌럿음')
+            // '이전 routing 경로로 이동해줘' 를 의미함
+            this.$router.go(-1)
         }
     }
 }
