@@ -2,7 +2,7 @@ import actions, { ProductActions } from "./actions"
 import mutations, { ProductMutations } from "./mutations"
 import state, { ProductState } from "./states"
 
-export interface BoardModule {
+export interface ProductModule {
     // namespaced가 true가 되면 앞서 *.vue 코드에서 살펴봤듯이
     // 아래와 같은 문법이 허용됩니다.
     // const boardModule = 'boardModule'
@@ -14,7 +14,7 @@ export interface BoardModule {
     mutations: ProductMutations
 }
 
-const productModule: productModule = {
+const productModule: ProductModule = {
     namespaced: true,
     state,
     actions,

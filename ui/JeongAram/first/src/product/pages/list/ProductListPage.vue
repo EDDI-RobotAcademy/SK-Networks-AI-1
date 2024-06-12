@@ -6,23 +6,11 @@
                 상품 등록
             </router-link>
         </div>
-        <v-data-table
-            v-model:items-per-page="perPage"
-            :headers="headerTitle"
             :items="pagedItems"
-            v-model:pagination="pagination"
-            class="elevation-1"
-            @click:row="readRow"
-            item-value="productId"/>
-        <v-pagination
-            v-model="pagination.page"
-            :length="Math.ceil(productList.length / perPage)"
-            color="primary"
-            @input="updateItems"/>
         <v-row v-if="productList.length > 0">
-            <v-col v-for="(product, index) in productList">
+            <v-col v-for="(product, index) in productList" :key=index cols="12" sm="6" md="4" lg="3">
                 <v-card @click="goToProductReadPage(product.productId)">
-                    <v-img :src="getImageUrl(product.imageName)" aspect-ratio="1" class="grey lighten-2">
+                    <v-img :src="getImageUrl(product.productImage)" aspect-ratio="1" class="grey lighten-2">
                         <template v-slot:placeholder>
                             <v-row class="fill-height ma-0" align="center" justify="center">
                                 <v-progress-circular indeterminate color="grey lighten-5"/>
@@ -55,10 +43,13 @@
 </template>
 
 // npm install axios --legacy-peer-deps
+
 <script>
 // 이것은 vuex 때문에 사용 가능
 import { mapActions, mapState } from 'vuex'
+
 const productModule = 'productModule'
+
 export default {
     components: {
         // RouterLink
@@ -76,7 +67,6 @@ export default {
     },
     methods: {
         ...mapActions(productModule, ['requestProductListToDjango']),
-        
         getImageUrl (imageName) {
             return require('@/assets/images/uploadImages/' + imageName)
         },
