@@ -20,7 +20,7 @@ class ProductView(viewsets.ViewSet):
         serializer = ProductSerializer(productList, many=True)
         return Response(serializer.data)
 
-    def resister(self, request):
+    def register(self, request):
         serializer = ProductSerializer(data=request.data)
         if serializer.is_valid():
             product = self.productService.createProduct(serializer.validated_data)

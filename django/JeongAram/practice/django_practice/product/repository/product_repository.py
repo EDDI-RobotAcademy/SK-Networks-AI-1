@@ -7,7 +7,7 @@ class ProductRepository(ABC):
         pass
 
     @abstractmethod
-    def resister(self, productData):
+    def register(self, productData):
         pass
 
     @abstractmethod

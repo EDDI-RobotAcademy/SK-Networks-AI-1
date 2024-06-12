@@ -7,7 +7,7 @@ class Product(models.Model):
     productPrice = models.DecimalField(max_digits=10, decimal_places=2)
 
     # 추후 이미지 관련 필드 추가
-    resisteredDate = models.DateTimeField(auto_now_add=True)
+    registeredDate = models.DateTimeField(auto_now_add=True)
     updatedDate = models.DateTimeField(auto_now=True)
 
     def __str__(self):

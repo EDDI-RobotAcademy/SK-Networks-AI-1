@@ -16,9 +16,9 @@ class ProductRepositoryImpl(ProductRepository):
         return cls.__instance
 
     def list(self):
-        return Product.objects.all().order_by('resisteredDate')
+        return Product.objects.all().order_by('registeredDate')
 
-    def resister(self, productData):
+    def register(self, productData):
         product = Product(**productData)
         product.save()
         return product

@@ -19,13 +19,13 @@ class ProductServiceImpl(ProductService):
     def list(self):
         return self.__productRepository.list()
 
-    def resisterProduct(self, productInfo):
-        return self.__productRepository.resister(productInfo)
+    def registerProduct(self, productInfo):
+        return self.__productRepository.register(productInfo)
 
     def readProduct(self, productID):
         return self.__productRepository.findByProductId(productID)
 
-    def removeProoduct(self, productID):
+    def removeProduct(self, productID):
         return self.__productRepository.deleteByProductId(productID)
 
     def updateProduct(self, productID, productInfo):

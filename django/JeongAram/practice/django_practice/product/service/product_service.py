@@ -6,7 +6,7 @@ class ProductService(ABC):
         pass
 
     @abstractmethod
-    def resisterProduct(self, productInfo):
+    def registerProduct(self, productInfo):
         pass
 
     @abstractmethod
@@ -14,7 +14,7 @@ class ProductService(ABC):
         pass
 
     @abstractmethod
-    def removeProoduct(self, productID):
+    def removeProduct(self, productID):
         pass
 
     @abstractmethod

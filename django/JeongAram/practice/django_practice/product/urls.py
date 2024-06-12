@@ -6,7 +6,7 @@ router.register(r'product', ProductView)
 urlpatterns = [
     path('', include(router.urls)),
     path('list/', ProductView.as_view({'get': 'list'}), name='product-list'),
-    path('resister', ProductView.as_view({'post': 'register'}), name='product-register'),
+    path('register', ProductView.as_view({'post': 'register'}), name='product-register'),
     path('read/<int:pk>', ProductView.as_view({'get': 'read'}), name='product-read'),
     path('delete/<int:pk>', ProductView.as_view({'delete': 'remove'}), name='product-delete'),
     path('modify/<int:pk>', ProductView.as_view({'put': 'modify'}), name='product-modify')
