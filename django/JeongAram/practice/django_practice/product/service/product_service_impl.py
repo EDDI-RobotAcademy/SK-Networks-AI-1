@@ -19,15 +19,6 @@ class ProductServiceImpl(ProductService):
     def list(self):
         return self.__productRepository.list()
 
-    def registerProduct(self, productInfo):
-        return self.__productRepository.register(productInfo)
+    def createProduct(self, productName, productPrice, productDescription, productImage):
+        return self.__productRepository.create(productName, productPrice, productDescription, productImage)
 
-    def readProduct(self, productID):
-        return self.__productRepository.findByProductId(productID)
-
-    def removeProduct(self, productID):
-        return self.__productRepository.deleteByProductId(productID)
-
-    def updateProduct(self, productID, productInfo):
-        product = self.__productRepository.findByProductId(productID)
-        return self.__productRepository.update(product, productInfo)

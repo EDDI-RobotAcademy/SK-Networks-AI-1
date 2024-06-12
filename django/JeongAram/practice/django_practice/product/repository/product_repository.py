@@ -7,18 +7,7 @@ class ProductRepository(ABC):
         pass
 
     @abstractmethod
-    def register(self, productData):
+    def create(self, productName, productPrice, productDescription, productImage):
         pass
 
-    @abstractmethod
-    def findByProductId(self, productId):
-        pass
-
-    @abstractmethod
-    def deleteByProductId(self, productId):
-        pass
-
-    @abstractmethod
-    def update(self, product, productData):
-        pass
 

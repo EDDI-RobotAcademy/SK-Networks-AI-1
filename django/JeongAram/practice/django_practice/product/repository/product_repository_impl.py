@@ -1,4 +1,7 @@
-from product.entitiy.models import Product
+import os
+
+from django_practice import settings
+from product.entity.models import Product
 from product.repository.product_repository import ProductRepository
 
 class ProductRepositoryImpl(ProductRepository):
@@ -18,24 +21,24 @@ class ProductRepositoryImpl(ProductRepository):
     def list(self):
         return Product.objects.all().order_by('registeredDate')
 
-    def register(self, productData):
-        product = Product(**productData)
+    def create(self, productName, productPrice, productDescription, productImage):
+        uploadDirectory = os.path.join(
+            settings.BASE_DIR,
+            '../../../../ui/lecture/first/src/assets/images/uploadImages'
+        )
+        if not os.path.exists(uploadDirectory):
+            os.makedirs(uploadDirectory)
+
+        imagePath = os.path.join(uploadDirectory, productImage.name)
+        with open(imagePath, 'wb+') as destination:
+            for chunk in productImage.chunks():
+                destination.write(chunk)
+
+        product = Product(
+            productName=productName,
+            productDescription=productDescription,
+            productPrice=productPrice,
+            productImage=productImage.name
+        )
         product.save()
         return product
-
-    def findByProductId(self, productId):
-        return Product.objects.get(productId=productId)
-
-    def deleteByProductId(self, productId):
-        product = Product.objects.get(productId=productId)
-        product.delete()
-
-    def update(self, product, productData):
-        for key, value in productData.items():
-            print(f"key: {key}, value: {value}")
-            setattr(product, key, value)
-
-        product.save()
-        return product
-
-

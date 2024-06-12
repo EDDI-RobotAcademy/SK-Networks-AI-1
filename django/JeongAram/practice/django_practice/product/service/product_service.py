@@ -6,17 +6,6 @@ class ProductService(ABC):
         pass
 
     @abstractmethod
-    def registerProduct(self, productInfo):
+    def createProduct(self, productName, productPrice, productDescription, productImage):
         pass
 
-    @abstractmethod
-    def readProduct(self, productID):
-        pass
-
-    @abstractmethod
-    def removeProduct(self, productID):
-        pass
-
-    @abstractmethod
-    def updateProduct(self, productID, productInfo):
-        pass
