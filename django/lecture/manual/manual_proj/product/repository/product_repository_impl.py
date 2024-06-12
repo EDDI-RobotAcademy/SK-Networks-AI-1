@@ -37,6 +37,9 @@ class ProductRepositoryImpl(ProductRepository):
             for chunk in productImage.chunks():
                 destination.write(chunk)
 
+            destination.flush()
+            os.fsync(destination.fileno())
+
         product = Product(
             productName=productName,
             productDescription=productDescription,
