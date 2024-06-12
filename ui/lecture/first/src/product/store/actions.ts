@@ -6,6 +6,9 @@ import { REQUEST_PRODUCT_LIST_TO_DJANGO } from "./mutation-types"
 
 export type ProductActions = {
     requestProductListToDjango(context: ActionContext<ProductState, any>): Promise<void>
+    requestCreateProductToDjango(context: ActionContext<ProductState, unknown>, payload: {
+        productName: string, productPrice: string, productDescription: string
+    }): Promise<AxiosResponse>
 }
 
 const actions: ProductActions = {
@@ -17,6 +20,26 @@ const actions: ProductActions = {
             context.commit('REQUEST_PRODUCT_LIST_TO_DJANGO', data);
         } catch (error) {
             console.error('Error fetching board list:', error);
+            throw error
+        }
+    },
+    async requestCreateProductToDjango(context: ActionContext<ProductState, unknown>, payload: {
+        productName: string, productPrice: string, productDescription: string
+    }): Promise<AxiosResponse> {
+
+        console.log('requestCreateBoardToDjango()')
+
+        const { productName, productPrice, productDescription } = payload
+        console.log('전송할 데이터:', { productName, productPrice, productDescription })
+
+        try {
+            const res: AxiosResponse = await axiosInst.djangoAxiosInst.post(
+                '/product/register', { productName, productPrice, productDescription})
+
+            console.log('res:', res.data)
+            return res.data
+        } catch (error) {
+            alert('requestCreateBoardToDjango() 문제 발생!')
             throw error
         }
     },
