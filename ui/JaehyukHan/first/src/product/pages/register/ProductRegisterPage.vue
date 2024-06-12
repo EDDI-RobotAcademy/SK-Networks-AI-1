@@ -7,12 +7,22 @@
         </v-row>
         <v-row>
             <v-col cols="12">
-                <v-text-field v-model="productPrice" label="상품 가격"/>
+                <v-text-field v-model="productPrice" label="가격" type="number"/>
             </v-col>
         </v-row>
         <v-row>
             <v-col cols="12">
-                <v-text-field v-model="productDescription" label="상품 상세 내역" auto-grow/>
+                <v-textarea v-model="productDescription" label="상품 세부 정보" auto-grow/>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col cols="12">
+                <v-file-input v-model="productImage" label="이미지 파일" prepend-icon="mdi-camera"/>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col cols="12">
+                <p v-if="uploadedFileName">업르드된 파일: {{ uploadedFileName }}</p>
             </v-col>
         </v-row>
         <v-row>
@@ -29,31 +39,44 @@ import { mapActions } from 'vuex'
 
 const productModule = 'productModule'
 
-export default{
-    data() {
+export default {
+    data () {
         return {
             productName: '',
-            productPrice: '',
+            productPrice: 0,
             productDescription: '',
+            productImage: null,
+            uploadedFileName: '',
         }
     },
     methods: {
         ...mapActions(productModule, ['requestCreateProductToDjango']),
-        async onSubmit() {
+        async onSubmit () {
             console.log('상품 등록 눌렀음')
 
-            const payload = {
-                productName: this.productName,
-                productPrice: this.productPrice,
-                productDescription: this.productDescription,
-            }
-            
-            console.log('payload check:', payload)
+            try {
+                if (this.productImage) {
+                    const imageFormData = new FormData()
+                    imageFormData.append('productName', this.productName)
+                    imageFormData.append('productPrice', this.productPrice.toString())
+                    imageFormData.append('productDescription', this.productDescription)
+                    imageFormData.append('productImage', this.productImage)
 
-            const product = await this.requestCreateProductToDjango(payload)
+                    const response = await this.requestCreateProductToDjango(imageFormData)
+                    this.uploadedFileName = response.data.imageName
+                    this.$router.push({ name: 'ProductListPage' })
+                } else {
+                    console.log('이미지 파일을 선택하세요!')
+                }
+            } catch (error) {
+                console.log('파일 처리 과정에서 에러 발생:', error)
+            }
+            // 상품 상세 정보 읽기
         },
-        async onCancel() {
-            console.log('취소 버튼 눌렀음')
+        async onCancel () {
+            console.log('취소 버튼 눌럿음')
+            // '이전 routing 경로로 이동해줘' 를 의미함
+            this.$router.go(-1)
         }
     }
 }

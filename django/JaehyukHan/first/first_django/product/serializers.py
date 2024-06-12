@@ -7,5 +7,5 @@ from product.entity.models import Product
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ['productId', 'productName', 'productDescription', 'productPrice', 'registeredDate', 'updatedDate']
+        fields = ['productId', 'productName', 'productDescription', 'productPrice', 'productImage', 'registeredDate', 'updatedDate']
         read_only_fields = ['registeredDate', 'updatedDate']

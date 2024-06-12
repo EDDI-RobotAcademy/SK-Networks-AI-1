@@ -6,41 +6,38 @@ import { REQUEST_PRODUCT_LIST_TO_DJANGO } from "./mutation-types"
 
 export type ProductActions = {
     requestProductListToDjango(context: ActionContext<ProductState, any>): Promise<void>
-    requestCreateProductToDjango(context: ActionContext<ProductState, unknown>, payload: {
-        productName: string, productPrice: string, productDescription: string
-    }): Promise<AxiosResponse>
+    requestCreateProductToDjango(context: ActionContext<ProductState, unknown>, 
+                                imageFormData: FormData): Promise<AxiosResponse>
 }
 
 const actions: ProductActions = {
     async requestProductListToDjango(context: ActionContext<ProductState, any>): Promise<void> {
         try {
             const res: AxiosResponse<any, any> = await axiosInst.djangoAxiosInst.get('/product/list/');
-            console.log('data:', res)
             const data: Product[] = res.data;
             console.log('data:', data)
             context.commit('REQUEST_PRODUCT_LIST_TO_DJANGO', data);
         } catch (error) {
-            console.error('Error fetching product list:', error);
+            console.error('Error fetching board list:', error);
             throw error
         }
     },
-    async requestCreateProductToDjango(context: ActionContext<ProductState, unknown>, payload: {
-        productName: string, productPrice: string, productDescription: string
-    }): Promise<AxiosResponse> {
-
-        console.log('requestCreateProductToDjango()')
-
-        const { productName, productPrice, productDescription } = payload
-        console.log('전송할 데이터:', { productName, productPrice, productDescription })
-
+    async requestCreateProductToDjango(context: ActionContext<ProductState, unknown>, 
+                                        imageFormData: FormData): Promise<AxiosResponse> {
         try {
-            const res: AxiosResponse = await axiosInst.djangoAxiosInst.post(
-                '/product/register', { productName, productPrice, productDescription })
+            console.log('requestCreateBoardToDjango()')
 
-            console.log('res:', res.data)
-            return res.data
+            const res: AxiosResponse = await axiosInst.djangoAxiosInst.post(
+                '/product/register', imageFormData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+
+            console.log('응답 데이터:', res.data)
+            return res
         } catch (error) {
-            alert('requestCreateProductToDjango() 문제 발생!')
+            console.error('requestCreateProductToDjango():', error)
             throw error
         }
     },
