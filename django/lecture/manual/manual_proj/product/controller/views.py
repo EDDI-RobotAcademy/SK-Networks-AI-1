@@ -36,6 +36,7 @@ class ProductView(viewsets.ViewSet):
                                               productDescription, productImage)
 
             serializer = ProductSerializer(data=request.data)
+            return Response(status=status.HTTP_200_OK)
 
         except Exception as e:
             print('상품 등록 과정 중 문제 발생:', e)
