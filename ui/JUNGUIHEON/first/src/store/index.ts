@@ -1,5 +1,7 @@
 import { createStore } from 'vuex'
+
 import boardModule from "@/board/store/boardModule"
+import productModule from "@/product/store/productModule"
 
 export default createStore({
   state: {
@@ -11,6 +13,7 @@ export default createStore({
   actions: {
   },
   modules: {
-    boardModule
+    boardModule,
+    productModule,
   }
 })
