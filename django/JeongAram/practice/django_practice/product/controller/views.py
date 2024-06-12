@@ -21,6 +21,7 @@ class ProductView(viewsets.ViewSet):
             productName = data.get('productName')
             productPrice = data.get('productPrice')
             productDescription = data.get('productDescription')
+            print(productImage, productName, productPrice, productDescription)
             if not all([productImage, productName, productPrice, productDescription]):
                 return Response({ 'error': '모든 내용을 채워주세요!' },
                                 status=status.HTTP_400_BAD_REQUEST)
@@ -32,3 +33,5 @@ class ProductView(viewsets.ViewSet):
 
         except Exception as e:
             print('상품 등록 과정 중 문제 발생:', e)
+            return Response({'error': str(e)},
+                              status=status.HTTP_400_BAD_REQUEST)
