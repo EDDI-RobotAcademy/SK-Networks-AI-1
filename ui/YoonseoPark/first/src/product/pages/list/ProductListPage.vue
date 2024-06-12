@@ -1,6 +1,6 @@
 <template lang="">
     <v-container>
-        <h2>안녕 Vue3 TypeScript 기반 Product App이야</h2>
+        <h2>YOU CAN REGISTER PRODUCTS HERE</h2>
         <div style="text-align: left; margin: 15px;">
             <router-link :to="{ name: 'ProductRegisterPage' }">
                 상품 등록
@@ -21,8 +21,7 @@
                 </v-card>
             </v-col>
         </v-row>
-        <v-row v-else>
-            <!-- Bootstrap 등에서 기본적으로 화면을 12개의 열로 구성함(전체 쓰겠단 소리) -->
+        <v-row v-else>  <!-- Bootstrap 등에서 기본적으로 화면을 12개의 열로 구성함(전체 쓰겠단 소리) -->
             <v-col cols="12" class="text-center">
                 <v-alert type="info">등록된 상품이 없습니다!</v-alert>
             </v-col>
