@@ -25,5 +25,3 @@ class Board(models.Model):
     #          DB 내부의 키워드가 사용되면 django가 자동화를 하면서 내부 데이터를 다 깨뜨릴 수 있음
     class Meta:
         db_table = 'board'
-
-    # db.sqlite3는 django가 사용하는 기본적인 db tool >> sqlite3 을 통해 테이블을 생성할 것임
