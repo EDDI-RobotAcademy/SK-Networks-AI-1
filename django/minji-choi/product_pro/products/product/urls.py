@@ -9,7 +9,7 @@ router.register(r'product', ProductView)
 urlpatterns = [
     path('', include(router.urls)),
     path('list/', ProductView.as_view({'get': 'list'}), name='product-list'),
-    path('register', ProductView.as_view({'post': 'create'}), name='product-register'),
+    path('register', ProductView.as_view({'post': 'register'}), name='product-register'),
     path('read/<int:pk>', ProductView.as_view({'get': 'read'}), name='product-read'),
     path('delete/<int:pk>', ProductView.as_view({'delete': 'removeProduct'}), name='product-remove'),
     path('modify/<int:pk>', ProductView.as_view({'put': 'modifyProduct'}), name='product-modify'),

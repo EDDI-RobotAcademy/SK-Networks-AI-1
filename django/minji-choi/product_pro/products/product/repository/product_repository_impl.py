@@ -1,5 +1,7 @@
+import os
 from product.entity.models import Product
 from product.repository.product_repository import ProductRepository
+from manual_proj import settings
 
 
 class ProductRepositoryImpl(ProductRepository):
@@ -19,18 +21,26 @@ class ProductRepositoryImpl(ProductRepository):
         return cls.__instance
 
     def list(self):
-        # print(f"list() -> Product", Product)
-        # print(f"list() -> Product.objects", Product.objects)
-        # print(f"list() -> Product.objects.all()", Product.objects.all())
-        #
-        # productList = Product.objects.all()
-        # for product in productList:
-        #     print(f"Product: {product}")
-
         return Product.objects.all().order_by('prodname')
 
-    def create(self, productData):
-        product = Product(**productData)
+    def create(self, prodname, price, writer, content, productImage):
+
+        uploadDirectory='C:/sk_project/SK-Networks-AI-1/ui/minji-choi/product_ui/src/assets/images/uploadImages'
+
+        os.makedirs(uploadDirectory, exist_ok=True)
+
+        imagePath = os.path.join(uploadDirectory, productImage.name)
+        with open(imagePath, 'wb+') as destination:
+            for chunk in productImage.chunks():
+                destination.write(chunk)
+
+        product = Product(
+            prodname = prodname,
+            content = content,
+            writer = writer,
+            price = price,
+            productImage = productImage.name
+        )
         product.save()
         return product
     def findByProductId(self, productId):
