@@ -12,4 +12,4 @@ urlpatterns = [
     path('register', ProductView.as_view({'post': 'register'}), name='product-register'),
 ]
 
-# localhost:8000/product/list
+# localhost:8000/board/list

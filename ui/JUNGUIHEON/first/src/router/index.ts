@@ -14,7 +14,6 @@ const routes: Array<RouteRecordRaw> = [
   // 그러므로 ...BoardRoutes 는 BoardRoutes 내에 있는 모든 내용을 뒤에 붙입니다.
   ...BoardRoutes,
   ...ProductRoutes,
-  
 ]
 
 const router = createRouter({

@@ -22,7 +22,7 @@
                     </v-row>
                     <v-row justify="end">
                         <v-col cols="auto">
-                            <router-link :to="{name: 'BoardModifyPage', params: {boardId}}">
+                            <router-link :to="{ name: 'BoardModifyPage', params: { boardId } }">
                                 <v-btn color="primary">수정</v-btn>
                             </router-link>
                         </v-col>

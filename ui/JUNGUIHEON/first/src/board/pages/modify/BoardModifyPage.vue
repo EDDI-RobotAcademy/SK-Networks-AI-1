@@ -38,7 +38,9 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
+
 const boardModule = 'boardModule'
+
 export default {
     props: {
         boardId: {
@@ -60,11 +62,13 @@ export default {
         ...mapActions(boardModule, ['requestBoardToDjango', 'requestModifyBoardToDjango']),
         async onModify () {
             console.log('수정 완료를 누르셨습니다!')
+
             const payload = {
                 title: this.title,
                 content: this.content,
                 boardId: this.boardId,
             }
+
             await this.requestModifyBoardToDjango(payload)
             await this.$router.push({ 
                 name: 'BoardReadPage',

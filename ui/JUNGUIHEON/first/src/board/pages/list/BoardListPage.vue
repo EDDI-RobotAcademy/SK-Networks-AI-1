@@ -65,7 +65,6 @@ export default {
                 },
                 { title: '제목', align: 'end', key: 'title' },
                 { title: '작성자', align: 'end', key: 'writer' },
-                { title: '내용', align: 'end', key: 'content' },
                 { title: '작성일자', align: 'end', key: 'regDate' },
             ],
             perPage: 5,
