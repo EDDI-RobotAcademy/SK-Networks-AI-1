@@ -1,7 +1,6 @@
-from django.contrib.sites import requests
-
 from manual_proj import settings
 from oauth.service.oauth_service import OauthService
+import requests
 
 class OauthServiceImpl(OauthService):
     __instance = None
