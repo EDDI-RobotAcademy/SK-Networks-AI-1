@@ -51,3 +51,10 @@ class OauthServiceImpl(OauthService):
         print(f"response: {response}")
 
         return response.json()
+
+    def requestUserInfo(self, accessToken):
+        headers = {'Authorization': f'Bearer {accessToken}'}
+        response = requests.post(self.userinfoRequestUri, headers=headers)
+        return response.json()
+
+
