@@ -60,9 +60,9 @@ load_dotenv()
 KAKAO = {
     'LOGIN_URL': os.getenv('KAKAO_LOGIN_URL'),
     'CLIENT_ID': os.getenv('KAKAO_CLIENT_ID'),
-    'REDIRECT_URL': os.getenv('KAKAO_REDIRECT_URI'),
-    'TOKEN_REQUEST_URI': os.getenv('KAKAO_TOKEN_REQUEST_URL'),
-    'USERINFO_REQUEST_URI': os.getenv('KAKAO_USERINFO_REQUEST_URL'),
+    'REDIRECT_URI': os.getenv('KAKAO_REDIRECT_URI'),
+    'TOKEN_REQUEST_URI': os.getenv('KAKAO_TOKEN_REQUEST_URI'),
+    'USERINFO_REQUEST_URI': os.getenv('KAKAO_USERINFO_REQUEST_URI'),
 }
 
 # 환경 변수에서 값 가져오기
