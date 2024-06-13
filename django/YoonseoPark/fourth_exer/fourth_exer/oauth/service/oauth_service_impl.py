@@ -1,3 +1,5 @@
+from django.contrib.sites import requests
+
 from fourth_exer import settings
 from oauth.service.oauth_service import OauthService
 
@@ -28,6 +30,19 @@ class OauthServiceImpl(OauthService):
         print("kakaoLoginAddress()")
         return (f"{self.loginUrl}/oauth/authorize?"
                 f"client_id={self.clientId}&redirect_uri={self.redirectUri}&response_type=code")
+
+    def requestAccessToken(self, kakaoAuthCode):
+        print("requestAccessToken()")
+        accessTokenRequestForm = {
+            'grant_type': 'authorization_code',
+            'client_id': self.clientId,
+            'redirect_uri': self.redirectUri,
+            'code': kakaoAuthCode,
+            'client_secret': None
+        }
+
+        response = requests.post(self.tokenRequestUri, data=accessTokenRequestForm)
+        return response.json()
 
 
 
