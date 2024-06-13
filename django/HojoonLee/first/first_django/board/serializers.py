@@ -6,6 +6,6 @@ from board.entity.models import Board
 class BoardSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Board # Board 참고한다.
-        fields = ['board', 'title', 'writer', 'content', 'regDate', 'updDate'] # 내가 models에서 쿼리 날린것들
+        model = Board
+        fields = ['boardId', 'title', 'writer', 'content', 'regDate', 'updDate']
         read_only_fields = ['regDate', 'updDate']

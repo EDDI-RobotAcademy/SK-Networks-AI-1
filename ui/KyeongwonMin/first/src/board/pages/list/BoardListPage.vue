@@ -1,25 +1,25 @@
-<template>
+<template lang="">
     <v-container>
-        <h2>안녕 Vue3 + Vuetify3 + TypeScript 기반 Board App이야</h2>
+        <h2>안녕 Vue3 TypeScript 기반 Board App이야</h2>
         <div style="text-align: left; margin: 15px;">
-            <p>
+            <router-link :to="{ name: 'BoardRegisterPage' }">
                 게시물 작성
-            </p>
-            <!-- pagedItems가 실제 게시물 데이터임 -->
-            <v-data-table
-                    v-model:item-per-page="perPage"
-                    :headers="headerTitle"
-                    :items="pagedItems"
-                    v-model:pagination="pagination"
-                    class="elevation-1"
-                    @click:row="readRow"
-                    item-value="boardId"/>
-            <!-- <v-pagination
-                    v-model="pagination.page"
-                    :length="Math.ceil(boards.length / perPage)"
-                    color="primary"
-                    @input="updateItems"/> -->
+            </router-link>
+        <!-- pagedItems가 실제 게시물 데이터임 -->
         </div>
+        <v-data-table
+            v-model:items-per-page="perPage"
+            :headers="headerTitle"
+            :items="pagedItems"
+            v-model:pagination="pagination"
+            class="elevation-1"
+            @click:row="readRow"
+            item-value="boardId"/>
+        <v-pagination
+            v-model="pagination.page"
+            :length="Math.ceil(boards.length / perPage)"
+            color="primary"
+            @input="updateItems"/>
     </v-container>
 </template>
 
@@ -37,8 +37,8 @@ export default {
     },
     computed: {
         ...mapState(boardModule, ['boards']),
-        pageItems () {
-            const startIdx = (this.pagination.page - 1) * this.page
+        pagedItems () {
+            const startIdx = (this.pagination.page - 1) * this.perPage
             const endIdx = startIdx + this.perPage
             return this.boards.slice(startIdx, endIdx)
         }
@@ -58,8 +58,11 @@ export default {
     // python의 def와 같은 것입니다.
     methods: {
         ...mapActions(boardModule, ['requestBoardListToDjango']),
-        readRow(event, { item }) {
-            console.log('지금 할 수 있는게 없다!')
+        readRow (event, { item }) {
+            this.$router.push({
+                name: 'BoardReadPage',
+                params: { boardId: item['boardId'].toString() }
+            })
         }
     },
     data () {
@@ -69,7 +72,7 @@ export default {
                     title: 'No',
                     align: 'start',
                     sortable: true,
-                    key: 'boardId'
+                    key: 'boardId',
                 },
                 { title: '제목', align: 'end', key: 'title' },
                 { title: '작성자', align: 'end', key: 'writer' },
