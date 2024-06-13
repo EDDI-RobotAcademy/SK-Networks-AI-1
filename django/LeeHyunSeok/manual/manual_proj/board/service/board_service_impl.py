@@ -9,15 +9,15 @@ class BoardServiceImpl(BoardService):
         if cls.__instance is None:
             cls.__instance = super().__new__(cls)
             cls.__instance.__boardRepository = BoardRepositoryImpl.getInstance()
-        return cls.__instance
 
+        return cls.__instance
 
     @classmethod
     def getInstance(cls):
-        if cls.__instance is None: #한 번도 생성하지 않았다면
-            cls.__instance = cls() #새로운 (해당 클래스 이름의)객체를 만들어주겠습니다.
+        if cls.__instance is None:
+            cls.__instance = cls()
 
-        return cls.__instance #해당 클래스 객체가 반환
+        return cls.__instance
 
     def list(self):
         return self.__boardRepository.list()

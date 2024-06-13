@@ -2,6 +2,8 @@ export interface ProductState {
     productList: Product[]
 }
 
+
+//DB에 들어갈 필드를 정의(entity와 같은 역할인듯)
 export interface Product {
     productId: number
     productName: string

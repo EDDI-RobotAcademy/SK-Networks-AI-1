@@ -14,7 +14,6 @@ const actions: ProductActions = {
     async requestProductListToDjango(context: ActionContext<ProductState, any>): Promise<void> {
         try {
             const res: AxiosResponse<any, any> = await axiosInst.djangoAxiosInst.get('/product/list/');
-            console.log('requestProductListToDjango() after axios')
             const data: Product[] = res.data;
             console.log('data:', data)
             context.commit('REQUEST_PRODUCT_LIST_TO_DJANGO', data);

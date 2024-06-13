@@ -28,7 +28,7 @@ class BoardRepositoryImpl(BoardRepository):
         # title, writer, content 내용을 토대로 Board 객체를 생성
         # 이 객체는 또한 models.py에 의해 구성된 객체로
         # save()를 수행하는 순간 DB에 기록됨
-        board = Board(**boardData)  ## **의 의미는 request에 담긴 순수데이터만 뽑겠다는 의미
+        board = Board(**boardData)
         board.save()
         return board
 
