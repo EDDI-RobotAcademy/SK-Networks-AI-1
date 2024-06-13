@@ -29,6 +29,7 @@ class OauthView(viewsets.ViewSet):
 
         try:
             accessToken = self.oauthService.requestAccessToken(code)
+            print(f"accessToken: {accessToken}")
             return JsonResponse({'accessToken': accessToken})
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
