@@ -1,7 +1,7 @@
-from django.contrib.sites import requests
-
 from fourth_exer import settings
 from oauth.service.oauth_service import OauthService
+
+import requests
 
 
 class OauthServiceImpl(OauthService):
@@ -26,6 +26,7 @@ class OauthServiceImpl(OauthService):
 
         return cls.__instance
 
+    # https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#request-code
     def kakaoLoginAddress(self):
         print("kakaoLoginAddress()")
         return (f"{self.loginUrl}/oauth/authorize?"
@@ -41,10 +42,17 @@ class OauthServiceImpl(OauthService):
             'client_secret': None
         }
 
+        print(f"client_id: {self.clientId}")
+        print(f"redirect_uri: {self.redirectUri}")
+        print(f"code: {kakaoAuthCode}")
+        print(f"tokenRequestUri: {self.tokenRequestUri}")
+
         response = requests.post(self.tokenRequestUri, data=accessTokenRequestForm)
+        print(f"response: {response}")
+
         return response.json()
 
-
-
-
-
+    def requestUserInfo(self, accessToken):
+        headers = {'Authorization': f'Bearer {accessToken}'}
+        response = requests.post(self.userinfoRequestUri, headers=headers)
+        return response.json()

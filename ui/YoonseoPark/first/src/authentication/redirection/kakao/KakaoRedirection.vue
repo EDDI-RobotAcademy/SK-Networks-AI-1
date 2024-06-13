@@ -17,7 +17,7 @@ export default {
             console.log('code:', code)
 
             await this.requestAccessTokenToDjangoRedirection({code})
-            // const userInfo = this.requestUserInfoToDjango()
+            const userInfo = this.requestUserInfoToDjango()
         }
     },
     async created () {
