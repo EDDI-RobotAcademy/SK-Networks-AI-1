@@ -37,11 +37,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "board",            # 추가한 부분
-    "rest_framework",   # 추가한 부분
+    "corsheaders",       # 추가한 부분
+    "rest_framework",    # 추가한 부분
+    "board",             # 추가한 부분
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",        # 추가한 부분
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -51,7 +53,42 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+# pip install python-dotenv(그냥 dotenv가 아닌 python dotenv 설치)
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 ROOT_URLCONF = "manual_proj.urls"
+
+CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', '').split(',')
+CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', '').split(',')
+
+# CORS 설정 옵션
+CORS_ALLOW_CREDENTIALS = True
+
+# CORS 헤더와 메서드 추가 설정 (필요 시)
+CORS_ALLOW_METHODS = [
+    'GET',
+    'POST',
+    'PUT',
+    'PATCH',
+    'DELETE',
+    'OPTIONS'
+]
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+
 
 TEMPLATES = [
     {
@@ -75,10 +112,15 @@ WSGI_APPLICATION = "manual_proj.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# pip install mysqlclient
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": os.getenv('DATABASE_NAME'),
+        'USER': os.getenv('DATABASE_USER'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+        'HOST': 'localhost',
+        'PORT': '3306'
     }
 }
 
