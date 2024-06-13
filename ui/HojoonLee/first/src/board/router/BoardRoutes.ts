@@ -1,14 +1,39 @@
-//import BoardListPage from "../pages/list/BoardListPage.vue";
 import BoardListPage from "@/board/pages/list/BoardListPage.vue"
+import BoardRegisterPage from "@/board/pages/register/BoardRegisterPage.vue"
+import BoardReadPage from "@/board/pages/read/BoardReadPage.vue"
+import BoardModifyPage from "@/board/pages/modify/BoardModifyPage.vue"
 
 const BoardRoutes = [
     {
         path: '/board/list',
         name: 'BoardListPage',
         component: BoardListPage,
-    }
+    },
+    {
+        path: '/board/register',
+        name: 'BoardRegisterPage',
+        component: BoardRegisterPage,
+    },
+    {
+        path: '/board/read/:boardId',
+        name: 'BoardReadPage',
+        components: {
+            default: BoardReadPage,
+        },
+        props: {
+            default: true
+        }
+    },
+    {
+        path: '/board/modify/:boardId',
+        name: 'BoardModifyPage',
+        components: {
+            default: BoardModifyPage,
+        },
+        props: {
+            default: true
+        }
+    },
 ]
 
-// 위의 내용(BoardRoutes) 외부로 공개
-// Board에서 구현할 내용은 Board dir 아래에다 구현하기
 export default BoardRoutes
