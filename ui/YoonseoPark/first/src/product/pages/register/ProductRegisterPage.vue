@@ -22,7 +22,7 @@
         </v-row>
         <v-row>
             <v-col cols="12">
-                <p v-if="uploadedFileName">업로드 된 파일: {{ uploadedFileName }}</p>
+                <p v-if="uploadedFileName">업르드된 파일: {{ uploadedFileName }}</p>
             </v-col>
         </v-row>
         <v-row>
@@ -52,7 +52,8 @@ export default {
     methods: {
         ...mapActions(productModule, ['requestCreateProductToDjango']),
         async onSubmit () {
-            console.log('상품 등록 누름')
+            console.log('상품 등록 눌렀음')
+
             try {
                 if (this.productImage) {
                     const imageFormData = new FormData()
@@ -63,18 +64,19 @@ export default {
 
                     const response = await this.requestCreateProductToDjango(imageFormData)
                     this.uploadedFileName = response.data.imageName
-                    this.$router.push({name:'ProductListPage'})
-                }
-                else {
+                    this.$router.push({ name: 'ProductListPage' })
+                } else {
                     console.log('이미지 파일을 선택하세요!')
                 }
             } catch (error) {
                 console.log('파일 처리 과정에서 에러 발생:', error)
             }
+            // 상품 상세 정보 읽기
         },
         async onCancel () {
-            console.log('취소 버튼 누름')
-            this.$router.go(-1) // 이전 routing 경로로 이동
+            console.log('취소 버튼 눌럿음')
+            // '이전 routing 경로로 이동해줘' 를 의미함
+            this.$router.go(-1)
         }
     }
 }

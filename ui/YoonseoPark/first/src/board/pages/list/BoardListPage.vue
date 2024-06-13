@@ -1,9 +1,9 @@
 <template lang="">
     <v-container>
-        <h2>고객의 소리</h2>
-        <div style="text-align: left; margin: 15px;">
+        <h2>자유게시판</h2>
+        <div style="text-align: left; margin: 10px">
             <router-link :to="{ name: 'BoardRegisterPage' }">
-                <v-btn color="Gold">게시물 작성</v-btn>
+                <v-btn color="primary">게시물 작성</v-btn>
             </router-link>
         </div>
         <v-data-table
@@ -22,7 +22,6 @@
     </v-container>
 </template>
 
-// npm install axios --legacy-peer-deps
 
 <script>
 // 이것은 vuex 때문에 사용 가능

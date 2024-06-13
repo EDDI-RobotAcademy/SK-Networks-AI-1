@@ -6,8 +6,8 @@ import { REQUEST_PRODUCT_LIST_TO_DJANGO } from "./mutation-types"
 
 export type ProductActions = {
     requestProductListToDjango(context: ActionContext<ProductState, any>): Promise<void>
-    requestCreateProductToDjango(context: ActionContext<ProductState, unknown>,
-        imageFormData: FormData): Promise<AxiosResponse>
+    requestCreateProductToDjango(context: ActionContext<ProductState, unknown>, 
+                                imageFormData: FormData): Promise<AxiosResponse>
 }
 
 const actions: ProductActions = {
@@ -22,8 +22,8 @@ const actions: ProductActions = {
             throw error
         }
     },
-    async requestCreateProductToDjango(context: ActionContext<ProductState, unknown>,
-        imageFormData: FormData): Promise<AxiosResponse> {
+    async requestCreateProductToDjango(context: ActionContext<ProductState, unknown>, 
+                                        imageFormData: FormData): Promise<AxiosResponse> {
         try {
             console.log('requestCreateBoardToDjango()')
 
