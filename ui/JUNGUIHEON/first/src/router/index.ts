@@ -1,7 +1,9 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+
 import BoardRoutes from '@/board/router/BoardRoutes'
 import ProductRoutes from '@/product/router/ProductRoutes'
 import HomeRoutes from '@/home/router/HomeRoutes'
+import AccountRoutes from '@/account/router/AccountRoutes'
 
 const routes: Array<RouteRecordRaw> = [
   ...HomeRoutes,
@@ -10,6 +12,7 @@ const routes: Array<RouteRecordRaw> = [
   // 그러므로 ...BoardRoutes 는 BoardRoutes 내에 있는 모든 내용을 뒤에 붙입니다.
   ...BoardRoutes,
   ...ProductRoutes,
+  ...AccountRoutes,
 ]
 
 const router = createRouter({
