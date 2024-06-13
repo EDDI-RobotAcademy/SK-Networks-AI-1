@@ -1,7 +1,7 @@
-from django.contrib.sites import requests
-
 from manual_proj import settings
 from oauth.service.oauth_service import OauthService
+
+import requests
 
 
 class OauthServiceImpl(OauthService):
@@ -48,4 +48,13 @@ class OauthServiceImpl(OauthService):
         print(f"tokenRequestUri: {self.tokenRequestUri}")
 
         response = requests.post(self.tokenRequestUri, data=accessTokenRequestForm)
+        print(f"response: {response}")
+
         return response.json()
+
+    def requestUserInfo(self, accessToken):
+        headers = {'Authorization': f'Bearer {accessToken}'}
+        response = requests.post(self.userinfoRequestUri, headers=headers)
+        return response.json()
+
+
