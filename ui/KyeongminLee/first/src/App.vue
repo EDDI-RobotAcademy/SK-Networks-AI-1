@@ -9,10 +9,10 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import NavigationMenuBar from './navigationBar/NavigationMenuBar.vue';
+import NavigationMenuBar from './navigationBar/NavigationMenuBar.vue'
 
 export default defineComponent({
-  component: { NavigationMenuBar },
+  components: { NavigationMenuBar },
   name: 'App',
 
   data () {

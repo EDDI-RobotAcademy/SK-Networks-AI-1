@@ -1,5 +1,5 @@
 <template>
-    <v-app-bar color="primary" app dark height="64">
+    <v-app-bar color="black" app dark height="64">
         <v-btn @click="goToHome">
             <v-toolbar-title class="text-uppercase text--darken-4">
                 <span>SK Networks AI Camp with EDDI</span>
@@ -7,59 +7,69 @@
         </v-btn>
         <v-spacer></v-spacer>
 
-        <v-menu>
+        <!-- <v-menu>
             <template v-slot:activator="{ props }">
                 <v-btn color="white" v-bind="props">
-                    <b>Activator Slot 테스트</b>
+                    <b>Activator Slot</b>
                 </v-btn>
             </template>
             <v-list>
-                <v-list-item v-for="(item, index) in items"
+                <v-list-item v-for="(item, index) in items" 
                             :key="index" :value="index" @click="item.action">
-                    <v-list-item-title{{ item.title }} />
+                    <v-list-item-title>{{ item.title }}</v-list-item-title>
                 </v-list-item>
             </v-list>
-        </v-menu>
+        </v-menu> -->
 
-        <v-btn text @click="goToProudctList" class="btn-text">
+        <v-btn text @click="goToProductList" class="btn-text">
             <v-icon left>mdi-store</v-icon>
             <span>상품</span>
         </v-btn>
         <v-btn text @click="goToBoardList" class="btn-text">
-            <v-icon left>mdi-store</v-icon>
+            <v-icon left>mdi-forum</v-icon>
             <span>게시판</span>
         </v-btn>
-
+        <v-btn v-if="!isLogin" text @click="signIn" class="btn-text">
+            <v-icon left>mdi-login</v-icon>
+            <span>로그인</span>
+        </v-btn>
+        <v-btn v-if="isLogin" text @click="signOut" class="btn-text">
+            <v-icon left>mdi-logout</v-icon>
+            <span>로그아웃</span>
+        </v-btn>
     </v-app-bar>
 </template>
 
-
 <script>
 import '@mdi/font/css/materialdesignicons.css'
+import router from '@/router'
 
 export default {
     data () {
         return {
             navigation_drawer: false,
-            links: [{ icons: 'mdi-home', action: this.goToHome, route: '/' }],
+            // links: [{ icon: 'mdi-home', action: this.goToHome, route: '/' }],
             accessToken: null,
             isLogin: false,
-            items: [
-                { title: 'Product', action: this.goToProductList() },
-                { title: 'Board', action: this.goToBoardList() },
-            ]
+            // items: [
+            //     { title: 'Product', action: this.goToProductList() },
+            //     { title: 'Board', action: this.goToBoardList() },
+            // ]
         }
     },
     methods: {
-        goToHome() {
-            console.log('홈')
+        goToHome () {
+            router.push('/')
         },
-        goToProductList() {
-            console.log('프로덕트')
+        goToProductList () {
+            router.push('/product/list')
         },
-        goToBoardList() {
-            console.log('보드')
+        goToBoardList () {
+            router.push('/board/list')
         },
+        signIn () {
+            router.push('/account/login')
+        }
     }
 }
 </script>
