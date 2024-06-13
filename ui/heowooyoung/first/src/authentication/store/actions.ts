@@ -30,6 +30,7 @@ const actions: AuthenticationActions = {
             const response = await axiosInst.djangoAxiosInst.post(
                 '/oauth/kakao/access-token', { code })
             console.log('accessToken:', response.data.accessToken.access_token)
+            localStorage.setItem("accessToken", response.data.accessToken.access_token)
         } catch (error) {
             console.log('Access Token 요청 중 문제 발생:', error)
             throw error
