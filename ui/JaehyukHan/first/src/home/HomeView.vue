@@ -1,5 +1,5 @@
 <template>
-  <hello-world />
+  <p>이것이 홈이다</p>
 </template>
 
 <script lang="ts">
@@ -12,7 +12,6 @@ export default defineComponent({
   name: 'HomeView',
 
   components: {
-    HelloWorld,
   },
 });
 </script>
