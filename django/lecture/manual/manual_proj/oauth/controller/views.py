@@ -29,6 +29,17 @@ class OauthView(viewsets.ViewSet):
 
         try:
             accessToken = self.oauthService.requestAccessToken(code)
+            print(f"accessToken: {accessToken}")
             return JsonResponse({'accessToken': accessToken})
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+
+    def kakaoUserInfoURI(self, request):
+        accessToken = request.data.get('access_token')
+        print(f'accessToken: {accessToken}')
+
+        try:
+            user_info = self.oauthService.requestUserInfo(accessToken)
+            return JsonResponse({'user_info': user_info})
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
