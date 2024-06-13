@@ -49,8 +49,8 @@ export default {
         ...mapActions(boardModule, ['requestBoardListToDjango']),
         readRow (event, { item }) {
             this.$router.push({
-                name: 'BoardReadPage', // 
-                params: { boardId: item['boardId'].toString() } // route에서 props 설정을 햇기 때문에 params 설정이 가능한 것!
+                name: 'BoardReadPage',
+                params: { boardId: item['boardId'].toString() }
             })
         }
     },
