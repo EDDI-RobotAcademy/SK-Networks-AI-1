@@ -1,9 +1,9 @@
 <template lang="">
     <v-container>
-        <h2>안녕 Vue3 TypeScript 기반 Board App이야</h2>
+        <h2>고객의 소리</h2>
         <div style="text-align: left; margin: 15px;">
             <router-link :to="{ name: 'BoardRegisterPage' }">
-                게시물 작성
+                <v-btn color="Gold">게시물 작성</v-btn>
             </router-link>
         </div>
         <v-data-table
