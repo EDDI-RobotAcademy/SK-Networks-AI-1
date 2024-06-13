@@ -13,3 +13,10 @@ class BoardRepository(ABC):
     @abstractmethod
     def findByBoardId(self, boardId):
         pass
+
+    @abstractmethod
+    def deleteBoardId(self, boardId):
+        pass
+
+    def update(self, board, boardData):
+        pass
