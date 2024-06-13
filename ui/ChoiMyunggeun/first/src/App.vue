@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <!-- HTML 파트 -->
     <navigation-menu-bar/>
     <v-main>
       <router-view/>
@@ -8,7 +9,7 @@
 </template>
 
 <script lang="ts">
-
+// Javascript 파트
 import { defineComponent } from 'vue'
 import NavigationMenuBar from './navigationBar/NavigationMenuBar.vue'
 

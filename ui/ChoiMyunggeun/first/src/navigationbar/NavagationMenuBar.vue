@@ -29,11 +29,21 @@
             <v-icon left>mdi-forum</v-icon>
             <span>게시판</span>
         </v-btn>
+        <v-btn v-if="!isLogin" text @click="signIn``" class="btn-text">
+            <v-icon left>mdi-login</v-icon>
+            <span>로그인</span>
+        </v-btn>
+        <v-btn v-if="!isLogin" text @click="signOut``" class="btn-text">
+            <v-icon left>mdi-logout</v-icon>
+            <span>로그아웃</span>
+        </v-btn>
     </v-app-bar>
 </template>
 
 <script>
 import '@mdi/font/css/materialdesignicons.css'
+import router from '@/router'
+
 export default {
     data () {
         return {
@@ -49,13 +59,13 @@ export default {
     },
     methods: {
         goToHome () {
-            console.log('호미다')
+            router.push('/')
         },
         goToProductList () {
-            console.log('프로덕트')
+            router.push('/product/list')
         },
         goToBoardList () {
-            console.log('보드')
+            router.push('/board/list')
         },
     }
 }
