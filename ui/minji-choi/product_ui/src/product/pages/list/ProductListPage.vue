@@ -6,19 +6,38 @@
                 상품등록
             </router-link>
         </div>
-        <v-data-table
-            v-model:items-per-page="perPage"
-            :headers="headerTitle"
-            :items="pagedItems"
-            v-model:pagination="pagination"
-            class="elevation-1"
-            @click:row="readRow"
-            item-value="productId"/>
-        <v-pagination
-            v-model="pagination.page"
-            :length="Math.ceil(products.length / perPage)"
-            color="primary"
-            @input="updateItems"/>
+            <v-row v-if="products.length > 0">
+                <v-col v-for="(product, index) in products" :key="index">
+                    <v-card @click="goToProductReadPage(product.productId)">
+                        <v-img :src="getImageUrl(product.productImage)" aspect-ratio="1" color="grey lighten-2">
+                            <template v-slot:placeholder>
+                                <v-row class="fill-height ma-0" align="center" justify="center">
+                                    <v-progress-circular indeterminate color="grey lighten-5"/>
+                                </v-row>
+                            </template>
+                        </v-img>
+                        <v-card-title>{{product.prodname}}</v-card-title>
+                        <v-card-subtitle>{{product.price}}</v-card-subtitle> 
+                    </v-card>
+                </v-col>
+            </v-row>
+            <v-row v-else>
+                <!-- Bootstrap 등에서 기본적으로 화면을 12개의 열로 구성함(전체 쓰겠단 소리) -->
+                <v-col cols="12" class="text-center">
+                    <v-alert type="info">등록된 상품이 없습니다!</v-alert>
+                </v-col>
+            </v-row>
+            <v-row>
+                <v-col cols="12" class="text-center">
+                    <v-img src='@/assets/images/fixed/fiximg.jpg' aspect-ratio="1" color="grey lighten-2">
+                    <template v-slot:placeholder>
+                            <v-row class="fill-height ma-0" align="center" justify="center">
+                                <v-progress-circular indeterminate color="grey lighten-5"/>
+                            </v-row>
+                        </template>
+                    </v-img>
+                </v-col>
+            </v-row>
     </v-container>
 </template>
 
@@ -47,6 +66,13 @@ export default {
     },
     methods: {
         ...mapActions(productModule, ['requestProductListToDjango']),
+
+        getImageUrl (imageName) {
+            return require(`@/assets/images/uploadimages/${imageName}`)
+        },
+        goToProductReadPage () {
+            console.log('읽기 구현할 때 사용 예정')
+        },
         readRow (event, { item }) {
             this.$router.push({
                 name: 'ProductReadPage',
