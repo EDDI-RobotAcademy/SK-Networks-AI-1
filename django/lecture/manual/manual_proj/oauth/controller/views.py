@@ -14,6 +14,7 @@ class OauthView(viewsets.ViewSet):
     # 사용자가 '카카오 로그인' 버튼을 눌러 요청시 로그인 경로를 리턴
     def kakaoOauthURI(self, request):
         url = self.oauthService.kakaoLoginAddress()
+        print(f"url:", url)
         serializer = KakaoOauthUrlSerializer(data={ 'url': url })
         serializer.is_valid(raise_exception=True)
         print(f"validated_data: {serializer.validated_data}")
