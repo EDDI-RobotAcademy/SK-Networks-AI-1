@@ -1,15 +1,15 @@
 <template>
-    <v-app-bar color="orange" app dark height="64">
+    <v-app-bar color="primary" app dark height="64">
         <v-btn @click="goToHome">
             <v-toolbar-title class="text-uppercase text--darken-4">
                 <span>SK NETWORKS AI CAMP With MINN</span>
             </v-toolbar-title>
         </v-btn>
         <v-spacer></v-spacer>
-        <!-- <v-menu> -->
+        <v-menu>
             <template v-slot:actovator="{props}">
                 <v-btn color="white" v-bind="props">
-                    <b>Activator Slot</b>
+                    <b>Activator Slot 테스트</b>
                 </v-btn>
         </template>
         <v-list>
@@ -17,15 +17,11 @@
                 <v-list-item-title>{{ item.title }}</v-list-item-title>
             </v-list-item>
         </v-list>
-        <!-- </v-menu> -->
+        </v-menu>
 
         <v-btn text @click="goToProductList" class="btn-text">
             <v-icon left>mdi-store</v-icon>
             <span>상품</span>
-        </v-btn>
-        <v-btn text @click="goToBoardList" class="btn-text">
-            <v-icon left>mdi-store</v-icon>
-            <span>게시판</span>
         </v-btn>
         <v-btn v-if="!isLogin" text @click="signIn" class="btn-text">
             <v-icon left>mdi-login</v-icon>
@@ -47,13 +43,12 @@ export default {
     data () {
         return {
             navigation_drawer: false,
-            // links: [{icon: 'mdi-home', action: this.goToHome, route: '/'}],
+            links: [{icon: 'mdi-home', action: this.goToHome, route: '/'}],
             accessToken: null,
             isLogin: false,
-            // items: [
-            //     {title: 'Product', action: this.goToProductList() }, 
-            //     {title: 'Board', action: this.goToBoardList() },             
-            // ]
+            items: [
+                {title: 'Product', action: this.goToProductList() },             
+            ]
         }
     },
     methods: {
@@ -62,12 +57,6 @@ export default {
         },
         goToProductList () {
             router.push('/product/list')
-        },
-        goToBoardList() {
-            router.push('/board/list')
-        },
-        signIn () {
-            router.push('/account/login')
         }
     },
 }

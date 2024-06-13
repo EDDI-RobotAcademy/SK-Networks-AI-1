@@ -1,6 +1,6 @@
 import { ActionContext } from "vuex"
 import { Product, ProductState } from "./states"
-import { AxiosResponse} from "axios"
+import { AxiosResponse, AxiosError } from "axios"
 import axiosInst from "@/utility/axiosInstance"
 import { REQUEST_PRODUCT_LIST_TO_DJANGO, REQUEST_PRODUCT_TO_DJANGO } from "./mutation-types"
 
