@@ -68,7 +68,10 @@ export default {
         },
         goToBoardList () {
             router.push('/board/list')
-        },   
+        },
+        signIn () {
+            router.push('/account/login')
+        }   
     }
 }
 </script>
