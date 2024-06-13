@@ -1,7 +1,6 @@
 from product.repository.product_repository_impl import ProductRepositoryImpl
 from product.service.product_service import ProductService
 
-
 class ProductServiceImpl(ProductService):
     __instance = None
 
