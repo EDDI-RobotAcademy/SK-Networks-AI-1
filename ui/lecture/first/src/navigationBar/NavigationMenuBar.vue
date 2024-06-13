@@ -1,5 +1,5 @@
 <template>
-    <v-app-bar color="primary" app dark height="64">
+    <v-app-bar color="orange" app dark height="64">
         <v-btn @click="goToHome">
             <v-toolbar-title class="text-uppercase text--darken-4">
                 <span>SK Networks AI Camp with EDDI</span>
@@ -67,6 +67,9 @@ export default {
         goToBoardList () {
             router.push('/board/list')
         },
+        signIn () {
+            router.push('/account/login')
+        }
     }
 }
 </script>
