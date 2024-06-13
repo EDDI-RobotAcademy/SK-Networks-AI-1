@@ -22,18 +22,18 @@ class ProductRepositoryImpl(ProductRepository):
         return cls.__instance
 
     def list(self):
-        return Product.objects.all().order_by('registeredDate')
+        return Product.objects.all().order_by("registeredDate")
 
     def create(self, productName, productPrice, productDescription, productImage):
         uploadDirectory = os.path.join(
             settings.BASE_DIR,
-            '../../../../ui/lecture/first/src/assets/images/uploadImages'
+            "../../../../ui/lecture/first/src/assets/images/uploadImages",
         )
         if not os.path.exists(uploadDirectory):
             os.makedirs(uploadDirectory)
 
         imagePath = os.path.join(uploadDirectory, productImage.name)
-        with open(imagePath, 'wb+') as destination:
+        with open(imagePath, "wb+") as destination:
             for chunk in productImage.chunks():
                 destination.write(chunk)
 
@@ -44,7 +44,7 @@ class ProductRepositoryImpl(ProductRepository):
             productName=productName,
             productDescription=productDescription,
             productPrice=productPrice,
-            productImage=productImage.name
+            productImage=productImage.name,
         )
         product.save()
         return product
