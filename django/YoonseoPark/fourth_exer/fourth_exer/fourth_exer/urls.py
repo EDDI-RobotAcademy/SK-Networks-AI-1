@@ -21,5 +21,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     # product Domain으로 요청이 들어가는 모든 것을
     # product 디렉토리 하위의 urls.py에서 관리하겠다는 의미
-    path('product/', include('product.urls'))
+    path('board/', include('board.urls')),
+    path('product/', include('product.urls')),
+    path('oauth/', include('oauth.urls'))
 ]
