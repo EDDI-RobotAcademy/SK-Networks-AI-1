@@ -16,6 +16,6 @@ export default createStore({
   modules: {
     boardModule,
     productModule,
-    authenticationModule
+    authenticationModule,
   }
 })

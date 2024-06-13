@@ -1,24 +1,25 @@
 <template>
     <v-app-bar color="orange" app dark height="64">
         <v-btn @click="goToHome">
-            <v-tool-bar-title class="text-uppercase text--darken-4">
-                <span>SK Network AI Camp with EDDI</span>
-            </v-tool-bar-title>
+            <v-toolbar-title class="text-uppercase text--darken-4">
+                <span>SK Networks AI Camp with EDDI</span>
+            </v-toolbar-title>
         </v-btn>
         <v-spacer></v-spacer>
 
-        <v-menu>
+        <!-- <v-menu>
             <template v-slot:activator="{ props }">
                 <v-btn color="white" v-bind="props">
                     <b>Activator Slot</b>
                 </v-btn>
             </template>
             <v-list>
-                <v-list-item v-for="(item, index) in items" :key="index" :value="index" @click="item.action">
-                    <v-list-title>{{ item.title }}</v-list-title>
+                <v-list-item v-for="(item, index) in items" 
+                            :key="index" :value="index" @click="item.action">
+                    <v-list-item-title>{{ item.title }}</v-list-item-title>
                 </v-list-item>
             </v-list>
-        </v-menu>
+        </v-menu> -->
 
         <v-btn text @click="goToProductList" class="btn-text">
             <v-icon left>mdi-store</v-icon>
@@ -41,19 +42,19 @@
 
 <script>
 import '@mdi/font/css/materialdesignicons.css'
-import router from '@/router/index'
+import router from '@/router'
 
 export default {
     data () {
         return {
             navigation_drawer: false,
-            links: [{ icon: 'mdi-home', action: this.goToHome, route: '/' }],
+            // links: [{ icon: 'mdi-home', action: this.goToHome, route: '/' }],
             accessToken: null,
             isLogin: false,
-            items: [
-                { title: 'Product', action: this.goToProductList() },
-                { title: 'Board', action: this.goToBoardList() }
-            ]
+            // items: [
+            //     { title: 'Product', action: this.goToProductList() },
+            //     { title: 'Board', action: this.goToBoardList() },
+            // ]
         }
     },
     methods: {
@@ -68,10 +69,7 @@ export default {
         },
         signIn () {
             router.push('/account/login')
-        },
-        signOut () {
-            console.log('로그아웃 누름')
-        },
+        }
     }
 }
 </script>

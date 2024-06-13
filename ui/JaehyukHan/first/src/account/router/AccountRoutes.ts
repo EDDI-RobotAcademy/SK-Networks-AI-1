@@ -1,4 +1,4 @@
-import AccountLoginPage from "../pages/AccountLoginPage.vue"
+import AccountLoginPage from "@/account/pages/AccountLoginPage.vue"
 
 const AccountRoutes = [
     {
@@ -7,6 +7,5 @@ const AccountRoutes = [
         component: AccountLoginPage
     },
 ]
-
 
 export default AccountRoutes
