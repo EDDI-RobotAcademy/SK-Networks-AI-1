@@ -17,7 +17,7 @@ export default defineComponent({
   components: { NavigationMenuBar },
   name: 'App',
 
-  data () {
+  data () { 
     return {
       //
     }
