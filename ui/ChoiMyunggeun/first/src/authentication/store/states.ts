@@ -1,19 +1,9 @@
-import actions, { AuthenticationActions } from "./actions"
-import state, { AuthenticationState } from "./states"
-
-
-export interface AuthenticationModule {
-    namespaced: true
-    state: AuthenticationState
-    actions: AuthenticationActions
-    // mutations: AuthenticationMutations
+export interface AuthenticationState {
+    isAuthenticated: boolean
 }
 
-const authenticationModule: AuthenticationModule = {
-    namespaced: true,
-    state,
-    actions,
-    // mutations,
+const state: AuthenticationState = {
+    isAuthenticated: false
 }
 
-export default authenticationModule
+export default state

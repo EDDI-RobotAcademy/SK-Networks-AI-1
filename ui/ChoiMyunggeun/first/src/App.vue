@@ -17,10 +17,12 @@ export default defineComponent({
   components: { NavigationMenuBar },
   name: 'App',
 
-  data () { 
+  data () {
     return {
       //
     }
   },
 })
 </script>
+
+// 여기 하단에 CSS 파트
