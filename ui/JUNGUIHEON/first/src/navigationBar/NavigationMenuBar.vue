@@ -7,7 +7,7 @@
         </v-btn>
         <v-spacer></v-spacer>
 
-        <v-menu>
+        <!-- <v-menu>
             <template v-slot:activator="{ props }">
                 <v-btn color="white" v-bind="props">
                     <b>Activator Slot</b>
@@ -19,7 +19,7 @@
                     <v-list-item-title>{{ item.title }}</v-list-item-title>
                 </v-list-item>
             </v-list>
-        </v-menu>
+        </v-menu> -->
 
         <v-btn text @click="goToProductList" class="btn-text">
             <v-icon left>mdi-store</v-icon>
@@ -48,13 +48,13 @@ export default {
     data () {
         return {
             navigation_drawer: false,
-            links: [{ icon: 'mdi-home', action: this.goToHome, route: '/' }],
+            // links: [{ icon: 'mdi-home', action: this.goToHome, route: '/' }],
             accessToken: null,
             isLogin: false,
-            items: [
-                { title: 'Product', action: this.goToProductList() },
-                { title: 'Board', action: this.goToBoardList() },
-            ]
+            // items: [
+            //     { title: 'Product', action: this.goToProductList() },
+            //     { title: 'Board', action: this.goToBoardList() },
+            // ]
         }
     },
     methods: {
