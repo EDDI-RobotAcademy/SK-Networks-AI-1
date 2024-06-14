@@ -36,8 +36,8 @@ class BoardRepositoryImpl(BoardRepository):
         # title, writer, content 내용을 토대로 Board 객체를 생성
         # 이 객체는 또한 models.py에 의해 구성된 객체로
         # save()를 수행하는 순간 DB에 기록됨
-        board = Board(**boardData)
-        board.save()
+        board = Board(**boardData) # 테이블에 들어가야 하기때문에 request에 담긴 순수데이터만 뽑겠다. [] {} ""
+        board.save() # baord => 현재 table 상태입니다.
         return board
 
     def findByBoardId(self, boardId):
@@ -50,10 +50,10 @@ class BoardRepositoryImpl(BoardRepository):
         # django.db model은 crud 중 또 어떤 기능들을 지원할까??
 
     def update(self, board, boardData):
-        for key, value in boardData.items():
+        for key, value in boardData.items(): # [(key1, value1), ... ,(keyN, valueN)]
             print(f"key: {key}, value: {value}")
             # 쉽게 생각해보자면 board 라는 entity가 가지고 있는 속성값 중
             # 현재 수정 요청에 의해 전달된 정보에 대응되는 key가 가지고 있는 value값을 갱신시킴
-            setattr(board, key, value)
+            setattr(board, key, value) # modify 기능 완료!
         board.save() # 업뎃된 보드 저장 >> 근데 board는 pk 아닌가? >> findByBoairdID로 객체가 반환되어서 ㄱㅊ함
         return board

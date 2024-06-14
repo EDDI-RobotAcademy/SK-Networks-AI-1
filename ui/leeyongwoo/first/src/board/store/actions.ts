@@ -10,6 +10,10 @@ export type BoardActions = {
     requestCreateBoardToDjango(context: ActionContext<BoardState, unknown>, payload: {
         title: string, writer: string, content: string
     }): Promise<AxiosResponse>
+    requestDeleteBoardToDjango(context: ActionContext<BoardState, unknown>, boardId: number): Promise<void>
+    requestModifyBoardToDjango(context: ActionContext<BoardState, any>, payload: {
+        title: string, content: string, boardId: number
+    }): Promise<void>
 }
 
 const actions: BoardActions = {
@@ -64,6 +68,31 @@ const actions: BoardActions = {
             return res.data
         } catch (error) {
             alert('requestCreateBoardToDjango() 문제 발생!')
+            throw error
+        }
+    },
+    async requestDeleteBoardToDjango(context: ActionContext<BoardState, unknown>, boardId: number): Promise<void> {
+        try {
+            console.log('requestDeleteBoardToDjango()')
+            // HTTP 상으로 DELETE 요청을 전송함
+            await axiosInst.djangoAxiosInst.delete(`/board/delete/${boardId}`)
+        } catch (error) {
+            console.log('requestDeleteBoardToDjango() 과정에서 문제 발생')
+            throw error
+        }
+    },
+    async requestModifyBoardToDjango(context: ActionContext<BoardState, any>, payload: {
+        title: string, content: string, boardId: number
+    }): Promise<void> {
+        
+        const { title, content, boardId } = payload
+
+        try {
+            // 수정을 요청 할 때는 PUT을 사용합니다.
+            await axiosInst.djangoAxiosInst.put(`/board/modify/${boardId}`, { title, content })
+            console.log('수정 성공!')
+        } catch (error) {
+            console.log('requestModifyBoardToDjango() 과정에서 문제 발생')
             throw error
         }
     }
