@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+
 import BoardRoutes from '@/board/router/BoardRoutes'
 import ProductRoutes from '@/product/router/ProductRoutes'
 import HomeRoutes from '@/home/router/HomeRoutes'
