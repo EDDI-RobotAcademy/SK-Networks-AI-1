@@ -20,6 +20,7 @@ from django.urls import path, include
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('board/', include('board.urls')), # board의 url 참고하겠다.
-    path('product/', include('product.urls')), # 여기에 추가해줘야 db상에 테이블 생기나 ?
-    path('oauth/', include('oauth.urls'))
+    path('product/', include('product.urls')), # 여기에 추가해줘야 db상에 테이블 생김
+    path('oauth/', include('oauth.urls')),
+    path('account/', include('account.urls')),
 ]
