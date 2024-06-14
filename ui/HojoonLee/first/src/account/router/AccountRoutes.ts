@@ -1,4 +1,5 @@
-import AccountLoginPage from "../pages/AccountLoginPage.vue"
+// 
+import AccountLoginPage from "../pages/login/AccountLoginPage.vue"
 
 const AccountRoutes = [
     {
