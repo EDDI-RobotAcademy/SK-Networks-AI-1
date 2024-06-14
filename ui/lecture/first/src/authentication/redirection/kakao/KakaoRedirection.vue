@@ -31,7 +31,7 @@ export default {
                 this.$router.push('/')
             } else {
                 console.log('신규 가입 고객입니다!')
-                // this.$router.push('/account/register')
+                this.$router.push('/account/register')
             }
         }
     },
