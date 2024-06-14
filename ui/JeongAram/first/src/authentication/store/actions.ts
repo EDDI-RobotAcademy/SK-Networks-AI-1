@@ -6,6 +6,17 @@ import axiosInst from "@/utility/axiosInstance"
 
 export type AuthenticationActions = {
     requestKaKaoOauthRedirectionToDjango(): Promise<void>
+     // TypeScript에서 함수 작성 시
+
+    // 파라미터에는 아래와 같이 타입을 명시해야합니다.
+    // 파라미터 이름: 파라미터 타입 형태로 작성
+
+    // 함수의 리턴 값은 파라미터를 표현하는
+    // 소괄호'(' 에서 시작해서 ')'로 끝난 지점 이후
+    // ':' 을 사용하여 표현
+
+    // 즉 testFunction(testNumber: number): number
+    // 위와 같은 형태로 표현된다는 뜻입니다.
     requestAccessTokenToDjangoRedirection(
         context: ActionContext<AuthenticationState, any>,
         payload: { code: string }): Promise<void>
@@ -54,10 +65,24 @@ const actions: AuthenticationActions = {
                 { access_token: accessToken });
 
         console.log('User Info:', userInfoResponse.data.user_info);
-        return userInfoResponse.data.user_info;
-    } catch (error) {
-        alert('사용자 정보 가져오기 실패!');
-        throw error;
+         // const email = userInfoResponse.data.user_info.kakao_account.email
+
+            // return email;
+
+            const userInfo = userInfoResponse.data.user_info
+            return userInfo
+        } catch (error) {
+            alert('사용자 정보 가져오기 실패!')
+            // python, JavaScript, Golang, TypeScript 등등
+            // 최신 스펙을 가진 언어의 경우
+            // 위와 같이 세미콜론을 붙일 필요가 없습니다! (Rust 제외)
+            // 아래의 throw error 또한 마찬가지입니다.
+            // 보통 멀티 랭귀지 프로젝트에서는 Poly Glot (폴리 글랏)이란 것을 하게 됨
+            // 그래서 개발자들이 습관상 세미콜론을 붙이는 사람도 있고
+            // 한동안 세미콜론을 붙이지 않던 사람들도 있어서
+            // 그런 혼선을 방지하게 서포트하는 역할도 합니다.
+            // 주로 MSA(Micro Service Architecture) 프로젝트를 하면 이런 상황이 비일비재함
+            throw error;
     }
 }
      

@@ -14,7 +14,7 @@ const routes: Array<RouteRecordRaw> = [
   ...BoardRoutes,
   ...ProductRoutes,
   ...AccountRoutes,
-  ...AuthenticationRoutes,
+  ...AuthenticationRoutes,  // 항상 도메인의 router 추가했으면 main router 에도 추가해줘야함
 
 ]
 
