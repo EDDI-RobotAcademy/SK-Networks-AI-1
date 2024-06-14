@@ -1,7 +1,7 @@
 <template>
     <v-container>
         <v-card flat>
-            <v-img class="mx auto" height="300" :src="require('@/assets/images/fixed/login_page.jpg')"/>
+            <v-img class="mx auto" height="300" :src="require('@/assets/images/fixed/login_img.png')"/>
         </v-card>
         <div class="login-icons">
             <v-img class="icon" 

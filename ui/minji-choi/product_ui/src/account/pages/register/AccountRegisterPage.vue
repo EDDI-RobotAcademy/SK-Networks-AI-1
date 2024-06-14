@@ -7,7 +7,7 @@
                         <span class="headline">신규 회원 신청</span>
                     </v-card-title>
                     <v-card-text>
-                        <v-form ref=form v-model="valid" lazy-validation>
+                        <v-form ref=form v-model="formValid" lazy-validation>
                             <v-text-field
                                     v-model="email"
                                     label="Email"
@@ -31,6 +31,14 @@
                             </v-row>
                         </v-form>
                     </v-card-text>
+                    <v-card-action>
+                        <v-spacer></v-spacer>
+                        <v-btn color="primary"
+                                @click="submitForm"
+                                :disabled="!isValidForSubmission">
+                                신청하기
+                            </v-btn>
+                    </v-card-action>
                 </v-card>
             </v-col>
         </v-row>
@@ -46,7 +54,7 @@ const accountModule = 'accountModule'
 export default {
     data () {
         return {
-            valid: false,
+            formValid: false,
             email: '',
             nickname: '',
             emailRules: [
@@ -54,18 +62,64 @@ export default {
                 v => /.+@.+\..+/.test(v) || '유효한 Email 주소를 입력하세요.' 
                 // .+ = '.' 앞에 최소 한 글자가 오고 무슨 글자가 온 다음 .이 온다
             ],
-            nicknameRules: [
-                v => !!v || 'Nickname은 필수입니다.'],
+            nicknameRules: [v => !!v || 'Nickname은 필수입니다.'],
             nicknameErrorMessages: [],
             isNicknameValid: false,
           
         }
     },
     async created () {
-        await this.requestUserInfoToDjango()
+        await this.requestUserInfo()
+    },
+    computed :{
+        isValidForSubmission () {
+            return this.formValid && this.isNicknameValid
+        },
     },
     methods: {
         ...mapActions(authenticationModule, ['requestUserInfoToDjango']),
-        // ...mapActions(accountModule, ['requestEmailDuplicationCheckToDjango', 'requestCreateNewAccountToDjango'])
+        ...mapActions(accountModule, ['requestNicknameDuplicationCheckToDjango', 'requestCreateNewAccountToDjango']),
+
+        async requestUserInfo () {
+            try {
+                const userInfo = await this.requestUserInfoToDjango()
+                this.email = userInfo.kakao_account.email
+            } catch (error) {
+                console.log('에러: ', error)
+                alert('사용자 정보를 가져오는데 실패하였습니다.')
+            }
+        },
+        async checkNicknameDuplication () {
+            console.log('닉네임 중복검사 누름')
+            try {
+                const isDuplicate = await this.requestNicknameDuplicationCheckToDjango({
+                    newNickname : this.nickname.trim() // 지저분한 띄어쓰기 제거, 중괄호로 묶어서 보낸다? payload
+                })
+                
+                if (isDuplicate) {
+                    this.nicknameErrorMessages = ['이 nickname은 이미 사용중입니다!']
+                    this.isNicknameValid = false
+                } else {
+                    this.nicknameErrorMessages = []
+                    this.isNicknameValid = true
+                }
+            } catch (error) {
+                alert ('닉네임 중복 확인에 실패했습니다.')
+                this.isNicknameValid = false
+            }
+        },
+        async submitForm () {
+            console.log('신청하기활성화')
+            if (this.$refs.form.validate()) {
+                const accountInfo = {
+                    email: this.email,
+                    nickname: this.nickname,
+
+                }
+                await this.requestCreateNewAccountToDjango(accountInfo)
+                console.log('전송한 데이터 : ', accountInfo)
+            }
+        }
     }
-}</script>
+}
+</script>
