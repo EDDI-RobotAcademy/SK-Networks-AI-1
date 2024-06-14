@@ -7,7 +7,7 @@
                         <span class="headline"> 신규 회원 신청 </span>
                     </v-card-title>
                     <v-card-text>
-                        <v-form ref="form" v-model="valid" lazy-validation>
+                        <v-form ref="form" v-model="formValid" lazy-validation>
                             <v-text-field
                                 v-model="email"
                                 label="Email"
@@ -34,6 +34,14 @@
                             </v-row>
                         </v-form>
                     </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>    
+                        <v-btn color="primary"
+                                @click="submitForm"
+                                :disabled="!isValidForSubmission">
+                            신청하기
+                        </v-btn>
+                    </v-card-actions>
                 </v-card>
             </v-col>
         </v-row>
@@ -49,7 +57,7 @@ const accountModule = 'accountModule'
 export default {
     data () {
         return {
-            valid: false,
+            formValid: false,
             email: '',
             nickname: '',
             emailRules: [
@@ -64,11 +72,16 @@ export default {
     async created () {
         await this.requestUserInfo()
     },
+    computed: {
+        isValidForSubmission () {
+            return this.formValid && this.isNicknameValid
+        }
+    },
     methods: {
         ...mapActions(authenticationModule, ['requestUserInfoToDjango']),
         ...mapActions(accountModule, [
             'requestNicknameDuplicationCheckToDjango', 
-        //     'requestCreateNewAccountToDjango',
+            'requestCreateNewAccountToDjango',
         ]),
         async requestUserInfo() {
             try {
@@ -98,6 +111,19 @@ export default {
             } catch (error) {
                 alert('닉네임 중복 확인에 실패했습니다!')
                 this.isNicknameValid = false
+            }
+        },
+        async submitForm () {
+            console.log('신청하기 누름')
+
+            if (this.$refs.form.validate()) {
+                const accountInfo = {
+                    email: this.email,
+                    nickname: this.nickname,
+                }
+
+                await this.requestCreateNewAccountToDjango(accountInfo)
+                console.log('전송한 데이터:', accountInfo)
             }
         }
     }
