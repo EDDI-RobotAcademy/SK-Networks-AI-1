@@ -22,3 +22,7 @@ class AccountServiceImpl(AccountService):
     def checkEmailDuplication(self, email):
         profile = self.__profileRepository.findByEmail(email)
         return profile is not None
+
+    def checkNicknameDuplication(self, nickname):
+        profile = self.__profileRepository.findByEmail(nickname)
+        return profile is not None

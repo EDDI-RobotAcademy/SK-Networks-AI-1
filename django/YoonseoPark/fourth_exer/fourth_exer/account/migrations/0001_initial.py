@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
                 ),
             ],
             options={
-                "db_table": "accout_login_type",
+                "db_table": "account_login_type",
             },
         ),
         migrations.CreateModel(
@@ -72,4 +72,32 @@ class Migration(migrations.Migration):
                 "db_table": "account",
             },
         ),
+        migrations.CreateModel(
+            name="Profile",
+            fields=[
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("nickname", models.CharField(max_length=64, unique=True)),
+                ("email", models.CharField(max_length=64, unique=True)),
+                (
+                    "account",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="account.account",
+                    ),
+                ),
+            ],
+            options={
+                "db_table": "profile",
+            },
+        ),
+
+
     ]
