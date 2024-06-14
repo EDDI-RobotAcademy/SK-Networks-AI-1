@@ -12,6 +12,10 @@ export type AccountActions = {
         context: ActionContext<AccountState, any>,
         payload: any
     ): Promise<boolean>
+    requestCreateNewAccountToDjango(
+        context: ActionContext<any, any>,
+        accountInfo: { email: string, nickname: string }
+    ): Promise<void>
 }
 
 const actions: AccountActions = {
@@ -44,6 +48,18 @@ const actions: AccountActions = {
                 return true
             }
         })
+    },
+    async requestCreateNewAccountToDjango(
+        context: ActionContext<any, any>,
+        accountInfo: { email: string, nickname: string }
+    ): Promise<void> {
+
+        try {
+            await axiosInst.djangoAxiosInst.post('/account/register', accountInfo)
+        } catch (error) {
+            console.error('신규 계정 생성 실패:', error)
+            throw error
+        }
     }
 };
 
