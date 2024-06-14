@@ -57,3 +57,4 @@ class OauthServiceImpl(OauthService):
         response = requests.post(self.userinfoRequestUri, headers=headers)
         return response.json()
 
+
