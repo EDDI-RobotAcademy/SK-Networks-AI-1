@@ -7,6 +7,18 @@
 <script>
 import * as d3 from 'd3';
 
+export default {
+  name: 'BarChart',
+  data() {
+    return {
+      data: [30, 86, 168, 281, 303, 365]
+    };
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.drawChart();
+      window.addEventListener('resize', this.handleResize);
+    });
   },
   beforeUnmount() {
     window.removeEventListener('resize', this.handleResize);
