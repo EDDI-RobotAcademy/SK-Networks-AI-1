@@ -1,5 +1,5 @@
 <template>
-  <p>홈</p>
+  <h1 align="center">홈페이지 입니다</h1>
 </template>
 
 <script lang="ts">
