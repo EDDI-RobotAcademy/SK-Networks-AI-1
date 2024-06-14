@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class AccountLoginType(models.Model):
     class LoginType(models.TextChoices):
         KAKAO = 'KAKAO', 'Kakao'
