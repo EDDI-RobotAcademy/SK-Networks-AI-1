@@ -1,8 +1,8 @@
 <template>
-    <v-app-bar color="orange" app dark height="64">
+    <v-app-bar color="#004804" app dark height="64">
         <v-btn @click="goToHome">
             <v-toolbar-title class="text-uppercase text--darken-4">
-                <span>SK NETWORKS AI CAMP With MINN</span>
+                <span>GET YOUR Tumblr✨</span>
             </v-toolbar-title>
         </v-btn>
         <v-spacer></v-spacer>
