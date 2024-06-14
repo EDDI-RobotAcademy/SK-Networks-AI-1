@@ -18,6 +18,7 @@ class Migration(migrations.Migration):
                 ('productName', models.CharField(max_length=128)),
                 ('productDescription', models.TextField()),
                 ('productPrice', models.DecimalField(decimal_places=2, max_digits=10)),
+                ('productImage', models.CharField(max_length=100, null=True)),
                 ('registeredDate', models.DateTimeField(auto_now_add=True)),
                 ('updatedDate', models.DateTimeField(auto_now=True)),
             ],
