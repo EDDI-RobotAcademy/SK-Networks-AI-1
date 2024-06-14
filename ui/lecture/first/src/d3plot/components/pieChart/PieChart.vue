@@ -36,7 +36,7 @@ export default {
     drawChart() {
       const width = this.$refs.chart.clientWidth;
       const height = 500;
-      const margin = 40; // 여백을 추가합니다.
+      const margin = 40;
       const radius = Math.min(width, height) / 2 - margin;
 
       const svg = d3
