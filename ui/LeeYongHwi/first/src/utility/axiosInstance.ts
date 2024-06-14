@@ -1,4 +1,4 @@
-// '@'는 프로젝트 최상위에서 src의 경로입니다.
+// '@' 는 프로젝트 최상위에서 src 의 경로입니다.
 import env from "@/env";
 import axios, { AxiosInstance } from "axios";
 
