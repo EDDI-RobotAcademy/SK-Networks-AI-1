@@ -1,5 +1,6 @@
 from oauth.service.oauth_service import OauthService
 from manual_proj import settings
+import requests
 
 class OauthServiceImpl(OauthService):
     __instance = None
@@ -28,3 +29,27 @@ class OauthServiceImpl(OauthService):
         print("kakaoLoginAddress()")
         return (f"{self.loginUrl}/oauth/authorize?"
                 f"client_id={self.clientId}&redirect_uri={self.redirectUri}&response_type=code")
+
+    def requestAccessToken(self, kakaoAuthCode):
+        print('requestAccessToken()')
+        accessTokenRequestForm = {
+            'grant_type': 'authorization_code',
+            'client_id': self.clientId,
+            'redirect_uri': self.redirectUri,
+            'code': kakaoAuthCode
+        }
+
+        print(f"clientId: {self.clientId}")
+        print(f"redirectUri: {self.redirectUri}")
+        print(f"kakaoAuthCode: {kakaoAuthCode}")
+        print(f"tokenRequestUri: {self.tokenRequestUri}")
+
+        response = requests.post(self.tokenRequestUri, data=accessTokenRequestForm)
+        print(f"response: {response}")
+
+        return response.json()
+
+    def requestUserInfo(self, accessToken):
+        headers = {'Authorization': f'Bearer {accessToken}'}
+        response = requests.post(self.userinfoRequestUri, headers=headers)
+        return response.json()
