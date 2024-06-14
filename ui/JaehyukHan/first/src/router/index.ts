@@ -14,6 +14,7 @@ const routes: Array<RouteRecordRaw> = [
   ...ProductRoutes,
   ...AccountRoutes,
   ...AuthenticationRoutes,
+  ...AccountRoutes
 ]
 
 const router = createRouter({
