@@ -15,7 +15,6 @@ export default {
         ...mapActions(accountModule, ['requestEmailDuplicationCheckToDjango']),
         async setRedirectData () {
             const code = this.$route.query.code
-            console.log('code:', code)
 
             await this.requestAccessTokenToDjangoRedirection({ code })
             const userInfo = await this.requestUserInfoToDjango()
@@ -31,7 +30,7 @@ export default {
                 this.$router.push('/')
             } else {
                 console.log('신규 가입 고객입니다!')
-                // this.$router.push('/account/register')
+                this.$router.push('/account/register')
             }
         }
     },
