@@ -11,10 +11,10 @@ class Board(models.Model):
     title = models.CharField(max_length=128, null=False) # 숫자 잘못 입력했을 때 숫자만 바꿔도 알아서 업뎃 됨
     writer = models.CharField(max_length=32, null=False)
     content = models.TextField() # 문자가 긴 경우 TextField 적용
-    regDate = models.DateTimeField(auto_now_add=True) # 추가된 현재시간 적용
-    updDate = models.DateTimeField(auto_now=True) # 변경된 현재시간 적용
+    regDate = models.DateTimeField(auto_now_add=True) # 추가된 현재 시간 적용
+    updDate = models.DateTimeField(auto_now=True) # 변경된 현재 시간 적용
 
-    def __str__(self):
+    def __str__(self): # 애매함
         return self.title
 
     # 테이블 이름을 Meta 지정 없이 사용할 경우

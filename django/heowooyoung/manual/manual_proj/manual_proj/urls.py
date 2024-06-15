@@ -23,4 +23,5 @@ urlpatterns = [
     # board 디렉토리 하위에 urls.py에 관리하겠다는 의미
     path('board/', include('board.urls')),
     path('product/', include('product.urls')),
+    path('oauth/', include('oauth.urls')),
 ]
