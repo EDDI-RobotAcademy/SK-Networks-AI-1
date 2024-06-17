@@ -15,7 +15,6 @@ export default {
         ...mapActions(accountModule, ['requestEmailDuplicationCheckToDjango']),
         async setRedirectData () {
             const code = this.$route.query.code
-            console.log('code:', code)
 
             await this.requestAccessTokenToDjangoRedirection({ code })
             const userInfo = await this.requestUserInfoToDjango()

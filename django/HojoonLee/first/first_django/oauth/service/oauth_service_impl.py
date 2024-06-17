@@ -1,8 +1,10 @@
 from first_django import settings
 from oauth.service.oauth_service import OauthService
 
-class OauthServiceImpl(OauthService):
+import requests
 
+
+class OauthServiceImpl(OauthService):
     __instance = None
 
     def __new__(cls):
@@ -24,8 +26,33 @@ class OauthServiceImpl(OauthService):
 
         return cls.__instance
 
-    # 카카오 디벨로버 링크에서 확인가능
+    # https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#request-code
     def kakaoLoginAddress(self):
         print("kakaoLoginAddress()")
         return (f"{self.loginUrl}/oauth/authorize?"
                 f"client_id={self.clientId}&redirect_uri={self.redirectUri}&response_type=code")
+
+    def requestAccessToken(self, kakaoAuthCode):
+        print("requestAccessToken()")
+        accessTokenRequestForm = {
+            'grant_type': 'authorization_code',
+            'client_id': self.clientId,
+            'redirect_uri': self.redirectUri,
+            'code': kakaoAuthCode,
+            'client_secret': None
+        }
+
+        print(f"client_id: {self.clientId}")
+        print(f"redirect_uri: {self.redirectUri}")
+        print(f"code: {kakaoAuthCode}")
+        print(f"tokenRequestUri: {self.tokenRequestUri}")
+
+        response = requests.post(self.tokenRequestUri, data=accessTokenRequestForm)
+        print(f"response: {response}")
+
+        return response.json()
+
+    def requestUserInfo(self, accessToken):
+        headers = {'Authorization': f'Bearer {accessToken}'}
+        response = requests.post(self.userinfoRequestUri, headers=headers)
+        return response.json()

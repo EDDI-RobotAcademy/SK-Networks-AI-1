@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'board',
     "product",
     "oauth",
+    "account",
 ]
 
 MIDDLEWARE = [
