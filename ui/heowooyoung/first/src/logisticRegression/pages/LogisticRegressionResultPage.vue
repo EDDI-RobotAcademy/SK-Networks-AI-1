@@ -29,9 +29,16 @@ export default {
             resizeTimer: null,
         }
     },
+
     mounted () {
         this.fetchLogisticRegressionData()
+        window.addEventListener('resize', this.handleResize)
     },
+
+    beforeUnmount() {
+        window.removeEventListener('resize', this.handleResize)
+    },
+
     methods: {
         async fetchLogisticRegressionData () {
             try {
@@ -139,6 +146,18 @@ export default {
                 .attr('stroke', 'red')
                 .attr('stroke-width', 2)
                 .attr('fill', 'none')
+        },
+
+        handleResize () {
+            clearTimeout(this.resizeTimer)
+            this.resizeTimer = setTimeout(() => {
+                const chartContainer = this.$refs.chartContainer
+                this.svgWidth = chartContainer.clientWidth
+                this.svgHeight = chartContainer.clientHeight
+
+                d3.select(this.$refs.svg).attr('viewBox', `0 0 ${this.svgWidth} ${this.svgHeight}`)
+                this.createChart()
+            })
         }
     }
 }
