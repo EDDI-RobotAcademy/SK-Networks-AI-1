@@ -1,6 +1,7 @@
 import actions, { AuthenticationActions } from "./actions"
 import state, { AuthenticationState } from "./states"
 
+
 export interface AuthenticationModule {
     namespaced: true
     state: AuthenticationState
