@@ -1,4 +1,8 @@
+import os
+
+from dotenv import load_dotenv
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
 
@@ -57,6 +61,18 @@ def read_item(item_id: int, q: str = None):
 # (빠른 습득 및 생산성의 비밀임 ㅇㅇ)
 
 app.include_router(logisticRegressionRouter)
+
+load_dotenv()
+
+origins = os.getenv("ALLOWED_ORIGINS", "").split(",")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 if __name__ == "__main__":
