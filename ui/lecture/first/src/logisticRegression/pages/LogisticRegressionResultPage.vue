@@ -2,7 +2,7 @@
     <v-container class="chart-container">
         <h2>Logistic Regression Chart</h2>
         <p>Accuracy: {{ accuracy }}</p>
-        <div ref="chartContainer">
+        <div ref="chartContainer" class="chart-wrapper">
             <svg ref="svg" :viewBox="`0 0 ${svgWidth} ${svgHeight}`"
                             preserveAspectRatio="xMidYMid meet"/>
         </div>
@@ -30,6 +30,10 @@ export default {
     },
     mounted () {
         this.fetchLogisticRegressionData()
+        window.addEventListener('resize', this.handleResize)
+    },
+    beforeUnmount () {
+        window.removeEventListener('resize', this.handleResize)
     },
     methods: {
         async fetchLogisticRegressionData () {
@@ -138,6 +142,20 @@ export default {
                 .attr('stroke', 'red')
                 .attr('stroke-width', 2)
                 .attr('fill', 'none')
+        },
+        handleResize () {
+            // 브라우저 크기 변경을 감지하면 0.2초 단위로 화면 크기 조정하여 다시 그림
+            clearTimeout(this.resizeTimer)
+            this.resizeTimer = setTimeout(() => {
+                const chartContainer = this.$refs.chartContainer
+                this.svgWidth = chartContainer.clientWidth
+                this.svgHeight = chartContainer.clientHeight
+
+                d3.select(this.$refs.svg)
+                        .attr('viewBox', `0 0 ${this.svgWidth} ${this.svgHeight}`)
+
+                this.createChart()
+            }, 200)
         }
     }
 }
@@ -145,6 +163,14 @@ export default {
 
 <style scoped>
 .chart-container {
-    margin: auto
+    width: 80%;
+    height: 60%;
+    margin: auto;
+}
+
+.chart-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
 }
 </style>
