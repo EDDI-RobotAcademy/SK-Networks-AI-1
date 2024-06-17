@@ -22,7 +22,7 @@
         </v-row>
         <v-row>
             <v-col cols="12">
-                <p v-if="uploadedFileName">업르드된 파일: {{ uploadedFileName }}</p>
+                <p v-if="uploadedFileName">업로드된 파일: {{ uploadedFileName }}</p>
             </v-col>
         </v-row>
         <v-row>

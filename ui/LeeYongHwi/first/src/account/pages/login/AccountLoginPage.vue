@@ -27,7 +27,7 @@ const authenticationModule = 'authenticationModule'
 export default {
     data () {
         return {
-            images: ['cs1.png', 'cs2.gif', 'cs3.jpg']
+            images: ['cs1.png', 'cs2.png', 'cs3.png']
         }
     },
     setup () {
