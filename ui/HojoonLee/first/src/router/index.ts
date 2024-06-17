@@ -4,6 +4,7 @@ import BoardRoutes from '@/board/router/BoardRoutes'
 import ProductRoutes from '@/product/router/ProductRoutes'
 import HomeRoutes from '@/home/router/homeRoutes'
 import AccountRoutes from '@/account/router/AccountRoutes'
+import AuthenficationRoutes from '@/authentication/router/AuthenticationRouter'
 
 
 const routes: Array<RouteRecordRaw> = [
@@ -14,7 +15,7 @@ const routes: Array<RouteRecordRaw> = [
   ...BoardRoutes,
   ...ProductRoutes,
   ...AccountRoutes,
-  //...AuthenficationRoutes,
+  ...AuthenficationRoutes, // 항상 도메인의 router 추가했으면 main router 에도 추가해줘야함
 ]
 
 const router = createRouter({
