@@ -1,15 +1,21 @@
 <template>
   <v-app>
-    <v-main>
+    <!-- HTML 파트 -->
+    <navigation-menu-bar/>
+    <v-main>  #v-main이 안에다 쓰면 뷰를 키면 나오는 구성이 됨
       <router-view/>
     </v-main>
   </v-app>
 </template>
 
+
 <script lang="ts">
+// Javascript 파트
 import { defineComponent } from 'vue'
+import NavigationMenuBar from './navigationBar/NavigationMenuBar.vue'
 
 export default defineComponent({
+  components: { NavigationMenuBar },
   name: 'App',
 
   data () {
@@ -19,3 +25,5 @@ export default defineComponent({
   },
 })
 </script>
+
+// 여기 하단에 CSS 파트
