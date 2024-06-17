@@ -42,7 +42,7 @@ def logistic_regression_test():
     y_values = -(coef[0][0] * x_values + intercept[0]) / coef[0][1]
 
     return JSONResponse(content={
-        "acc": accuracy,
+        "accuracy": accuracy,
         "coefficients": coef.tolist(),
         'intercept': intercept.tolist(),
         'data_point': {

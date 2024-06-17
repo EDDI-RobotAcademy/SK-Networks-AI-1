@@ -69,6 +69,17 @@ export default {
         },
         signIn () {
             router.push('/account/login')
+        },
+        signOut (){
+            localStorage.removeItem("accessToken")
+            this.isLogin = false
+            router.push('/')
+        },
+        mounted () {
+            this.accessToken = localStorage.getItem("accessToken")
+            this.isLogin = !!this.accessToken
+            // TODO: 로그인이후 즉시로그아웃화면 갱신안되는 문제발견
+            // 새로고침하면 반영됨
         }
     }
 }
