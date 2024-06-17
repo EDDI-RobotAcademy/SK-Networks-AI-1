@@ -58,9 +58,14 @@ def read_item(item_id: int, q: str = None):
 # 점진적으로 개선시키는 것이 '애자일'방식임
 # (빠른 습득 및 생산성의 비밀임)
 
+# vue와 fastapi 통신을 위함
+# app은 django에서의 main.urls.py 기능을 함
+# router = urls (통신을 위함)
 app.include_router(logisticRegressionRouter)
 # 여기까지 해야 router 연결됨
 
+# env 관련 설정
+# 통신하는 과정에서 우리가 허락하는 것만 받아들이겠다.
 load_dotenv()
 
 origins = os.getenv("ALLOWED_ORIGINS", "").split(",")

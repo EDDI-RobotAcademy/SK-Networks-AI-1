@@ -10,7 +10,9 @@ from sklearn.model_selection import train_test_split
 
 # 아래와 같이 APIRouter를 가져오면
 # 생성한 router 이름으로 get, post 등등의 router를 구성할 수 있음
+# 얘는 곧 domain.urls.py랑 같다
 logisticRegressionRouter = APIRouter()
+
 
 @logisticRegressionRouter.get("/logistic-regression") # "/logistic-regression" 는 postman에서 test가능
 def logistic_regression_test():
@@ -19,10 +21,12 @@ def logistic_regression_test():
 
     np.random.seed(0)
     # 임의의 (x, y) 2차원 벡터(좌표)를 100개 생성
-    X = np.random.randn(100, 2)
+    # 왜 X만 대문자 ? x는 단일 값이 아닌 여러 정보(열)을 담은 list
+    X = np.random.randn(100, 2)   # 랜덤값으로 100행 2열의 데이터 생성
     # x 좌표와 y 좌표를 더해서 0보다 크면 1, 아니면 0
     y = (X[:, 0] + X[:, 1] > 0).astype(int)
 
+    # 데이터 분류하는 방법(7:3 비율로 train, test 나누겠다)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
 
     print('X:', X)
@@ -53,6 +57,7 @@ def logistic_regression_test():
     # X 테스트용 좌표를 가지고 결과값을 추론 (X는 벡터 리스트를 의미 -> 벡터는 행렬을 의미)
     # X = [(1, 2), (3, 4), (2, 3), ...]
     # y = [  1,       1,      1  , ...]
+    # 학습시켰으니 test data로 예측
     y_pred = model.predict(X_test)
 
     # 예측치인 pred 값과 실제 테스트 셋인 test를
@@ -63,10 +68,12 @@ def logistic_regression_test():
     coef = model.coef_
     # y = ax + b 에서 intercept_는 b를 의미함
     intercept = model.intercept_
+    # 계수와 절편을 알기 때문에, x값만 주어지면 y를 알 수 있음
 
     # x 값을 일정 범위로 설정!
     # 100개의 x 성분 중 최소값과 최대값을 뽑아서 일정 간격으로 분할
     # 최소값과 최대값이 있기 때문에 100개로 분할 가능
+    # linspace가 1차원 선형공간을 만드는 것
     x_values = np.linspace(X[:, 0].min(), X[:, 0].max(), 100)
     # 어떤 데이터를 볼 때 가중치(weight) 값이 존재함
     # 이 부분은 가중치를 고려하여 경계선을 구분하기 위해 사용하는 부분임
@@ -83,6 +90,7 @@ def logistic_regression_test():
     # ln -> w.x + b = 0
     # w1.x1 + w2.x2 + ... + b = 0
     y_values = -(coef[0][0] * x_values + intercept[0])/ coef[0][1]
+    # 선형 회귀 함수는 아까 빨간선 = 결정경계의 식을 알기 위해서가 목적이다.
 
     # repository의 역할이라고 생각하면 됨
     # -> 내용이 바뀔 일이 없으니 그대로 가져다 써도 됨
@@ -96,7 +104,7 @@ def logistic_regression_test():
             "X": X.tolist(),
             "y": y.tolist()
         },
-        "decision_boundary": {         # 정보를 어디로 줄건지
+        "decision_boundary": {          # 결정 경계 # 정보를 어디로 줄건지
             "x_values": x_values.tolist(),
             "y_values": y_values.tolist()
         }

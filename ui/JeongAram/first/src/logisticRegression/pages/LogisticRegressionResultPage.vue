@@ -13,9 +13,12 @@
 <script>
 
 import axiosInst from "@/utility/axiosInstance"
+// npm install d3 --legacy-peer-deps
 import * as d3 from 'd3'
 
+
 export default {
+    // 우리가 받아와야하는 local 정보들을 data에서 불러오기
     data() {
         return {
             accuracy: 0,
@@ -36,6 +39,12 @@ export default {
     beforeUnmount () {
         window.removeEventListener('resize', this.handleResize)
     },
+    // 원래 actions.ts는 웹페이지(.vue)실행한 CRUD 관련 상호작용을 Django(서버)로 직접 보내는 역할
+    // axiosInst로 장고로 보내는데 장고 안에 있는 urlspatturn 속 url이랑 일치해야함
+    // store폴더 안에 있는 것이 장고로 보내는 데이터 
+    // 원래 methods는 click 같이 해당 트리거가 실행되면 상응하는 함수는 액션으로 보낼거다  
+    // actions가 없어서 여기서 구현
+
     methods: {
         async fetchLogisticRegressionData () {
             try {
@@ -179,6 +188,7 @@ export default {
 }
 </script>
 
+<!-- scoped: 현재 페이지만 css 적용하겠다-->>
 <style scoped>
 .chart-container {
     width: 80%;
