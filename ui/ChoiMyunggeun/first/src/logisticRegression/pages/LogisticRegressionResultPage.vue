@@ -132,10 +132,13 @@ export default {
 
             const line = d3.line()
                     .x(d => x(d[0]))
-                    .y(d => y(d[1]))
+                    .y(d => x(d[1]))
 
+            // 로지스틱회귀 엑스값 맵핑해서 좌표화 하는부분
             const decisionBoundary = this.x_values.map((x_value, i) => [x_value, this.y_values[i]])
+            console.log('decisionBoundary:', decisionBoundary)
 
+            //결정경계를그리는것 직선.굵기.실선의옵션을줌
             g.append('path')
                 .datum(decisionBoundary)
                 .attr('d', line)
