@@ -37,9 +37,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "corsheaders",       # 추가한 부분
-    "rest_framework",    # 추가한 부분
-    "board",             # 추가한 부분
+    # 추가
+    "corsheaders",
+    "rest_framework",
+    "board",
+    "product",
+    "oauth",
+    "account",
 ]
 
 MIDDLEWARE = [
@@ -58,6 +62,15 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
+
+KAKAO = {
+    'LOGIN_URL': os.getenv('KAKAO_LOGIN_URL'),
+    'CLIENT_ID': os.getenv('KAKAO_CLIENT_ID'),
+    'REDIRECT_URI': os.getenv('KAKAO_REDIRECT_URI'),
+    'TOKEN_REQUEST_URI': os.getenv('KAKAO_TOKEN_REQUEST_URI'),
+    'USERINFO_REQUEST_URI': os.getenv('KAKAO_USERINFO_REQUEST_URI')
+
+}
 
 ROOT_URLCONF = "manual_proj.urls"
 
