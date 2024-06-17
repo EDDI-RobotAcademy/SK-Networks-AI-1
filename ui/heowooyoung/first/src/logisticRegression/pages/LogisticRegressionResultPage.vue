@@ -136,9 +136,15 @@ export default {
 
             const line = d3.line()
                     .x(d => x(d[0]))
-                    .y(d => y(d[1]))
+                    .y(d => x(d[1]))
 
+            
+            // 실제 fastapi에서 분석했던 로지스틱 회귀 분석의 결정 경계 x 값을 추출함
+            // x_values는 100개의 데이터이므로 아래 map을 통해서 낱개인 x_value로 재해석됨
+            // 즉 x_value인 낱개 데이터와 인덱스 번호(i) 로 맵핑하여 좌표화함
+            // 이 정보들을 전부 [x_value, this.y_value[i]] 로 맵핑하여 좌표화함
             const decisionBoundary = this.x_values.map((x_value, i) => [x_value, this.y_values[i]])
+            console.log('decisionBoundary: ', decisionBoundary)
 
             g.append('path')
                 .datum(decisionBoundary)
