@@ -6,6 +6,12 @@ import axiosInst from "@/utility/axiosInstance"
 
 export type AuthenticationActions = {
     requestKakaoOauthRedirectionToDjango(): Promise<void>
+    // TypeScript에서 함수 작성 시
+    // 파라미터에는 아래와 같이 타입을 명시해야합니다.
+    // 파라미터 이름: 파라미터 타입 형태로 작성
+    // 함수의 리턴 값은 파라미터를 표현하는 소괄호에서 시작해서 소괄호로 끝난 지점 이후
+    // : 을 사용하여 표현
+    // testFuction(testNumber: number): number
     requestAccessTokenToDjangoRedirection(context: ActionContext<AuthenticationState, any>, payload: { code: string }): Promise<void>
     requestUserInfoToDjango(context: ActionContext<AuthenticationState, any>): Promise<any>
 }
@@ -46,7 +52,14 @@ const actions: AuthenticationActions = {
                         { access_token: accessToken });
 
                 console.log('User Info:', userInfoResponse.data.user_info);
-                return userInfoResponse.data.user_info;
+                // const email = userInfoResponse.data.user_info.kakao_account.email
+                // console.log('email', email)
+
+                // return email;
+
+                const userInfo = userInfoResponse.data.user_info
+                return userInfo;
+
             } catch (error) {
                 alert('사용자 정보 가져오기 실패!');
                 throw error;
