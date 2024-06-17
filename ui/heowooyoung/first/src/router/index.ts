@@ -5,6 +5,7 @@ import ProductRoutes from '@/product/router/ProductRoutes'
 import HomeRoutes from '@/home/router/HomeRoutes'
 import AccountRoutes from '@/account/router/AccountRoutes'
 import AuthenticationRoutes from '@/authentication/router/AuthenticationRoutes'
+import D3PlotRoutes from '@/d3plot/router/D3PlotRoutes'
 import LogisticRegressionRoutes from '@/logisticRegression/router/LogisticRegressionRoutes'
 
 const routes: Array<RouteRecordRaw> = [
@@ -16,6 +17,7 @@ const routes: Array<RouteRecordRaw> = [
   ...ProductRoutes,
   ...AccountRoutes,
   ...AuthenticationRoutes,
+  ...D3PlotRoutes,
   ...LogisticRegressionRoutes,
 ]
 
