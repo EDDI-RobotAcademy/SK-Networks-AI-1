@@ -26,8 +26,6 @@ export type AuthenticationActions = {
 const actions: AuthenticationActions = {
     async requestKakaoOauthRedirectionToDjango(): Promise<void> {
         return axiosInst.djangoAxiosInst.get('/oauth/kakao').then((res) => {
-            console.log('requestKakaoOauthRedirectionToDjango() -> res:', 
-                        res.data.url)
             window.location.href = res.data.url
         })
     },
@@ -41,7 +39,6 @@ const actions: AuthenticationActions = {
 
             const response = await axiosInst.djangoAxiosInst.post(
                 '/oauth/kakao/access-token', { code })
-            console.log('accessToken:', response.data.accessToken.access_token)
             localStorage.setItem("accessToken", response.data.accessToken.access_token)
         } catch (error) {
             console.log('Access Token 요청 중 문제 발생:', error)
@@ -53,16 +50,10 @@ const actions: AuthenticationActions = {
 
         try {
             const accessToken = localStorage.getItem("accessToken");
-            console.log('accessToken:', accessToken);
             const userInfoResponse: AxiosResponse<any> = 
                 await axiosInst.djangoAxiosInst.post(
                     '/oauth/kakao/user-info', 
                     { access_token: accessToken });
-                    
-            console.log('User Info:', userInfoResponse.data.user_info);
-            // const email = userInfoResponse.data.user_info.kakao_account.email
-
-            // return email;
 
             const userInfo = userInfoResponse.data.user_info
             return userInfo
