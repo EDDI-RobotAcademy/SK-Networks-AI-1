@@ -57,8 +57,7 @@ const actions: BoardActions = {
             // GET방식과 POST 방식이 존재하는데
             // GET 방식은 URL에 모든 정보들이 노출됨
             // POST 방식은 URL에  정보가 노출되지 않고, 
-            const res: AxiosResponse = await axiosInst.djangoAxiosInst.post(
-                '/board/register', { title, writer, content})
+            const res: AxiosResponse = await axiosInst.djangoAxiosInst.post('/board/register', { title, writer, content})
 
             console.log('res:', res.data)
             return res.data
