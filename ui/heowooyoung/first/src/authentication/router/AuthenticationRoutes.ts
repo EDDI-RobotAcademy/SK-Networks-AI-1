@@ -1,10 +1,10 @@
-import KaKaoRedirection from "@/authentication/redirection/kakao/KaKaoRedirection.vue";
+import KakaoRedirection from "@/authentication/redirection/kakao/KakaoRedirection.vue"
 
 const AuthenticationRoutes = [
     {
         path: '/oauth/kakao-access-token',
-        name: 'kakaoRedirection',
-        component: KaKaoRedirection
+        name: 'KakaoRedirection',
+        component: KakaoRedirection
     },
 ]
 

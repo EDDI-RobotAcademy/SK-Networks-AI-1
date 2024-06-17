@@ -16,6 +16,7 @@ urlpatterns = [
     path('register', BoardView.as_view({'post': 'create'}), name='board-register'),
     path('read/<int:pk>', BoardView.as_view({'get': 'read'}), name='board-read'),
     path('delete/<int:pk>', BoardView.as_view({'delete': 'removeBoard'}), name='board-remove'),
+    path('modify/<int:pk>', BoardView.as_view({'put': 'modifyBoard'}), name='board-modify'),
 ]
 
 # localhost:8000/board/list
