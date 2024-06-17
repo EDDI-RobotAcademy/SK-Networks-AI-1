@@ -1,7 +1,9 @@
 <template>
   <v-app>
     <!-- HTML 파트 -->
-    <navigation-menu-bar/>
+     <!-- 추가된 부분 -->
+    <navigation-menu-bar/>  
+    <!-- v-main 안에다 쓰면 vue를 키면 나오는 구성이 됨-->
     <v-main>
       <router-view/>
     </v-main>
