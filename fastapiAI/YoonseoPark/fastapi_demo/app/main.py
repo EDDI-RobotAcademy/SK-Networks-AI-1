@@ -1,13 +1,19 @@
+import os
+
+from dotenv import load_dotenv
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
 
 app = FastAPI()
 
+
 # 웹 브라우저 상에서 "/"을 입력하면 (key)Hello : (value)World가 리턴
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
+
 
 # 브라우저 상에 /items/4?q="test" 같은 것을 넣으면 item_id로 4, q로는 "test"를 획득하게 됨
 # 브라우저 상에서 get은 파라미터를 '?'로 구분함
@@ -16,7 +22,8 @@ def read_root():
 @app.get("/items/{item_id}")
 def read_item(item_id: int, q: str = None):
     return {"item_id": item_id, "q": q}
-    
+
+
 # 사실 현재 위의 코드는 매우 근본이 없는 .... 코드임
 # 왜냐하면 모든 로직을 main에 전부 다 때려박았기 때문
 # 실질적으로 router(controller) 역할을 하는 녀석들을 분리할 필요가 있음
@@ -49,7 +56,17 @@ def read_item(item_id: int, q: str = None):
 
 app.include_router(logisticRegressionRouter)
 
+load_dotenv()
 
+origins = os.getenv("ALLOWED_ORIGINS", "").split(",")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="127.0.0.1", port=33333)
