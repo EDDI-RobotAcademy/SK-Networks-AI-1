@@ -9,3 +9,8 @@ class ProductService(ABC):
     @abstractmethod
     def createProduct(self, productName, productPrice, productDescription, productImage):
         pass
+
+    @abstractmethod
+    def readProduct(self, productId):
+        return self.__productRepository.findByProductId(productId)
+
