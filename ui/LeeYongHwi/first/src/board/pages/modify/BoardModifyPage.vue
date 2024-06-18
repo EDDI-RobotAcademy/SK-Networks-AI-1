@@ -62,23 +62,24 @@ export default {
         ...mapActions(boardModule, ['requestBoardToDjango', 'requestModifyBoardToDjango']),
         async onModify () {
             console.log('수정 완료를 누르셨습니다!')
-           
+
             const payload = {
                 title: this.title,
                 content: this.content,
                 boardId: this.boardId,
             }
+
             await this.requestModifyBoardToDjango(payload)
             await this.$router.push({ 
                 name: 'BoardReadPage',
-                params: { boardId: this.boardId}
+                params: { boardId: this.boardId } 
             })
         },
     },
     created () {
         this.requestBoardToDjango(this.boardId).then(() => {
             this.title = this.board.title
-            this.writer = this.board.wirter
+            this.writer = this.board.writer
             this.content = this.board.content
         })
     },
