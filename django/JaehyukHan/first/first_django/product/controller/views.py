@@ -40,5 +40,8 @@ class ProductView(viewsets.ViewSet):
             return Response({ 'error': str(e) },
                             status=status.HTTP_400_BAD_REQUEST)
 
-
+    def readProduct(self, request, pk=None):
+        product = self.productService.readProduct(pk)
+        serializer = ProductSerializer(product)
+        return Response(serializer.data)
 
