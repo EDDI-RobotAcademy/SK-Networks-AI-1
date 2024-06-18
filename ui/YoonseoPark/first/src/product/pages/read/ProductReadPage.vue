@@ -12,37 +12,48 @@
                     </v-row>
                     <v-row>
                         <v-col cols="12">
-                            <v-text-field v-model="product.productPrice" readonly label="가격"/>
+                            <v-textarea v-model="product.productDescription" readonly label="상세내용" auto-grow/>
                         </v-col>
                     </v-row>
                     <v-row>
                         <v-col cols="12">
-                            <v-textarea v-model="product.productDescription" readonly label="상세내용" auto-grow/>
+                            <v-text-field v-model="product.productPrice" readonly label="가격" type="number"/>
                         </v-col>
                     </v-row>
-                    <v-row justify="end">
-                        <v-col cols="auto">
-                            <router-link :to="{ name: 'ProductModifyPage', params: { productId } }">
-                                <v-btn color="primary">수정</v-btn>
-                            </router-link>
-                        </v-col>
-                        <v-col cols="auto">
-                            <v-btn color="error" @click="onDelete">삭제</v-btn>
-                        </v-col>
-                        <v-col cols="auto">
-                            <router-link :to="{ name: 'ProductListPage' }">
-                                <v-btn color="secondary">돌아가기</v-btn>
-                            </router-link>
+
+                    <v-row>
+                        <v-col cols="12">
+                            <v-img :width="500" :src="getProductImageUrl(product.productImage)" aspect-ratio="1" class="grey lighten-2">
+                                <template v-slot:placeholder>
+                                    <v-row class="fill-height ma-0" align="center" justify="center">
+                                        <v-progress-circular indeterminate color="grey lighten-5"/>
+                                    </v-row>
+                                </template>
+                            </v-img>
                         </v-col>
                     </v-row>
                 </v-container>
             </v-card-text>
         </v-card>
+
+        <v-alert v-else type="info">현재 등록된 상품이 없습니다!</v-alert>
+        <div class="button-container">
+            <v-btn color="primary" @click="onPurchase" class="action-button">
+                <v-icon>mdi-cart</v-icon>
+                <span calss="button-text">구매하기</span>
+            </v-btn> 
+            <router-link :to="{ name: 'ProductListPage' }" class="router-link no-underline">
+                <v-btn color="secondary" class="action-button">
+                    <v-icon>mdi-arrow-left</v-icon>
+                    <span class="button-text">목록으로 돌아가기</span>
+                </v-btn>
+            </router-link>
+        </div>
     </v-container>
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { createNamespacedHelpers, mapActions, mapState } from 'vuex'
 
 const productModule = 'productModule'
 
@@ -57,11 +68,17 @@ export default {
         ...mapState(productModule, ['product'])
     },
     methods: {
-        // 'requestDeleteProductToDjango' 추후 처리 필요
-        ...mapActions(boardModule, ['requestProductToDjango']),
+        ...mapActions(productModule, ['requestProductToDjango']),
+        async onPurchase () {
+            console.log('구매하기 버튼 눌렀음')
+        },
+        getProductImageUrl(imageName) {
+            console.log('imageName:', imageName)
+            return require('@/assets/images/uploadImages/' + imageName)
+        }
     },
     created () {
-        this.requestProductToDjango(this.boardId)
+        this.requestProductToDjango(this.productId)
     },
 }
 </script>
