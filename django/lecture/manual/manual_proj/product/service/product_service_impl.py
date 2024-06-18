@@ -26,4 +26,5 @@ class ProductServiceImpl(ProductService):
         return self.__productRepository.create(
             productName, productPrice, productDescription, productImage)
 
-
+    def readProduct(self, productId):
+        return self.__productRepository.findByProductId(productId)
