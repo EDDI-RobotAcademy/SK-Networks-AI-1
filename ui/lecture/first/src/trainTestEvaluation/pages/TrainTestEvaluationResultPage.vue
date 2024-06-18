@@ -30,48 +30,84 @@
 
 <script>
 import axiosInst from "@/utility/axiosInstance"
-// npm install d3 --legacy-peer-deps
 import * as d3 from 'd3'
 
 export default {
     data () {
         return {
-            accuracy: 0,
-            X: [],
-            y: [],
-            x_values: [],
-            y_values: [],
-            svgWidth: 0,
-            svgHeight: 0,
-            margin: { top: 20, right: 50, bottom: 50, left: 50 },
-            resizeTimer: null,
+            accuracy: null,
+            svgWidth: 600,
+            svgHeight: 600,
+            classificationReport: [],
+            formattedReportData: [],
         }
     },
-    mounted () {
-        this.fetchLogisticRegressionData()
+    async created () {
+        try {
+            // fetch가 자체적으로 get과 동일함
+            // 현재 d3와 fastapi, 딥러닝 hard skill(기능) 자체에 집중하기 때문에
+            // 일단 soft skill(DDD)는 잠시 접어뒀음
+            const response = await fetch('http://localhost:33333/train-test-evaluation')
+            const data = await response.json()
+            console.log('data:', data)
+
+            this.accuracy = data.accuracy
+
+            this.drawConfusionMatrix(data.confusion_matrix)
+        } catch (error) {
+            console.error('train test evaluation 데이터 확보 중 에러:', error)
+        }
+
         window.addEventListener('resize', this.handleResize)
     },
     beforeUnmount () {
         window.removeEventListener('resize', this.handleResize)
     },
     methods: {
-        async fetchLogisticRegressionData () {
-            try {
-                const response = 
-                    await axiosInst.fastapiAxiosInst.get('/logistic-regression')
-                const data = response.data
-                console.log('result:', data)
+        drawConfusionMatrix (matrix) {
+            const { svgWidth, svgHeight } = this
+            const margin = { top: 50, right: 50, bottom: 50, left: 50 }
+            const width = svgWidth - margin.left - margin.right
+            const height = svgHeight - margin.top - margin.bottom
 
-                this.accuracy = data.accuracy
-                this.X = data.data_point.X
-                this.y = data.data_point.y
-                this.x_values = data.decision_boundary.x_values
-                this.y_values = data.decision_boundary.y_values
+            const svg = d3.select(this.$refs.svg)
+                            .attr("width", width)
+                            .attr("height", height)
 
-                this.createChart()
-            } catch (error) {
-                console.error('로지스틱 회귀 분석 중 에러 발생:', error)
-            }
+            const maxValue = d3.max(matrix.flat())
+            console.log('maxValue:', maxValue)
+
+            const color = d3.scaleSequential()
+                            .domain([0, maxValue])
+                            .interpolator(d3.interpolateOranges)
+
+            const cellSize = Math.min(width / matrix.length, height / matrix.length)
+            console.log('cellSize:', cellSize)
+            console.log('matrix length:', matrix.length)
+
+            svg.append('g')
+                    .attr('transform', `translate(${margin.left}, ${margin.top})`)
+                    .selectAll("rect")
+                    .data(matrix.flat())
+                    .enter().append("rect")
+                    .attr("x", (d, i) => (i % matrix.length) * cellSize)
+                    .attr("y", (d, i) => Math.floor(i / matrix.length) * cellSize)
+                    .attr("width", cellSize)
+                    .attr("height", cellSize)
+                    .style("fill", d => color(d))
+                    .style("stroke", "#ccc")
+                    .style("stroke-width", 1)
+
+            svg.append('g')
+                    .attr('transform', `translate(${margin.left} ${margin.top})`)
+                    .selectAll("text")
+                    .data(matrix.flat())
+                    .enter().append("text")
+                    .attr("x", (d, i) => (i % matrix.length) * cellSize + cellSize / 2)
+                    .attr("y", (d, i) => Math.floor(i / matrix.length) * cellSize + cellSize / 2)
+                    .attr("dy", "0.65em")
+                    .attr("text-anchor", "middle")
+                    .text(d => d.toFixed(0))
         },
         createChart () {
             if (!this.X.length || !this.y.length || 
