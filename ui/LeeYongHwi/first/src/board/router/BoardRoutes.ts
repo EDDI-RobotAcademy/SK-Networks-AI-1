@@ -15,13 +15,11 @@ const BoardRoutes = [
         component: BoardRegisterPage,
     },
     {
-        // 가변인자
         path: '/board/read/:boardId',
         name: 'BoardReadPage',
         components: {
             default: BoardReadPage,
         },
-        // 프롭스 설정을 해야 파라미터로 넘길 수 있음
         props: {
             default: true
         }
