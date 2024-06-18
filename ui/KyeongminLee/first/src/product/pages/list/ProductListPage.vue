@@ -66,12 +66,15 @@ export default {
     },
     methods: {
         ...mapActions(productModule, ['requestProductListToDjango']),
-        getImageUrl (productImage) {
-            return require('@/assets/images/uploadImages/' + productImage)
+        getImageUrl (imageName) {
+            return require('@/assets/images/uploadImages/' + imageName)
         },
-        // goToProductReadPage (event, { item }) {
-        //     console.log('읽기 구현 할 때 사용!')
-        // }
+        goToProductReadPage (productId) {
+            this.$router.push({
+                name: 'ProductReadPage',
+                params: { productId: productId }
+            })
+        }
     },
     data () {
         return {
