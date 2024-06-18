@@ -7,6 +7,20 @@
         </v-btn>
         <v-spacer></v-spacer>
 
+        <!-- <v-menu>
+            <template v-slot:activator="{ props }">
+                <v-btn color="white" v-bind="props">
+                    <b>Activator Slot</b>
+                </v-btn>
+            </template>
+            <v-list>
+                <v-list-item v-for="(item, index) in items" 
+                            :key="index" :value="index" @click="item.action">
+                    <v-list-item-title>{{ item.title }}</v-list-item-title>
+                </v-list-item>
+            </v-list>
+        </v-menu> -->
+
         <v-btn text @click="goToProductList" class="btn-text">
             <v-icon left>mdi-store</v-icon>
             <span>상품</span>
@@ -23,9 +37,6 @@
             <v-icon left>mdi-logout</v-icon>
             <span>로그아웃</span>
         </v-btn>
-
-        <!-- 아래 부분 회색 배경 -->
-        <div class="custom-footer"></div>
     </v-app-bar>
 </template>
 
@@ -37,8 +48,13 @@ export default {
     data () {
         return {
             navigation_drawer: false,
+            // links: [{ icon: 'mdi-home', action: this.goToHome, route: '/' }],
             accessToken: null,
             isLogin: false,
+            // items: [
+            //     { title: 'Product', action: this.goToProductList() },
+            //     { title: 'Board', action: this.goToBoardList() },
+            // ]
         }
     },
     methods: {
@@ -55,16 +71,16 @@ export default {
             router.push('/account/login')
         },
         signOut () {
-            // 로그아웃 처리 로직 구현
+            localStorage.removeItem("accessToken")
+            this.isLogin = false
+            router.push('/')
         }
+    },
+    mounted () {
+        this.accessToken = localStorage.getItem("accessToken")
+        this.isLogin = !!this.accessToken
+        // TODO: 로그인 이후 즉시 로그아웃 화면 갱신 안되는 문제 발견
+        //       새로고침하면 반영됨
     }
 }
 </script>
-
-<style scoped>
-/* 아래 부분 회색 배경을 추가하는 CSS */
-.custom-footer {
-    background-color: #a79999; /* 회색 배경 */
-    height: 32px; /* 높이 설정 (필요에 따라 조정) */
-}
-</style>
