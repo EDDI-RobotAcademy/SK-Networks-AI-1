@@ -70,7 +70,17 @@ export default{
         },
         signIn () {
             router.push('/account/login')
+        },
+        signOut () {
+            localStorage.removeItem("accessToken")
+            this.isLogin = false
+            router.push('/')
         }
+    },
+    mounted () {
+        this.accessToken = localStorage.getItem("accessToken")
+        this.isLogin = !!this.accessToken
+        // TODO : 로그인 이후 즉시 로그아웃 화면 갱신 안되는 문제 발견
     }
 }
 </script>
