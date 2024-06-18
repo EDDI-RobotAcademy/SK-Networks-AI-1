@@ -1,8 +1,9 @@
+import os
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
-import os
+from train_test_evaluation.controller.train_test_evaluation_controller import trainTestEvaluationRouter
 
 app = FastAPI()
 
@@ -57,6 +58,7 @@ def read_item(item_id: int, q: str = None):
 # 점진적으로 개선시키는 것이 '애자일' 방식임
 
 app.include_router(logisticRegressionRouter)
+app.include_router(trainTestEvaluationRouter)
 
 load_dotenv()
 
