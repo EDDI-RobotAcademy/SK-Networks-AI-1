@@ -4,7 +4,9 @@ const CartRoutes = [
     {
         path: '/cart/list',
         name: 'CartListPage',
-        component: CartListPage,
+        components: {
+            default: CartListPage
+        },
     },
 ]
 
