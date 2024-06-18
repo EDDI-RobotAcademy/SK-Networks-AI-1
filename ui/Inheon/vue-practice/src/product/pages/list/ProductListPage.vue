@@ -1,4 +1,4 @@
-<template>
+<template lagn="">
     <v-container>
         <h2>안녕 Vue3 TypeScript 기반 Product App이야</h2>
         <div style="text-align: left; margin: 15px;">
@@ -10,7 +10,7 @@
             <v-col v-for="(product, index) in productList" :key=index cols="12" sm="6" md="4" lg="3">
                 <v-card @click="goToProductReadPage(product.productId)">
                     <v-img :src="getImageUrl(product.productImage)" aspect-ratio="1" class="grey lighten-2">
-                        <template>
+                        <template v-slot:placeholder>
                             <v-row class="fill-height ma-0" align="center" justify="center">
                                 <v-progress-circular indeterminate color="grey lighten-5"/>
                             </v-row>
