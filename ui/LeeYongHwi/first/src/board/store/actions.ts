@@ -19,8 +19,7 @@ export type BoardActions = {
 const actions: BoardActions = {
     async requestBoardToDjango(context: ActionContext<BoardState, any>, boardId: number): Promise<void> {
         try {
-            // 파라미터 변수화를 자동으로 하기 위해 벡틱 사용
-            const res: AxiosResponse<any, any> = await axiosInst.djangoAxiosInst.get(`/board/read/${boardId}`);
+            const res: AxiosResponse<Board> = await axiosInst.djangoAxiosInst.get(`/board/read/${boardId}`);
             console.log('data:', res.data)
             context.commit('REQUEST_BOARD_TO_DJANGO', res.data);
         } catch (error) {
@@ -72,29 +71,31 @@ const actions: BoardActions = {
             throw error
         }
     },
-    async requestDeleteBoardToDjango(context: ActionContext<BoardState, unknown>, boardId: number): Promise<void>{
+    async requestDeleteBoardToDjango(context: ActionContext<BoardState, unknown>, boardId: number): Promise<void> {
         try {
-            console.log('requsetDeleteBoardToDjangp()')
+            console.log('requestDeleteBoardToDjango()')
+            // HTTP 상으로 DELETE 요청을 전송함
             await axiosInst.djangoAxiosInst.delete(`/board/delete/${boardId}`)
         } catch (error) {
-            console.log('requsetDeleteBoardToDjangp() 에서 문제 발생!')
+            console.log('requestDeleteBoardToDjango() 과정에서 문제 발생')
             throw error
         }
     },
     async requestModifyBoardToDjango(context: ActionContext<BoardState, any>, payload: {
         title: string, content: string, boardId: number
     }): Promise<void> {
+        
         const { title, content, boardId } = payload
 
-        try  { 
-            await axiosInst.djangoAxiosInst.put(`/board/modify/${boardId}`, {title, content})
-            console.log('수정 성공')
+        try {
+            // 수정을 요청 할 때는 PUT을 사용합니다.
+            await axiosInst.djangoAxiosInst.put(`/board/modify/${boardId}`, { title, content })
+            console.log('수정 성공!')
         } catch (error) {
-            console.log('requestModifyBoardToDjango() 과정 문제 발생')
+            console.log('requestModifyBoardToDjango() 과정에서 문제 발생')
             throw error
         }
     }
-
-}
+};
 
 export default actions;
