@@ -48,3 +48,10 @@ class ProductRepositoryImpl(ProductRepository):
         )
         product.save()
         return product
+
+    def findByProductId(self, productId):
+        try:
+            return Product.objects.get(productId=productId)
+        except Product.DoesNotExist:
+            return None
+
