@@ -16,7 +16,9 @@ class BoardView(viewsets.ViewSet):
 
     def list(self, request):
         boardList = self.boardService.list()
+        print('boardList:', boardList)
         serializer = BoardSerializer(boardList, many=True)
+        print('serialized boardList:', serializer.data)
         return Response(serializer.data)
 
     def create(self, request):
@@ -39,11 +41,10 @@ class BoardView(viewsets.ViewSet):
 
     def modifyBoard(self, request, pk=None):
         board = self.boardService.readBoard(pk)
-        # title, content만 가져오기 때문에 일부분만 쓴다는 의미
         serializer = BoardSerializer(board, data=request.data, partial=True)
 
         if serializer.is_valid():
-            updateBoard = self.boardService.updateBoard(pk, serializer.validated_data)
-            return Response(BoardSerializer(updateBoard).data)
+            updatedBoard = self.boardService.updateBoard(pk, serializer.validated_data)
+            return Response(BoardSerializer(updatedBoard).data)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
