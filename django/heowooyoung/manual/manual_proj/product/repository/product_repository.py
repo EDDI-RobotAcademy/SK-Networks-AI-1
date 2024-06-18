@@ -13,8 +13,5 @@ class ProductRepository(ABC):
         pass
 
     @abstractmethod
-    def findByProduct(self, productId):
-        try:
-            return Product.object.get(productId=productId)
-        except Product.DoesNotExist:
-            return None
+    def findByProductId(self, productId):
+        pass

@@ -12,5 +12,4 @@ class ProductService(ABC):
 
     @abstractmethod
     def readProduct(self, productId):
-        return self.__productRepository.findByProductId(productId)
-
+        pass
