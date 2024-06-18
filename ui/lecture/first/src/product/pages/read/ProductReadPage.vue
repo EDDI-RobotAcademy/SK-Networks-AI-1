@@ -23,7 +23,7 @@
                     
                     <v-row>
                         <v-col cols="12">
-                            <v-img src="getProductImageUrl(product.productImage)" aspect-ratio="1" class="grey lighten-2">
+                            <v-img :src="getProductImageUrl(product.productImage)" aspect-ratio="1" class="grey lighten-2">
                                 <template v-slot:placeholder>
                                     <v-row class="fill-height ma-0" align="center" justify="center">
                                         <v-progress-circular indeterminate color="grey lighten-5"/>
@@ -72,7 +72,11 @@ export default {
         ...mapActions(productModule, ['requestProductToDjango']),
         async onPurchase () {
             console.log('구매하기 버튼 눌렀음')
-        }
+        },
+        getProductImageUrl (imageName) {
+            console.log('imageName:', imageName)
+            return require('@/assets/images/uploadImages/' + imageName)
+        },
     },
     created () {
         this.requestProductToDjango(this.productId)
