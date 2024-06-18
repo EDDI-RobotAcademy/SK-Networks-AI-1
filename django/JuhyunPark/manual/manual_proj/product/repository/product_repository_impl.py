@@ -27,7 +27,7 @@ class ProductRepositoryImpl(ProductRepository):
     def create(self, productName, productPrice, productDescription, productImage):
         uploadDirectory = os.path.join(
             settings.BASE_DIR,
-            '../../../../ui/lecture/first/src/assets/images/uploadImages'
+            '../../../../ui/JuhyunPark/first/src/assets/images/uploadImages'
         )
         if not os.path.exists(uploadDirectory):
             os.makedirs(uploadDirectory)
@@ -48,3 +48,9 @@ class ProductRepositoryImpl(ProductRepository):
         )
         product.save()
         return product
+
+    def findByProductId(self, productId):
+        try:
+            return Product.objects.get(productId=productId)
+        except Product.DoesNotExist:
+            return None
