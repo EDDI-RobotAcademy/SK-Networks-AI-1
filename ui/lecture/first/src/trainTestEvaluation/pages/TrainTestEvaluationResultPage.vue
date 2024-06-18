@@ -65,25 +65,49 @@ export default {
     },
     methods: {
         drawConfusionMatrix (matrix) {
-            console.log('컨.퓨.전 매트릭스')
-        },
-        async fetchLogisticRegressionData () {
-            try {
-                const response = 
-                    await axiosInst.fastapiAxiosInst.get('/logistic-regression')
-                const data = response.data
-                console.log('result:', data)
+            const { svgWidth, svgHeight } = this
+            const margin = { top: 50, right: 50, bottom: 50, left: 50 }
+            const width = svgWidth - margin.left - margin.right
+            const height = svgHeight - margin.top - margin.bottom
 
-                this.accuracy = data.accuracy
-                this.X = data.data_point.X
-                this.y = data.data_point.y
-                this.x_values = data.decision_boundary.x_values
-                this.y_values = data.decision_boundary.y_values
+            const svg = d3.select(this.$refs.svg)
+                            .attr("width", width)
+                            .attr("height", height)
 
-                this.createChart()
-            } catch (error) {
-                console.error('로지스틱 회귀 분석 중 에러 발생:', error)
-            }
+            const maxValue = d3.max(matrix.flat())
+            console.log('maxValue:', maxValue)
+
+            const color = d3.scaleSequential()
+                            .domain([0, maxValue])
+                            .interpolator(d3.interpolateOranges)
+
+            const cellSize = Math.min(width / matrix.length, height / matrix.length)
+            console.log('cellSize:', cellSize)
+            console.log('matrix length:', matrix.length)
+
+            svg.append('g')
+                    .attr('transform', `translate(${margin.left}, ${margin.top})`)
+                    .selectAll("rect")
+                    .data(matrix.flat())
+                    .enter().append("rect")
+                    .attr("x", (d, i) => (i % matrix.length) * cellSize)
+                    .attr("y", (d, i) => Math.floor(i / matrix.length) * cellSize)
+                    .attr("width", cellSize)
+                    .attr("height", cellSize)
+                    .style("fill", d => color(d))
+                    .style("stroke", "#ccc")
+                    .style("stroke-width", 1)
+
+            svg.append('g')
+                    .attr('transform', `translate(${margin.left} ${margin.top})`)
+                    .selectAll("text")
+                    .data(matrix.flat())
+                    .enter().append("text")
+                    .attr("x", (d, i) => (i % matrix.length) * cellSize + cellSize / 2)
+                    .attr("y", (d, i) => Math.floor(i / matrix.length) * cellSize + cellSize / 2)
+                    .attr("dy", "0.65em")
+                    .attr("text-anchor", "middle")
+                    .text(d => d.toFixed(0))
         },
         createChart () {
             if (!this.X.length || !this.y.length || 
