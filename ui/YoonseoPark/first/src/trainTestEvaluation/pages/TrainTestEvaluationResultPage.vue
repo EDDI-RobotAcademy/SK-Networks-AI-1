@@ -4,9 +4,9 @@
         <p>Accuracy: {{  accuracy }}</p>
         <svg ref="svg" :viewBox="`0 0 ${svgWidth} ${svgHeight}`"
                         preserveAspectRatio="xMidYMid meet"></svg>
-        <div>
+        <div class="report">
             <h2>Classification Report</h2>
-            <table>
+            <table class="classification-report-table">
                 <thead>
                     <tr>
                         <th>Metric</th>
@@ -54,14 +54,12 @@ export default {
             this.accuracy = data.accuracy
 
             this.drawConfusionMatrix(data.confusion_matrix)
+
+            this.classificationReport = data.classification_report
+            this.formatClassificationReport()
         } catch (error) {
             console.error('train test evaluation 데이터 확보 중 에러:', error)
         }
-
-        window.addEventListener('resize', this.handleResize)
-    },
-    beforeUnmount () {
-        window.removeEventListener('resize', this.handleResize)
     },
     methods: {
         drawConfusionMatrix (matrix) {
@@ -106,6 +104,20 @@ export default {
                     .attr("dy", "0.65em")
                     .attr("text-anchor", "middle")
                     .text(d => d.toFixed(0))
+        },
+        formatClassificationReport () {
+            const formattedData = this.classificationReport.map((report, index) => {
+                const formattedReport = {
+                    metric: report.metric,
+                    precision: report.precision.toFixed(2),
+                    recall: report.recall.toFixed(2),
+                    'f1-score': report['f1-score'].toFixed(2),
+                }
+                
+                return formattedReport
+            })
+
+            this.formattedReportData = formattedData
         },
         createChart () {
             if (!this.X.length || !this.y.length || 
@@ -186,15 +198,25 @@ export default {
 </script>
 
 <style scoped>
-.chart-container {
-    width: 80%;
-    height: 60%;
-    margin: auto;
+.report {
+    margin-top: 20px;
+    text-align: center;
 }
 
-.chart-wrapper {
-    position: relative;
+.classification-report-table {
     width: 100%;
-    height: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.classification-report-table th,
+.classification-report-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.classification-report-table th {
+    background-color: #f2f2f2
 }
 </style>
