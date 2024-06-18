@@ -66,5 +66,5 @@ def train_test_evaluation():
     return JSONResponse({
         "accuracy":accuracy,
         "confusion_matrix":confusionMatrix,
-        "classificaion_report":selected_metrics
+        "classification_report":selected_metrics
     })
