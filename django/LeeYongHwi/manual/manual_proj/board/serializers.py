@@ -9,3 +9,4 @@ class BoardSerializer(serializers.ModelSerializer):
         model = Board
         fields = ['boardId', 'title', 'writer', 'content', 'regDate', 'updDate']
         read_only_fields = ['regDate', 'updDate']
+        
