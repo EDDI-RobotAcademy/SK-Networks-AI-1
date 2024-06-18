@@ -29,8 +29,10 @@ class BoardServiceImpl(BoardService):
         return self.__boardRepository.findByBoardId(boardId)
 
     def removeBoard(self, boardId):
-        return self.__boardRepository.deleteByBoardID(boardId)
+        return self.__boardRepository.deleteByBoardId(boardId)
 
     def updateBoard(self, boardId, boardData):
         board = self.__boardRepository.findByBoardId(boardId)
         return self.__boardRepository.update(board, boardData)
+
+

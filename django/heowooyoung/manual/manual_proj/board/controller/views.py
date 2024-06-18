@@ -48,4 +48,3 @@ class BoardView(viewsets.ViewSet):
             return Response(BoardSerializer(updatedBoard).data)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
