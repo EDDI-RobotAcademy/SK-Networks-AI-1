@@ -69,15 +69,13 @@ export default {
         ...mapState(productModule, ['product'])
     },
     methods: {
-        ...mapActions(productModule, ['requestBoardToDjango', 'requestDeleteBoardToDjango']),
-        async onDelete () {
-            console.log('삭제를 누르셨습니다!')
-            await this.requestDeleteBoardToDjango(this.boardId)
-            await this.$router.push({ name: 'BoardListPage' })
-        },
+        ...mapActions(productModule, ['requestProductToDjango']),
+        async onPurchase () {
+            console.log('구매하기 버튼 눌렀음')
+        }
     },
     created () {
-        this.requestBoardToDjango(this.boardId)
+        this.requestProductToDjango(this.productId)
     },
 }
 </script>
