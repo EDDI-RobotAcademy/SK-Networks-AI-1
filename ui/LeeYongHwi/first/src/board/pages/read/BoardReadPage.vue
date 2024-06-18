@@ -22,9 +22,9 @@
                     </v-row>
                     <v-row justify="end">
                         <v-col cols="auto">
-                            <router-link :to="{name: 'BoardModifyPage', params: { boardId }}">
+                            <router-link :to="{ name: 'BoardModifyPage', params: { boardId } }">
                                 <v-btn color="primary">수정</v-btn>
-                            </router-link>                  
+                            </router-link>
                         </v-col>
                         <v-col cols="auto">
                             <v-btn color="error" @click="onDelete">삭제</v-btn>
@@ -57,6 +57,7 @@ export default {
         ...mapState(boardModule, ['board'])
     },
     methods: {
+        // 'requestDeleteBoardToDjango' 추후 처리 필요
         ...mapActions(boardModule, ['requestBoardToDjango', 'requestDeleteBoardToDjango']),
         async onDelete () {
             console.log('삭제를 누르셨습니다!')
