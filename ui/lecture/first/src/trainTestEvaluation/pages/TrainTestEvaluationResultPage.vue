@@ -30,31 +30,43 @@
 
 <script>
 import axiosInst from "@/utility/axiosInstance"
-// npm install d3 --legacy-peer-deps
 import * as d3 from 'd3'
 
 export default {
     data () {
         return {
-            accuracy: 0,
-            X: [],
-            y: [],
-            x_values: [],
-            y_values: [],
-            svgWidth: 0,
-            svgHeight: 0,
-            margin: { top: 20, right: 50, bottom: 50, left: 50 },
-            resizeTimer: null,
+            accuracy: null,
+            svgWidth: 600,
+            svgHeight: 600,
+            classificationReport: [],
+            formattedReportData: [],
         }
     },
-    mounted () {
-        this.fetchLogisticRegressionData()
+    async created () {
+        try {
+            // fetch가 자체적으로 get과 동일함
+            // 현재 d3와 fastapi, 딥러닝 hard skill(기능) 자체에 집중하기 때문에
+            // 일단 soft skill(DDD)는 잠시 접어뒀음
+            const response = await fetch('http://localhost:33333/train-test-evaluation')
+            const data = await response.json()
+            console.log('data:', data)
+
+            this.accuracy = data.accuracy
+
+            this.drawConfusionMatrix(data.confusion_matrix)
+        } catch (error) {
+            console.error('train test evaluation 데이터 확보 중 에러:', error)
+        }
+
         window.addEventListener('resize', this.handleResize)
     },
     beforeUnmount () {
         window.removeEventListener('resize', this.handleResize)
     },
     methods: {
+        drawConfusionMatrix (matrix) {
+            console.log('컨.퓨.전 매트릭스')
+        },
         async fetchLogisticRegressionData () {
             try {
                 const response = 
