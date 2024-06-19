@@ -82,17 +82,15 @@ const actions: AuthenticationActions = {
         { email, accessToken }: { email: string, accessToken: string }
     ): Promise<any> {
         try {
-            console.log("requestAddRedisAccessTokenToDjango -> email:", email)
-            console.log("requestAddRedisAccessTokenToDjango -> accessToken:", accessToken)
             const response: AxiosResponse<any> = await axiosInst.djangoAxiosInst.post(
                 '/oauth/redis-access-token/', {
                     email: email,
                     accessToken: accessToken
                 });
 
-            console.log('userToken:', response.data)
+            console.log('userToken:', response.data.userToken)
 
-            localStorage.setItem("userToken", response.data)
+            localStorage.setItem("userToken", response.data.userToken)
             return response.data;  // Adjust according to what your API returns
         } catch (error) {
             console.error('Error adding redis access token:', error);

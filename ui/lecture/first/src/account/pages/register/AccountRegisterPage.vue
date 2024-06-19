@@ -128,8 +128,9 @@ export default {
                 console.log('전송한 데이터:', accountInfo)
 
                 const accessToken = localStorage.getItem("accessToken");
-                console.log('accessToken:', accessToken)
-                await this.requestAddRedisAccessTokenToDjango(this.email, accessToken)
+                const email = accountInfo.email
+                console.log('register submitForm email:', email)
+                await this.requestAddRedisAccessTokenToDjango({ email, accessToken })
 
                 this.$router.push('/')
             }
