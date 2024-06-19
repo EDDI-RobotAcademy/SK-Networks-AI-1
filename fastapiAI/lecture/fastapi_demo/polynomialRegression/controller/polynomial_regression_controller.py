@@ -76,12 +76,11 @@ async def injectPolynomialRegressionService() -> PolynomialRegressionServiceImpl
 @polynomialRegressionRouter.get("/polynomial-regression",)
 async def polynomialRegression(polynomialRegressionService: PolynomialRegressionServiceImpl =
                                Depends(injectPolynomialRegressionService)):
-    # X, y, X_new, y_pred = await polynomialRegressionService.polynomialRegression()
-    await polynomialRegressionService.polynomialRegression()
+    X, y, X_new, y_pred = await polynomialRegressionService.createSampleForPolynomialRegression()
 
-    # return {
-    #     "X": X,
-    #     "y": y,
-    #     "X_new": X_new,
-    #     "y_pred": y_pred,
-    # }
+    return {
+        "X": X,
+        "y": y,
+        "X_new": X_new,
+        "y_pred": y_pred,
+    }
