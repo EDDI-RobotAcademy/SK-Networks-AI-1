@@ -31,7 +31,6 @@ export default {
             if (isEmailDuplication === true) {
                 console.log('기존 가입 고객입니다!')
                 const accessToken = localStorage.getItem("accessToken");
-                console.log('accessToken:', accessToken)
 
                 if (accessToken) {
                     await this.requestAddRedisAccessTokenToDjango({ email, accessToken });  // Fix: Pass as object directly
