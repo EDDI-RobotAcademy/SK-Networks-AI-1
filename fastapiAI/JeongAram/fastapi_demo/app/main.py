@@ -6,6 +6,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
+from train_test_evaluation.controller.train_test_evaluation_controller import trainTestEvaluationRouter
+from polynomialRegression.controller.polynomial_regression_controller import polynomialRegressionRouter
 
 app = FastAPI()
 
@@ -62,6 +64,8 @@ def read_item(item_id: int, q: str = None):
 # app은 django에서의 main.urls.py 기능을 함
 # router = urls (통신을 위함)
 app.include_router(logisticRegressionRouter)
+app.include_router(trainTestEvaluationRouter)
+app.include_router(polynomialRegressionRouter)
 # 여기까지 해야 router 연결됨
 
 # env 관련 설정
