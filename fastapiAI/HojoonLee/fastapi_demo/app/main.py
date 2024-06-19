@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
 from train_test_evaluation.controller.train_test_evaluation_controller import trainTestEvaluationRouter
-
+from polynomialRegression.controller.polynomial_regression_controller import polynomialRegressionRouter
 app = FastAPI()
 
 # 웹 브라우저 상에서 "/" 를 입력하면 Hello World가 리턴
@@ -28,6 +28,7 @@ def read_item(item_id: int, q: str = None):
 # router = urls (통신을 위함)
 app.include_router(logisticRegressionRouter)
 app.include_router(trainTestEvaluationRouter)
+app.include_router(polynomialRegressionRouter)
 
 # env 관련 설정
 # 통신하는 과정에서 우리가 허락한 것만 받아 들이겠다.
