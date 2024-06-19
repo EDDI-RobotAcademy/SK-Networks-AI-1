@@ -1,6 +1,7 @@
 from product.repository.product_repository_impl import ProductRepositoryImpl
 from product.service.product_service import ProductService
 
+
 class ProductServiceImpl(ProductService):
     __instance = None
 
@@ -24,5 +25,3 @@ class ProductServiceImpl(ProductService):
     def createProduct(self, productName, productPrice, productDescription, productImage):
         return self.__productRepository.create(
             productName, productPrice, productDescription, productImage)
-
-
