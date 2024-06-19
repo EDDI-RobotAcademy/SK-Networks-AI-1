@@ -1,3 +1,5 @@
+import uuid
+
 from django.http import JsonResponse
 from django.shortcuts import render
 from rest_framework import viewsets, status
@@ -51,6 +53,9 @@ class OauthView(viewsets.ViewSet):
     def redisAccessToken(self, request):
         try:
             email = request.data.get('email')
+            # TODO: 처음에 좀 비몽사몽한 상태로 만들어서 쓸대없이 accessToken 넣었으나 필요 없음
+            #       향후 로직에서 제거할 필요가 있음 (일단 되게 만들기)
+            #       토큰 탈취 시 카카오 계정까지 털려버림
             access_token = request.data.get('accessToken')
             print(f"redisAccessToken -> email: {email}")
 
@@ -58,9 +63,10 @@ class OauthView(viewsets.ViewSet):
             if not account:
                 return Response({'error': 'Account not found'}, status=status.HTTP_404_NOT_FOUND)
 
-            self.redisService.store_access_token(account.id, access_token)
+            userToken = str(uuid.uuid4())
+            self.redisService.store_access_token(account.id, userToken)
 
-            return Response(status=status.HTTP_200_OK)
+            return Response({ 'userToken': userToken }, status=status.HTTP_200_OK)
         except Exception as e:
             print('Error storing access token in Redis:', e)
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
