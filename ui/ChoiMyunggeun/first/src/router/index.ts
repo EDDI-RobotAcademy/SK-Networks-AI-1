@@ -8,6 +8,7 @@ import AuthenticationRoutes from '@/authentication/router/AuthenticationRoutes'
 import D3PlotRoutes from '@/d3plot/router/D3PlotRoutes'
 import LogisticRegressionRoutes from '@/logisticRegression/router/LogisticRegressionRoutes'
 import TrainTestEvaluationRoutes from '@/trainTestEvaluation/router/TrainTestEvaluationRoutes'
+import PolynomialRegressionRoutes from '@/polynomialRegression/router/PolynomialRegressionRoutes'
 
 const routes: Array<RouteRecordRaw> = [
   ...HomeRoutes,
@@ -21,6 +22,7 @@ const routes: Array<RouteRecordRaw> = [
   ...D3PlotRoutes,
   ...LogisticRegressionRoutes,
   ...TrainTestEvaluationRoutes,
+  ...PolynomialRegressionRoutes,
 ]
 
 const router = createRouter({
