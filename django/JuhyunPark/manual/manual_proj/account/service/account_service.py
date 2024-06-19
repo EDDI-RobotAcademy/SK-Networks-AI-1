@@ -15,5 +15,5 @@ class AccountService(ABC):
         pass
 
     @abstractmethod
-    def readProduct(self, productId):
+    def findAccountByEmail(self, email):
         pass

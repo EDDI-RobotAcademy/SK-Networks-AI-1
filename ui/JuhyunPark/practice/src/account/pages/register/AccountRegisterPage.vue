@@ -123,6 +123,13 @@ export default {
 
                 await this.requestCreateNewAccountToDjango(accountInfo)
                 console.log('전송한 데이터:', accountInfo)
+
+                const accessToken = localStorage.getItem("accessToken");
+                const email = accountInfo.email
+                console.log('register submitForm email:', email)
+                await this.requestAddRedisAccessTokenToDjango({ email, accessToken})
+
+                this.$router.push('/')
             }
         }
     }
