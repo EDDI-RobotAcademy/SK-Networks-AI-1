@@ -9,6 +9,7 @@ import D3PlotRoutes from '@/d3plot/router/D3PlotRoutes'
 import LogisticRegressionRoutes from '@/logisticRegression/router/LogisticRegressionRoutes'
 import TrainTestEvaluationRoutes from '@/trainTestEvaluation/router/TrainTestEvaluationRoutes'
 import CartRoutes from "@/cart/router/CartRoutes";
+import PolynomialRegressionRoutes from '@/polynomialRegression/router/PolynomialRegressionRoutes'
 
 const routes: Array<RouteRecordRaw> = [
   ...HomeRoutes,
@@ -23,6 +24,7 @@ const routes: Array<RouteRecordRaw> = [
   ...LogisticRegressionRoutes,
   ...TrainTestEvaluationRoutes,
   ...CartRoutes,
+  ...PolynomialRegressionRoutes,
 ]
 
 const router = createRouter({
