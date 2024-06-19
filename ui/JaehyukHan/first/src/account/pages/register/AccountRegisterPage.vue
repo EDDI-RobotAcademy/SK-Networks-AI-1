@@ -78,7 +78,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions(authenticationModule, ['requestUserInfoToDjango']),
+        ...mapActions(authenticationModule, ['requestUserInfoToDjango', 'requestAddRedisAccessTokenToDjango']),
         ...mapActions(accountModule, [
             'requestNicknameDuplicationCheckToDjango',
             'requestCreateNewAccountToDjango',
@@ -93,7 +93,7 @@ export default {
             }
         },
         async checkNicknameDuplication () {
-            console.log('닉네임 중복 검사 눌럿음')
+            console.log('닉네임 중복 검사 눌렀음')
 
             try {
                 const isDuplicate = await this.requestNicknameDuplicationCheckToDjango({
@@ -120,9 +120,15 @@ export default {
                     email: this.email,
                     nickname: this.nickname
                 }
-
                 await this.requestCreateNewAccountToDjango(accountInfo)
                 console.log('전송한 데이터:', accountInfo)
+
+                const accessToken = localStorage.getItem('accessToken')
+                const email = accountInfo.email
+                console.log('register submitForm email:', email)
+                await this.requestAddRedisAccessTokenToDjango({ email, accessToken })
+                
+                this.$router.push('/')
             }
         }
     }
