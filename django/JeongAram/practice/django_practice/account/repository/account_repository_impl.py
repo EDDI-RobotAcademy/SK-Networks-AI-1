@@ -21,3 +21,5 @@ class AccountRepositoryImpl(AccountRepository):
 
         account = Account.objects.create(loginType=loginTypeEntity, roleType=roleTypeEntity)
         return account
+
+
