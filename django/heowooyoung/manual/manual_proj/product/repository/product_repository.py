@@ -1,7 +1,5 @@
 from abc import abstractmethod, ABC
 
-from product.entity.models import Product
-
 
 class ProductRepository(ABC):
     @abstractmethod
