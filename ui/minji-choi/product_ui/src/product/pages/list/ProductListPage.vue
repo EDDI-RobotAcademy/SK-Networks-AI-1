@@ -7,15 +7,15 @@
             </router-link>
         </div>
             <v-row v-if="products.length > 0">
-                <v-col v-for="(product, index) in products" :key="index">
-                    <v-card @click="goToProductReadPage(product.productId)">
-                        <v-img :src="getImageUrl(product.productImage)" aspect-ratio="1" color="grey lighten-2">
-                            <template v-slot:placeholder>
-                                <v-row class="fill-height ma-0" align="center" justify="center">
-                                    <v-progress-circular indeterminate color="grey lighten-5"/>
-                                </v-row>
-                            </template>
-                        </v-img>
+                <v-col v-for="(product, index) in products" :key=index cols="12" sm="6" md="4" lg="3">
+                <v-card @click="goToProductReadPage(product.productId)">
+                    <v-img :src="getImageUrl(product.productImage)" aspect-ratio="1" class="grey lighten-2">
+                        <template v-slot:placeholder>
+                            <v-row class="fill-height ma-0" align="center" justify="center">
+                                <v-progress-circular indeterminate color="grey lighten-5"/>
+                            </v-row>
+                        </template>
+                    </v-img>
                         <v-card-title>{{product.prodname}}</v-card-title>
                         <v-card-subtitle>{{product.price}}</v-card-subtitle> 
                     </v-card>
@@ -70,13 +70,10 @@ export default {
         getImageUrl (imageName) {
             return require(`@/assets/images/uploadimages/${imageName}`)
         },
-        goToProductReadPage () {
-            console.log('읽기 구현할 때 사용 예정')
-        },
-        readRow (event, { item }) {
+         goToProductReadPage (productId) {
             this.$router.push({
                 name: 'ProductReadPage',
-                params: { productId: item['productId'].toString() }
+                params: { productId: productId }
             })
         }
     },

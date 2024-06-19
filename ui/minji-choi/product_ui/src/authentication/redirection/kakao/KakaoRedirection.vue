@@ -9,27 +9,41 @@ const authenticationModule = 'authenticationModule'
 const accountModule = 'accountModule'
 export default {
     methods: {
-        ...mapActions(authenticationModule, ['requestAccessTokenToDjangoRedirection', 'requestUserInfoToDjango']),
-        ...mapActions(accountModule, ['requestEmailDuplicationCheckToDjango']), // 나중에 AI? 뭔지 모르겠음
+        ...mapActions(authenticationModule, [
+            'requestAccessTokenToDjangoRedirection',
+            'requestUserInfoToDjango',
+            'requestAddRedisAccessTokenToDjango',
+        ]),
+        ...mapActions(accountModule, ['requestEmailDuplicationCheckToDjango']),
         async setRedirectData () {
             const code = this.$route.query.code
-            console.log('code: ', code)
+
             await this.requestAccessTokenToDjangoRedirection({ code })
             const userInfo = await this.requestUserInfoToDjango()
             const email = userInfo.kakao_account.email
-         
+            console.log('email:', email)
 
-            console.log('userInfo : ', userInfo)
-            console.log('email : ', email)
-
-            const isEmailDuplication = await this.requestEmailDuplicationCheckToDjango(email)
-            if (isEmailDuplication === true) { // 데이터 타입과 값의 일치가 필요할 때 '===' 값만 일치 '=='
-                alert('기존 가입 고객입니다!')
+            const isEmailDuplication = 
+                await this.requestEmailDuplicationCheckToDjango(email)
+            // 데이터 타입과 값의 일치가 필요함 '===',
+            // 값만 일치하면 됨 '==' (0, NULL, None, [])
+            if (isEmailDuplication === true) {
+                alert(('기존 가입 고객입니다!'))
                 console.log('기존 가입 고객입니다!')
-                this.$router.push('/') // 메인으로 보낸다
-            }  else {
+                const accessToken = localStorage.getItem("accessToken");
+                console.log('accessToken:', accessToken)
+
+                if (accessToken) {
+                    await this.requestAddRedisAccessTokenToDjango({ email, accessToken });  // Fix: Pass as object directly
+                } else {
+                    console.error('AccessToken is missing');
+                }
+
+                this.$router.push('/')
+            } else {
                 alert('신규 가입 고객입니다!')
                 console.log('신규 가입 고객입니다!')
+
                 this.$router.push('/account/register')
             }
         }

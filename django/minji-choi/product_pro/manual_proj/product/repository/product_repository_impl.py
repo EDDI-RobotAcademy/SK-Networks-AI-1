@@ -35,16 +35,20 @@ class ProductRepositoryImpl(ProductRepository):
                 destination.write(chunk)
 
         product = Product(
-            prodname = prodname,
-            content = content,
-            writer = writer,
-            price = price,
-            productImage = productImage.name
+            prodname=prodname,
+            content=content,
+            writer=writer,
+            price=price,
+            productImage=productImage.name
         )
         product.save()
         return product
+
     def findByProductId(self, productId):
-        return Product.objects.get(productId=productId)
+        try:
+            return Product.objects.get(productId=productId)
+        except Product.DoesNotExist:
+            return None
 
     def deleteByProductId(self, productId):
         product = Product.objects.get(productId=productId)

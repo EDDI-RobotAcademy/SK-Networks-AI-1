@@ -62,8 +62,11 @@ export default {
             })
         },
         async onCancel () {
-            console.log('취소 버튼 눌럿지 ?')
-        }
+            alert('게시글 작성이 취소되었습니다.')
+            await this.$router.push({
+                name: 'BoardListPage'
+        })
+    },
     }
 }
 </script>

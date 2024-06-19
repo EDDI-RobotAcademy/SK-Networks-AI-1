@@ -39,11 +39,6 @@ class OauthServiceImpl(OauthService):
             'code': kakaoAuthCode
         }
 
-        print(f"clientId: {self.clientId}")
-        print(f"redirectUri: {self.redirectUri}")
-        print(f"kakaoAuthCode: {kakaoAuthCode}")
-        print(f"tokenRequestUri: {self.tokenRequestUri}")
-
         response = requests.post(self.tokenRequestUri, data=accessTokenRequestForm)
         print(f"response: {response}")
 

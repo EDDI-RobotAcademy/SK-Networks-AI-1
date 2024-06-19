@@ -16,13 +16,16 @@ export type ProductActions = {
 }
 
 const actions: ProductActions = {
-    async requestProductToDjango(context: ActionContext<ProductState, any>, productId: number): Promise<void>{
+    async requestProductToDjango(
+        context: ActionContext<ProductState, any>, 
+        productId: number): Promise<void> {
         try {
-            const res: AxiosResponse<Product> = await axiosInst.djangoAxiosInst.get(`/product/read/${productId}`);
-            console.log('data:',res.data)
-            context.commit(REQUEST_PRODUCT_TO_DJANGO, res.data);
+            const res: AxiosResponse<Product> = 
+                await axiosInst.djangoAxiosInst.get(`/product/read/${productId}`)
+
+            context.commit(REQUEST_PRODUCT_TO_DJANGO, res.data)
         } catch (error) {
-            console.error('requestProductToDjango() 문제 발생:', error);
+            console.error('requestProductToDjango() -> error:', error)
             throw error
         }
     },

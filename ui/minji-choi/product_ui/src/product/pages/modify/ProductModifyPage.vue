@@ -65,7 +65,7 @@ export default {
         ...mapState(productModule, ['product'])
     },
     methods: {
-        ...mapActions(productModule, ['requestProductToDjango', 'requestModifyProductToDjango']),
+        ...mapActions(productModule, ['requestProductToDjango', 'requestModifyProductToDjango', 'requestDeleteProductToDjango']),
         async onModify () {
             console.log('수정 완료 누름')
             const payload = {
@@ -77,6 +77,12 @@ export default {
             await this.requestModifyProductToDjango(payload)
             alert('수정이 완료되었습니다.');
             await this.$router.push({ name : 'ProductReadPage', params: { productId: this.productId} })
+        },
+        async onDelete () {
+            console.log('삭제를 누르셨습니다!')
+            alert('상품이 삭제되었습니다.');
+            await this.requestDeleteProductToDjango(this.productId)
+            await this.$router.push({ name : 'ProductListPage' })
         },
     },
     created () {
