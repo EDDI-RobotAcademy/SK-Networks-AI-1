@@ -14,3 +14,7 @@ class AccountService(ABC):
     @abstractmethod
     def registerAccount(self, loginType, roleType, nickname, email):
         pass
+
+    @abstractmethod
+    def findAccountByEmail(self, email):
+        pass
