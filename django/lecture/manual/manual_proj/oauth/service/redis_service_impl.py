@@ -25,9 +25,9 @@ class RedisServiceImpl(RedisService):
             cls.__instance = cls()
         return cls.__instance
 
-    def store_access_token(self, account_id, access_token):
+    def store_access_token(self, account_id, userToken):
         try:
-            self.redis_client.set(f"account:{account_id}:access_token", access_token)
+            self.redis_client.set(userToken, account_id)
         except Exception as e:
             print('Error storing access token in Redis:', e)
             raise e
