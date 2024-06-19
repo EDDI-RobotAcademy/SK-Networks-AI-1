@@ -2,10 +2,9 @@
     <v-container class="chart-container">
         <h2>Logistic Regression Chart</h2>
         <p>Accuracy: {{ accuracy }}</p>
-        <div ref="chartContainer" class = "chart-wrapper">
+        <div ref="chartContainer" class="chart-wrapper">
             <svg ref="svg" :viewBox="`0 0 ${svgWidth} ${svgHeight}`"
-                            preserveAspectRatio="xMidYMid meet">
-            </svg>
+                            preserveAspectRatio="xMidYMid meet"/>
         </div>
     </v-container>
 </template>
@@ -14,6 +13,7 @@
 import axiosInst from "@/utility/axiosInstance"
 // npm install d3 --legacy-peer-deps
 import * as d3 from 'd3'
+
 export default {
     data () {
         return {
@@ -32,7 +32,7 @@ export default {
         this.fetchLogisticRegressionData()
         window.addEventListener('resize', this.handleResize)
     },
-    beforeUnmount(){
+    beforeUnmount () {
         window.removeEventListener('resize', this.handleResize)
     },
     methods: {
@@ -42,11 +42,13 @@ export default {
                     await axiosInst.fastapiAxiosInst.get('/logistic-regression')
                 const data = response.data
                 console.log('result:', data)
+
                 this.accuracy = data.accuracy
                 this.X = data.data_point.X
                 this.y = data.data_point.y
                 this.x_values = data.decision_boundary.x_values
                 this.y_values = data.decision_boundary.y_values
+
                 this.createChart()
             } catch (error) {
                 console.error('로지스틱 회귀 분석 중 에러 발생:', error)
@@ -55,13 +57,16 @@ export default {
         createChart () {
             if (!this.X.length || !this.y.length || 
                 !this.x_values.length || !this.y_values.length) {
+
                 console.warn('데이터가 제대로 처리되지 않고 있습니다!')
                 return
             }
+
             // svg 컨테이너 크기 설정
             const chartContainer = this.$refs.chartContainer
             this.svgWidth = chartContainer.clientWidth
             this.svgHeight = chartContainer.clientHeight
+
             // d3 플롯팅 목적으로 사용할 template에 있는 ref svg 요소를 초기화
             d3.select(this.$refs.svg).selectAll("*").remove()
             
@@ -69,12 +74,14 @@ export default {
             const svg = d3.select(this.$refs.svg)
                             .attr('width', this.svgWidth)
                             .attr('height', this.svgHeight)
+
             // 마진 설정 및 그룹 요소 추가
             // 쉽게 얘기해서 그래프가 너무 바짝 붙어 있으면 모양이 안 예뻐서
             // 주변으로 여백을 일부 생성하도록 하는 부분임
             const g = svg.append('g')
                         .attr('transform', 
                             `translate(${this.margin.left}, ${this.margin.top})`)
+
             // numpy 작업시 [:, 0], [:, 1]에 해당하는 x 성분, y 성분을 추출함
             // 각각의 최소, 최대값을 domain으로 설정하고
             // 실제 차트 크기에 맞춰서 범위를 지정하도록 range()로 지정
@@ -85,9 +92,11 @@ export default {
             const x = d3.scaleLinear()
                         .domain(d3.extent(this.X, d => d[0]))
                         .range([0, this.svgWidth - this.margin.left - this.margin.right])
+
             const y = d3.scaleLinear()
                         .domain(d3.extent(this.y, d => d[1]))
                         .range([this.svgHeight - this.margin.top - this.margin.bottom, 0])
+
             // x 축을 하단에 배치
             // translate는 평행 이동을 의미함, 
             // x 방향으로 0, y 방향으로 아래 계산 수치만큼 평행이동
@@ -97,9 +106,11 @@ export default {
                 .attr('transform', 
                     `translate(0, ${this.svgHeight - this.margin.top - this.margin.bottom })`)
                 .call(d3.axisBottom(x))
+
             // y 축은 좌측에 배치
             g.append('g')
                 .call(d3.axisLeft(y))
+
             // 실제 데이터에 해당하는 정보를 '원' 으로 표현합니다.
             // 그림 그릴 데이터인 X (x, y) 벡터를 배치합니다.
             // enter()를 통해서 실제 웹 브라우저 상에서 관리할 수 있는 데이터로 구성함
@@ -118,21 +129,21 @@ export default {
                 .attr('cy', d => x(d[1]))
                 .attr('r', 5)
                 .style('fill', (d, i) => this.y[i] === 1 ? 'green' : 'blue')
-            // 결정 경계 (Decision Boundary)를 파악하기 위한 선 그릴 준비
+
+            // 결정 경계 (Decision Boundary) 를 파악하기 위한 선 그릴 준비
             const line = d3.line()
-                .x(d => x(d[0]))
-                .y(d => x(d[1]))
-            
-            // 실제 fastapi에서 분석했던 로지스틱 회귀 분석의 결정 경계 x값을 추출함
+                    .x(d => x(d[0]))
+                    .y(d => x(d[1]))
+
+            // 실제 fastapi에서 분석했던 로지스틱 회귀 분석의 결정 경계 x 값을 추출함
             // x_values는 100개의 데이터이므로 아래 map을 통해서
             // 낱개인 x_value로 재해석됨
             // 즉 x_value인 낱개 데이터와 인덱스 번호(i)로 구성되고
-            // 이 정보들을 전부[x_values, this.y_values[i]]로 맵핑하여 좌표화함
+            // 이 정보들을 전부 [x_value, this.y_values[i]] 로 맵핑하여 좌표화함
             const decisionBoundary = this.x_values.map((x_value, i) => [x_value, this.y_values[i]])
-            console.log('decisionBoundary: ', decisionBoundary)
+            console.log('decisionBoundary:', decisionBoundary)
 
-
-            // 이제 여기서 실제 결정 경계에 해당하는 라인을 빨간색 선으로 그립니다.
+            // 이제 여기서 실제 결정 경계에 해당하는 라인을 빨간색 선으로 그립니다
             // stroke <- red는 선 색상 빨강
             // stroke-width <- 선 굵기
             // fill none <- 실선
@@ -143,7 +154,7 @@ export default {
                 .attr('stroke-width', 2)
                 .attr('fill', 'none')
         },
-        handleResize(){
+        handleResize () {
             // 브라우저 크기 변경을 감지하면 0.2초 단위로 화면 크기 조정하여 다시 그림
             clearTimeout(this.resizeTimer)
             this.resizeTimer = setTimeout(() => {
@@ -153,7 +164,7 @@ export default {
 
                 d3.select(this.$refs.svg)
                         .attr('viewBox', `0 0 ${this.svgWidth} ${this.svgHeight}`)
-            
+
                 this.createChart()
             }, 200)
         }
@@ -165,9 +176,10 @@ export default {
 .chart-container {
     width: 80%;
     height: 60%;
-    margin: auto
+    margin: auto;
 }
-.chart-wrapper{
+
+.chart-wrapper {
     position: relative;
     width: 100%;
     height: 100%;

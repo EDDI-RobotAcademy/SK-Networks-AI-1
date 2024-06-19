@@ -1,4 +1,4 @@
-import KakaoRedirection from "../redirection/kakao/KakaoRedirection.vue";
+import KakaoRedirection from "@/authentication/redirection/kakao/KakaoRedirection.vue"
 
 const AuthenticationRoutes = [
     {

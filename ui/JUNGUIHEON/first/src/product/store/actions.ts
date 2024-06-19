@@ -4,10 +4,9 @@ import { AxiosResponse } from "axios"
 import axiosInst from "@/utility/axiosInstance"
 import { REQUEST_PRODUCT_LIST_TO_DJANGO, REQUEST_PRODUCT_TO_DJANGO } from "./mutation-types"
 
-
 export type ProductActions = {
     requestProductToDjango(
-        context: ActionContext<ProductState, any>,
+        context: ActionContext<ProductState, any>, 
         productId: number
     ): Promise<void>
     requestProductListToDjango(
@@ -15,23 +14,23 @@ export type ProductActions = {
     ): Promise<void>
     requestCreateProductToDjango(
         context: ActionContext<ProductState, unknown>, 
-                                imageFormData: FormData
+        imageFormData: FormData
     ): Promise<AxiosResponse>
 }
 
 const actions: ProductActions = {
     async requestProductToDjango(
-        context: ActionContext<ProductState, any>,
+        context: ActionContext<ProductState, any>, 
         productId: number
-    ): Promise<void>{
+    ): Promise<void> {
 
-        try{
-            const res: AxiosResponse<Product> =
+        try {
+            const res: AxiosResponse<Product> = 
                 await axiosInst.djangoAxiosInst.get(`/product/read/${productId}`)
 
             context.commit(REQUEST_PRODUCT_TO_DJANGO, res.data)
-        } catch(error){
-            console.error('requestProductToDjango() -> error: ', error)
+        } catch (error) {
+            console.error('requestProductToDjango() -> error:', error)
             throw error
         }
     },

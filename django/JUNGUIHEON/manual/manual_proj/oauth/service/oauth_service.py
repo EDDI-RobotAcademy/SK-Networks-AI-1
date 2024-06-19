@@ -10,6 +10,6 @@ class OauthService(ABC):
     def requestAccessToken(self, kakaoAuthCode):
         pass
 
-    @ abstractmethod
+    @abstractmethod
     def requestUserInfo(self, accessToken):
         pass

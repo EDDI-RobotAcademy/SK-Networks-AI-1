@@ -1,6 +1,6 @@
 export interface ProductState {
     productList: Product[]
-    product : Product | null
+    product: Product | null
 }
 
 export interface Product {

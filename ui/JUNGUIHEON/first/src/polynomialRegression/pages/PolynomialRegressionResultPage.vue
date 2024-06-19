@@ -1,44 +1,42 @@
 <template>
     <v-container>
         <svg ref="svg" :viewBox="`0 0 ${svgWidth} ${svgHeight}`"
-                        preserveAspectRatio = "xMidYMid meet">
-        </svg>
+                        preserveAspectRatio="xMidYMid meet"/>
     </v-container>
 </template>
 
 <script>
 import * as d3 from 'd3'
 
-export default{
+export default {
     data () {
-        return{
-            svgWidth : 500,
-            svgHeight : 350,
-            regressionData : null,
+        return {
+            svgWidth: 500,
+            svgHeight: 350,
+            regressionData: null,
         }
     },
-
-    async created(){
-        try{
+    async created () {
+        try {
             const response = 
                 await fetch('http://localhost:33333/polynomial-regression')
             const data = await response.json()
             this.regressionData = data
-            console.log('data: ', data)
+            console.log('data:', data)
             this.drawChart()
-        } catch (error){
-            console.error("다항 회귀 데이터 확보 중 에러: ", error)
+        } catch (error) {
+            console.error('다항 회귀 데이터 확보 중 에러:', error)
         }
     },
-    methods:{
-        drawChart(){
+    methods: {
+        drawChart () {
             console.log('drawChart()')
 
-            if(!this.regressionData) return
+            if (!this.regressionData) return
 
-            const {X, y, X_new, y_pred} = this.regressionData
+            const { X, y, X_new, y_pred } = this.regressionData
             const svg = d3.select(this.$refs.svg)
-            const margin = { top: 20, right: 30, bottom: 30, left: 40}
+            const margin = { top: 20, right: 30, bottom: 30, left: 40 }
             const width = this.svgWidth - margin.left - margin.right
             const height = this.svgHeight - margin.top - margin.bottom
 
@@ -79,7 +77,7 @@ export default{
                     .attr("stroke", "red")
                     .attr("stroke-width", 1.5)
                     .attr("d", line)
-         }
+        }
     }
 }
 </script>
