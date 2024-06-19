@@ -11,7 +11,7 @@ const accountModule = 'accountModule'
 export default {
     methods: {
         ...mapActions(authenticationModule, 
-            ['requestAccessTokenToDjangoRedirection', 'requestUserInfoToDjango']),
+            ['requestAccessTokenToDjangoRedirection', 'requestUserInfoToDjango', 'requestAddRedisAccessTokenToDjango']),
         ...mapActions(accountModule, ['requestEmailDuplicationCheckToDjango']),
         async setRedirectData () {
             const code = this.$route.query.code
@@ -27,6 +27,14 @@ export default {
             // 값만 일치하면 됨 '==' (0, NULL, None, [])
             if (isEmailDuplication === true) {
                 console.log('기존 가입 고객입니다!')
+                const accessToken = localStorage.getItem("accessToken")
+                console.log('accessToken:',accessToken)
+
+                if (accessToken){
+                    await this.requestAddRedisAccessTokenToDjango({email,accessToken})
+                }else{
+                    console.error('AccessToken is missing!')
+                }
                 this.$router.push('/')
             } else {
                 console.log('신규 가입 고객입니다!')

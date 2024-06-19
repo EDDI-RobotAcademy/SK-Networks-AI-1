@@ -16,6 +16,9 @@ export type AuthenticationActions = {
 
     // 즉 testFunction(testNumber: number): number
     // 위와 같은 형태로 표현된다는 뜻입니다.
+    requestAddRedisAccessTokenToDjango(
+        context:ActionContext<AuthenticationState, any>,{email,accessToken}:{email:string,accessToken:string}
+    ):Promise<any>
     requestAccessTokenToDjangoRedirection(
         context: ActionContext<AuthenticationState, any>, 
         payload: { code: string }): Promise<void>
@@ -69,6 +72,20 @@ const actions: AuthenticationActions = {
             // 한동안 세미콜론을 붙이지 않던 사람들도 있어서
             // 그런 혼선을 방지하게 서포트하는 역할도 합니다.
             // 주로 MSA(Micro Service Architecture) 프로젝트를 하면 이런 상황이 비일비재함
+            throw error;
+        }
+    },
+    async requestAddRedisAccessTokenToDjango(context:ActionContext<AuthenticationState, any>,{email,accessToken}:{email:string, accessToken:string}):
+    Promise<any>{
+        try{
+            console.log("requestAddRedisAccessTokenToDjango->email:", email)
+            console.log("requsetAddRedisAccessTokenToDjango -> accessToken:", accessToken)
+            const response:AxiosResponse<any> = await axiosInst.djangoAxiosInst.post('/oauth/redis-access-token/',{
+                email:email, accessToken:accessToken
+            });
+            return response.data;
+        }catch(error){
+            console.error('error adding redis access token:', error);
             throw error;
         }
     }
