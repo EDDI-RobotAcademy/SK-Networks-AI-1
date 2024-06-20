@@ -18,7 +18,5 @@ class ExponentialRegressionServiceImpl(ExponentialRegressionService):
         print("service -> createSampleForExponentialRegression()")
 
         X, y = self.createSampleData()
-        print(f"X: {X}")
-        print(f"y: {y}")
 
         return self.exponentialRegressionRepository.regressionAnalysis(X, y)
