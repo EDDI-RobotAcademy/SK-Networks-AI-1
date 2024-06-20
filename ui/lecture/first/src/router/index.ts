@@ -10,6 +10,7 @@ import LogisticRegressionRoutes from '@/logisticRegression/router/LogisticRegres
 import TrainTestEvaluationRoutes from '@/trainTestEvaluation/router/TrainTestEvaluationRoutes'
 import CartRoutes from "@/cart/router/CartRoutes";
 import PolynomialRegressionRoutes from '@/polynomialRegression/router/PolynomialRegressionRoutes'
+import ExponentialRegressionRoutes from '@/exponentialRegression/router/ExponentialRegressionRoutes'
 
 const routes: Array<RouteRecordRaw> = [
   ...HomeRoutes,
@@ -25,6 +26,7 @@ const routes: Array<RouteRecordRaw> = [
   ...TrainTestEvaluationRoutes,
   ...CartRoutes,
   ...PolynomialRegressionRoutes,
+  ...ExponentialRegressionRoutes,
 ]
 
 const router = createRouter({
