@@ -9,3 +9,11 @@ class CartItemRepository(ABC):
     @abstractmethod
     def findByCart(self, cart):
         pass
+
+    @abstractmethod
+    def findByProductId(self, productId):
+        pass
+
+    @abstractmethod
+    def save(self, cartItem):
+        pass
