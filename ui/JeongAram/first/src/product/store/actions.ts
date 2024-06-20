@@ -3,14 +3,40 @@ import { Product, ProductState } from "./states"
 import { AxiosResponse } from "axios"
 import axiosInst from "@/utility/axiosInstance"
 import { REQUEST_PRODUCT_LIST_TO_DJANGO } from "./mutation-types"
+import { REQUEST_PRODUCT_TO_DJANGO } from "./mutation-types"
+
 
 export type ProductActions = {
-    requestProductListToDjango(context: ActionContext<ProductState, any>): Promise<void>
-    requestCreateProductToDjango(context: ActionContext<ProductState, unknown>, 
-        imageFormData: FormData): Promise<AxiosResponse>
+    requestProductToDjango(
+        context: ActionContext<ProductState, any>,
+        productId: number
+    ): Promise<void>
+    requestProductListToDjango(
+        context: ActionContext<ProductState, any>
+    ): Promise<void>
+    requestCreateProductToDjango(
+        context: ActionContext<ProductState, unknown>, 
+        imageFormData: FormData
+    ): Promise<AxiosResponse>
 }
 
 const actions: ProductActions = {
+    async requestProductToDjango(
+        context: ActionContext<ProductState, any>,
+        productId: number
+    ): Promise<void> {
+
+        try {
+            const res: AxiosResponse<Product> =
+                await axiosInst.djangoAxiosInst.get(`/product/read/${productId}`)
+            
+                context.commit(REQUEST_PRODUCT_TO_DJANGO, res.data)
+
+        } catch (error) {
+            console.error('requestProductToDjango() -> error:', error)
+            throw error
+        }
+    },
     async requestProductListToDjango(context: ActionContext<ProductState, any>): Promise<void> {
         try {
             const res: AxiosResponse<any, any> = await axiosInst.djangoAxiosInst.get('/product/list/');
@@ -27,7 +53,7 @@ const actions: ProductActions = {
         imageFormData: FormData): Promise<AxiosResponse> {
         try {
                 console.log('requestCreateProductToDjango()')
-
+                console.log(imageFormData)
                 const res: AxiosResponse = await axiosInst.djangoAxiosInst.post(
                     '/product/register', imageFormData, {
                     headers: {

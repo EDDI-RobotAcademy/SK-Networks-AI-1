@@ -4,7 +4,6 @@ from first_django import settings
 from product.entity.models import Product
 from product.repository.product_repository import ProductRepository
 
-
 class ProductRepositoryImpl(ProductRepository):
     __instance = None
 
@@ -27,7 +26,7 @@ class ProductRepositoryImpl(ProductRepository):
     def create(self, productName, productPrice, productDescription, productImage):
         uploadDirectory = os.path.join(
             settings.BASE_DIR,
-            '../../../../ui/lecture/first/src/assets/images/uploadImages'
+            '../../../../ui/HojoonLee/first/src/assets/images/uploadImages'
         )
         if not os.path.exists(uploadDirectory):
             os.makedirs(uploadDirectory)
@@ -44,7 +43,13 @@ class ProductRepositoryImpl(ProductRepository):
             productName=productName,
             productDescription=productDescription,
             productPrice=productPrice,
-            productImage=productImage.name
+            ImageName=productImage.name
         )
         product.save()
         return product
+
+    def findByProductId(self, productId):
+        try:
+            return Product.objects.get(productId=productId)
+        except Product.DoesNotExist:
+            return None
