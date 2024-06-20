@@ -1,5 +1,4 @@
-import AccountLoginPage from "@/account/pages/AccountLoginPage.vue";
-import KakaoRedirection from "../redirection/kakao/KakaoRedirection.vue";
+import KakaoRedirection from "@/authentication/redirection/kakao/KakaoRedirection.vue"
 
 const AuthenticationRoutes = [
     {
@@ -8,3 +7,5 @@ const AuthenticationRoutes = [
         component: KakaoRedirection
     },
 ]
+
+export default AuthenticationRoutes
