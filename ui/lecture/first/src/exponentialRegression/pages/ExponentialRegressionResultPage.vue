@@ -68,6 +68,20 @@ export default {
                     .attr('d', line)
                     .style('stroke', 'steelblue')
 
+            svg.append('path')
+                    .datum(predictedData.value)
+                    .attr('class', 'line')
+                    .attr('d', line)
+                    .style('stroke', 'red')
+
+            svg.selectAll('.dot')
+                    .data(originalData.value)
+                    .enter().append('circle')
+                    .attr('class', 'dot')
+                    .attr('cx', d => x(d[0]))
+                    .attr('cy', d => y(d[1]))
+                    .attr('r', 3)
+                    .style('fill', 'steelblue')
         }
 
         onMounted(async () => {
@@ -75,6 +89,10 @@ export default {
             drawChart()
         })
 
+        // 원래 데이터 설정할 때 data () { return: { chart }}
+        // 대략 위와 같은 느낌이었음
+        // 그러나 setup() 내에서 사용할 때 data를 직접 표기하지 않고
+        // return에 배치해서 사용할 데이터나 refs를 맵핑한다 보면 됨
         return { chart }
     }
 }
