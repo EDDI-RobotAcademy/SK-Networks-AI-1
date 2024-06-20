@@ -1,5 +1,5 @@
 <template>
-    <v-app-bar color="pink" app dark height="64">
+    <v-app-bar color="orange" app dark height="64">
         <v-btn @click="goToHome">
             <v-toolbar-title class="text-uppercase text--darken-4">
                 <span>SK Networks AI Camp with EDDI</span>
@@ -74,13 +74,18 @@ export default {
             localStorage.removeItem("accessToken")
             this.isLogin = false
             router.push('/')
+        },
+        updateLoginStatus () {
+            this.userToken = localStorage.getItem("userToken")
+            this.isLogin = !!this.userToken
         }
     },
     mounted () {
-        this.accessToken = localStorage.getItem("accessToken")
-        this.isLogin = !!this.accessToken
-        // TODO: 로그인 이후 즉시 로그아웃 화면 갱신 안되는 문제 발견
-        //       새로고침하면 반영됨
-    }
+        this.updateLoginStatus()
+        window.addEventListener('storage', this.updateLoginStatus)
+    },
+    beforeUnmount () {
+        window.removeEventListener('storage', this.updateLoginStatus)
+    },
 }
 </script>

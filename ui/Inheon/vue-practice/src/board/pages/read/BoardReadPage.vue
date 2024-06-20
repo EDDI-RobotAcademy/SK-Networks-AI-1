@@ -6,8 +6,8 @@
             <v-card-text>
                 <v-container>
                     <v-row>
-                        <v-col>
-                            <v-text-field v-model="board.title" readonly label="제목" />
+                        <v-col cols="12">
+                            <v-text-field v-model="board.title" readonly label="제목"/>
                         </v-col>
                     </v-row>
                     <v-row>
@@ -17,7 +17,7 @@
                     </v-row>
                     <v-row>
                         <v-col cols="12">
-                            <v-textarea v-model="board.content" readonly label="내용" auto-gram/>
+                            <v-textarea v-model="board.content" readonly label="내용" auto-grow/>
                         </v-col>
                     </v-row>
                     <v-row justify="end">
@@ -30,7 +30,7 @@
                             <v-btn color="error" @click="onDelete">삭제</v-btn>
                         </v-col>
                         <v-col cols="auto">
-                            <router-link :to="{name: 'BoardListPage'}">
+                            <router-link :to="{ name: 'BoardListPage' }">
                                 <v-btn color="secondary">돌아가기</v-btn>
                             </router-link>
                         </v-col>
@@ -57,12 +57,12 @@ export default {
         ...mapState(boardModule, ['board'])
     },
     methods: {
-        // 'requestDeleteBoardToDjango'
+        // 'requestDeleteBoardToDjango' 추후 처리 필요
         ...mapActions(boardModule, ['requestBoardToDjango', 'requestDeleteBoardToDjango']),
-        async onDelete() {
-            console.log('삭제를 누르셨습니다.')
+        async onDelete () {
+            console.log('삭제를 누르셨습니다!')
             await this.requestDeleteBoardToDjango(this.boardId)
-            await this.$router.push({name: 'BoardListPage'})
+            await this.$router.push({ name: 'BoardListPage' })
         },
     },
     created () {

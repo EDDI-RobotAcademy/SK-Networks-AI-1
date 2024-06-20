@@ -12,8 +12,11 @@ urlpatterns = [
     # as_view({}) 내의 맨 뒤쪽 list 혹은 create 형태가 동작 
     # 결론적으로 list는 get 요청으로 오고 이것을 수신하면 controller/views.py 에 있는 list()를 구동함
     path('list/', BoardView.as_view({'get': 'list'}), name='board-list'),
-    path('register', BoardView.as_view({'post': 'create'}), name='board-register'),
     # register는 post 요청이고 이를 수신하면 views.py에 있는 create()을 구동함
+    path('register', BoardView.as_view({'post': 'create'}), name='board-register'),
+    path('read/<int:pk>', BoardView.as_view({'get': 'read'}), name='board-read'),
+    path('delete/<int:pk>', BoardView.as_view({'delete': 'removeBoard'}), name='board-remove'),
+    path('modify/<int:pk>', BoardView.as_view({'put': 'modifyBoard'}), name='board-modify'),
 ]
 
 # localhost:8000/board/list

@@ -1,4 +1,5 @@
 from abc import abstractmethod, ABC
+from abc import abstractmethod, ABC
 
 
 class ProductRepository(ABC):
@@ -8,4 +9,8 @@ class ProductRepository(ABC):
 
     @abstractmethod
     def create(self, productName, productPrice, productDescription, productImage):
+        pass
+
+    @abstractmethod
+    def findByProductId(self, productId):
         pass

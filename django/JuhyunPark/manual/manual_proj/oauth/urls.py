@@ -15,4 +15,7 @@ urlpatterns = [
                                 name='get-kakao-oauth-uri'),
     path('kakao/user-info', OauthView.as_view({'post': 'kakaoUserInfoURI'}),
                                 name='get-kakao-user-info-uri'),
+    path('redis-access-token/', OauthView.as_view({'post': 'redisAccessToken'}),
+                                name='redis-access-token'),
 ]
+
