@@ -5,6 +5,7 @@ import BoardRoutes from '@/board/router/BoardRoutes'
 import ProductRoutes from '@/product/router/ProductRoutes'
 import AccountRoutes from '@/account/router/AccountRoutes'
 import AuthenticationRoutes from '@/authentication/router/AuthenticationRoutes'
+import CartRoutes from '@/cart/router/CartRoutes'
 import LogisticRegressionRoutes from '@/logisticRegression/router/LogisticRegressionRoutes'
 import TrainTestEvaluationRoutes from '@/trainTestEvaluation/router/TrainTestEvaluationRoutes'
 import PolynomialRegressionRoutes from '@/polynomialRegression/router/PolynomialRegressionRoutes'
@@ -19,6 +20,7 @@ const routes: Array<RouteRecordRaw> = [
   ...ProductRoutes,
   ...AccountRoutes,
   ...AuthenticationRoutes,
+  ...CartRoutes,
   ...LogisticRegressionRoutes,
   ...TrainTestEvaluationRoutes,
   ...PolynomialRegressionRoutes,
