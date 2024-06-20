@@ -34,3 +34,38 @@ class CartServiceImpl(CartService):
         product = self.__productRepository.findByProductId(cartData.get('productId'))
 
         self.__cartItemRepository.register(cartData, cart, product)
+
+    def cartList(self, accountId):
+        account = self.__accountRepository.findById(accountId)
+        cart = self.__cartRepository.findByAccount(account)
+        print(f"cartList -> cart: {cart}")
+        cartItemList = self.__cartItemRepository.findByCart(cart)
+        print(f"cartList -> cartItemList: {cartItemList}")
+        cartItemListResponseForm = []
+
+        for cartItem in cartItemList:
+            cartItemResponseForm = {
+                'cartItemId': cartItem.cartItemId,
+                'productName': cartItem.product.productName,
+                'productPrice': cartItem.product.productPrice,
+                'productId': cartItem.product.productId,
+                'quantity': cartItem.quantity,
+            }
+            cartItemListResponseForm.append(cartItemResponseForm)
+
+        return cartItemListResponseForm
+
+    # def cartList(self, accountId):
+    #     return self.cartRepository.findByAccount(accountId)
+
+    # def cartList(self, accountId):
+    #     account = self.__accountRepository.findById(accountId)
+    #     print(f"cartList -> account:", account)
+    #     if account:
+    #         cart = self.__cartRepository.findByAccount(account)
+    #         print(f"cartList -> cart:", cart)
+    #         if cart:
+    #             return cart.items.all()
+    #     return []
+
+

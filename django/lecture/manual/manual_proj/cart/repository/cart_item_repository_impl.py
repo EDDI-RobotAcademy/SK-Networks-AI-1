@@ -29,3 +29,8 @@ class CartItemRepositoryImpl(CartItemRepository):
             quantity=quantity,
             price=productPrice
         )
+
+    def findByCart(self, cart):
+        return list(CartItem.objects.filter(cart=cart))
+
+
