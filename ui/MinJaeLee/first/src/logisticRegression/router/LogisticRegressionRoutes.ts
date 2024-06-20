@@ -5,7 +5,7 @@ const LogisticRegressionRoutes = [
         path: '/logistic-regression-result',
         name: 'LogisticRegressionResultPage',
         component: LogisticRegressionResultPage
-    }
+    },
 ]
 
 export default LogisticRegressionRoutes

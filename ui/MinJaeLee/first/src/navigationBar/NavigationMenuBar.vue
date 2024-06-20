@@ -71,14 +71,14 @@ export default {
             router.push('/account/login')
         },
         signOut () {
-            localStorage.removeItem('accessToken')
+            localStorage.removeItem("userToken")
             this.isLogin = false
             router.push('/')
         },
         updateLoginStatus () {
-            this.userToken = localStorage.getItem('userToken')
+            this.userToken = localStorage.getItem("userToken")
             this.isLogin = !!this.userToken
-        },
+        }
     },
     mounted () {
         this.updateLoginStatus()
