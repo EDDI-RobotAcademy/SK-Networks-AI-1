@@ -66,7 +66,15 @@ export default {
                     .datum(originalData.value)
                     .attr('class', 'line')
                     .attr('d', line)
+                    .style('stroke', 'steelblue')
+                    .style('fill', 'none')
+
+            svg.append('path')
+                    .datum(predictedData.value)
+                    .attr('class', 'line')
+                    .attr('d', line)
                     .style('stroke', 'red')
+                    .style('fill', 'none')
 
             svg.selectAll('.dot')
                     .data(originalData.value)
