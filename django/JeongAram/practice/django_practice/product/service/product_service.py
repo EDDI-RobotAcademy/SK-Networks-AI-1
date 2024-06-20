@@ -9,3 +9,7 @@ class ProductService(ABC):
     def createProduct(self, productName, productPrice, productDescription, productImage):
         pass
 
+
+    @abstractmethod
+    def readProduct(self):
+        pass

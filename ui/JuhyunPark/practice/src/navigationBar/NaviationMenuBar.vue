@@ -19,7 +19,7 @@
                     <v-list-item-title>{{ item.title }}</v-list-item-title>
                 </v-list-item>
             </v-list>
-       </v-menu> -->
+        </v-menu> -->
 
         <v-btn text @click="goToProductList" class="btn-text">
             <v-icon left>mdi-store</v-icon>
@@ -42,16 +42,16 @@
 
 <script>
 import '@mdi/font/css/materialdesignicons.css'
-import router from '@/router';
+import router from '@/router'
 
 export default {
     data () {
         return {
             navigation_drawer: false,
-           // links: [{ icon: 'mdi-home', action: this.goToHome, route: '/' }],
+            // links: [{ icon: 'mdi-home', action: this.goToHome, route: '/' }],
             accessToken: null,
             isLogin: false,
-             // items: [
+            // items: [
             //     { title: 'Product', action: this.goToProductList() },
             //     { title: 'Board', action: this.goToBoardList() },
             // ]
@@ -69,7 +69,24 @@ export default {
         },
         signIn () {
             router.push('/account/login')
+        },
+        signOut () {
+            localStorage.removeItem("accessToken")
+            this.isLogin = false
+            router.push('/')
+        },
+        updateLoginStatus () {
+            this.userToken = localStorage.getItem("userToken")
+                this.isLogin = !!this.userToken
         }
+    },
+    mounted () {
+        this.accessToken = localStorage.getItem("accessToken")
+        this.isLogin = !!this.accessToken
+        // TODO: 로그인 이후 즉시 로그아웃 화면 갱신 안되는 문제 발견
+        //       새로고침하면 반영됨
+    },beforeUnmount()  {
+        window.removeEventListener('storage', this.updateLoginStatus)
     }
 }
 </script>
