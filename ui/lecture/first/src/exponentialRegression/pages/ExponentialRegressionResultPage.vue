@@ -73,6 +73,15 @@ export default {
                     .attr('class', 'line')
                     .attr('d', line)
                     .style('stroke', 'red')
+
+            svg.selectAll('.dot')
+                    .data(originalData.value)
+                    .enter().append('circle')
+                    .attr('class', 'dot')
+                    .attr('cx', d => x(d[0]))
+                    .attr('cy', d => y(d[1]))
+                    .attr('r', 3)
+                    .style('fill', 'steelblue')
         }
 
         onMounted(async () => {
