@@ -15,4 +15,4 @@ async def exponentialRegression(exponentialRegressionService: ExponentialRegress
                                 Depends(injectExponentialRegressionService)):
 
     print(f"exponentialRegression()")
-    exponentialRegressionService.createSampleForExponentialRegression()
+    return exponentialRegressionService.createSampleForExponentialRegression()

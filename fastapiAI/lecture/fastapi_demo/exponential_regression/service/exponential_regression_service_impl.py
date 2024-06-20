@@ -20,4 +20,4 @@ class ExponentialRegressionServiceImpl(ExponentialRegressionService):
 
         X, y = self.createSampleData()
 
-        self.exponentialRegressionRepository.regressionAnalysis(X, y)
+        return self.exponentialRegressionRepository.regressionAnalysis(X, y)
