@@ -5,6 +5,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
+from polynomialRegression.controller.polynomial_regression_controller import polynomialRegressionRouter
+from train_test_evaluation.controller.train_test_evaluation_controller import trainTestEvaluationRouter
 
 app = FastAPI()
 
@@ -27,7 +29,7 @@ def read_item(item_id: int, q: str = None):
 # 사실 현재 위의 코드는 매우 근본이 없는 .... 코드임
 # 왜냐하면 모든 로직을 main에 전부 따 때려박았기 때문
 # 실질적으로 router(controller) 역할을 하는 녀석들을 분리할 필요가 있음
-# 이것도 최소한이고 REST API 특성상 
+# 이것도 최소한이고 REST API 특성상
 # service, repository, controller가 동일하게 필요함
 # 그러나 우선 요번 케이스에서는 controller만 구성하도록 함
 # 추가적으로 Vue + Django 상황에서는 이야기 하지 않았지만
@@ -61,6 +63,8 @@ def read_item(item_id: int, q: str = None):
 # (빠른 습득 및 생산성의 비밀임 ㅇㅇ)
 
 app.include_router(logisticRegressionRouter)
+app.include_router(trainTestEvaluationRouter)
+app.include_router(polynomialRegressionRouter)
 
 load_dotenv()
 
@@ -78,6 +82,3 @@ app.add_middleware(
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="127.0.0.1", port=33333)
-
-# /logistic-regression
-# uvicorn app.main:app --reload --host 127.0.0.1 --port 33335

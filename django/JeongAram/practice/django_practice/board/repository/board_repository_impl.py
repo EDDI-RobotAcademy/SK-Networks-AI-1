@@ -20,11 +20,11 @@ class BoardRepositoryImpl(BoardRepository):
         # title, writer, content 내용을 토대로 Board 객체를 생성
         # 이 객체는 또한 models.py에 의해 구성된 객체로
         # save()를 수행하는 순간 DB에 기록됨
-        board = Board(**boardData)
-        board.save()
+        board = Board(**boardData)  # 테이블에 들어가야 하기 때문에 request에 담긴 순수데이터만 뽑겠다. [] {} "" <-이런거 빼고
+        board.save() # board -> 현재 table 상태입니다.
         return board
     def findByBoardId(self, boardId):
-        return Board.objects.get(boardId=boardId)
+        return Board.objects.get(boardId=boardId) # 실제 boardId에 관한 정보를 가져와라 >> 즉, (pk)와 상응하는
     def deleteByBoardId(self, boardId):
         board = Board.objects.get(boardId=boardId)
         board.delete()
@@ -34,7 +34,7 @@ class BoardRepositoryImpl(BoardRepository):
             print(f"key: {key}, value: {value}")
             # 쉽게 생각해보자면 board 라는 Entity가 가지고 있는 속성값 중
             # 현재 수정 요청에 의해 전달된 정보에 대응되는 key가 가지고 있는 value 값을 갱신시킴
-            setattr(board, key, value)
+            setattr(board, key, value) # modify 기능 완료
 
         board.save()
         return board

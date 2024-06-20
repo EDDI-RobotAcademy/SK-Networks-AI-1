@@ -2,12 +2,12 @@ import { ActionContext } from "vuex"
 import { Product, ProductState } from "./states"
 import { AxiosResponse } from "axios"
 import axiosInst from "@/utility/axiosInstance"
-import { REQUEST_PRODUCT_LIST_TO_DJANGO } from "./mutation-types"
 
 export type ProductActions = {
     requestProductListToDjango(context: ActionContext<ProductState, any>): Promise<void>
     requestCreateProductToDjango(context: ActionContext<ProductState, unknown>, 
                                 imageFormData: FormData): Promise<AxiosResponse>
+    requestProductToDjango(context: ActionContext<ProductState, any>, productId: number): Promise<void>
 }
 
 const actions: ProductActions = {
@@ -38,6 +38,16 @@ const actions: ProductActions = {
             return res
         } catch (error) {
             console.error('requestCreateProductToDjango():', error)
+            throw error
+        }
+    },
+    async requestProductToDjango(context: ActionContext<ProductState, any>, productId: number): Promise<void> {
+        try {
+            const res: AxiosResponse<Product> = await axiosInst.djangoAxiosInst.get(`/product/read/${productId}`)
+            console.log('data:', res.data)
+            context.commit('REQUEST_PRODUCT_TO_DJANGO', res.data);
+        } catch (error) {
+            console.error('requestProductToDjango() 문제 발생:', error);
             throw error
         }
     },

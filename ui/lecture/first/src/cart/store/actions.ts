@@ -14,8 +14,19 @@ export type CartActions = {
 const actions: CartActions = {
     async requestAddCartToDjango({ commit }, cartData: CartItem) {
         try {
-            console.log('cartData:', cartData)
-            const response = await axiosInst.djangoAxiosInst.post('/cart/register', cartData);
+            const userToken = localStorage.getItem('userToken');
+            if (!userToken) {
+                throw new Error('User token not found');
+            }
+
+            const requestData = {
+                ...cartData,
+                userToken
+            };
+
+            console.log('requestData:', requestData);
+
+            const response = await axiosInst.djangoAxiosInst.post('/cart/register', requestData);
             return response.data;
         } catch (error) {
             console.error('Error adding to cart:', error);
