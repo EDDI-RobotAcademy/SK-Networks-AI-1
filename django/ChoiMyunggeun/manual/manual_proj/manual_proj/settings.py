@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'board',
+    'product',
+    'account',
 ]
 
 MIDDLEWARE = [
@@ -56,6 +58,14 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
+
+KAKAO = {
+    'LOGIN_URL': os.getenv('KAKAO_LOGIN_URL'),
+    'CLIENT_ID': os.getenv('KAKAO_CLIENT_ID'),
+    'REDIRECT_URI': os.getenv('KAKAO_REDIRECT_URI'),
+    'TOKEN_REQUEST_URI': os.getenv('KAKAO_TOKEN_REQUEST_URI'),
+    'USERINFO_REQUEST_URI': os.getenv('KAKAO_USERINFO_REQUEST_URI'),
+}
 
 CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', '').split(',')
 CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', '').split(',')
@@ -163,3 +173,19 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+REDIS_HOST = os.getenv('REDIS_HOST')
+REDIS_PORT = os.getenv('REDIS_PORT')
+REDIS_PASSWORD = os.getenv('REDIS_PASSWORD')
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': f'redis://{REDIS_HOST}:{REDIS_PORT}/0',  # Redis의 0번 DB를 사용합니다. 필요에 따라 DB 번호를 수정할 수 있습니다.
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            'PASSWORD': REDIS_PASSWORD,  # Redis 비밀번호를 설정합니다.
+            'SOCKET_CONNECT_TIMEOUT': 5,  # Redis 서버와의 연결 시도 제한 시간을 설정합니다.
+        }
+    }
+}
