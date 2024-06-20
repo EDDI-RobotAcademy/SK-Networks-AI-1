@@ -33,7 +33,7 @@ const BoardRoutes = [
         props: {
             default: true
         }
-    }
+    },
 ]
 
 export default BoardRoutes

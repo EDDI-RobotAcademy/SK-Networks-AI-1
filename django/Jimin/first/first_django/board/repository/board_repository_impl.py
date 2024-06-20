@@ -34,6 +34,7 @@ class BoardRepositoryImpl(BoardRepository):
 
     def findByBoardId(self, boardId):
         return Board.objects.get(boardId=boardId)
+    # boardId의 모든 정보를 불러온다는 뜻 objects가 모든 정보라는 뜻
 
     def deleteBoardId(self, boardId):
         board = Board.objects.get(boardId=boardId)

@@ -29,7 +29,7 @@
         </v-row>
         <v-row>
             <v-col cols="12" class="text-center">
-                <v-img src="@/assets/images/fixed/cs1.png" aspect-ratio="1" class="grey lighten-2">
+                <v-img src="@/assets/images/fixed/cs1.png" aspect-ratio="2" class="grey lighten-2">
                     <template v-slot:placeholder>
                         <v-row class="fill-height ma-0" align="center" justify="center">
                             <v-progress-circular indeterminate color="grey lighten-5"/>
@@ -69,8 +69,11 @@ export default {
         getImageUrl (imageName) {
             return require('@/assets/images/uploadImages/' + imageName)
         },
-        goToProductReadPage (event, { item }) {
-            console.log('읽기 구현 할 때 사용!')
+        goToProductReadPage (productId) {
+            this.$router.push({
+                name: 'ProductReadPage',
+                params: { productId: productId }
+            })
         }
     },
     data () {
