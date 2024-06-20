@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
+from train_test_evaluation.controller.train_test_evaluation_controller import trainTestEvaluationRouter
 
 app = FastAPI()
 
@@ -35,6 +36,7 @@ def read_item(item_id: int, q: str = None):
 # 따라서 내부 객체에 toXXXRequest, fromXXXResponsForm 같은 형태가 만들어질 수 있음
 
 app.include_router(logisticRegressionRouter)
+app.include_router(trainTestEvaluationRouter)
 
 load_dotenv()
 

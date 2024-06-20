@@ -35,3 +35,12 @@ class ProductView(viewsets.ViewSet):
             print('상품 등록 과정 중 문제 발생:', e)
             return Response({'error': str(e)},
                               status=status.HTTP_400_BAD_REQUEST)
+
+
+    def readProduct(self, request, pk=None): # pk가 이상한 값이 들어오면 none으로 처리하겠다
+                                            # pk에 입력한 값이 안들어와도 None으로 처리하겠다.
+        product = self.productService.readProduct(pk)
+        serializer = ProductSerializer(product)
+        return Response(serializer.data)
+
+
