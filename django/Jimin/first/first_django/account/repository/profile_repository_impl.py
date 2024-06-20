@@ -1,3 +1,4 @@
+from account.entity.account import Account
 from account.entity.profile import Profile
 from account.repository.profile_repository import ProfileRepository
 
@@ -44,5 +45,6 @@ class ProfileRepositoryImpl(ProfileRepository):
     def create(self, nickname, email, account):
         profile = Profile.objects.create(nickname=nickname, email=email, account=account)
         return profile
+
 
 
