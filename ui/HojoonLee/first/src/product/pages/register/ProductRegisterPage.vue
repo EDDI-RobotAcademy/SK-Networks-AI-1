@@ -22,7 +22,7 @@
         </v-row>
         <v-row>
             <v-col cols="12">
-                <p v-if="uploadedFileName">업르드된 파일: {{ uploadedFileName }}</p>
+                <p v-if="uploadedFileName">업로드된 파일: {{ uploadedFileName }}</p>
             </v-col>
         </v-row>
         <v-row>
@@ -36,9 +36,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-
 const productModule = 'productModule'
-
 export default {
     data () {
         return {
@@ -53,7 +51,7 @@ export default {
         ...mapActions(productModule, ['requestCreateProductToDjango']),
         async onSubmit () {
             console.log('상품 등록 눌렀음')
-
+            
             try {
                 if (this.productImage) {
                     const imageFormData = new FormData()
@@ -61,7 +59,7 @@ export default {
                     imageFormData.append('productPrice', this.productPrice.toString())
                     imageFormData.append('productDescription', this.productDescription)
                     imageFormData.append('productImage', this.productImage)
-
+                    
                     const response = await this.requestCreateProductToDjango(imageFormData)
                     this.uploadedFileName = response.data.imageName
                     this.$router.push({ name: 'ProductListPage' })
@@ -77,7 +75,7 @@ export default {
             console.log('취소 버튼 눌럿음')
             // '이전 routing 경로로 이동해줘' 를 의미함
             this.$router.go(-1)
-        }
+        },
     }
 }
 </script>
