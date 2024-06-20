@@ -18,6 +18,9 @@ class CartItemRepositoryImpl(CartItemRepository):
 
         return cls.__instance
 
+    def findByProductName(self, productName):
+        pass
+
     def register(self, cartData, cart, product):
         productPrice = cartData.get('productPrice')
         quantity = cartData.get('quantity')
@@ -30,3 +33,5 @@ class CartItemRepositoryImpl(CartItemRepository):
         )
         cartItem.save()
         return cartItem
+
+

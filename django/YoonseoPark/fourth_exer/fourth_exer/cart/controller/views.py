@@ -2,7 +2,6 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 
 from cart.entity.cart import Cart
-from cart.serializers import CartSerializer
 from cart.service.cart_service_impl import CartServiceImpl
 from oauth.service.redis_service_impl import RedisServiceImpl
 

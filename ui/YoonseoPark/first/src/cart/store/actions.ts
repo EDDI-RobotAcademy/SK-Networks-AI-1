@@ -19,7 +19,6 @@ const actions: CartActions = {
                 ...cartData,
                 userToken
             }
-
             console.log('requestData: ', requestData)
 
             const response = await axiosInst.djangoAxiosInst.post('/cart/register', requestData)
