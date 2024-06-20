@@ -70,8 +70,12 @@ export default {
         getImageUrl (imageName) {
             return require('@/assets/images/uploadImages/' + imageName)
         },
-        goToProductReadPage (event, { item }) {
-            console.log('읽기 구현 할 때 사용!')
+        goToProductReadPage (productId) {
+            this.$router.push({
+                name: 'ProductReadPage',
+                params: { productId: productId }
+            })
+           
         }
     },
     data () {
