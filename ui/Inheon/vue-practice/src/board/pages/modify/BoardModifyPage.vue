@@ -45,7 +45,7 @@ export default {
     props: {
         boardId: {
             type: String,
-            required: true
+            required: true,
         }
     },
     data () {
@@ -61,7 +61,7 @@ export default {
     methods: {
         ...mapActions(boardModule, ['requestBoardToDjango', 'requestModifyBoardToDjango']),
         async onModify () {
-            console.log('수정 완료를 누르셨습니다.')
+            console.log('수정 완료를 누르셨습니다!')
 
             const payload = {
                 title: this.title,
@@ -70,9 +70,9 @@ export default {
             }
 
             await this.requestModifyBoardToDjango(payload)
-            await this.$router.push({
+            await this.$router.push({ 
                 name: 'BoardReadPage',
-                params: {boardId: this.boardId}
+                params: { boardId: this.boardId } 
             })
         },
     },

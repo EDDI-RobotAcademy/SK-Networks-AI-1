@@ -2,6 +2,9 @@ from fastapi import FastAPI
 from logistic_regression.controller.logistic_regression_controller import (
     logisticRegressionRouter,
 )
+from train_test_evaluation.controller.train_test_evaluation_controller import (
+    trainTestEvaluationRouter,
+)
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 
@@ -66,6 +69,7 @@ def read_item(item_id: int, q: str = None):
 # (빠른 습득 및 생산성의 비밀)
 
 app.include_router(logisticRegressionRouter)
+app.include_router(trainTestEvaluationRouter)
 
 load_dotenv()
 
@@ -73,10 +77,10 @@ origins = os.getenv("ALLOWED_ORIGINS", "").split(",")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins = origins,
-    allow_credentials = True,
-    allow_methods = ['*'],
-    allow_headers = ['*'],
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 app.include_router(logisticRegressionRouter)
