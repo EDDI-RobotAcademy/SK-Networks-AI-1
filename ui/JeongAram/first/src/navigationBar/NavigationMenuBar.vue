@@ -1,25 +1,11 @@
 <template>
-    <v-app-bar color="primary" app dark height="64">
-        <v-btn @click="goHome">
+    <v-app-bar color="orange" app dark height="64">
+        <v-btn @click="goToHome">
             <v-toolbar-title class="text-uppercase text--darken-4">
                 <span>SK Networks AI Camp with EDDI</span>
             </v-toolbar-title>
         </v-btn>
         <v-spacer></v-spacer>
-
-        <!--v-menu>
-            <template v-slot:activator="{ props }">
-                <v-btn color="white" v-bind="props">
-                    <b>Activator Slot 테스트</b>
-                </v-btn>
-            </template>
-            <v-list>
-                <v-list-item v-for="(item, index) in items"
-                            :key="index" :value="index" @click="item.action">
-                    <v-list-item-title>{{  item.title  }}</v-list-item-title>
-                </v-list-item>
-            </v-list>
-        </v-menu-->
 
         <v-btn text @click="goToProductList" class="btn-text">
             <v-icon left>mdi-store</v-icon>
@@ -47,16 +33,7 @@ import router from '@/router'
 export default {
     data () {
         return {
-            navigation_drawer: false,
-            // links: [{ icon: 'mdi-home', action: this.goToHome, route: '/'}],
-            accessToken: null,
-            isLogin: false,
-            // items: [
-            //     { title: 'Product', action: this.goToProductList() },
-            //     { title: 'Board', action: this.goToBoardList() },
-
-            // ]
-
+            isLogin: !!localStorage.getItem("userToken")
         }
     },
     methods: {
@@ -73,21 +50,19 @@ export default {
             router.push('/account/login')
         },
         signOut () {
-            localStorage.removeItem("accessToken")
-            this.isLogin = false
+            localStorage.removeItem("userToken")
+            this.updateLoginStatus()
             router.push('/')
         },
         updateLoginStatus () {
-            this.userToken = localStorage.getItem("userToken")
-            this.isLogin = !!this.userToken
-        }   
+            this.isLogin = !!localStorage.getItem("userToken")
+        }
     },
     mounted () {
-        this.updateLoginStatus()
         window.addEventListener('storage', this.updateLoginStatus)
     },
     beforeUnmount () {
         window.removeEventListener('storage', this.updateLoginStatus)
-    }
+    },
 }
 </script>
