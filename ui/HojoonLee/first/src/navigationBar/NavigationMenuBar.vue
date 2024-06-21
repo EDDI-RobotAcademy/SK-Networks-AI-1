@@ -76,12 +76,18 @@ export default {
             this.isLogin = false
             // root로 돌아온다.
             router.push("/")
+        },
+        updateLoginStatus () {
+            this.userToken = localStorage.getItem("userToken")
+            this.isLogin = !!this.userToken
         }
     },
     mounted () {
-        this.accessToken = localStorage.getItem("accessToken")
-        this.isLogin = !!this.accessToken
-        // TODO : 로그인 이후 로그아웃 화면 갱신 안 되는 문제 발견
+        this.updateLoginStatus()
+        window.addEventListener('storage', this.updateLoginStatus)
+    },
+    beforeMount () {
+        window.removeEventListener('storage', this.updateLoginStatus)
     }
 }
 </script>

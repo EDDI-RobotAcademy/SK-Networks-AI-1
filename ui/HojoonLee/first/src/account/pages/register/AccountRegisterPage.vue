@@ -35,11 +35,12 @@
                         </v-form>
                     </v-card-text>
                     <v-card-actions>
-                        <v-spaceer>
-                        <v-btn color="primary" @click="submitForm" :disabled="!isValidForSubmission">
+                        <v-spacer></v-spacer>
+                        <v-btn color="primary" 
+                                @click="submitForm" 
+                                :disabled="!isValidForSubmission">
                             신청하기
                         </v-btn>
-                        </v-spaceer>
                     </v-card-actions>
                 </v-card>
             </v-col>
@@ -56,7 +57,7 @@ const accountModule = 'accountModule'
 export default {
     data () {
         return {
-            formValid: false, // 해당 포맷 전체의 유효성 여부
+            formValid: false,
             email: '',
             nickname: '',
             emailRules: [
@@ -71,13 +72,16 @@ export default {
     async created () {
         await this.requestUserInfo()
     },
-    computed : {
+    computed: {
         isValidForSubmission () {
             return this.formValid && this.isNicknameValid
         }
     },
     methods: {
-        ...mapActions(authenticationModule, ['requestUserInfoToDjango']),
+        ...mapActions(authenticationModule, [
+            'requestUserInfoToDjango',
+            'requestAddRedisAccessTokenToDjango'
+        ]),
         ...mapActions(accountModule, [
             'requestNicknameDuplicationCheckToDjango',
             'requestCreateNewAccountToDjango',
@@ -119,9 +123,16 @@ export default {
                     email: this.email,
                     nickname: this.nickname,
                 }
-                
+
                 await this.requestCreateNewAccountToDjango(accountInfo)
                 console.log('전송한 데이터:', accountInfo)
+
+                const accessToken = localStorage.getItem("accessToken");
+                const email = accountInfo.email
+                console.log('register submitForm email:', email)
+                await this.requestAddRedisAccessTokenToDjango({ email, accessToken })
+
+                this.$router.push('/')
             }
         }
     }

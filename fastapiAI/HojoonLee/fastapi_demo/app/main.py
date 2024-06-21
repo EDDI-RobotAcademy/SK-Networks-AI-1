@@ -3,7 +3,10 @@ import os
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
+from exponential_regression.controller.exponential_regression_controller import exponentialRegressionRouter
 from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
+from random_forest.controller.random_forest_controller import randomForestRouter
 from train_test_evaluation.controller.train_test_evaluation_controller import trainTestEvaluationRouter
 from polynomialRegression.controller.polynomial_regression_controller import polynomialRegressionRouter
 app = FastAPI()
@@ -29,6 +32,8 @@ def read_item(item_id: int, q: str = None):
 app.include_router(logisticRegressionRouter)
 app.include_router(trainTestEvaluationRouter)
 app.include_router(polynomialRegressionRouter)
+app.include_router(exponentialRegressionRouter)
+app.include_router(randomForestRouter)
 
 # env 관련 설정
 # 통신하는 과정에서 우리가 허락한 것만 받아 들이겠다.
