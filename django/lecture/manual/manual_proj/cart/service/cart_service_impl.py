@@ -44,7 +44,7 @@ class CartServiceImpl(CartService):
             print("기존 상품 추가")
 
             cartItem.quantity += 1
-            self.__cartItemRepository.save(cartItem)
+            self.__cartItemRepository.update(cartItem)
 
     def cartList(self, accountId):
         account = self.__accountRepository.findById(accountId)

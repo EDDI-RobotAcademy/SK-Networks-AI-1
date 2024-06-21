@@ -2,6 +2,8 @@ from account.repository.account_repository import AccountRepository
 from account.entity.account_login_type import AccountLoginType
 from account.entity.account_role_type import AccountRoleType
 from account.entity.account import Account
+
+
 class AccountRepositoryImpl(AccountRepository):
     __instance = None
 
@@ -25,3 +27,6 @@ class AccountRepositoryImpl(AccountRepository):
 
         account = Account.objects.create(loginType=loginTypeEntity, roleType=roleTypeEntity)
         return account
+
+    def findById(self, accountId):
+        return Account.objects.get(id=accountId)
