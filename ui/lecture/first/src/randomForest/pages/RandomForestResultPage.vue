@@ -25,15 +25,38 @@
                 </v-card>
             </v-col>
         </v-row>
+
+        <!-- 그래프 플로팅 -->
+        <v-row>
+            <v-col cols="6">
+                <common-chart
+                    :title="`Passengers number vs Booking Complete`"
+                    :data="passengersCounterInfo"
+                    graphType="countplot"
+                    xKey="num_passengers"
+                    hueKey="booking_complete"/>
+            </v-col>
+            <v-col cols="6">
+                <!-- <common-chart
+                    :title="`Purchase Lead vs Booking Complete`"
+                    :data="purchaseLeadInfo"
+                    graphType="histplot"
+                    xKey="purchase_lead"
+                    hueKey="booking_complete"
+                    bins="30"/> -->
+            </v-col>
+        </v-row>
     </v-container>
 </template>
 
 <script>
 import ConfusionMatrix from '@/randomForest/components/ConfusionMatrix.vue'
+import CommonChart from '@/randomForest/components/CommonChart.vue'
 
 export default {
     components: {
         ConfusionMatrix,
+        CommonChart,
     },
     data () {
         return {
@@ -59,6 +82,13 @@ export default {
 
             this.confusionMatrixInfoBeforeSmote = data.confusion_matrix_info_before_smote
             this.confusionMatrixInfoAfterSmote = data.confusion_matrix_info_after_smote
+
+            this.passengersCounterInfo = data.common_info.passengers_count
+            this.purchaseLeadInfo = data.common_info.purchase_lead
+            this.lengthOfStayInfo = data.common_info.length_of_stay
+            this.extraBaggageInfo = data.common_info.extra_baggage
+            this.preferredSeatInfo = data.common_info.preferred_seat
+            this.inFlightMealsInfo = data.common_info.in_flight_meals
         }
     }
 }
