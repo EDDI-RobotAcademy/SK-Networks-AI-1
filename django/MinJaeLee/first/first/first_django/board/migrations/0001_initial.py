@@ -4,23 +4,25 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+
     initial = True
 
-    dependencies = []
+    dependencies = [
+    ]
 
     operations = [
         migrations.CreateModel(
-            name="Board",
+            name='Board',
             fields=[
-                ("boardId", models.AutoField(primary_key=True, serialize=False)),
-                ("title", models.CharField(max_length=128)),
-                ("writer", models.CharField(max_length=32)),
-                ("content", models.TextField()),
-                ("regDate", models.DateTimeField(auto_now_add=True)),
-                ("updDate", models.DateTimeField(auto_now=True)),
+                ('boardId', models.AutoField(primary_key=True, serialize=False)),
+                ('title', models.CharField(max_length=128)),
+                ('writer', models.CharField(max_length=32)),
+                ('content', models.TextField()),
+                ('regDate', models.DateTimeField(auto_now_add=True)),
+                ('updDate', models.DateTimeField(auto_now=True)),
             ],
             options={
-                "db_table": "board",
+                'db_table': 'board',
             },
         ),
     ]

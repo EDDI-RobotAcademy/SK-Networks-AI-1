@@ -1,5 +1,5 @@
-from account.repository.profile_repository_impl import ProfileRepositoryImpl
 from account.repository.account_repository_impl import AccountRepositoryImpl
+from account.repository.profile_repository_impl import ProfileRepositoryImpl
 from account.service.account_service import AccountService
 
 
@@ -32,7 +32,6 @@ class AccountServiceImpl(AccountService):
     def registerAccount(self, loginType, roleType, nickname, email):
         account = self.__accountRepository.create(loginType, roleType)
         return self.__profileRepository.create(nickname, email, account)
+
     def findAccountByEmail(self, email):
         return self.__profileRepository.findByEmail(email)
-
-
