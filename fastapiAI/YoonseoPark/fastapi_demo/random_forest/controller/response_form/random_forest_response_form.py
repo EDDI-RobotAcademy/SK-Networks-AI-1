@@ -16,14 +16,14 @@ class RandomForestResponseForm:
 
         # 혼돈 행렬 구성
         confusionMatrixBeforeSmote = {
-            'confusion_matrix_before_smote': confusionMatrix.tolist(),
+            'confusion_matrix': confusionMatrix.tolist(),
             'y_test': y_test_list,
-            'y_pred_before_smote': y_pred.tolist()
+            'y_pred': y_pred.tolist()
         }
         confusionMatrixAfterSmote = {
-            'confusion_matrix_after_smote': smoteConfusionMatrix.tolist(),
+            'confusion_matrix': smoteConfusionMatrix.tolist(),
             'y_test': y_test_list,
-            'y_pred_after_smote': y_pred_after_smote.tolist()
+            'y_pred': y_pred_after_smote.tolist()
         }
 
         return {
