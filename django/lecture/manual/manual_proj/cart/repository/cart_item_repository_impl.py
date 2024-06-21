@@ -39,5 +39,5 @@ class CartItemRepositoryImpl(CartItemRepository):
         except CartItem.DoesNotExist:
             return None
 
-    def save(self, cartItem):
+    def update(self, cartItem):
         cartItem.save()
