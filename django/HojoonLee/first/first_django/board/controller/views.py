@@ -1,7 +1,8 @@
 # (Controller : 외부의 요청을 처리) == (View : 본다 >> 눈으로 보는 것을 처리)
 from django.shortcuts import render
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.response import Response
+
 from board.entity.models import Board
 from board.serializers import BoardSerializer
 from board.service.board_service_impl import BoardServiceImpl
@@ -9,11 +10,46 @@ from board.service.board_service_impl import BoardServiceImpl
 
 # viewsets를 사용하려면 rest_framework가 설치되어야 합니다.
 # pip install dgangorestframework
-class BoardView(viewsets.ViewSet):
-    queryset = Board.objects.all() # 보드가 어떻게 되어있든 난 다 조회할거야
-    boardService = BoardServiceImpl.getInstance()
+class BoardView(viewsets.ViewSet): # viewset 왜 사용하는지 알아보기 >> CRUD에 있어서 코드관리와 편의성이 위주인 것 같음
+    queryset = Board.objects.all() # 이렇게 선언해줘야 Board Entity가 db처럼 사용가능 (중요)
+    # entity class가 save, delete를 사용할 수있고, id 입력주면 관련된 데이터들을 get할 수 있도록 해줌
 
-    def list(self, request):
+    boardService = BoardServiceImpl.getInstance() # 외부 요청을 service로 보내기 위함
+    # 1단계 하단에 보내기 위해서 징검다리(통로)가 필요한데 이 통로 역할을 getInstance()가 해줍니다.
+
+    def list(self, request): # controller는 외부요청(vue 요청)을 다루기 때문에 함수 입력 인자로 request 포함됩니다.
         boardList = self.boardService.list()
         serializer = BoardSerializer(boardList, many=True)
         return Response(serializer.data)
+
+    def create(self, request):
+        # serializer 왜 쓰는지 질문하기
+        serializer = BoardSerializer(data=request.data) # 어떤 데이터인지 명시적으로 받기 위함
+        print(request.data)
+        if serializer.is_valid():
+            board = self.boardService.createBoard(serializer.validated_data) # 저장이 적용된 테이블 상태
+            return Response(BoardSerializer(board).data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def read(self, request, pk=None):
+        board = self.boardService.readBoard(pk) # 낱개 정보를 가져오기
+        serializer = BoardSerializer(board)
+        return Response(serializer.data)
+
+    def removeBoard(self, request, pk=None):
+        self.boardService.removeBoard(pk)
+        return Response(status=status.HTTP_204_NO_CONTENT) # 내용이 없다고 알려주기 반환
+
+    def modifyBoard(self, request, pk=None):
+        board = self.boardService.readBoard(pk) # 해당 게시글 id와 상응하는 게시글 낱개 정보 가져오기
+        # board 전체가 아니라 제목,내용만 가져올거라 request.data로 명시해서 가져오기
+        serializer = BoardSerializer(board, data=request.data, partial=True) # 부분적으로 가져올거라 partial True
+
+        if serializer.is_valid():
+            # 시리얼라이저 유효하다면 해당 pk 번호의 유용한 데이터(내용, 정보)를 업데이트한다.
+            # 반환 받았으니 업뎃된 데이터
+            updatedBoard = self.boardService.updateBoard(pk, serializer.validated_data)
+            return Response(BoardSerializer(updatedBoard).data) # 잘 가져 왔다면 업뎃된 데이터 반환
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) # 못 가져왔다면 에러 반환
