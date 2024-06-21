@@ -7,8 +7,10 @@ randomForestRouter = APIRouter()
 
 async def injectRandomForestService() -> RandomForestServiceImpl:
     return RandomForestServiceImpl()
+
 @randomForestRouter.get("/random-forest")
-async def randomForestAnalysis(randomForestService: RandomForestServiceImpl = Depends(injectRandomForestService)):
+async def randomForestAnalysis(randomForestService: RandomForestServiceImpl =
+                               Depends(injectRandomForestService)):
 
     result = randomForestService.randomForestAnalysis()
     return JSONResponse(content=result)
