@@ -158,6 +158,9 @@ export default {
                 .nice()
                 .range([height, 0])
 
+            const colorScale = d3.scaleSequential(d3.interpolatePurples)
+                .domain([0, d3.max(binsData, d => d.length)])
+
             newChart.append('g')
                 .attr('transform', `translate(0, ${height})`)
                 .call(d3.axisBottom(xScale))
@@ -173,6 +176,7 @@ export default {
                 .attr('y', d => yScale(d.length))
                 .attr('width', d => xScale(d.x1) - xScale(d.x0) - 1)
                 .attr('height', d => height - yScale(d.length))
+                .attr('fill', d => colorScale(d.length))
 
             newChart.append('text')
                 .attr('x', width / 2)
