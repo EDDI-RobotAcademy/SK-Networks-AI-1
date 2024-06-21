@@ -62,17 +62,30 @@ export default {
                     .attr('class', 'y axis')
                     .call(d3.axisLeft(y))
 
+            // 채우기 주의!
             svg.append('path')
                     .datum(originalData.value)
                     .attr('class', 'line')
                     .attr('d', line)
                     .style('stroke', 'steelblue')
+                    .style('fill', 'none')
 
             svg.append('path')
                     .datum(predictedData.value)
                     .attr('class', 'line')
                     .attr('d', line)
                     .style('stroke', 'red')
+                    .style('fill', 'none')
+
+            // 채우기 이슈가 있어서 수정 필요함
+            svg.selectAll('.dot')
+                    .data(originalData.value)
+                    .enter().append('circle')
+                    .attr('class', 'dot')
+                    .attr('cx', d => x(d[0]))
+                    .attr('cy', d => y(d[1]))
+                    .attr('r', 3)
+                    .style('fill', 'steelblue')
         }
 
         onMounted(async () => {
