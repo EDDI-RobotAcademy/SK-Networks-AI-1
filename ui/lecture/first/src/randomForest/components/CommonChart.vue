@@ -87,6 +87,27 @@ export default {
 
             newChart.append('g')
                 .call(d3.axisLeft(yScale))
+
+            newChart.selectAll()
+                .data(hueKeyList)
+                .enter()
+                .append('g')
+                .attr('fill', d => d === '1' ? 'green' : 'orange')
+                .selectAll('rect')
+                .data(d => xKeyList.map(x => ({ x, y: groupData.get(x).get(d) || 0 })))
+                .enter()
+                .append('rect')
+                .attr('x', d => xScale(d.x))
+                .attr('y', d => yScale(d.y))
+                .attr('width', xScale.bandwidth())
+                .attr('height', d => height - yScale(d.y))
+
+            newChart.append('text')
+                .attr('x', width / 2)
+                .attr('y', -margin.top / 2)
+                .attr('text-anchor', 'middle')
+                .style('font-size', '16px')
+                .text(this.title)
         }
     }
 }
