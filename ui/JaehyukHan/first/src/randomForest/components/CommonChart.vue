@@ -160,6 +160,9 @@ export default {
             newChart.append('g')
                 .call(d3.axisLeft(yScale))
 
+            const colorScale = d3.scaleSequential(d3.interpolatePurples)
+                .domain([0, d3.max(binsData, d => d.length)])
+
             newChart.selectAll('rect')
                 .data(binsData)
                 .enter()
@@ -168,6 +171,7 @@ export default {
                 .attr('y', d => yScale(d.length))
                 .attr('width', d => xScale(d.x1) - xScale(d.x0) - 1)
                 .attr('height', d => height - yScale(d.length))
+                .attr('fill', d => colorScale(d.length))
 
             newChart.append('text')
                 .attr('x', width / 2)
