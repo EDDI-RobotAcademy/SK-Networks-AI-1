@@ -1,7 +1,5 @@
 <template>
-  <p>
-    hello
-  </p>
+  <p>이거시호미다</p>
 </template>
 
 <script lang="ts">
