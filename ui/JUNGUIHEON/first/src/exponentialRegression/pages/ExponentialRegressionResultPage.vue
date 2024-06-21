@@ -62,17 +62,21 @@ export default {
                     .attr('class', 'y axis')
                     .call(d3.axisLeft(y))
 
+            // 채우기 주의!
+            // .style('fill', 'None') 없으면 그래프가 검은 배경색으로 채워짐
             svg.append('path')
                     .datum(originalData.value)
                     .attr('class', 'line')
                     .attr('d', line)
-                    .style('stroke', 'steelblue')
+                    .style('stroke', 'steelblue', )
+                    .style('fill', 'None')
 
             svg.append('path')
                     .datum(predictedData.value)
                     .attr('class', 'line')
                     .attr('d', line)
                     .style('stroke', 'red')
+                    .style('fill', 'None')
 
             svg.selectAll('.dot')
             .data(originalData.value)

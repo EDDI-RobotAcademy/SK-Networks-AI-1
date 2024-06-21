@@ -8,7 +8,7 @@ router.register(r'cart', CartView, basename='cart')
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('list/', CartView.as_view({'get': 'cartList'}), name='cart-list'),
+    path('list', CartView.as_view({'post': 'cartItemList'}), name='cart-list'),
     path('register', CartView.as_view({'post': 'cartRegister'}), name='cart-register'),
 ]
 
