@@ -46,6 +46,45 @@
                     bins="30"/>
             </v-col>
         </v-row>
+
+        <v-row>
+            <v-col cols="6">
+                <common-chart
+                    :title="`Length of Stay vs Booking Complete`"
+                    :data="lengthOfStayInfo"
+                    graphType="histplot"
+                    xKey="length_of_stay"
+                    hueKey="booking_complete"
+                    bins="30"/>
+            </v-col>
+            <v-col cols="6">
+                <common-chart
+                    :title="`Wants Extra Baggage vs Booking Complete`"
+                    :data="extraBaggageInfo"
+                    graphType="countplot"
+                    xKey="wants_extra_baggage"
+                    hueKey="booking_complete"/>
+            </v-col>
+        </v-row>
+
+        <v-row>
+            <v-col cols="6">
+                <common-chart
+                    :title="`Wants Preferred Seat vs Booking Complete`"
+                    :data="preferredSeatInfo"
+                    graphType="countplot"
+                    xKey="wants_preferred_seat"
+                    hueKey="booking_complete"/>
+            </v-col>
+            <v-col cols="6">
+                <common-chart
+                    :title="`Wants In-Flight Meals vs Booking Complete`"
+                    :data="inFlightMealsInfo"
+                    graphType="countplot"
+                    xKey="wants_in_flight_meals"
+                    hueKey="booking_complete"/>
+            </v-col>
+        </v-row>
     </v-container>
 </template>
 
