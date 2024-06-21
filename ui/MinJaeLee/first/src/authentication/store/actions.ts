@@ -2,7 +2,6 @@ import { ActionContext } from "vuex"
 import { AuthenticationState } from "./states"
 import { AxiosResponse } from "axios"
 import axiosInst from "@/utility/axiosInstance"
-import {CartItem, CartState} from "@/cart/store/states";
 
 export type AuthenticationActions = {
     requestKakaoOauthRedirectionToDjango(): Promise<void>
@@ -83,7 +82,7 @@ const actions: AuthenticationActions = {
     ): Promise<any> {
         try {
             const response: AxiosResponse<any> = await axiosInst.djangoAxiosInst.post(
-                '/oauth/redis-access-token/', {
+                '/oauth/redis-access-token', {
                     email: email,
                     accessToken: accessToken
                 });

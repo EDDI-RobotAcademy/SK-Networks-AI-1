@@ -2,7 +2,7 @@
     <v-container>
         <v-card flat>
             <v-img class="mx auto" height="300" 
-                    :src="require('@/assets/images/fixed/sk-ai-family.png')"/>
+                    :src="require('@/assets/images/fixed/sk_ai_family.png')"/>
         </v-card>
         <div class="login-icons">
             <v-img class="icon" 
