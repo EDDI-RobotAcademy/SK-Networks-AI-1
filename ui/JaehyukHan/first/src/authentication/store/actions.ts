@@ -89,8 +89,8 @@ const actions: AuthenticationActions = {
                     accessToken: accessToken
                 }
             )
-            console.log('userToken:', response.data)
-            localStorage.setItem('userToken', response.data)
+            console.log('userToken:', response.data.userToken)
+            localStorage.setItem('userToken', response.data.userToken)
             return response.data // Adjust according to what your API returns
         } catch (error) {
             console.error('Error adding redis access token:', error)
