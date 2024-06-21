@@ -100,6 +100,11 @@ export default {
                 .attr('text-anchor', ' middle')
                 .attr('font-size', '16px')
                 .texxt(this.title)
+
+            newChart.append('text')
+                .attr('x', width / 2)
+                .attr('y', -margin.top / 2)
+                .attr('text-anchor')
         }
     }
 }
