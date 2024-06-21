@@ -37,13 +37,13 @@
                     hueKey="booking_complete"/>
             </v-col>
             <v-col cols="6">
-                <!-- <common-chart
+                <common-chart
                     :title="`Purchase Lead vs Booking Complete`"
                     :data="purchaseLeadInfo"
                     graphType="histplot"
                     xKey="purchase_lead"
                     hueKey="booking_complete"
-                    bins="30"/> -->
+                    bins="30"/>
             </v-col>
         </v-row>
     </v-container>
