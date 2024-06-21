@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 
 from exponenetial_regression.service.exponential_regression_service_impl import ExponentialRegressionServiceImpl
-from plynomialRegrssion.service.polynomial_regression_service_impl import PolynomialRegressionServiceImpl
+from polynomialRegrssion.service.polynomial_regression_service_impl import PolynomialRegressionServiceImpl
 
 exponentialRegressionRouter = APIRouter()
 

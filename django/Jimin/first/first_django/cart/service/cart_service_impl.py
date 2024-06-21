@@ -29,9 +29,22 @@ class CartServiceImpl(CartService):
         cart = self.__cartRepository.findByAccount(account)
 
         if cart is None: # 사용자 계정과 관련하여 cart가 존재하는지 찾는다
+            print("장바구니 새롭게 생성")
             cart = self.__cartRepository.register(account) # 존재하지 않는다면 새로 cart를 생성한다.
 
-        product = self.__productRepository.findByProductId(cartData.get('productId')) # cartItem에 등록한 product를 찾는다
+        print("기존 장바구니 사용")
 
-        self.__cartItemRepository.register(cartData, cart, product) # 필요한 정보를 모두 확보했으므로 cartItem을 생성한다
+        productId = cartData.get('productId')
+        cartItem = self.__cartItemRepository.findByProductId(productId)
+        if cartItem is None:
+            print("신규 상품 추가")
+            product = self.__productRepository.findByProductId(productId)
+            self.__cartItemRepository.register(cartData, cart, product)
+        else:
+            print("기존 상품 추가")
+
+            cartItem.quantity += 1
+            self.__cartItemRepository.update(cartItem)
+
+
 

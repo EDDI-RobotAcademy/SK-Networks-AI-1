@@ -2,7 +2,7 @@ import numpy as np
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import PolynomialFeatures
 
-from plynomialRegrssion.repository.polynomial_regression_repository import PolynomialRegressionRepository
+from polynomialRegrssion.repository.polynomial_regression_repository import PolynomialRegressionRepository
 
 
 class PolynomialRegressionRepositoryImpl(PolynomialRegressionRepository):

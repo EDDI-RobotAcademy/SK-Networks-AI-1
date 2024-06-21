@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 
-from plynomialRegrssion.service.polynomial_regression_service_impl import PolynomialRegressionServiceImpl
+from polynomialRegrssion.service.polynomial_regression_service_impl import PolynomialRegressionServiceImpl
 
 polynomialRegressionRouter = APIRouter()
 
