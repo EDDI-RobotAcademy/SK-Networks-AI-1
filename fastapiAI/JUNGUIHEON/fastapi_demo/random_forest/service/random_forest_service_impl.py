@@ -1,12 +1,13 @@
-import pandas as pd
+import os
 
 from random_forest.controller.response_form.random_forest_response_form import RandomForestResponseForm
 from random_forest.repository.random_forest_repository_impl import RandomForestRepositoryImpl
 from random_forest.service.random_forest_service import RandomForestService
-import os
+
+import pandas as pd
+
 
 class RandomForestServiceImpl(RandomForestService):
-
     def __init__(self):
         self.__randomForestRepository = RandomForestRepositoryImpl()
 
@@ -34,7 +35,7 @@ class RandomForestServiceImpl(RandomForestService):
         print("randomForestAnalysis()")
 
         dataFrame = self.readCsv()
-        dataEncoded, labelEncoder = (
+        dataEncoded, labelEncoders = (
             self.__randomForestRepository.flightCategoricalVariableEncoding(dataFrame))
 
         X, y = self.featureTargetVariableDefinition(dataEncoded)
@@ -49,7 +50,7 @@ class RandomForestServiceImpl(RandomForestService):
             self.__randomForestRepository.evaluate(y_test, y_pred))
 
         X_resampled, y_resampled = self.__randomForestRepository.applySmote(X_train, y_train)
-        randomForestModelAfterSmote = self.__randomForestRepository.train(X_train, y_train)
+        randomForestModelAfterSmote = self.__randomForestRepository.train(X_resampled, y_resampled)
         y_pred_after_smote = (
             self.__randomForestRepository.predict(randomForestModelAfterSmote, X_test))
         smoteAccuracy, smoteReport, smoteConfusionMatrix = (

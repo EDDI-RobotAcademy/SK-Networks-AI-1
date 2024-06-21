@@ -7,8 +7,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from exponential_regression.controller.exponential_regression_controller import exponentialRegressionRouter
 from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
 from polynomialRegression.controller.polynomial_regression_controller import polynomialRegressionRouter
-from train_test_evaluation.controller.train_test_evaluation_controller import trainTestEvaluationRouter
 from random_forest.controller.random_forest_controller import randomForestRouter
+from train_test_evaluation.controller.train_test_evaluation_controller import trainTestEvaluationRouter
 
 app = FastAPI()
 

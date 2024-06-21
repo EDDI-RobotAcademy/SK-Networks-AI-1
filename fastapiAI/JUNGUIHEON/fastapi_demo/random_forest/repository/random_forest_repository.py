@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+
 class RandomForestRepository(ABC):
     @abstractmethod
     def evaluate(self, y_test, y_pred):
@@ -18,7 +19,7 @@ class RandomForestRepository(ABC):
         pass
 
     @abstractmethod
-    def predict(self, ramdomForestModel, X_test):
+    def predict(self, randomForestModel, X_test):
         pass
 
     @abstractmethod
