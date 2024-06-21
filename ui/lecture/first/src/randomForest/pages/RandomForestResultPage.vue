@@ -19,8 +19,8 @@
                         Confusion Matrix after SMOTE
                     </v-card-title>
                     <v-card-text>
-                        <!-- <confusion-matrix 
-                        :confusionMatrix="confusionMatrixInfoAfterSmote.confusion_matrix"/> -->
+                        <confusion-matrix 
+                        :confusionMatrix="confusionMatrixInfoAfterSmote.confusion_matrix"/>
                     </v-card-text>
                 </v-card>
             </v-col>
@@ -29,7 +29,12 @@
 </template>
 
 <script>
+import ConfusionMatrix from '@/randomForest/components/ConfusionMatrix.vue'
+
 export default {
+    components: {
+        ConfusionMatrix,
+    },
     data () {
         return {
             confusionMatrixInfoBeforeSmote: null,
