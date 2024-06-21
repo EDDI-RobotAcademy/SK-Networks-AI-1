@@ -2,12 +2,11 @@ from abc import abstractmethod, ABC
 
 
 class CartRepository(ABC):
-
     @abstractmethod
-    def findByAccount(self, account):
+    def register(self, account):
         pass
 
     @abstractmethod
-    def register(self, account):
+    def findByAccount(self, account):
         pass
 
