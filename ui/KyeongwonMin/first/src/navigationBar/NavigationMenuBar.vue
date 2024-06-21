@@ -7,20 +7,6 @@
         </v-btn>
         <v-spacer></v-spacer>
 
-        <!-- <v-menu>
-            <template v-slot:activator="{ props }">
-                <v-btn color="white" v-bind="props">
-                    <b>Activator Slot</b>
-                </v-btn>
-            </template>
-            <v-list>
-                <v-list-item v-for="(item, index) in items" 
-                            :key="index" :value="index" @click="item.action">
-                    <v-list-item-title>{{ item.title }}</v-list-item-title>
-                </v-list-item>
-            </v-list>
-        </v-menu> -->
-
         <v-btn text @click="goToProductList" class="btn-text">
             <v-icon left>mdi-store</v-icon>
             <span>상품</span>
@@ -47,14 +33,7 @@ import router from '@/router'
 export default {
     data () {
         return {
-            navigation_drawer: false,
-            // links: [{ icon: 'mdi-home', action: this.goToHome, route: '/' }],
-            accessToken: null,
-            isLogin: false,
-            // items: [
-            //     { title: 'Product', action: this.goToProductList() },
-            //     { title: 'Board', action: this.goToBoardList() },
-            // ]
+            isLogin: !!localStorage.getItem("userToken")
         }
     },
     methods: {
@@ -71,17 +50,15 @@ export default {
             router.push('/account/login')
         },
         signOut () {
-            localStorage.removeItem("accessToken")
-            this.isLogin = false
+            localStorage.removeItem("userToken")
+            this.updateLoginStatus()
             router.push('/')
         },
         updateLoginStatus () {
-            this.userToken = localStorage.getItem("userToken")
-            this.isLogin = !!this.userToken
+            this.isLogin = !!localStorage.getItem("userToken")
         }
     },
     mounted () {
-        this.updateLoginStatus()
         window.addEventListener('storage', this.updateLoginStatus)
     },
     beforeUnmount () {
