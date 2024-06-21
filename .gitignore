@@ -299,3 +299,6 @@ pyrightconfig.json
 *.png
 *.jpg
 *.jpeg
+
+# exclude *.csv
+*.csv
