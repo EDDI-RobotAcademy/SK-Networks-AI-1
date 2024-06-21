@@ -1,0 +1,93 @@
+<template>
+    <v-card>
+        <v-card-title className="headline">{{ title }}</v-card-title>
+        <v-card-text>
+            <svg ref="chart"/>
+        </v-card-text>
+    </v-card>
+</template>
+
+<script>
+import * as d3 from 'd3'
+
+export default {
+    props: {
+        title: String,
+        data: Array,
+        graphType: String,
+        xKey: String,
+        hueKey: String,
+        bins: Number,
+    },
+    mounted () {
+        this.drawChart()
+        window.addEventListener('resize', this.drawChart)
+    },
+    unmounted () {
+        window.removeEventListener('resize', this.drawChart)
+    },
+    methods: {
+        drawChart () {
+            const { graphType } = this
+
+            if (graphType === 'countplot') {
+                this.drawCountPlot()
+            } else if (graphType === 'histplot') {
+                console.log('히스토그램')
+            }
+        },
+        drawCountPlot () {
+            const { data, xKey, hueKey } = this
+            const svg = d3.select(this.$refs.chart)
+
+            // 데이터를 xKey와 hueKey로 그룹화 (x, y)
+            const groupData = d3.rollup(
+                data, v => v.length, d => d[xKey], d => d[hueKey])
+
+            const xKeyList = Array.from(groupData.keys())
+            console.log('xKeyList:', xKeyList)
+            const hueKeyList = Array.from(groupData.get(xKeyList[0]).keys())
+
+            const maxValue = d3.max(
+                Array.from(groupData.values()), 
+                d => d3.max(Array.from(d.values()))
+            )
+            
+            const parentWidth = this.$refs.chart.parentElement.clientWidth
+            const parentHeight = this.$refs.chart.parentElement.clientHeight
+
+            const margin = { top: 50, right: 50, bottom: 50, left: 50 }
+            const width = parentWidth - margin.left - margin.right
+            const height = parentHeight - margin.top - margin.bottom + 100
+
+            svg.attr('width', parentWidth)
+                .attr('height', parentHeight + 100)
+
+            const chart = svg.select('g')
+
+            if (!chart.empty()) {
+                chart.remove()
+            }
+
+            const newChart = svg.append('g')
+                .attr('transform', `translate(${margin.left}, ${margin.top})`)
+
+            const xScale = d3.scaleBand()
+                .domain(xKeyList)
+                .range([0, width])
+                .padding(0, 1)
+
+            const yScale = d3.scaleLinear()
+                .domain([0, maxValue])
+                .range([height, 0])
+
+            newChart.append('g')
+                .attr('transform', `translate(0, ${height})`)
+                .call(d3.axisBottom(xScale))
+
+            newChart.append('g')
+                .call(d3.axisLeft(yScale))
+        }
+    }
+}
+</script>
