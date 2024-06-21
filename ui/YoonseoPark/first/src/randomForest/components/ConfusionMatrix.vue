@@ -53,6 +53,16 @@ export default {
                 .attr('fill', d => colorScale(d))
                 .append('title')
                 .text(d => d)
+
+            cells.selectAll('.cell-text')
+                .data(d => d)
+                .enter().append('text')
+                .attr('class', 'cell-text')
+                .attr('x', (d, i) => i * cellSize + cellSize / 2)
+                .attr('y', cellSize/2)
+                .attr('dy', '.35em')
+                .attr('text-anchor', 'middle')
+                .text(d => d)
         }
     }
 }
