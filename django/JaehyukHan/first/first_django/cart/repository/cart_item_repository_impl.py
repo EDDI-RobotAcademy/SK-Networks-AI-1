@@ -36,3 +36,12 @@ class CartItemRepositoryImpl(CartItemRepository):
             quantity=quantity,
             price=productPrice
         )
+
+    def findByProduct(self, product):
+        try:
+            return CartItem.objects.get(product=product)
+        except CartItem.DoesNotExist:
+            return None
+
+    def update(self, cartItem):
+        cartItem.save()

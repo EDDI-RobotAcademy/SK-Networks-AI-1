@@ -33,7 +33,15 @@ class CartServiceImpl(CartService):
         if cart is None:
             cart = self.__cartRepository.register(account)
 
-        product = self.__productRepository.findByProductId(cartData.get('productId'))
+        productId = cartData.get('productId')
+        product = self.__productRepository.findByProductId(productId)
+        cartItem = self.__cartItemRepository.findByProduct(product)
+        print(f"cartItem: {cartItem}")
 
-        self.__cartItemRepository.register(cartData, cart, product)
+        if cartItem is None:
+            product = self.__productRepository.findByProductId(cartData.get('productId'))
+            self.__cartItemRepository.register(cartData, cart, product)
+        else:
+            cartItem.quantity += 1
+            self.__cartItemRepository.update(cartItem)
 
