@@ -1,6 +1,7 @@
 import ProductListPage from "@/product/pages/list/ProductListPage.vue"
 import ProductRegisterPage from "@/product/pages/register/ProductRegisterPage.vue"
 import ProductReadPage from "@/product/pages/read/ProductReadPage.vue"
+
 const ProductRoutes = [
     {
         path: '/product/list',
@@ -16,10 +17,10 @@ const ProductRoutes = [
         path: '/product/read/:productId',
         name: 'ProductReadPage',
         components: {
-            default:ProductReadPage,
+            default: ProductReadPage
         },
-        props:{
-            default:true
+        props: {
+            default: true
         },
     },
 ]
