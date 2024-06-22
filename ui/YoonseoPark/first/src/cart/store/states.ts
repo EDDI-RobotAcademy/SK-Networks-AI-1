@@ -1,5 +1,6 @@
 export interface CartState {
     cartItemList: CartItem[]
+    cartItem: CartItem | null
 }
 
 export interface CartItem {
@@ -11,6 +12,7 @@ export interface CartItem {
 
 const state: CartState = {
     cartItemList: [],
+    cartItem: null,
 }
 
 export default state
