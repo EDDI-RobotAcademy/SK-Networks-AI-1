@@ -18,20 +18,30 @@ class CartItemRepositoryImpl(CartItemRepository):
 
         return cls.__instance
 
-    def findByProductName(self, productName):
-        pass
 
     def register(self, cartData, cart, product):
         productPrice = cartData.get('productPrice')
         quantity = cartData.get('quantity')
 
-        cartItem = CartItem(
-            cart = cart,
-            product = product,
-            quantity = quantity,
-            price = productPrice
+        CartItem.objects.create(
+            cart=cart,
+            product=product,
+            quantity=quantity,
+            price=productPrice
         )
+
+    def findByProductName(self, productName):
+        pass
+
+    def findByProductId(self, productId):
+        try:
+            return CartItem.objects.get(product_id=productId)
+        except CartItem.DoesNotExist:
+            return None
+
+    def update(self, cartItem):
         cartItem.save()
-        return cartItem
+
+
 
 
