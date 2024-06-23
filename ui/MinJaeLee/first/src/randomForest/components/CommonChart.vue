@@ -45,6 +45,7 @@ export default {
                 data, v => v.length, d => d[xKey], d => d[hueKey])
 
             const xKeyList = Array.from(groupData.keys())
+            console.log('xKeyList:', xKeyList)
             const hueKeyList = Array.from(groupData.get(xKeyList[0]).keys())
 
             const maxValue = d3.max(
@@ -86,39 +87,41 @@ export default {
 
             newChart.append('g')
                 .call(d3.axisLeft(yScale))
+
             const colorMap = {
-                '0':'green',
-                '1':'orange',
+                '0': 'green',
+                '1': 'orange',
             }
+
             newChart.selectAll()
                 .data(hueKeyList)
                 .enter()
                 .append('g')
-                .attr('fill', d => colorMap[d]||'grey')
-                // .attr('fill', d=>d==='1'?'green':'orange')
+                .attr('fill', d => colorMap[d] || 'grey')
+                // .attr('fill', d => d === '1' ? 'green' : 'orange')
                 .selectAll('rect')
-                .data(d=>xKeyList.map(x=>({x,y :groupData.get(x).get(d)||0})))
+                .data(d => xKeyList.map(x => ({ x, y: groupData.get(x).get(d) || 0 })))
                 .enter()
                 .append('rect')
-                .attr('x',d=>xScale(d.x))
-                .attr('y',d=>yScale(d.y))
-                .attr('width',xScale.bandwidth())
-                .attr('height',d=>height - yScale(d.y))
+                .attr('x', d => xScale(d.x))
+                .attr('y', d => yScale(d.y))
+                .attr('width', xScale.bandwidth())
+                .attr('height', d => height - yScale(d.y))
 
             newChart.append('text')
-                .attr('x',width/2)
-                .attr('y', -margin.top/2)
+                .attr('x', width / 2)
+                .attr('y', -margin.top / 2)
                 .attr('text-anchor', 'middle')
                 .style('font-size', '16px')
                 .text(this.title)
         },
-        drawHistPlot(){
+        drawHistPlot () {
             const { data, xKey, bins } = this
             const svg = d3.select(this.$refs.chart)
-            
-            // 히스토그램 프로팅을 위해 데이터 값 추출
+
+            // 히스토그램 플로팅을 위해 데이터 값 추출
             const values = data.map(d => +d[xKey])
-            
+
             const parentWidth = this.$refs.chart.parentElement.clientWidth
             const parentHeight = this.$refs.chart.parentElement.clientHeight
 
@@ -136,9 +139,9 @@ export default {
             }
 
             const newChart = svg.append('g')
-                .attr('transform', `translate(${margin.left},${margin.top})`)
+                .attr('transform', `translate(${margin.left}, ${margin.top})`)
 
-            // 데이터 자체의 구간을 bins(30개)로 나누었음
+            // 데이터 자체의 구간을 bins(30개) 로 나누겠음
             const histogram = d3.histogram()
                 .value(d => d)
                 .domain(d3.extent(values))
@@ -151,12 +154,12 @@ export default {
                 .range([0, width])
 
             const yScale = d3.scaleLinear()
-                .domain([0, d3.max(binsData, d=>d.length)])
+                .domain([0, d3.max(binsData, d => d.length)])
                 .nice()
                 .range([height, 0])
-            
-            const colorScale = d3.scaleSequential(d3.interpolatePurles)
-                .domain([0, d3.max(binsData,d=> d.length)])
+
+            const colorScale = d3.scaleSequential(d3.interpolatePurples)
+                .domain([0, d3.max(binsData, d => d.length)])
 
             newChart.append('g')
                 .attr('transform', `translate(0, ${height})`)
@@ -181,7 +184,7 @@ export default {
                 .attr('text-anchor', 'middle')
                 .style('font-size', '16px')
                 .text(this.title)
-        },
+        }
     }
 }
 </script>
