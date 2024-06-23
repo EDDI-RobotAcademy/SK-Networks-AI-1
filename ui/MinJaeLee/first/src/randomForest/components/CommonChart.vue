@@ -97,7 +97,7 @@ export default {
                 .attr('fill', d => colorMap[d]||'grey')
                 // .attr('fill', d=>d==='1'?'green':'orange')
                 .selectAll('rect')
-                .data(d=>xKeyList.map(x=>({x,y:groupData.get(x).get(d)||0})))
+                .data(d=>xKeyList.map(x=>({x,y :groupData.get(x).get(d)||0})))
                 .enter()
                 .append('rect')
                 .attr('x',d=>xScale(d.x))
@@ -154,6 +154,9 @@ export default {
                 .domain([0, d3.max(binsData, d=>d.length)])
                 .nice()
                 .range([height, 0])
+            
+            const colorScale = d3.scaleSequential(d3.interpolatePurles)
+                .domain([0, d3.max(binsData,d=> d.length)])
 
             newChart.append('g')
                 .attr('transform', `translate(0, ${height})`)
@@ -170,6 +173,7 @@ export default {
                 .attr('y', d => yScale(d.length))
                 .attr('width', d => xScale(d.x1) - xScale(d.x0) - 1)
                 .attr('height', d => height - yScale(d.length))
+                .attr('fill', d => colorScale(d.length))
 
             newChart.append('text')
                 .attr('x', width / 2)

@@ -47,14 +47,7 @@ import router from '@/router'
 export default {
     data () {
         return {
-            navigation_drawer: false,
-            // links: [{ icon: 'mdi-home', action: this.goToHome, route: '/' }],
-            accessToken: null,
-            isLogin: false,
-            // items: [
-            //     { title: 'Product', action: this.goToProductList() },
-            //     { title: 'Board', action: this.goToBoardList() },
-            // ]
+            isLogin:!!localStorage.getItem("userToken")
         }
     },
     methods: {
@@ -76,12 +69,10 @@ export default {
             router.push('/')
         },
         updateLoginStatus () {
-            this.userToken = localStorage.getItem("userToken")
-            this.isLogin = !!this.userToken
+            this.userToken = !!localStorage.getItem("userToken")
         }
     },
         mounted () {
-            this.updateLoginStatus()
             window.addEventListener('storage', this.updateLoginStatus)
             // TODO: 로그인이후 즉시로그아웃화면 갱신안되는 문제발견
             // 새로고침하면 반영됨
