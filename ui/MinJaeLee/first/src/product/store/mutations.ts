@@ -2,7 +2,7 @@ import { MutationTree } from "vuex";
 import { ProductState, Product } from "./states";
 import { 
     REQUEST_PRODUCT_LIST_TO_DJANGO, 
-    REQUEST_PRODUCT_TO_DJANGO
+    REQUEST_PRODUCT_TO_DJANGO 
 } from "./mutation-types";
 
 export interface ProductMutations extends MutationTree<ProductState> {
@@ -12,7 +12,8 @@ export interface ProductMutations extends MutationTree<ProductState> {
 
 const mutations: MutationTree<ProductState> = {
     [REQUEST_PRODUCT_LIST_TO_DJANGO] (state: ProductState, receivedData: Product[]): void {
-        state.productList = receivedData},
+        state.productList = receivedData
+    },
     [REQUEST_PRODUCT_TO_DJANGO] (state: ProductState, receivedData: Product): void {
         state.product = receivedData
     }

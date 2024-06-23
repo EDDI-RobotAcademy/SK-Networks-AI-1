@@ -26,5 +26,5 @@ class PolynomialRegressionRepositoryImpl(PolynomialRegressionRepository):
         X_new_poly = polynomialFeature.transform(X_new) # X_new로 다항식 뽑기 >> test data X
         y_pred = model.predict(X_new_poly) # test 데이터로 모델에 넣어 예측값 얻기
 
-        # flatten이 1행 n열로 되어있는걸 => n행 1열로 바꾸는 작업인가?
+        # flatten이 n행 1열로 되어있는걸 => 1행 n열로 바꾸는 작업인가?
         return X.flatten().tolist(), y.tolist(), X_new.flatten().tolist(), y_pred.tolist()
