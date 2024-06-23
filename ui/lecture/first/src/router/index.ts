@@ -13,6 +13,7 @@ import PolynomialRegressionRoutes from '@/polynomialRegression/router/Polynomial
 import ExponentialRegressionRoutes from '@/exponentialRegression/router/ExponentialRegressionRoutes'
 import WordCloudRoutes from "@/wordCloud/router/WordCloudRoutes";
 import NaturalLanguageProcessingRoutes from "@/naturalLanguageProcessing/router/NaturalLanguageProcessingRoutes";
+import RandomForestRoutes from '@/randomForest/router/RandomForestRoutes'
 
 const routes: Array<RouteRecordRaw> = [
   ...HomeRoutes,
@@ -31,6 +32,7 @@ const routes: Array<RouteRecordRaw> = [
   ...ExponentialRegressionRoutes,
   ...WordCloudRoutes,
   ...NaturalLanguageProcessingRoutes,
+  ...RandomForestRoutes,
 ]
 
 const router = createRouter({

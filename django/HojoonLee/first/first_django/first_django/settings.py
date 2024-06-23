@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     "corsheaders",
     "rest_framework",
     "board",
+    "product",
+    "account",
 ]
 
 MIDDLEWARE = [
@@ -57,6 +59,14 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
+
+KAKAO = {
+    'LOGIN_URL': os.getenv('KAKAO_LOGIN_URL'),
+    'CLIENT_ID': os.getenv('KAKAO_CLIENT_ID'),
+    'REDIRECT_URI': os.getenv('KAKAO_REDIRECT_URI'),
+    'TOKEN_REQUEST_URI': os.getenv('KAKAO_TOKEN_REQUEST_URI'),
+    'USERINFO_REQUEST_URI': os.getenv('KAKAO_USERINFO_REQUEST_URI'),
+}
 
 ROOT_URLCONF = "first_django.urls"
 
@@ -84,10 +94,15 @@ WSGI_APPLICATION = "first_django.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# sqlite3 > mysql로 바꾸기
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": os.getenv('DATABASE_NAME'),
+        "USER": os.getenv('DATABASE_USER'),
+        "PASSWORD": os.getenv('DATABASE_PASSWORD'),
+        "HOST": 'localhost',
+        'PORT': '3306',
     }
 }
 

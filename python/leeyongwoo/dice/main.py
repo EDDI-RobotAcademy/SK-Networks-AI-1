@@ -26,3 +26,12 @@ if __name__ == "__main__":
     print(f"두 번째 플레이어 닉네임: {secondPlayerDice.getPlayerNickname()}") 
     print(f"두 번째 주사위를 굴린 플레이어 id: {secondPlayerDice.getPlayerId()}")
     print(f"두 번째 주사위 눈금: {secondPlayerDice.getDiceNumber()}")
+
+    print()
+
+    if (firstPlayerDice.getDiceNumber() > secondPlayerDice.getDiceNumber()):
+        print(f"승자는 ", firstPlayerNickname)
+    elif (firstPlayerDice.getDiceNumber() == secondPlayerDice.getDiceNumber()):
+        print("무승부")
+    else:
+        print(f"승자는 ", secondPlayerNickname)

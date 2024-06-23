@@ -15,5 +15,5 @@ class CartItemRepository(ABC):
         pass
 
     @abstractmethod
-    def save(self, cartItem):
+    def update(self, cartItem):
         pass
