@@ -1,4 +1,4 @@
-from first_django import settings
+from manual_proj import settings
 from oauth.service.oauth_service import OauthService
 
 import requests
@@ -56,3 +56,5 @@ class OauthServiceImpl(OauthService):
         headers = {'Authorization': f'Bearer {accessToken}'}
         response = requests.post(self.userinfoRequestUri, headers=headers)
         return response.json()
+
+
