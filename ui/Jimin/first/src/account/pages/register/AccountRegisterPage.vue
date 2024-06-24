@@ -77,7 +77,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions(authenticationModule, ['requestUserInfoToDjango']), // 어떤 모듈의 어떤것을 사용하겠다.
+        ...mapActions(authenticationModule, ['requestUserInfoToDjango', 'requestAddRedisAccessTokenToDjango']), // 어떤 모듈의 어떤것을 사용하겠다.
         // 모듈과 actions.ts안에 있는 request~를 매핑해주겠다.
         ...mapActions(accountModule, ['requestNicknameDuplicationCheckToDjango',
             'requestCreateNewAccountToDjango'
@@ -124,6 +124,13 @@ export default {
 
                 await this.requestCreateNewAccountToDjango(accountInfo)
                 console.log('전송한 데이터:', accountInfo)
+
+                const accessToken = localStorage.getItem("accessToken")
+                const email = accountInfo.email
+                console.log('register submitForm email:', email)
+                await this.requestAddRedisAccessTokenToDjango({ email, accessToken })
+
+                this.$router.push('/')
             }
         }
     }

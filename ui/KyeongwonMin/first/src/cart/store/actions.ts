@@ -9,16 +9,51 @@ export type CartActions = {
         context: ActionContext<CartState, any>,
         cartData: CartItem
     ): Promise<AxiosResponse>;
+
+    requestCartListToDjango(
+        context: ActionContext<CartState, any>
+    ): Promise<AxiosResponse>;
 }
 
 const actions: CartActions = {
     async requestAddCartToDjango({ commit }, cartData: CartItem) {
         try {
-            console.log('cartData:', cartData)
-            const response = await axiosInst.djangoAxiosInst.post('/cart/register', cartData);
+            const userToken = localStorage.getItem('userToken');
+            if (!userToken) {
+                throw new Error('User token not found');
+            }
+
+            const requestData = {
+                ...cartData,
+                userToken
+            };
+
+            console.log('requestData:', requestData);
+
+            const response = await axiosInst.djangoAxiosInst.post('/cart/register', requestData);
             return response.data;
         } catch (error) {
             console.error('Error adding to cart:', error);
+            throw error;
+        }
+    },
+    async requestCartListToDjango({ commit }) {
+        try {
+            const userToken = localStorage.getItem('userToken');
+            if (!userToken) {
+                throw new Error('User token not found');
+            }
+
+            const requestData = {
+                userToken
+            };
+
+            console.log('requestCartListToDjango requestData:', requestData);
+
+            const response = await axiosInst.djangoAxiosInst.post('/cart/list', requestData);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching cart list:', error);
             throw error;
         }
     },

@@ -40,6 +40,10 @@
                 <v-icon>mdi-cart</v-icon>
                 <span class="button-text">구매하기</span>
             </v-btn>
+            <v-btn color="success" @click="onAddToCart" class="action-button">
+                <v-icon>mdi-cart-plus</v-icon>
+                <span class="button-text">장바구니에 추가</span>
+            </v-btn>
             <router-link :to="{ name: 'ProductListPage' }"
                             class="router-link no-underline">
                 <v-btn color="secondary" class="action-button">
@@ -55,6 +59,7 @@
 import { mapActions, mapState } from 'vuex'
 
 const productModule = 'productModule'
+const cartModule = 'cartModule'
 
 export default {
     props: {
@@ -68,8 +73,24 @@ export default {
     },
     methods: {
         ...mapActions(productModule, ['requestProductToDjango']),
+        ...mapActions(cartModule, ['requestAddCartToDjango']),
         async onPurchase () {
             console.log('구매하기 버튼 눌렀음')
+        },
+        async onAddToCart () {
+            console.log('장바구니에 추가 버튼 눌렀음')
+            try {
+                const cartData = {
+                    productId: this.product.productId,
+                    productName: this.product.productName,
+                    productPrice: this.product.productPrice,
+                    quantity: 1, // 임시로 기본 수량 1로 설정
+                };
+                await this.requestAddCartToDjango(cartData);
+                // this.$router.push({ name: 'CartListPage' });
+            } catch (error) {
+                console.log('장바구니 추가 과정에서 에러 발생:', error);
+            }
         },
         getProductImageUrl (imageName) {
             console.log('imageName:', imageName)

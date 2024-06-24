@@ -1,8 +1,8 @@
 <template>
     <v-container>
-        <h2>Vue3 + Vuetify3 + TypeScript 상품 세부 사항 보기!</h2>
+        <h2>Vue3 + Vuetify3 + TypeScript 상품 세부 사항 보기</h2>
         <v-card v-if="product">
-            <v-card-title>게시물 정보</v-card-title>
+            <v-card-title>상품 정보</v-card-title>
             <v-card-text>
                 <v-container>
                     <v-row>
@@ -17,9 +17,10 @@
                     </v-row>
                     <v-row>
                         <v-col cols="12">
-                            <v-text-field v-model="product.productPrice" readonly label="가격" type = "number"/>
+                            <v-text-field v-model="product.productPrice" readonly label="가격" type="number"/>
                         </v-col>
                     </v-row>
+                    
                     <v-row>
                         <v-col cols="12">
                             <v-img :src="getProductImageUrl(product.productImage)" aspect-ratio="1" class="grey lighten-2">
@@ -34,15 +35,20 @@
                 </v-container>
             </v-card-text>
         </v-card>
-<!-- 위쪽에 v-if가 있기때문에 아래 v-else를 사용 가능. -->
+
         <v-alert v-else type="info">현재 등록된 상품이 없습니다!</v-alert>
-        <div class = "button-container">
+        <div class="button-container">
             <v-btn color="primary" @click="onPurchase" class="action-button">
                 <v-icon>mdi-cart</v-icon>
                 <span class="button-text">구매하기</span>
             </v-btn>
-            <router-link :to="{name:'ProductListPage'}" class = "router-link no-underline">
-                <v-btn color="secondary" class = "action-button">
+            <v-btn color="sucess" @click="noAddToCart" class="action-button">
+                <v-icon>mdi-cart-plus</v-icon>
+                <span class="button-text">장바구니로코드를바꿀예정이</span>
+            </v-btn>
+            <router-link :to="{ name: 'ProductListPage' }" 
+                            class="router-link no-underline">
+                <v-btn color="secondary" class="action-button">
                     <v-icon>mdi-arrow-left</v-icon>
                     <span class="button-text">목록으로 돌아가기</span>
                 </v-btn>
@@ -67,15 +73,29 @@ export default {
         ...mapState(productModule, ['product'])
     },
     methods: {
-        // 'requestDeleteBoardToDjango' 추후 처리 필요
         ...mapActions(productModule, ['requestProductToDjango']),
-        async onPurchase(){
+        async onPurchase () {
             console.log('구매하기 버튼 눌렀음')
         },
-        getProductImageUrl(imageName){
+        async onAddToCart () {
+            console.log('장바구니에 추가 버튼 눌렀음')
+            try {
+                const cartData = {
+                    productId: this.product.productId,
+                    productName: this.product.productName,
+                    productPrice: this.product.productPrice,
+                    quantity: 1, // 임시로 기본 수량 1로 설정
+                };
+                await this.requestAddCartToDjango(cartData);
+                this.$router.push({ name: 'CartListPage' });
+            } catch (error) {
+                console.log('장바구니 추가 과정에서 에러 발생:', error);
+            }
+        },
+        getProductImageUrl (imageName) {
             console.log('imageName:', imageName)
-            return require('@/assets/images/uploadImages/'+imageName)
-        }
+            return require('@/assets/images/uploadImages/' + imageName)
+        },
     },
     created () {
         this.requestProductToDjango(this.productId)

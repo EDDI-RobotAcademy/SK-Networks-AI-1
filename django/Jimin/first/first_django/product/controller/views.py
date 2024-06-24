@@ -47,3 +47,4 @@ class ProductView(viewsets.ViewSet):
         serializer = ProductSerializer(product)
         return Response(serializer.data)
 
+
