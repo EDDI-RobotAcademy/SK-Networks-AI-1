@@ -40,6 +40,7 @@ export default {
     methods: {
         ...mapActions(postModule, ['requestPostListToFastapi']),
         readRow(event, { item }) {
+            console.log('which one selected ?', item['id'])
             this.$router.push({
                 name: 'PostReadPage',
                 params: { id: item['id'].toString() }
