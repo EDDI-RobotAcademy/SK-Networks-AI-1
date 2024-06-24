@@ -14,7 +14,7 @@ const PostRoutes = [
         component: PostRegisterPage,
     },
     {
-        path: '/post/read/:postId',
+        path: '/post/read/:id',
         name: 'PostReadPage',
         components: {
             default: PostReadPage
