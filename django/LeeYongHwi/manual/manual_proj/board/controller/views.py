@@ -16,9 +16,7 @@ class BoardView(viewsets.ViewSet):
 
     def list(self, request):
         boardList = self.boardService.list()
-        print('boardList:', boardList)
         serializer = BoardSerializer(boardList, many=True)
-        print('serialized boardList:', serializer.data)
         return Response(serializer.data)
 
     def create(self, request):

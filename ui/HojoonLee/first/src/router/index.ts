@@ -8,6 +8,9 @@ import AuthenficationRoutes from '@/authentication/router/AuthenticationRouter'
 import LogisticRegressionRoutes from '@/logisticRegression/router/LogisticRegressionRoutes'
 import TrainTestEvaluationRoutes from '@/trainTestEvaluation/router/TrainTestEvaluationRoutes'
 import PolynomialRegressionRoutes from '@/polynomialRegression/router/PolynomialRegressionRoutes'
+import ExponentialRegressionRoutes from '@/exponentialRegression/router/ExponentialRegressionRoutes'
+import RandomForestRoutes from '@/random_forest/router/RandomForestRoutes'
+
 
 
 
@@ -21,6 +24,8 @@ const routes: Array<RouteRecordRaw> = [
   ...LogisticRegressionRoutes,
   ...TrainTestEvaluationRoutes,
   ...PolynomialRegressionRoutes,
+  ...ExponentialRegressionRoutes,
+  ...RandomForestRoutes,
 ]
 
 const router = createRouter({
