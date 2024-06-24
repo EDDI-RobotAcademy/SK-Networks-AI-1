@@ -28,7 +28,7 @@ const routes: Array<RouteRecordRaw> = [
   ...CartRoutes,
   ...PolynomialRegressionRoutes,
   ...ExponentialRegressionRoutes,
-  ...RandomForestRoutes
+  ...RandomForestRoutes,
 ]
 
 const router = createRouter({
