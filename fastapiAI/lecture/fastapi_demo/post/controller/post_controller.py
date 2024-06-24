@@ -4,8 +4,10 @@ from aiomysql import Pool
 from fastapi import APIRouter, Depends
 
 from async_db.database import getMySqlPool
+from post.controller.response_form.create_post_response_form import CreatePostResponseForm
 from post.entity.models import Post
 from post.service.post_service_impl import PostServiceImpl
+from post.service.request.create_post_request import CreatePostRequest
 
 postRouter = APIRouter()
 
@@ -21,3 +23,10 @@ async def postList(postService: PostServiceImpl =
     print(f"controller -> postList()")
     return await postService.postList()
 
+@postRouter.post("/create", response_model=CreatePostResponseForm)
+async def postCreate(createPostRequest: CreatePostRequest,
+                     postService: PostServiceImpl =
+                                Depends(injectPostService)):
+
+    createPostResponseForm = await postService.createPost(createPostRequest)
+    return createPostResponseForm
