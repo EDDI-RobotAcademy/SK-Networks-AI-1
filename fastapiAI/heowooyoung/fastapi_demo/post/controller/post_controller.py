@@ -10,10 +10,13 @@ from post.service.post_service_impl import PostServiceImpl
 postRouter = APIRouter()
 
 
-async def injectPostService(db_poll: Pool = Depends(getMySqlPool)) -> PostServiceImpl:
-    return PostServiceImpl(db_poll)
+async def injectPostService(db_pool: Pool = Depends(getMySqlPool)) -> PostServiceImpl:
+    return PostServiceImpl(db_pool)
+
 
 @postRouter.get("/list", response_model=List[Post])
-async def postList(postService: PostServiceImpl = Depends(injectPostService)):
+async def postList(postService: PostServiceImpl =
+                                Depends(injectPostService)):
 
-    print(f"postList()")
+    print(f"controller -> postList()")
+    return await postService.postList()
