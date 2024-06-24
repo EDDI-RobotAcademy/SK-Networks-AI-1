@@ -10,7 +10,6 @@ from post.entity.models import Post
 from fastapi import APIRouter, Depends, HTTPException
 
 from post.service.post_service_impl import PostServiceImpl
-from post.service.request.create_post_request import CreatePostRequest
 
 postRouter = APIRouter()
 
