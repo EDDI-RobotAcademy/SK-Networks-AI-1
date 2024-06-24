@@ -1,6 +1,6 @@
 import os
 
-from first_django import settings
+from manual_proj import settings
 from product.entity.models import Product
 from product.repository.product_repository import ProductRepository
 
@@ -25,11 +25,10 @@ class ProductRepositoryImpl(ProductRepository):
         return Product.objects.all().order_by('registeredDate')
 
     def create(self, productName, productPrice, productDescription, productImage):
-        # uploadDirectory = os.path.join(
-        #     settings.BASE_DIR,
-        #     '../../../../ui/MinJaeLee/first/src/assets/images/uploadImages')
-        uploadDirectory = r"C:\Users\Playdata\Desktop\code\2T\SK-Networks-AI-1\ui\MinJaeLee\first\src\assets\images\uploadImages"
-
+        uploadDirectory = os.path.join(
+            settings.BASE_DIR,
+            '../../../../ui/lecture/first/src/assets/images/uploadImages'
+        )
         if not os.path.exists(uploadDirectory):
             os.makedirs(uploadDirectory)
 
@@ -38,18 +37,21 @@ class ProductRepositoryImpl(ProductRepository):
             for chunk in productImage.chunks():
                 destination.write(chunk)
 
+            destination.flush()
+            os.fsync(destination.fileno())
+
         product = Product(
             productName=productName,
-            productPrice=productPrice,
             productDescription=productDescription,
+            productPrice=productPrice,
             productImage=productImage.name
         )
         product.save()
         return product
+
     def findByProductId(self, productId):
         try:
-            return Product.objects.get(productId = productId)
+            return Product.objects.get(productId=productId)
         except Product.DoesNotExist:
             return None
-
 

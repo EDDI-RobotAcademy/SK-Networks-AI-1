@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import axiosInst from '@/utility/axiosInstance'
+
 import * as d3 from 'd3'
 // npm install d3 --legacy-peer-deps
 

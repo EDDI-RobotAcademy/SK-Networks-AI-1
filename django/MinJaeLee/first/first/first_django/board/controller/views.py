@@ -44,7 +44,7 @@ class BoardView(viewsets.ViewSet):
         serializer = BoardSerializer(board, data=request.data, partial=True)
 
         if serializer.is_valid():
-            updateBoard = self.boardService.updateBoard(pk, serializer.validated_data)
-            return Response(BoardSerializer(updateBoard).data)
+            updatedBoard = self.boardService.updateBoard(pk, serializer.validated_data)
+            return Response(BoardSerializer(updatedBoard).data)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -1,6 +1,5 @@
-from product.entity.models import Product
-from product.service.product_service import ProductService
 from product.repository.product_repository_impl import ProductRepositoryImpl
+from product.service.product_service import ProductService
 
 
 class ProductServiceImpl(ProductService):
@@ -24,8 +23,8 @@ class ProductServiceImpl(ProductService):
         return self.__productRepository.list()
 
     def createProduct(self, productName, productPrice, productDescription, productImage):
-        return self.__productRepository.create(productName, productPrice, productDescription, productImage)
+        return self.__productRepository.create(
+            productName, productPrice, productDescription, productImage)
 
     def readProduct(self, productId):
         return self.__productRepository.findByProductId(productId)
-

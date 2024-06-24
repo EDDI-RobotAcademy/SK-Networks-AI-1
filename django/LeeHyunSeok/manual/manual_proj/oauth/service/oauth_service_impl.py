@@ -3,6 +3,7 @@ from oauth.service.oauth_service import OauthService
 
 import requests
 
+
 class OauthServiceImpl(OauthService):
     __instance = None
 
@@ -46,5 +47,16 @@ class OauthServiceImpl(OauthService):
         print(f"code: {kakaoAuthCode}")
         print(f"tokenRequestUri: {self.tokenRequestUri}")
 
+        print(f"accessTokenRequestForm: {accessTokenRequestForm}")
+
         response = requests.post(self.tokenRequestUri, data=accessTokenRequestForm)
+        print(f"response: {response}")
+
         return response.json()
+
+    def requestUserInfo(self, accessToken):
+        headers = {'Authorization': f'Bearer {accessToken}'}
+        response = requests.post(self.userinfoRequestUri, headers=headers)
+        return response.json()
+
+

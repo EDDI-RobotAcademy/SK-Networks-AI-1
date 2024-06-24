@@ -75,12 +75,19 @@ export default{
             localStorage.removeItem("accessToken")
             this.isLogin = false
             router.push('/')
+        },
+        updateLoginStatus () {
+            this.userToken = localStorage.getItem("userToken")
+            this.isLogin = !!this.userToken
         }
     },
     mounted () {
-        this.accessToken = localStorage.getItem("accessToken")
-        this.isLogin = !!this.accessToken
-        // TODO : 로그인 이후 즉시 로그아웃 화면 갱신 안되는 문제 발견
+        this.updateLoginStatus()
+        window.addEventListener('storage', this.updateLoginStatus)
+        
+    },
+    beforeUnmount () {
+        window.removeEventListener('storage', this.updateLoginStatus)
     }
 }
 </script>
