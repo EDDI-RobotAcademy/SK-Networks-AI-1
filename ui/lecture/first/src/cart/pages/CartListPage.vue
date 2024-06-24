@@ -8,6 +8,7 @@
                         <v-table>
                             <thead>
                             <tr>
+                                <th>Select</th>
                                 <th>Product</th>
                                 <th>Price</th>
                                 <th>Quantity</th>
@@ -17,6 +18,9 @@
                             </thead>
                             <tbody>
                             <tr v-for="item in cartItems" :key="item.cartItemId">
+                                <td>
+                                    <v-checkbox v-model="selectedItems" :value="item"></v-checkbox>
+                                </td>
                                 <td>{{ item.productName }}</td>
                                 <td>{{ item.productPrice }}</td>
                                 <td>
@@ -37,26 +41,41 @@
                         <v-divider></v-divider>
                         <v-row>
                             <v-col>
-                                <v-btn color="blue" @click="checkout">Checkout</v-btn>
+                                <v-btn color="blue" @click="confirmCheckout">Checkout</v-btn>
                             </v-col>
                             <v-col class="text-right">
-                                <strong>Total: {{ cartTotal }}</strong>
+                                <strong>Total: {{ selectedItemsTotal }}</strong>
                             </v-col>
                         </v-row>
                     </v-card-text>
                 </v-card>
             </v-col>
         </v-row>
+        <!-- Confirmation Dialog -->
+        <v-dialog v-model="isCheckoutDialogVisible" max-width="500">
+            <v-card>
+                <v-card-title>Confirm Checkout</v-card-title>
+                <v-card-text>Are you sure you want to order the selected items?</v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" text @click="isCheckoutDialogVisible = false">Cancel</v-btn>
+                    <v-btn color="blue darken-1" text @click="proceedToOrder">Confirm</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </v-container>
 </template>
 
 <script>
 import { mapActions } from "vuex";
+import router from "@/router"; // Assuming you have a router set up
 
 export default {
     data() {
         return {
             cartItems: [],
+            selectedItems: [],
+            isCheckoutDialogVisible: false,
         };
     },
     computed: {
@@ -69,6 +88,15 @@ export default {
                 0
             );
         },
+        selectedItemsTotal() {
+            if (!Array.isArray(this.selectedItems) || this.selectedItems.length === 0) {
+                return 0;
+            }
+            return this.selectedItems.reduce(
+                (total, item) => total + item.productPrice * item.quantity,
+                0
+            );
+        },
     },
     methods: {
         ...mapActions("cartModule", ["requestCartListToDjango"]),
@@ -76,10 +104,16 @@ export default {
             // 수량 업데이트 로직
         },
         removeItem(item) {
-            // 상품 제거 로직
+            this.cartItems = this.cartItems.filter(cartItem => cartItem.cartItemId !== item.cartItemId);
+            this.selectedItems = this.selectedItems.filter(selectedItem => selectedItem.cartItemId !== item.cartItemId);
         },
-        checkout() {
-            // 체크아웃 로직
+        confirmCheckout() {
+            this.isCheckoutDialogVisible = true;
+        },
+        async proceedToOrder() {
+            this.isCheckoutDialogVisible = false;
+            const response = await this.requestCreateOrderToDjango()
+            router.push({ name: 'OrderReadPage', params: { selectedItems: this.selectedItems } });
         },
         async fetchCartList() {
             try {
