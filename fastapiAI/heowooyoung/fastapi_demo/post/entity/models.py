@@ -7,4 +7,4 @@ class Post(BaseModel):
     content: str
 
     class Config:
-        from_attributes = True
+        orm_mode = True

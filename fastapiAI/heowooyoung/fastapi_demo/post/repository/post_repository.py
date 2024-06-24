@@ -8,3 +8,7 @@ class PostRepository(ABC):
     @abstractmethod
     def list(self) -> List[Post]:
         pass
+
+    @abstractmethod
+    def create(self, post: Post) -> int:
+        pass
