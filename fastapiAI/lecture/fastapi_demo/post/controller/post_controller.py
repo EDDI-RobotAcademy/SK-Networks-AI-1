@@ -18,4 +18,6 @@ async def injectPostService(db_pool: Pool = Depends(getMySqlPool)) -> PostServic
 async def postList(postService: PostServiceImpl =
                                 Depends(injectPostService)):
 
-    print(f"postList()")
+    print(f"controller -> postList()")
+    return await postService.postList()
+
