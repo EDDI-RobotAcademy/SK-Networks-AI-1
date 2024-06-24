@@ -28,7 +28,7 @@ class PostRepositoryImpl(PostRepository):
                     "insert into post (title, content) values (%s, %s)",
                     (post.title, post.content)
                 )
-                await connection.commit()
+                await connection.commit() # db io상에 매핑하기위해서 commit
                 await cur.execute("select last_insert_id()") # 마지막으로 입력된 id를 알려주세요
                 postId = await cur.fetchone() # 1개만 받고싶을 때 fetchone
                 return postId[0]

@@ -20,7 +20,7 @@ def read_root():
 
 @app.on_event("startup")
 async def startup_event(): # 프로그램 시작
-    app.state.db_pool = await getMySqlPool() # db 초기세팅 확보
+    app.state.db_pool = await getMySqlPool() # db 환경설정 세팅
     await createTableIfNeccesssary(app.state.db_pool) # 테이블 없다면 생성하기
 
 @app.on_event("shutdown")

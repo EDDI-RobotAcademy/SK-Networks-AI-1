@@ -25,5 +25,5 @@ class PostServiceImpl(PostService):
         createPostResponse = CreatePostResponse(id=postId)
         return CreatePostResponseForm.fromCreatePostResponse(createPostResponse) # response -> responseform 변환
 
-    async def readPost(self, postId: int) -> Optional[Post]:
+    async def readPost(self, postId: int) -> Optional[Post]: # Optional : pk none이어도 처리하기 위함
         return await self.__postRepository.findById(postId) # 왜 id=postId 를 하면 안 되지?
