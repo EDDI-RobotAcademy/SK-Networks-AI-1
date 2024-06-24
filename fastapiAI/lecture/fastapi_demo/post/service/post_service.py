@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List
+from typing import List, Optional
 
 from post.controller.response_form.create_post_response_form import CreatePostResponseForm
 from post.entity.models import Post
@@ -13,4 +13,8 @@ class PostService(ABC):
 
     @abstractmethod
     def createPost(self, createPostRequest: CreatePostRequest) -> CreatePostResponseForm:
+        pass
+
+    @abstractmethod
+    def readPost(self, postId: int) -> Optional[Post]:
         pass
