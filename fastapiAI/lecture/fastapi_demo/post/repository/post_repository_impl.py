@@ -21,5 +21,17 @@ class PostRepositoryImpl(PostRepository):
                 postList = [Post(id=row[0], title=row[1], content=row[2]) for row in result]
                 return postList
 
+    async def create(self, post: Post) -> int:
+        async with self.dbPool.acquire() as connection:
+            async with connection.cursor() as cur:
+                await cur.execute(
+                    "insert into post (title, content) values (%s, %s)",
+                    (post.title, post.content)
+                )
+                await connection.commit()
+                await cur.execute("select last_insert_id()")
+                postId = await cur.fetchone()
+                return postId[0]
+
 
 
