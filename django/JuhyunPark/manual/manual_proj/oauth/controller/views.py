@@ -66,8 +66,9 @@ class OauthView(viewsets.ViewSet):
             userToken = str(uuid.uuid4())
             self.redisService.store_access_token(account.id, userToken)
             # key로 value 찾기 테스트
-            accountId = self.redisService.getValueBykey(userToken)
+            accountId = self.redisService.getValueByKey(userToken)
             print(f"accountId: {accountId}")
+
             return Response({ 'userToken': userToken }, status=status.HTTP_200_OK)
         except Exception as e:
             print('Error storing access token in Redis:', e)

@@ -46,7 +46,7 @@ class PolynomialRegressionRepositoryImpl(PolynomialRegressionRepository):
 
         # 결론 ax^2 +bx +cx + d를 예측했다 보면 됨
         # -3 ~ 3 사이를 100개의 균일한 값으로 구성하고 100행 1열로 변환
-        X_new = np.linspace(-3, 3, 100).reshape(-1, 1)
+        X_new = np.linspace(-3, 3, 100).reshape(-1, 1)  #테스트 용으로 새로 만듬
         # 새로 뽑은 X_new를 다항 피처로 변환함 [1, x1, x2, x1^2, x1 * x2, x^2, ...]
         X_new_poly = polynomialFeature.transform(X_new)
         # 각 다항 피처에 대한 y 값 예측
@@ -54,3 +54,6 @@ class PolynomialRegressionRepositoryImpl(PolynomialRegressionRepository):
 
         # flatten()이 붙은 케이스들은 전부 1차원 형태로 만들고 리스트화하여 변환
         return X.flatten().tolist(), y.tolist(), X_new.flatten().tolist(), y_pred.tolist()
+
+        ## flatten은 전부 1행으로 변환해주는다 (n,n)  >>> (n,1) n행 1열로 만든다.
+
