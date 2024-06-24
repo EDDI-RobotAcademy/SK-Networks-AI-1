@@ -4,8 +4,11 @@ from typing import List
 from aiomysql import Pool
 
 from async_db.database import getMySqlPool
+from post.controller.request_form.create_post_request_form import CreatePostRequestForm
+from post.controller.response_form.create_post_response_form import CreatePostResponseForm
 from post.entity.models import Post
 from post.service.post_service_impl import PostServiceImpl
+from post.service.request.create_post_request import CreatePostRequest
 
 postRouter = APIRouter()
 
@@ -18,5 +21,16 @@ async def postList(postService: PostServiceImpl=
 
     print(f"controller -> postList()")
     return await postService.postList()
+
+# 요청에 따라 반환해야하는 포맷이 다르기 때문에 ResponseForm 생성
+@postRouter.post("/create", response_model=CreatePostResponseForm)
+async def postCreate(createPostRequestForm: CreatePostRequestForm,
+                     postService: PostServiceImpl=
+                                Depends(injectPostService)):
+
+    createPostResponseForm = await postService.createPost(
+        createPostRequestForm.toCreatePostRequest())
+
+    return createPostResponseForm
 
 
