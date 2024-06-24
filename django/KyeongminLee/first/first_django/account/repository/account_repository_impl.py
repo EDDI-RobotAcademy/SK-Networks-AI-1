@@ -21,9 +21,12 @@ class AccountRepositoryImpl(AccountRepository):
         return cls.__instance
 
     def create(self, loginType, roleType):
-        # '_' 보편적으로 언더바는 별 의미가 없는 데이터를 받는 경우 사용하지 않는다의 관습적 표현
         loginTypeEntity, _ = AccountLoginType.objects.get_or_create(loginType=loginType)
         roleTypeEntity, _ = AccountRoleType.objects.get_or_create(roleType=roleType)
 
         account = Account.objects.create(loginType=loginTypeEntity, roleType=roleTypeEntity)
+        return account
+
+    def findById(self, accountId):
+        account = Account.objects.get(id=accountId)
         return account
