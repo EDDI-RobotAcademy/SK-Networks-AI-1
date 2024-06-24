@@ -12,6 +12,7 @@ class PostServiceImpl(PostService):
 
 
     async def postList(self) -> List[Post]:
+        print("service -> postList()")
         return await self.__postRepository.list()
 
 
