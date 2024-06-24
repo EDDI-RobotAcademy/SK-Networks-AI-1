@@ -4,6 +4,7 @@ from aiomysql import Pool
 from fastapi import APIRouter, Depends
 
 from async_db.database import getMySqlPool
+from post.controller.request_form.create_post_request_form import CreatePostRequestForm
 from post.controller.response_form.create_post_response_form import CreatePostResponseForm
 from post.entity.models import Post
 from post.service.post_service_impl import PostServiceImpl
@@ -24,9 +25,11 @@ async def postList(postService: PostServiceImpl =
     return await postService.postList()
 
 @postRouter.post("/create", response_model=CreatePostResponseForm)
-async def postCreate(createPostRequest: CreatePostRequest,
+async def postCreate(createPostRequestForm: CreatePostRequestForm,
                      postService: PostServiceImpl =
                                 Depends(injectPostService)):
 
-    createPostResponseForm = await postService.createPost(createPostRequest)
+    createPostResponseForm = await postService.createPost(
+        createPostRequestForm.toCreatePostRequest())
+
     return createPostResponseForm
