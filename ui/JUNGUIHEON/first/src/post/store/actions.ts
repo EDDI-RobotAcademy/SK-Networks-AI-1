@@ -8,6 +8,10 @@ export type PostActions = {
     requestPostListToFastapi(
         context: ActionContext<PostState, any>
     ): Promise<void>
+    requestCreatePostToFastapi(
+        context: ActionContext<PostState, unknown>,
+        payload: { title: string, content: string }
+    ): Promise<number>
 }
 
 const actions: PostActions = {
@@ -26,6 +30,26 @@ const actions: PostActions = {
             throw error
         }
 
+    },
+
+    async requestCreatePostToFastapi(
+        context: ActionContext<PostState, unknown>,
+        payload: { title: string, content: string }
+    ): Promise<number> {
+
+        const { title, content } = payload
+        
+        try {
+            const res = await axiosInst.fastapiAxiosInst.post(
+                '/post/create', {title, content})
+            
+            console.log('res: ', res.data.id)
+            return res.data.id    
+
+        } catch (error) {
+            console.error('requestCreatePostoFastapi() 중 에러 발생: ', error)
+            throw error
+        }
     }
 };
 
