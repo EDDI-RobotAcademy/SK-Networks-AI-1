@@ -1,6 +1,6 @@
 from post.repository.post_repository import PostRepository
 from aiomysql import Pool
-from typing import List
+from typing import List, Optional
 
 from post.entity.models import Post
 
@@ -30,3 +30,17 @@ class PostRepositoryImpl(PostRepository):
                 await cur.execute("select last_insert_id()")
                 postId = await cur.fetchone()
                 return postId[0]
+
+    async def findById(self, postId: int) -> Optional[Post]:
+        async with self.dbPool.acquire() as connection:
+            async with connection.cursor() as cur:
+                await cur.execute(
+                    "select id, title, content from post where id = %s",
+                    (postId,)
+                )
+                result = await cur.fetchone()
+                if result:
+                    return Post(id=result[0], title=result[1], content=result[2])
+
+                return None
+
