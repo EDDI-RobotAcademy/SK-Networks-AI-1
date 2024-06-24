@@ -69,7 +69,25 @@ export default {
         },
         signIn () {
             router.push('/account/login')
+        },
+        signOut () {
+            // localStorage : 여기에서 해결하겠다.
+            localStorage.removeItem("accessToken")
+            this.isLogin = false
+            // root로 돌아온다.
+            router.push("/")
+        },
+        updateLoginStatus () {
+            this.userToken = localStorage.getItem("userToken")
+            this.isLogin = !!this.userToken
         }
+    },
+    mounted () {
+        this.updateLoginStatus()
+        window.addEventListener('storage', this.updateLoginStatus)
+    },
+    beforeMount () {
+        window.removeEventListener('storage', this.updateLoginStatus)
     }
 }
 </script>

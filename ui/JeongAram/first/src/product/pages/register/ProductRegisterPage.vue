@@ -58,7 +58,7 @@ export default {
                     imageFormData.append('productPrice', this.productPrice.toString())
                     imageFormData.append('productDescription', this.productDescription)
                     imageFormData.append('productImage', this.productImage)
-            
+                    console.log(imageFormData)
                     const response = await this.requestCreateProductToDjango(imageFormData)
                     this.uploadedFileName = response.data.imageName
                     this.$router.push({ name: 'ProductListPage' })

@@ -21,7 +21,7 @@ def logistic_regression_test():
     # 임의의 (x, y) 2차원 벡터(좌표)를 100개 생성
     X = np.random.randn(100, 2)
     # x 좌표와 y 좌표를 더해서 0 보다 크면 1, 아니면 0
-    y = (X[:, 0] + X[:, 1] > 1.5).astype(int)
+    y = (X[:, 0] + X[:, 1] > 0).astype(int)
     # 자동으로 100개 중 30% 를 테스트 셋으로 지정함
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
 

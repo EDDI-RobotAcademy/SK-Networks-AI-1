@@ -33,6 +33,8 @@ class ProductRepositoryImpl(ProductRepository):
         with open(imagePath, 'wb+') as destination:
             for chunk in productImage.chunks():
                 destination.write(chunk)
+                destination.flush()
+                os.fsync(destination.fileno())
 
         product = Product(
             productName=productName,
@@ -42,3 +44,10 @@ class ProductRepositoryImpl(ProductRepository):
         )
         product.save()
         return product
+
+    def findByProductId(self, productId):
+        try:
+            return Product.objects.get(productId=productId)
+        except Product.DoesNotExist:
+            return None
+

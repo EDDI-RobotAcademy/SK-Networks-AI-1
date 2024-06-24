@@ -1,4 +1,5 @@
-from abc import ABC,abstractmethod
+from abc import ABC, abstractmethod
+
 
 class AccountService(ABC):
     @abstractmethod
@@ -12,3 +13,8 @@ class AccountService(ABC):
     @abstractmethod
     def registerAccount(self, loginType, roleType, nickname, email):
         pass
+
+    @abstractmethod
+    def findAccountByEmail(self, email):
+        pass
+
