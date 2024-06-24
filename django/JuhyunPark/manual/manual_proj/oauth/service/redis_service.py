@@ -7,5 +7,5 @@ class RedisService(ABC):
         pass
 
     @abstractmethod
-    def getValueBykey(self, key):
+    def getValueByKey(self, key):
         pass
