@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from aiomysql import Pool
 
@@ -24,4 +24,6 @@ class PostServiceImpl(PostService):
         createPostResponse = CreatePostResponse(id=postId)
         return CreatePostResponseForm.fromCreatePostResponse(createPostResponse)
 
+    async def readPost(self, postId: int) -> Optional[Post]:
+        return await self.__postRepository.findById(postId)
 
