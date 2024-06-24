@@ -8,4 +8,4 @@ class CreatePostRequestForm(BaseModel):
     content: str
 
     def toCreatePostRequest(self) -> CreatePostRequest:
-        return CreatePostRequest(title=self.title, contnet=self.content)
+        return CreatePostRequest(title=self.title, content=self.content)

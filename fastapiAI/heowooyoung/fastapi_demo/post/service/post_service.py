@@ -16,5 +16,5 @@ class PostService(ABC):
         pass
 
     @abstractmethod
-    async def readPost(self, postId: int) -> Optional[Post]:
+    def readPost(self, postId: int) -> Optional[Post]:
         pass

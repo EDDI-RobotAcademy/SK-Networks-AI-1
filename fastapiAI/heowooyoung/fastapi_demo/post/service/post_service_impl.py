@@ -26,3 +26,4 @@ class PostServiceImpl(PostService):
 
     async def readPost(self, postId: int) -> Optional[Post]:
         return await self.__postRepository.findById(postId)
+

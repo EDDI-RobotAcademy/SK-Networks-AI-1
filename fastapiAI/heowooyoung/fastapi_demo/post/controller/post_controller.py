@@ -34,12 +34,13 @@ async def postCreate(createPostRequestForm: CreatePostRequestForm,
 
     return createPostResponseForm
 
-@postRouter.get ("/read/{postId}", response_model=Post)
-async def postRead(postId: int, postService: PostServiceImpl = Depends(injectPostService)):
+@postRouter.get("/read/{postId}", response_model=Post)
+async def postRead(postId: int,
+                   postService: PostServiceImpl = Depends(injectPostService)):
 
     post = await postService.readPost(postId)
 
     if not post:
-        raise HTTPException(ststus_cod=404, detail="Post not found")
+        raise HTTPException(status_code=404, detail="Post not found")
 
     return post
