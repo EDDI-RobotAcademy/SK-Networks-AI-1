@@ -21,6 +21,10 @@ export type AuthenticationActions = {
         payload: { code: string }): Promise<void>
     requestUserInfoToDjango(
         context: ActionContext<AuthenticationState, any>): Promise<any>
+    requestAddRedisAccessTokenToDjango(
+        context: ActionContext<AuthenticationState, any>,
+        { email, accessToken }: { email: string, accessToken: string }
+    ): Promise<any>;
 }
 
 const actions: AuthenticationActions = {
@@ -80,7 +84,30 @@ const actions: AuthenticationActions = {
             // 주로 MSA(Micro Service Architecture) 프로젝트를 하면 이런 상황이 비일비재함
             throw error;
         }
-    }
+    },
+    async requestAddRedisAccessTokenToDjango(
+        { commit, state }: ActionContext<AuthenticationState, any>,
+        { email, accessToken }: { email: string, accessToken: string }
+    ): Promise<any> {
+        try {
+            console.log("requestAddRedisAccessTokenToDjango -> email:", email)
+            console.log("requestAddRedisAccessTokenToDjango -> accessToken:", accessToken)
+            const response: AxiosResponse<any> = await axiosInst.djangoAxiosInst.post(
+                '/oauth/redis-access-token/', {
+                    email: email,
+                    accessToken: accessToken
+                });
+
+            console.log('userToken:', response.data.userToken)
+
+            localStorage.setItem("userToken", response.data.userToken)
+            
+            return response.data;  // Adjust according to what your API returns
+        } catch (error) {
+            console.error('Error adding redis access token:', error);
+            throw error;
+        }
+    },
 };
 
 export default actions;

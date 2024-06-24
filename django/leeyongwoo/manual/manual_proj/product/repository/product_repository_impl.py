@@ -54,3 +54,4 @@ class ProductRepositoryImpl(ProductRepository):
             return Product.objects.get(productId=productId)
         except Product.DoesNotExist:
             return None
+

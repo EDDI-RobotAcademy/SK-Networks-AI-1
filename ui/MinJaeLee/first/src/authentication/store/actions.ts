@@ -16,14 +16,15 @@ export type AuthenticationActions = {
 
     // 즉 testFunction(testNumber: number): number
     // 위와 같은 형태로 표현된다는 뜻입니다.
-    requestAddRedisAccessTokenToDjango(
-        context:ActionContext<AuthenticationState, any>,{email,accessToken}:{email:string,accessToken:string}
-    ):Promise<any>
     requestAccessTokenToDjangoRedirection(
         context: ActionContext<AuthenticationState, any>, 
         payload: { code: string }): Promise<void>
     requestUserInfoToDjango(
         context: ActionContext<AuthenticationState, any>): Promise<any>
+    requestAddRedisAccessTokenToDjango(
+        context: ActionContext<AuthenticationState, any>,
+        { email, accessToken }: { email: string, accessToken: string }
+    ): Promise<any>;
 }
 
 const actions: AuthenticationActions = {
@@ -75,20 +76,27 @@ const actions: AuthenticationActions = {
             throw error;
         }
     },
-    async requestAddRedisAccessTokenToDjango(context:ActionContext<AuthenticationState, any>,{email,accessToken}:{email:string, accessToken:string}):
-    Promise<any>{
-        try{
-            console.log("requestAddRedisAccessTokenToDjango->email:", email)
-            console.log("requsetAddRedisAccessTokenToDjango -> accessToken:", accessToken)
-            const response:AxiosResponse<any> = await axiosInst.djangoAxiosInst.post('/oauth/redis-access-token/',{
-                email:email, accessToken:accessToken
-            });
+    async requestAddRedisAccessTokenToDjango(
+        { commit, state }: ActionContext<AuthenticationState, any>,
+        { email, accessToken }: { email: string, accessToken: string }
+    ): Promise<any> {
+        try {
+            const response: AxiosResponse<any> = await axiosInst.djangoAxiosInst.post(
+                '/oauth/redis-access-token', {
+                    email: email,
+                    accessToken: accessToken
+                });
+
+            console.log('userToken:', response.data.userToken)
+
+            localStorage.setItem("userToken", response.data.userToken)
+            commit('REQUEST_IS_AUTHENTICATED_TO_DJANGO', true)
             return response.data;
-        }catch(error){
-            console.error('error adding redis access token:', error);
+        } catch (error) {
+            console.error('Error adding redis access token:', error);
             throw error;
         }
-    }
+    },
 };
 
 export default actions;

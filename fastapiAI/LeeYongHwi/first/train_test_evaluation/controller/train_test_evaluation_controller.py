@@ -7,7 +7,7 @@ from sklearn.metrics import accuracy_score, confusion_matrix, classification_rep
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
-from train_test_evaluation.controller.reponse_form.analysis_result_response_form import AnalysisResultResponseForm
+from train_test_evaluation.controller.response_form.analysis_result_response_form import AnalysisResultResponseForm
 
 trainTestEvaluationRouter = APIRouter()
 

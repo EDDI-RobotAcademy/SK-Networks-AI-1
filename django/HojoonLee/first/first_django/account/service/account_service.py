@@ -17,3 +17,4 @@ class AccountService(ABC):
     @abstractmethod
     def findAccountByEmail(self, email):
         pass
+
