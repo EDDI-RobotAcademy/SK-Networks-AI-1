@@ -11,6 +11,8 @@ import TrainTestEvaluationRoutes from '@/trainTestEvaluation/router/TrainTestEva
 import CartRoutes from "@/cart/router/CartRoutes";
 import PolynomialRegressionRoutes from '@/polynomialRegression/router/PolynomialRegressionRoutes'
 import ExponentialRegressionRoutes from '@/exponentialRegression/router/ExponentialRegressionRoutes'
+import WordCloudRoutes from "@/wordCloud/router/WordCloudRoutes";
+import NaturalLanguageProcessingRoutes from "@/naturalLanguageProcessing/router/NaturalLanguageProcessingRoutes";
 import RandomForestRoutes from '@/randomForest/router/RandomForestRoutes'
 
 const routes: Array<RouteRecordRaw> = [
@@ -28,6 +30,8 @@ const routes: Array<RouteRecordRaw> = [
   ...CartRoutes,
   ...PolynomialRegressionRoutes,
   ...ExponentialRegressionRoutes,
+  ...WordCloudRoutes,
+  ...NaturalLanguageProcessingRoutes,
   ...RandomForestRoutes,
 ]
 
