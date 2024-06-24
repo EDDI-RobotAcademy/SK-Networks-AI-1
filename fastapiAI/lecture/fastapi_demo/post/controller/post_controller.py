@@ -1,7 +1,7 @@
 from typing import List
 
 from aiomysql import Pool
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 
 from async_db.database import getMySqlPool
 from post.controller.request_form.create_post_request_form import CreatePostRequestForm
@@ -33,3 +33,14 @@ async def postCreate(createPostRequestForm: CreatePostRequestForm,
         createPostRequestForm.toCreatePostRequest())
 
     return createPostResponseForm
+
+@postRouter.get("/read/{postId}", response_model=Post)
+async def postRead(postId: int,
+                   postService: PostServiceImpl = Depends(injectPostService)):
+
+    post = await postService.readPost(postId)
+
+    if not post:
+        raise HTTPException(status_code=404, detail="Post not found")
+
+    return post
