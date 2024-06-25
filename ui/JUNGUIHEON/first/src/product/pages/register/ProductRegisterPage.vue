@@ -22,7 +22,7 @@
         </v-row>
         <v-row>
             <v-col cols="12">
-                <p v-if="uploadedFileName">업로드된 파일: {{ uploadedFileName }}</p>
+                <p v-if="uploadedFileName">업르드된 파일: {{ uploadedFileName }}</p>
             </v-col>
         </v-row>
         <v-row>
@@ -65,15 +65,13 @@ export default {
                     const response = await this.requestCreateProductToDjango(imageFormData)
                     this.uploadedFileName = response.data.imageName
                     this.$router.push({ name: 'ProductListPage' })
-                } 
-                else {
+                } else {
                     console.log('이미지 파일을 선택하세요!')
                 }
             } catch (error) {
                 console.log('파일 처리 과정에서 에러 발생:', error)
             }
-             // 상품 상세 정보 읽기
-
+            // 상품 상세 정보 읽기
         },
         async onCancel () {
             console.log('취소 버튼 눌럿음')

@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from async_db.database import getMySqlPool, createTableIfNeccessary
 from exponential_regression.controller.exponential_regression_controller import exponentialRegressionRouter
+from kmeans.controller.kmeans_controller import kmeansRouter
 from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
 from polynomialRegression.controller.polynomial_regression_controller import polynomialRegressionRouter
 from post.controller.post_controller import postRouter
@@ -88,6 +89,7 @@ app.include_router(polynomialRegressionRouter)
 app.include_router(exponentialRegressionRouter)
 app.include_router(randomForestRouter)
 app.include_router(postRouter, prefix="/post")
+app.include_router(kmeansRouter)
 
 load_dotenv()
 

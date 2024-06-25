@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'board',
     'product',
     'account',
+    'cart',
 ]
 
 MIDDLEWARE = [
@@ -72,10 +73,10 @@ CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', '').split(',')
 
 print('CORS_ALLOWED_ORIGINS:', CORS_ALLOWED_ORIGINS)
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8080",
-    "http://127.0.0.1:8080",
-]
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:8080",
+#     "http://127.0.0.1:8080",
+# ]
 
 # CORS 설정 옵션
 CORS_ALLOW_CREDENTIALS = True
@@ -189,4 +190,3 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-

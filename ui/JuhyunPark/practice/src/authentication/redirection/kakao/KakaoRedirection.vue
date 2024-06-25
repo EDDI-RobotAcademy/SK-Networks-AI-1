@@ -39,11 +39,11 @@ export default {
                     console.error('AccessToken is missing');
                 }
 
-                this.$router.push('/')
+                this.$router.push('/')    // /는 루트페이지(메인페이지라는 뜻)
             } else {
                 console.log('신규 가입 고객입니다!')
 
-                this.$router.push('/account/register')
+                this.$router.push('/account/register')  //router.push해당 페이지로 간다는 뜻 .
             }
         }
     },
