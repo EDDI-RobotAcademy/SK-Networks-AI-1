@@ -10,6 +10,8 @@ import TrainTestEvaluationRoutes from '@/trainTestEvaluation/router/TrainTestEva
 import PolynomialRegressionRoutes from '@/polynomialRegression/router/PolynomialRegressionRoutes'
 import ExponentialRegressionRoutes from '@/exponentialRegression/router/ExponentialRegressionRoutes'
 import RandomForestRoutes from '@/random_forest/router/RandomForestRoutes'
+import CartRoutes from '@/cart/router/CartRoutes'
+import PostRoutes from '@/post/router/PostRoutes'
 
 
 
@@ -26,6 +28,8 @@ const routes: Array<RouteRecordRaw> = [
   ...PolynomialRegressionRoutes,
   ...ExponentialRegressionRoutes,
   ...RandomForestRoutes,
+  ...CartRoutes,
+  ...PostRoutes,
 ]
 
 const router = createRouter({

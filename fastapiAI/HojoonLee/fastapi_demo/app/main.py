@@ -4,8 +4,10 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from async_db.database import getMySqlPool, createTableIfNeccesssary
 from exponential_regression.controller.exponential_regression_controller import exponentialRegressionRouter
 from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
+from post.controller.post_controller import postRouter
 from random_forest.controller.random_forest_controller import randomForestRouter
 from train_test_evaluation.controller.train_test_evaluation_controller import trainTestEvaluationRouter
 from polynomialRegression.controller.polynomial_regression_controller import polynomialRegressionRouter
@@ -15,6 +17,16 @@ app = FastAPI()
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
+
+@app.on_event("startup")
+async def startup_event(): # 프로그램 시작
+    app.state.db_pool = await getMySqlPool() # db 환경설정 세팅
+    await createTableIfNeccesssary(app.state.db_pool) # 테이블 없다면 생성하기
+
+@app.on_event("shutdown")
+async def shutdown_event(): # 프로그램 꺼짐
+    app.state.db_pool.close()
+    await app.state.db_pool.wait_closed()
 
 # 브라우저 상에 "/items/4&q="test" 같은 것을 넣으면
 # item_id로 4, q로는 "test"를 획득하게 됨
@@ -34,6 +46,7 @@ app.include_router(trainTestEvaluationRouter)
 app.include_router(polynomialRegressionRouter)
 app.include_router(exponentialRegressionRouter)
 app.include_router(randomForestRouter)
+app.include_router(postRouter, prefix="/post") # 이렇게 앞에 붙여줘서 post domain에는 /list 라고만 선언, 알아서 post/list 인식
 
 # env 관련 설정
 # 통신하는 과정에서 우리가 허락한 것만 받아 들이겠다.
