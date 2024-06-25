@@ -58,8 +58,13 @@ export default {
                     key: "id",
                     width: "20%",
                 },
-                { title: "제목", align: "start", key: "title", width: "30%" },
-                { title: "내용", align: "start", key: "content", width: "50%" },
+                { title: "제목", align: "start", key: "title", width: "20%" },
+                {
+                    title: "내용",
+                    align: "center",
+                    key: "content",
+                    width: "60%",
+                },
             ],
             perPage: 10,
             pagination: {

@@ -53,6 +53,7 @@ class OauthView(viewsets.ViewSet):
             return JsonResponse({ 'error': str(e) }, status=500)
 
     def redisAccessToken(self, request):
+        print('redisAccessToken()')
         try:
             email = request.data.get('email')
             # 추후 삭제 예정
@@ -72,4 +73,15 @@ class OauthView(viewsets.ViewSet):
             return Response({ 'userToken': userToken }, status=status.HTTP_200_OK)
         except Exception as e:
             print('Error storing access token in Redis:', e)
+            return Response({ 'error': str(e) }, status=status.HTTP_400_BAD_REQUEST)
+
+    def dropRedisTokenForLogout(self, request):
+        try:
+            userToken = request.data.get('userToken')
+            isSuccess = self.redisService.deleteKey(userToken)
+
+            return Response({ 'isSuccess': isSuccess }, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            print('레디스 토큰 해제 중 에러 발생:', e)
             return Response({ 'error': str(e) }, status=status.HTTP_400_BAD_REQUEST)
