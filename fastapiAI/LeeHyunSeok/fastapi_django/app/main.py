@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from async_db.database import getMySqlPool, createTableIfNeccessary
 from exponential_regression.controller.exponential_regression_controller import exponentialRegressionRouter
+from kmeans.controller.kmeans_controller import kmeansRouter
 from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
 from polynomialRegression.controller.polynomial_regression_controller import polynomialRegressionRouter
 from post.controller.post_controller import postRouter
@@ -19,9 +20,10 @@ app = FastAPI()
 # 완전히 배제되지는 않았는데 애플리케이션이 시작할 때 실행될 함수를 지정함
 # 고로 애플리케이션 시작 시 비동기 처리가 가능한 DB를 구성한다 보면 됨
 @app.on_event("startup")
-async def startup_event():
-    app.state.db_pool = await getMySqlPool()
-    await createTableIfNeccessary(app.state.db_pool)
+async def startup_event():    #프로그램 시작
+    app.state.db_pool = await getMySqlPool()        #db초기세팅 확보        / db_pool은 변수임 즉, getMySqlPool의 내용을 db_pool로 받겠다. (여기서 getMySqlPool은 테이블의 기본 정보들이 들어있다.)
+    await createTableIfNeccessary(app.state.db_pool)        #테이블이 없으면 생성하기
+
 
 
 # 위의 것이 킬 때 였으니 이건 반대라 보면 됨
@@ -88,7 +90,7 @@ app.include_router(polynomialRegressionRouter)
 app.include_router(exponentialRegressionRouter)
 app.include_router(randomForestRouter)
 app.include_router(postRouter, prefix="/post")
-
+app.include_router(kmeansRouter)
 
 load_dotenv()
 
