@@ -2,6 +2,7 @@ import { ActionContext } from "vuex"
 import { AuthenticationState } from "./states"
 import { AxiosResponse } from "axios"
 import axiosInst from "@/utility/axiosInstance"
+import { CartItem, CartState } from "@/cart/store/states";
 
 export type AuthenticationActions = {
     requestKakaoOauthRedirectionToDjango(): Promise<void>
@@ -23,8 +24,12 @@ export type AuthenticationActions = {
         context: ActionContext<AuthenticationState, any>): Promise<any>
     requestAddRedisAccessTokenToDjango(
         context: ActionContext<AuthenticationState, any>,
-        { email }: { email: string }
+        { email, accessToken }: { email: string, accessToken: string }
     ): Promise<any>
+    requestLogoutToDjango(
+        context: ActionContext<AuthenticationState, any>,
+        userToken: string
+    ): Promise<void>
 }
 
 const actions: AuthenticationActions = {
@@ -77,24 +82,50 @@ const actions: AuthenticationActions = {
         }
     },
     async requestAddRedisAccessTokenToDjango(
-        context: ActionContext<AuthenticationState, any>,
-        { email }: { email: string }
+        { commit, state }: ActionContext<AuthenticationState, any>,
+        { email, accessToken }: { email: string, accessToken: string }
     ): Promise<any> {
         try {
             const response: AxiosResponse<any> = await axiosInst.djangoAxiosInst.post(
                 '/oauth/redis-access-token/', {
                 email: email,
+                accessToken: accessToken
             });
 
             console.log('userToken:', response.data.userToken)
 
+            localStorage.removeItem("accessToken")
             localStorage.setItem("userToken", response.data.userToken)
-            return response.data;  // Adjust according to what your API returns
+            commit('REQUEST_IS_AUTHENTICATED_TO_DJANGO', true);
+            return response.data;
         } catch (error) {
             console.error('Error adding redis access token:', error);
             throw error;
         }
     },
+    async requestLogoutToDjango(
+        context: ActionContext<AuthenticationState, any>,
+        userToken: string
+    ): Promise<void> {
+
+        try {
+            const userToken = localStorage.getItem("userToken")
+
+            const res =
+                await axiosInst.djangoAxiosInst.post('/oauth/logout', {
+                    userToken: userToken
+                })
+
+            console.log('res:', res.data.isSuccess)
+            if (res.data.isSuccess === true) {
+                context.commit('REQUEST_IS_AUTHENTICATED_TO_DJANGO', false)
+            }
+        } catch (error) {
+            console.error('requestPostToFastapi() 중 에러 발생:', error)
+            throw error
+        }
+        localStorage.removeItem("userToken")
+    }
 };
 
 export default actions;
