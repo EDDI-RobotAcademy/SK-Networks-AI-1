@@ -13,7 +13,7 @@ import PolynomialRegressionRoutes from '@/polynomialRegression/router/Polynomial
 import ExponentialRegressionRoutes from '@/exponentialRegression/router/ExponentialRegressionRoutes'
 import RandomForestRoutes from '@/randomForest/router/RandomForestRoutes'
 import PostRoutes from '@/post/router/PostRoutes'
-import KmeansRoutes from '@/kmeans/router/KmeansRoutes'
+import KmeansRoutes from "@/kmeans/router/KmeansRoutes";
 
 const routes: Array<RouteRecordRaw> = [
   ...HomeRoutes,
