@@ -1,7 +1,7 @@
 from typing import List
 
 from aiomysql import Pool
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 
 from async_db.database import getMySqlPool
 from post.controller.request_form.create_post_request_form import CreatePostRequestForm
@@ -24,12 +24,23 @@ async def postList(postService: PostServiceImpl =
     print(f"controller -> postList()")
     return await postService.postList()
 
-
-# 규모가 커짐에 따라 post_controller에서 여러 서비스들을 사용할 수 있기 때문에 필요함
 @postRouter.post("/create", response_model=CreatePostResponseForm)
 async def postCreate(createPostRequestForm: CreatePostRequestForm,
                      postService: PostServiceImpl =
                                 Depends(injectPostService)):
 
-    createPostResponseForm = await postService.createPost(createPostRequestForm.toCreatePostRequest())
+    createPostResponseForm = await postService.createPost(
+        createPostRequestForm.toCreatePostRequest())
+
     return createPostResponseForm
+
+@postRouter.get("/read/{postId}", response_model=Post)
+async def postRead(postId: int,
+                   postService: PostServiceImpl = Depends(injectPostService)):
+
+    post = await postService.readPost(postId)
+
+    if not post:
+        raise HTTPException(status_code=404, detail="Post not found")
+
+    return post

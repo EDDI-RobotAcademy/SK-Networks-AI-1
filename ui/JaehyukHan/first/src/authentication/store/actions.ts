@@ -21,7 +21,12 @@ export type AuthenticationActions = {
         context: ActionContext<AuthenticationState, any>): Promise<any>
     requestAddRedisAccessTokenToDjango(
         context: ActionContext<AuthenticationState, any>,
-        { email, accessToken }: { email: string, accessToken: string }): Promise<any>
+        { email, accessToken }: { email: string, accessToken: string }
+        ): Promise<any>
+    requestLogoutToDjango(
+        context: ActionContext<AuthenticationState, any>,
+        userToken: string
+        ): Promise<void>
 }
 
 const actions: AuthenticationActions = {
@@ -78,24 +83,49 @@ const actions: AuthenticationActions = {
         }
     },
     async requestAddRedisAccessTokenToDjango(
-        context: ActionContext<AuthenticationState, any>,
-        { email, accessToken }: { email: string, accessToken: string }): Promise<any> {
+        { commit, state }: ActionContext<AuthenticationState, any>,
+        { email, accessToken }: { email: string, accessToken: string }
+    ): Promise<any> {
         try {
-            console.log('requestAddRedisAccessTokenToDjango -> email:', email)
-            console.log('requestAddRedisAccessTokenToDjango -> accessToken:', accessToken)
             const response: AxiosResponse<any> = await axiosInst.djangoAxiosInst.post(
-                'oauth/redis-access-token', {
+                '/oauth/redis-access-token', {
                     email: email,
                     accessToken: accessToken
-                }
-            )
-            console.log('userToken:', response.data)
-            localStorage.setItem('userToken', response.data)
-            return response.data // Adjust according to what your API returns
+                });
+
+            console.log('userToken:', response.data.userToken)
+
+            localStorage.removeItem("accessToken")
+            localStorage.setItem("userToken", response.data.userToken)
+            commit('REQUEST_IS_AUTHENTICATED_TO_DJANGO', true);
+            return response.data;
         } catch (error) {
-            console.error('Error adding redis access token:', error)
+            console.error('Error adding redis access token:', error);
+            throw error;
+        }
+    },
+    async requestLogoutToDjango(
+        context: ActionContext<AuthenticationState, any>,
+        userToken: string
+    ): Promise<void> {
+
+        try {
+            const userToken = localStorage.getItem("userToken")
+
+            const res = 
+                await axiosInst.djangoAxiosInst.post('/oauth/logout', {
+                    userToken: userToken
+                })
+
+            console.log('res:', res.data.isSuccess)
+            if (res.data.isSuccess === true) {
+                context.commit('REQUEST_IS_AUTHENTICATED_TO_DJANGO', false)
+            }
+        } catch (error) {
+            console.log('requestLogoutToDjango() 중 에러 발생:', error)
             throw error
         }
+        localStorage.removeItem('userToken')
     }
 };
 

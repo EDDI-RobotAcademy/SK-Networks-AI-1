@@ -19,9 +19,9 @@ class BoardRepositoryImpl(BoardRepository):
         return cls.__instance
 
     def list(self):
-        print(f"list() -> Board", Board)
-        print(f"list() -> Board.objects", Board.objects)
-        print(f"list() -> Board.objects.all()", Board.objects.all())
+        # print(f"list() -> Board", Board)
+        # print(f"list() -> Board.objects", Board.objects)
+        # print(f"list() -> Board.objects.all()", Board.objects.all())
 
         boardList = Board.objects.all()
         for board in boardList:
