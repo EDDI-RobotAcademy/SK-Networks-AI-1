@@ -15,3 +15,6 @@ class Cart(models.Model):
     class Meta:
         db_table = 'cart'
         app_label = 'cart'
+
+    def getAccount(self):
+        return self.account
