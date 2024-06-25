@@ -7,20 +7,6 @@
         </v-btn>
         <v-spacer></v-spacer>
 
-        <!-- <v-menu>
-            <template v-slot:activator="{ props }">
-                <v-btn color="white" v-bind="props">
-                    <b>Activator Slot</b>
-                </v-btn>
-            </template>
-            <v-list>
-                <v-list-item v-for="(item, index) in items" 
-                            :key="index" :value="index" @click="item.action">
-                    <v-list-item-title>{{ item.title }}</v-list-item-title>
-                </v-list-item>
-            </v-list>
-        </v-menu> -->
-
         <v-btn text @click="goToProductList" class="btn-text">
             <v-icon left>mdi-store</v-icon>
             <span>상품</span>
@@ -29,11 +15,11 @@
             <v-icon left>mdi-forum</v-icon>
             <span>게시판</span>
         </v-btn>
-        <v-btn v-if="!isLogin" text @click="signIn" class="btn-text">
+        <v-btn v-if="!isAuthenticated" text @click="signIn" class="btn-text">
             <v-icon left>mdi-login</v-icon>
             <span>로그인</span>
         </v-btn>
-        <v-btn v-if="isLogin" text @click="signOut" class="btn-text">
+        <v-btn v-if="isAuthenticated" text @click="signOut" class="btn-text">
             <v-icon left>mdi-logout</v-icon>
             <span>로그아웃</span>
         </v-btn>
@@ -43,21 +29,21 @@
 <script>
 import '@mdi/font/css/materialdesignicons.css'
 import router from '@/router'
+import { mapActions, mapState } from 'vuex'
+
+const authenticationModule = 'authenticationModule'
 
 export default {
     data () {
         return {
-            navigation_drawer: false,
-            // links: [{ icon: 'mdi-home', action: this.goToHome, route: '/' }],
-            accessToken: null,
-            isLogin: false,
-            // items: [
-            //     { title: 'Product', action: this.goToProductList() },
-            //     { title: 'Board', action: this.goToBoardList() },
-            // ]
+            isLogin: !!localStorage.getItem("userToken")
         }
     },
+    computed: {
+        ...mapState(authenticationModule, ['isAuthenticated'])
+    },
     methods: {
+        ...mapActions(authenticationModule, ['requestLogoutToDjango']),
         goToHome () {
             router.push('/')
         },
@@ -71,16 +57,15 @@ export default {
             router.push('/account/login')
         },
         signOut () {
-            localStorage.removeItem("accessToken")
-            this.isLogin = false
+            this.requestLogoutToDjango()
             router.push('/')
-        }
+        },
     },
     mounted () {
-        this.accessToken = localStorage.getItem("accessToken")
-        this.isLogin = !!this.accessToken
-        // TODO: 로그인 이후 즉시 로그아웃 화면 갱신 안되는 문제 발견
-        //       새로고침하면 반영됨
-    }
+        window.addEventListener('storage', this.updateLoginStatus)
+    },
+    beforeUnmount () {
+        window.removeEventListener('storage', this.updateLoginStatus)
+    },
 }
 </script>

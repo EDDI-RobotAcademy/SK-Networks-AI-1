@@ -23,4 +23,5 @@ urlpatterns = [
     path('product/', include('product.urls')), # 여기에 추가해줘야 db상에 테이블 생김
     path('oauth/', include('oauth.urls')),
     path('account/', include('account.urls')),
+    path('cart/', include('cart.urls'))
 ]
