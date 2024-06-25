@@ -49,6 +49,14 @@ async def kmeans_cluster_analysis():
     # 재현율 만땅
     X, _ = make_blobs(n_samples=300, centers=4, cluster_std=0.60, random_state=0)
 
+    # 위의 것은 그냥 임의로 4개의 군집 데이터를 만든 것
+    # 4개의 클러스터로 데이터를 군집화
+    # 서로 다른 중심값을 가지고 알고리즘을 10번 돌려봄
+    # 그 중 가장 성능 지표가 좋은 것을 채택함
+    # 여기서 성능 지표는 중심점으로부터 데이터들이 떨어진 거리값을 의미함
+    # 데이터가 분포된 공간이 2차원이라면 sqrt(x^2 + y^2) <- 피타고라스
+    # 3차원이라면 sqrt(x^2 + y^2 + z^2) <- 피타고라스 동일
+    # 거리값이 짧으면 짧을수록 성능 지표가 우수한 것임
     kmeans = KMeans(n_clusters=4, n_init=10)
     kmeans.fit(X)
 
