@@ -6,3 +6,6 @@ class CartService(ABC):
     def cartRegister(self, cartData, accountId):
         pass
 
+    @abstractmethod
+    def cartList(self, accountId):
+        pass

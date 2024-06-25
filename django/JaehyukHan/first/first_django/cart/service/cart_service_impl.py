@@ -34,9 +34,16 @@ class CartServiceImpl(CartService):
             cart = self.__cartRepository.register(account)
 
         productId = cartData.get('productId')
-        product = self.__productRepository.findByProductId(productId)
-        cartItem = self.__cartItemRepository.findByProduct(product)
-        print(f"cartItem: {cartItem}")
+        cartItemList = self.__cartItemRepository.findAllByProductId(productId)
+        print(f"cartItems: {cartItemList}")
+
+        cartItem = None
+        for item in cartItemList:
+            cartFromCartItem = item.cart
+            accountFromCart = cartFromCartItem.account
+            if accountFromCart.id == account.id:
+                cartItem = item
+                break
 
         if cartItem is None:
             product = self.__productRepository.findByProductId(cartData.get('productId'))
@@ -45,3 +52,15 @@ class CartServiceImpl(CartService):
             cartItem.quantity += 1
             self.__cartItemRepository.update(cartItem)
 
+    def cartList(self, accountId):
+        account = self.__accountRepository.findById(accountId)
+        cart = self.__cartRepository.findByAccount(account)
+        cartItems = self.__cartItemRepository.findByCart(cart)
+        cartList = []
+
+        for cartItem in cartItems:
+            if cartItem.cart == cart:
+                cartInfo = [cartItem.product.productName, cartItem.price, cartItem.quantity, cartItem.price * cartItem.quantity]
+                cartList.append(cartInfo)
+
+        return cartList

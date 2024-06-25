@@ -43,5 +43,18 @@ class CartItemRepositoryImpl(CartItemRepository):
         except CartItem.DoesNotExist:
             return None
 
+    def findAllByProductId(self, productId):
+        return CartItem.objects.filter(productId=productId)
+
     def update(self, cartItem):
         cartItem.save()
+
+    def findByCart(self, cart):
+        cartItemList = CartItem.objects.all()
+        cartItems = []
+
+        for cartItem in cartItemList:
+            if cartItem.cart == cart:
+                cartItems.append(cartItem)
+
+        return cartItems
