@@ -16,18 +16,18 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="item in cartItems" :key="item.id">
+                            <tr v-for="item in cartItems" :key="item.cartItemId">
                                 <td>{{ item.productName }}</td>
-                                <td>{{ item.price }}</td>
+                                <td>{{ item.productPrice }}</td>
                                 <td>
                                     <v-text-field
-                                            v-model="item.quantity"
-                                            type="number"
-                                            min="1"
-                                            @change="updateQuantity(item)"
+                                        v-model="item.quantity"
+                                        type="number"
+                                        min="1"
+                                        @change="updateQuantity(item)"
                                     ></v-text-field>
                                 </td>
-                                <td>{{ item.price * item.quantity }}</td>
+                                <td>{{ item.productPrice * item.quantity }}</td>
                                 <td>
                                     <v-btn color="red" @click="removeItem(item)">Remove</v-btn>
                                 </td>
@@ -51,31 +51,44 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 export default {
     data() {
         return {
-            cartItems: [
-                // 예시 데이터: 실제 데이터는 API 호출 등을 통해 받아올 수 있습니다.
-                // { id: 1, productName: "Product 1", price: 10.0, quantity: 1 },
-                // { id: 2, productName: "Product 2", price: 20.0, quantity: 2 },
-            ],
+            cartItems: [],
         };
     },
     computed: {
         cartTotal() {
-            return this.cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+            if(!Array.isArray(this.cartItems)||this.cartItems.length === 0){
+                return 0;
+            }
+            return this.cartItems.reduce((total, item) => total + item.productPrice * item.quantity, 0)
         },
     },
     methods: {
+        ...mapActions("cartModule", ["requestCartListToDjango"]),
         updateQuantity(item) {
-            // 수량 업데이트 로직을 여기에 추가합니다.
-        },
+            // 수량 업데이트 로직
+            },
         removeItem(item) {
+            //상품 제거 로직
             this.cartItems = this.cartItems.filter(cartItem => cartItem.id !== item.id);
         },
         checkout() {
-            // 체크아웃 로직을 여기에 추가합니다.
+            // 체크아웃 로직
         },
+        async fetchCartList(){
+            try{
+                const response = await this.requestCartListToDjango();
+                this.cartItems = response;
+            } catch(error){
+                console.error("Error fetching cart list:", error);
+            }
+        }
+    },
+    created(){
+        this.fetchCartList
     },
 };
 </script>
