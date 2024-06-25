@@ -8,6 +8,7 @@ import LogisticRegressionRoutes from '@/logisticRegression/router/LogisticRegres
 import TrainTestEvaluationRoutes from '@/trainTestEvaluation/router/TrainTestEvaluationRoutes'
 import PolynomialRegressionRoutes from '@/polynomialRegression/router/PolynomialRegressionRoutes'
 import ExponentialRegressionRoutes from '@/exponentialRegression/router/ExponentialRegressionRoutes'
+import PostRoutes from '@/post/router/PostRoutes'
 
 
 const routes: Array<RouteRecordRaw> = [
@@ -23,6 +24,7 @@ const routes: Array<RouteRecordRaw> = [
   ...TrainTestEvaluationRoutes,
   ...PolynomialRegressionRoutes,
   ...ExponentialRegressionRoutes,
+  ...PostRoutes,
     // 항상 도메인의 router 추가했으면 main router 에도 추가해줘야함
 
 ]
