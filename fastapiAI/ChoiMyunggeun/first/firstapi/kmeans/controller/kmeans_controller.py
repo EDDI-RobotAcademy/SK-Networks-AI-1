@@ -16,6 +16,6 @@ async def kmeans_cluster_analysis():
     labels= kmeans.labels_.tolist()
     centers=kmeans.cluster_centers_.tolist()
     points=X.tolist()
-    print(f'points:{points}, labels:{labels}, centers:{centers}')
+    # print(f'points:{points}, labels:{labels}, centers:{centers}')
 
     return {'centers':centers,'labels':labels, 'points':points}

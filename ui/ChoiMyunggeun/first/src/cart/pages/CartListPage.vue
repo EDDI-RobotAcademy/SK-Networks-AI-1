@@ -29,7 +29,7 @@
                                 </td>
                                 <td>{{ item.productPrice * item.quantity }}</td>
                                 <td>
-                                    <v-btn color="red" @click="removeItem(item)">Remove</v-btn>
+                                    <v-btn color="red" @click="removeItem(item)">상품삭제</v-btn>
                                 </td>
                             </tr>
                             </tbody>
@@ -71,14 +71,19 @@ export default {
         },
     },
     methods: {
-        ...mapActions("cartModule", ["requestCartListToDjango"]),
+        ...mapActions("cartModule", ["requestCartListToDjango",]),
         updateQuantity(item) {
             // 수량 업데이트 로직
+            console.log('수량 변동됨!')
+            
         },
-        removeItem(item) {
+        async removeItem() {
             // 상품 제거 로직
+            console.log('제거 버튼')
+
         },
         checkout() {
+            console.log('체크아웃눌렀음')
             // 체크아웃 로직
         },
         async fetchCartList() {
