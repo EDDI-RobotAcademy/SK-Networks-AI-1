@@ -3,8 +3,9 @@ class RandomForestResponseForm:
     def createForm(confusionMatrix, smoteConfusionMatrix,
                    y_test, y_pred, y_pred_after_smote, data):
 
-        # 공통 정보
+        #  공통 정보 (smote 전 후 상관없는)
         common_info = {
+            # 각 feature들과 y의 관계를 살피기(상관 관계 분석)
             "passengers_count": data[['num_passengers', 'booking_complete']].to_dict(orient='records'),
             "purchase_lead": data[['purchase_lead', 'booking_complete']].to_dict(orient='records'),
             "length_of_stay": data[['length_of_stay', 'booking_complete']].to_dict(orient='records'),

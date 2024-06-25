@@ -90,7 +90,8 @@ const actions: AuthenticationActions = {
             console.log('userToken:', response.data.userToken)
 
             localStorage.setItem("userToken", response.data.userToken)
-            return response.data;  // Adjust according to what your API returns
+            commit('REQUEST_IS_AUTHENTICATED_TO_DJANGO', true)
+            return response.data;
         } catch (error) {
             console.error('Error adding redis access token:', error);
             throw error;

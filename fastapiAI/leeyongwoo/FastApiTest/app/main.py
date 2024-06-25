@@ -4,10 +4,11 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from exponential_regression.controller.exponential_regression_controller import exponentialRegressionRouter
 from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
 from polynomialRegression.controller.polynomial_regression_controller import polynomialRegressionRouter
 from train_test_evaluation.controller.train_test_evaluation_controller import trainTestEvaluationRouter
-
+from random_forest.controller.random_forest_controller import randomForestRouter
 app = FastAPI()
 
 
@@ -65,6 +66,8 @@ def read_item(item_id: int, q: str = None):
 app.include_router(logisticRegressionRouter)
 app.include_router(trainTestEvaluationRouter)
 app.include_router(polynomialRegressionRouter)
+app.include_router(exponentialRegressionRouter)
+app.include_router(randomForestRouter)
 
 load_dotenv()
 
