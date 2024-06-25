@@ -52,5 +52,6 @@ class ProductRepositoryImpl(ProductRepository):
     def findByProductId(self, productId):
         try:
             return Product.objects.get(productId=productId)
-        except Product.DoseNotExist:
+        except Product.DoesNotExist:
             return None
+

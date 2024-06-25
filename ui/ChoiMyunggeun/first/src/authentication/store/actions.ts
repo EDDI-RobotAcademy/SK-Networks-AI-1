@@ -2,6 +2,7 @@ import { ActionContext } from "vuex"
 import { AuthenticationState } from "./states"
 import { AxiosResponse } from "axios"
 import axiosInst from "@/utility/axiosInstance"
+import {CartItem, CartState} from "@/cart/store/states";
 
 export type AuthenticationActions = {
     requestKakaoOauthRedirectionToDjango(): Promise<void>
@@ -82,7 +83,7 @@ const actions: AuthenticationActions = {
     ): Promise<any> {
         try {
             const response: AxiosResponse<any> = await axiosInst.djangoAxiosInst.post(
-                '/oauth/redis-access-token', {
+                '/oauth/redis-access-token/', {
                     email: email,
                     accessToken: accessToken
                 });
@@ -90,7 +91,8 @@ const actions: AuthenticationActions = {
             console.log('userToken:', response.data.userToken)
 
             localStorage.setItem("userToken", response.data.userToken)
-            return response.data;  // Adjust according to what your API returns
+            commit('REQUEST_IS_AUTHENTICATED_TO_DJANGO', true);
+            return response.data;
         } catch (error) {
             console.error('Error adding redis access token:', error);
             throw error;

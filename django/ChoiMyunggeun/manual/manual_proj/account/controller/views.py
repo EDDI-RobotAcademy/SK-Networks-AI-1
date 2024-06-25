@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 
-from account.serializers import AccountSerializer
+from account.serilaizers import AccountSerializer
 from account.service.account_service_impl import AccountServiceImpl
 
 
