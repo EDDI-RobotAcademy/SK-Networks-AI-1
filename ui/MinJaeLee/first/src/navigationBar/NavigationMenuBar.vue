@@ -13,13 +13,12 @@
                     <b>Activator Slot</b>
                 </v-btn>
             </template>
-            <v-list>
-                <v-list-item v-for="(item, index) in items" 
-                            :key="index" :value="index" @click="item.action">
-                    <v-list-item-title>{{ item.title }}</v-list-item-title>
-                </v-list-item>
-            </v-list>
-        </v-menu> -->
+<v-list>
+    <v-list-item v-for="(item, index) in items" :key="index" :value="index" @click="item.action">
+        <v-list-item-title>{{ item.title }}</v-list-item-title>
+    </v-list-item>
+</v-list>
+</v-menu> -->
 
         <v-btn text @click="goToProductList" class="btn-text">
             <v-icon left>mdi-store</v-icon>
@@ -29,11 +28,11 @@
             <v-icon left>mdi-forum</v-icon>
             <span>게시판</span>
         </v-btn>
-        <v-btn v-if="!isLogin" text @click="signIn" class="btn-text">
+        <v-btn v-if="!isAuthenticated" text @click="signIn" class="btn-text">
             <v-icon left>mdi-login</v-icon>
             <span>로그인</span>
         </v-btn>
-        <v-btn v-if="isLogin" text @click="signOut" class="btn-text">
+        <v-btn v-if="isAuthenticated" text @click="signOut" class="btn-text">
             <v-icon left>mdi-logout</v-icon>
             <span>로그아웃</span>
         </v-btn>
@@ -43,42 +42,45 @@
 <script>
 import '@mdi/font/css/materialdesignicons.css'
 import router from '@/router'
+import { mapActions, mapState } from 'vuex'
+
+const authenticationModule = 'authenticationModule'
 
 export default {
-    data () {
+    data() {
         return {
-            isLogin:!!localStorage.getItem("userToken")
+            isLogin: !!localStorage.getItem("userToken"),
         }
+    },
+    computed: {
+        ...mapState(authenticationModule, ['isAuthenticated'])
     },
     methods: {
-        goToHome () {
+        ...mapActions(authenticationModule, ['requestLogoutToDjango']),
+        goToHome() {
             router.push('/')
         },
-        goToProductList () {
+        goToProductList() {
             router.push('/product/list')
         },
-        goToBoardList () {
+        goToBoardList() {
             router.push('/board/list')
         },
-        signIn () {
+        signIn() {
             router.push('/account/login')
         },
-        signOut (){
-            localStorage.removeItem("accessToken")
-            this.isLogin = false
+        signOut() {
+            this.requestLogoutToDjango()
             router.push('/')
         },
-        updateLoginStatus () {
-            this.userToken = !!localStorage.getItem("userToken")
-        }
     },
-        mounted () {
-            window.addEventListener('storage', this.updateLoginStatus)
-            // TODO: 로그인이후 즉시로그아웃화면 갱신안되는 문제발견
-            // 새로고침하면 반영됨
-        },
-        beforeUnmount () {
-            window.removeEventListener('storage', this.updateLoginStatus)
+    mounted() {
+        window.addEventListener('storage', this.updateLoginStatus)
+        // TODO: 로그인이후 즉시로그아웃화면 갱신안되는 문제발견
+        // 새로고침하면 반영됨
+    },
+    beforeUnmount() {
+        window.removeEventListener('storage', this.updateLoginStatus)
     },
 }
 
