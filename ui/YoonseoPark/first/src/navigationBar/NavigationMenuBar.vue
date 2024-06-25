@@ -7,19 +7,19 @@
         </v-btn>
         <v-spacer></v-spacer>
 
-        <!-- <v-menu> -->
-            <!-- <template v-slot:activator="{ props }">
-                <v-btn color="white" v-bind="props">
-                    <b>Activator Slot</b>
+        <v-menu close-on-content-click>
+            <template v-slot:activator="{ props }">
+                <v-btn v-bind="props">
+                    <b>Regression Analysis</b>
                 </v-btn>
             </template>
             <v-list>
-                <v-list-item v-for="(item, index) in items" 
-                            :key="index" :value="index" @click="item.action">
+                <v-list-item v-for="(item, index) in items"
+                             :key="index" @click="item.action">
                     <v-list-item-title>{{ item.title }}</v-list-item-title>
                 </v-list-item>
-            </v-list> -->
-        <!-- </v-menu> -->
+            </v-list>
+        </v-menu>
 
         <v-btn text @click="goToProductList" class="btn-text">
             <v-icon left>mdi-store</v-icon>
@@ -28,6 +28,18 @@
         <v-btn text @click="goToBoardList" class="btn-text">
             <v-icon left>mdi-forum</v-icon>
             <span>게시판</span>
+        </v-btn>
+        <v-btn text @click="goToPostPage" class="btn-text">
+            <v-icon left>mdi-forum</v-icon>
+            <span>익명 게시판</span>
+        </v-btn>
+        <v-btn v-if="isAuthenticated" text @click="goToCart" class="btn-text">
+            <v-icon left>mdi-cart</v-icon>
+            <span>장바구니</span>
+        </v-btn>
+        <v-btn v-if="isAuthenticated" text @click="goToOrder" class="btn-text">
+            <v-icon left>mdi-receipt</v-icon>
+            <span>주문</span>
         </v-btn>
         <v-btn v-if="!isLogin" text @click="signIn" class="btn-text">
             <v-icon left>mdi-login</v-icon>
@@ -47,14 +59,14 @@ import router from '@/router'
 export default {
     data () {
         return {
-            navigation_drawer: false,
-            // links: [{ icon: 'mdi-home', action: this.goToHome, route: '/' }],
-            accessToken: null,
-            isLogin: false,
-            // items: [
-            //     { title: 'Product', action: this.goToProductList() },
-            //     { title: 'Board', action: this.goToBoardList() },
-            // ]
+            isLogin: !!localStorage.getItem("userToken"),
+            items: [
+                { title: 'Logistic Regression', action: () => { router.push('/logistic-regression-result') } },
+                { title: 'Random Forest', action: () => { router.push('/random-forest-result') } },
+                { title: 'Polynomial Regression', action: () => { router.push('/polynomial-regression-result') } },
+                { title: 'Exponential Regression', action: () => { router.push('/exponential-regression-result') } },
+                { title: 'K-means Clustering', action: () => { router.push('/kmeans-test-result') } }
+            ]
         }
     },
     methods: {
@@ -74,6 +86,15 @@ export default {
             localStorage.removeItem("accessToken")
             this.isLogin = false
             router.push('/')
+        },
+        goToCart () {
+            router.push('/cart/list')
+        },
+        goToOrder () {
+            router.push('/order')
+        },
+        goToPostPage () {
+            router.push('/post/list')
         },
         updateLoginStatus () {
             this.userToken = localStorage.getItem("userToken")
