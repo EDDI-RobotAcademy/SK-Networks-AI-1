@@ -36,7 +36,7 @@ class RandomForestRepositoryImpl(RandomForestRepository):
         # n_estimator : 트리를 몇 개 생성할거냐?
         # (트리는 랜덤 포레스트에서 나오는 트리 개념) = 여러(n)가지 방법으로 시도해보겠다
         randomForestModel = RandomForestClassifier(n_estimators=100, random_state=42)
-        randomForestModel.fit(X_train, y_train)
+        randomForestModel.fit(X_train, y_train) # loss :
 
         return randomForestModel
 
