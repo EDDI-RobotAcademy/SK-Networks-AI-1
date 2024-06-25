@@ -41,3 +41,9 @@ class CartItemRepositoryImpl(CartItemRepository):
 
     def update(self, cartItem):
         cartItem.save()
+
+    def findAllByProductId(self, productId):
+        # 단수 출력의 경우 None 출력으로 오류가 날 수 있으나
+        # 아래 filter를 사용하면 내용이 없어도 빈 리스트가 반환되기에
+        # try except 구문이 필요 없음.
+        return CartItem.objects.filter(product_id = productId)

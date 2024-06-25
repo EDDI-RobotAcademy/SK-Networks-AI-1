@@ -17,3 +17,7 @@ class CartItemRepository(ABC):
     @abstractmethod
     def update(self, cartItem):
         pass
+
+    @abstractmethod
+    def findAllByProductId(self, productId):
+        pass

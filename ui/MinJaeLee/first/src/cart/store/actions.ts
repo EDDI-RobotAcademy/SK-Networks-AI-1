@@ -48,7 +48,7 @@ const actions: CartActions = {
                 userToken
             }
 
-            console.log('requsetCartListToDjango requestData:', requestData);
+            console.log('requestCartListToDjango requestData:', requestData);
 
             const response= await axiosInst.djangoAxiosInst.post('/cart/list', requestData);
             return response.data;

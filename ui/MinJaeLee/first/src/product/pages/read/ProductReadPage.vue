@@ -42,7 +42,7 @@
                 <v-icon>mdi-cart</v-icon>
                 <span class="button-text">구매하기</span>
             </v-btn>
-            <v-btn color="sucess" @click="onAddTocart" class="action-button">
+            <v-btn color="success" @click="onAddToCart" class="action-button">
                 <v-icon>mdi-cart-plus</v-icon>
                 <span class="button-text">장바구니에 추가</span>
             </v-btn>

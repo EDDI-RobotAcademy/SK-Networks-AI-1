@@ -78,7 +78,8 @@ class OauthView(viewsets.ViewSet):
         try:
             userToken = request.data.get('userToken')
             isSuccess = self.redisService.deleteKey(userToken)
-            return Response({'isSuccess':isSuccess}, status = status.HTTP_200_OK)
+
+            return Response({'isSuccess': isSuccess}, status=status.HTTP_200_OK)
         except Exception as e:
-            print("레디스 토큰 해제 중 에러 발생:", e)
-            return Response({'error':str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            print('레디스 토큰 해제 중 에러 발생:', e)
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
