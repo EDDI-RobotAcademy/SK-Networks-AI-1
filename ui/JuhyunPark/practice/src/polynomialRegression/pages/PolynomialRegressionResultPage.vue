@@ -10,9 +10,9 @@
 import * as d3 from 'd3'
 
 export default {
-    data () {
-        return {
-            svgWidth: 500,
+    data () {        
+        return { 
+            svgWidth: 500, 
             svgHeight: 350,
             regressionData: null,
         }

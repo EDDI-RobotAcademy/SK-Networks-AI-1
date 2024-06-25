@@ -44,4 +44,14 @@ class RedisServiceImpl(RedisService):
             print('redis key로 value 찾는 중 에러 발생:', e)
             raise e
 
+    def deleteKey(self, key):
+        try:
+            result = self.redis_client.delete(key)
+            if result == 1:
+                print(f'유저 토근 삭제 성공: {key}')
+                return True
+            return False
 
+        except Exception as e:
+            print('redis key 삭제 중 에러 발생:', e)
+            raise e

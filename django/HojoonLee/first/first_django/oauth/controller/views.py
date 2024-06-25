@@ -53,15 +53,16 @@ class OauthView(viewsets.ViewSet):
     def redisAccessToken(self, request):
         try:
             email = request.data.get('email')
-            access_token = request.data.get('accessToken')
+            # access_token = request.data.get('accessToken')
             print(f"redisAccessToken -> email: {email}")
 
             account = self.accountService.findAccountByEmail(email)
             if not account:
                 return Response({'error': 'Account not found'}, status=status.HTTP_404_NOT_FOUND)
 
+            # account ID로 userToken 작성
             userToken = str(uuid.uuid4())
-            self.redisService.store_access_token(account.id, userToken)
+            self.redisService.store_access_token(account.id, userToken) # account token -> user token 과정
 
             # userToken으로 유저정보 받아오나 test
             accountId = self.redisService.getValueByKey(userToken)

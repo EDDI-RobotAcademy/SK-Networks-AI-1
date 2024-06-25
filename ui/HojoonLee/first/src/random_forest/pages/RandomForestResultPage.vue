@@ -114,10 +114,10 @@ export default {
     },
     methods: {
         async fetchFlightDataOnRandomForestAnalysis () {
-            const response = await fetch('http://localhost:33333/random-forest')
-            const data = await response.json()
+            const response = await fetch('http://localhost:33333/random-forest') // fastAPI에서 최종 return JsonResponse(content=result)
+            const data = await response.json() // data == fastAPI에서 result
 
-            console.log('data:', data)
+            console.log('data:', data) // data >> confusion_matrix_info_before_smote, confusion_matrix_info_after_smote, common_info
 
             this.confusionMatrixInfoBeforeSmote = data.confusion_matrix_info_before_smote
             this.confusionMatrixInfoAfterSmote = data.confusion_matrix_info_after_smote
