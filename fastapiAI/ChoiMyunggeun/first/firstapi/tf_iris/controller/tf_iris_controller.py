@@ -51,7 +51,7 @@ async def tfTraionModel():
 
     return {'message':'Model/ Scaler 훈련 완료'}
 
-@tfIrisRouter.get('/tf-predict')
+@tfIrisRouter.post('/tf-predict')
 def predict(tfIrisRequestForm: TfIrisRequestForm):
     if (not os.path.exists(MODEL_PATH) or
             not os.path.exists(SCALER_PATH) or
@@ -61,7 +61,7 @@ def predict(tfIrisRequestForm: TfIrisRequestForm):
 
     model = tf.keras.models.load_model(MODEL_PATH)
     scaler = joblib.load(SCALER_PATH)
-    classificationLabels = joblib.load(CLASSIFICATION_PATH)
+    classificationLabel = joblib.load(CLASSIFICATION_PATH)
 
     data = np.array(([
         [
@@ -74,13 +74,14 @@ def predict(tfIrisRequestForm: TfIrisRequestForm):
 
     data = scaler.transform(data)
     prediction = model.predict(data)
-    print(f'prediction: {prediction}')
+    print(f"prediction: {prediction}")
+    whichOneIsMax = np.argmax(prediction)
+    print(f"which one is max ? whichOneIsMax")
 
-    predictedClass = classificationLabels[np.argmax(prediction)]
-    print(f'predictedClass: {predictedClass}')
-    whitchOneIsMax = np.argmax(prediction)
-    
+    predictedClass = classificationLabel[np.argmax(prediction)]
+    print(f"predictedClass: {predictedClass}")
+
     return {
-        "prediction" : prediction[0][whitchOneIsMax].tolist(),
-        "predict_class" : predictedClass
+        "prediction": prediction[0][whichOneIsMax].tolist(),
+        "predicted_class": predictedClass
     }
