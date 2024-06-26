@@ -308,3 +308,6 @@ pyrightconfig.json
 
 # exclude *.pk1
 *.pk1
+
+# exclude *.xlsx
+*.xlsx
