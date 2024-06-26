@@ -1,5 +1,7 @@
+import os.path
+
 import joblib
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
 
 import tensorflow as tf
@@ -9,6 +11,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import  accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
+
+from tf_iris.controller.request_form.tf_iris_request_form import TfIrisRequestForm
 
 tfIrisRouter = APIRouter()
 
@@ -41,10 +45,17 @@ async def tfTrainModel():
     # 훈련 모델 컴파일
     model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
     # 훈련 모델 학습
-    model.fit(X_train, y_train, epochs=50, validation_data=(X_test, y_test))
+    model.fit(X_train, y_train, epochs=500, validation_data=(X_test, y_test))
 
     # 훈련된 모델 저장(학습 완료 상태)
     model.save(MODEL_PATH)
     joblib.dump(scaler, SCALER_PATH)
 
     return { "message": "Model / Scaler 훈련 완료"}
+
+@tfIrisRouter.get('/predict')
+def predict(tfIrisRequestForm: TfIrisRequestForm):
+    if not os.path.exists(MODEL_PATH) or not os.path.exists(SCALER_PATH):
+        raise HTTPException(status_code=400, detail="모델 및 스케일러 준비 안됨")
+
+    print("추론 진행")
