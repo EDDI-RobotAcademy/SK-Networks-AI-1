@@ -27,3 +27,8 @@ class AccountRepositoryImpl(AccountRepository):
 
         account = Account.objects.create(loginType=loginTypeEntity, roleType=roleTypeEntity)
         return account
+
+    def findById(self, accountId):
+        account = Account.objects.get(id=accountId)
+        return account
+

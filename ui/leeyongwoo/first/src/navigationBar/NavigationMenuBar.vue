@@ -1,8 +1,8 @@
 <template>
-    <v-app-bar color="orange" app dark height="64">
+    <v-app-bar color="purple" app dark height="80">
         <v-btn @click="goToHome">
             <v-toolbar-title class="text-uppercase text--darken-4">
-                <span>SK Networks AI Camp with EDDI</span>
+                <span style="font-family: Times New Roman, sans-serif; font-size: 20px; color: black;">SK Networks AI Camp with EDDI</span>
             </v-toolbar-title>
         </v-btn>
         <v-spacer></v-spacer>
@@ -22,22 +22,23 @@
         </v-menu> -->
 
         <v-btn text @click="goToProductList" class="btn-text">
-            <v-icon left>mdi-store</v-icon>
-            <span>상품</span>
+            <v-icon color="red" left>mdi-store</v-icon>
+            <span style="font-family: Times New Roman, sans-serif; font-size: 20px; color: black;">Product</span>
         </v-btn>
-        <v-btn text @click="goToBoardList" class="btn-text">
+        <v-btn color="black" text @click="goToBoardList" class="btn-text">
             <v-icon left>mdi-forum</v-icon>
-            <span>게시판</span>
+            <span style="font-family: Times New Roman, sans-serif; font-size: 20px; color: black;">Board</span>
         </v-btn>
         <v-btn v-if="!isLogin" text @click="signIn" class="btn-text">
-            <v-icon left>mdi-login</v-icon>
-            <span>로그인</span>
+            <v-icon color="orange" left>mdi-login</v-icon>
+            <span style="font-family: Times New Roman, sans-serif; font-size: 20px; color: black;">LogIN</span>
         </v-btn>
-        <v-btn v-if="isLogin" text @click="signOut" class="btn-text">
+        <v-btn color="orange" v-if="isLogin" text @click="signOut" class="btn-text">
             <v-icon left>mdi-logout</v-icon>
-            <span>로그아웃</span>
+            <span style="font-family: Times New Roman, sans-serif; font-size: 20px; color: black;">LogOut</span>
         </v-btn>
     </v-app-bar>
+
 </template>
 
 <script>

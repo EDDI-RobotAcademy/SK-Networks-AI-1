@@ -2,7 +2,8 @@
   <v-app>
     <!-- HTML 파트 -->
     <navigation-menu-bar/>
-    <v-main>  #v-main이 안에다 쓰면 뷰를 키면 나오는 구성이 됨
+    //v-main이 안에다 쓰면 뷰를 키면 나오는 구성이 됨
+    <v-main>
       <router-view/>
     </v-main>
   </v-app>
