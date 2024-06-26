@@ -1,5 +1,6 @@
 import os
 
+import aiomysql
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -14,25 +15,41 @@ from random_forest.controller.random_forest_controller import randomForestRouter
 from tf_iris.controller.tf_iris_controller import tfIrisRouter
 from train_test_evaluation.controller.train_test_evaluation_controller import trainTestEvaluationRouter
 
-app = FastAPI()
 
 
-# 현재는 deprecated 라고 나타나지만 lifespan 이란 것을 대신 사용하라고 나타나고 있음
-# 완전히 배제되지는 않았는데 애플리케이션이 시작할 때 실행될 함수를 지정함
-# 고로 애플리케이션 시작 시 비동기 처리가 가능한 DB를 구성한다 보면 됨
-@app.on_event("startup")
-async def startup_event():    #프로그램 시작
-    app.state.db_pool = await getMySqlPool()        #db초기세팅 확보        / db_pool은 변수임 즉, getMySqlPool의 내용을 db_pool로 받겠다. (여기서 getMySqlPool은 테이블의 기본 정보들이 들어있다.)
-    await createTableIfNeccessary(app.state.db_pool)        #테이블이 없으면 생성하기
+# # 현재는 deprecated 라고 나타나지만 lifespan 이란 것을 대신 사용하라고 나타나고 있음
+# # 완전히 배제되지는 않았는데 애플리케이션이 시작할 때 실행될 함수를 지정함
+# # 고로 애플리케이션 시작 시 비동기 처리가 가능한 DB를 구성한다 보면 됨
+# @app.on_event("startup")
+# async def startup_event():    #프로그램 시작
+#     app.state.db_pool = await getMySqlPool()        #db초기세팅 확보        / db_pool은 변수임 즉, getMySqlPool의 내용을 db_pool로 받겠다. (여기서 getMySqlPool은 테이블의 기본 정보들이 들어있다.)
+#     await createTableIfNeccessary(app.state.db_pool)        #테이블이 없으면 생성하기
+#
+#
+#
+# # 위의 것이 킬 때 였으니 이건 반대라 보면 됨
+# @app.on_event("shutdown")
+# async def shutdown_event():
+#     app.state.db_pool.close()
+#     await app.state.db_pool.wait_closed()
+
+import warnings
+
+warnings.filterwarnings("ignore", category=aiomysql.Warning)
+
+async def lifespen(app:FastAPI):
+    #Startup
+    app.state.dbPool = await getMySqlPool()
+    await createTableIfNeccessary(app.state.dbPool)
+
+    yield
+
+    #Shutdown
+    app.state.dbPool.close()
+    await app.state.dbPool.wait_closed()
 
 
-
-# 위의 것이 킬 때 였으니 이건 반대라 보면 됨
-@app.on_event("shutdown")
-async def shutdown_event():
-    app.state.db_pool.close()
-    await app.state.db_pool.wait_closed()
-
+app = FastAPI(lifespen=lifespen)
 
 # 웹 브라우저 상에서 "/" 을 입력하면 (key)Hello: (value)World가 리턴
 @app.get("/")

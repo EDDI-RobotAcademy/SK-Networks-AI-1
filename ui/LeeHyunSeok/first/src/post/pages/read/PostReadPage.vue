@@ -33,7 +33,9 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
+
 const postModule = 'postModule'
+
 export default {
     props: {
         id: {
@@ -64,18 +66,22 @@ export default {
     margin: 0.5rem;
     border-radius: 8px;
 }
+
 .button-text {
     margin-left: 0.5rem;
 }
+
 .button-container {
     display: flex;
     justify-content: center;
     margin-top: 1rem;
 }
+
 /* 하이퍼링크 스타일 제거 */
 .no-underline {
     text-decoration: none;
 }
+
 /* router-link 스타일 재정의 */
 .router-link {
     text-decoration: none;

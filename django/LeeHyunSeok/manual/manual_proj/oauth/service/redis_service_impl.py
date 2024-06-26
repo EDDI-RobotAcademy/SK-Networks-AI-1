@@ -48,9 +48,8 @@ class RedisServiceImpl(RedisService):
         try:
             result = self.redis_client.delete(key)
             if result == 1:
-                print(f"유저 토큰 삭제 성공: {key}")    #디버깅을 위해 print를 찍었지만 실제 서비스에선 print를 빼는게 좋다.
-                return True                          #왜? 일단 print가 I/O이니까 성능에 영향을 주기도 하고
-                                                     # key값은 예민한 정보이니 출력을 안 찍는게 좋다.
+                print(f"유저 토큰 삭제 성공: {key}")
+                return True
 
             return False
         except Exception as e:
