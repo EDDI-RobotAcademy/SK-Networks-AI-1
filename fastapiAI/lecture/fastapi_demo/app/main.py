@@ -14,24 +14,34 @@ from random_forest.controller.random_forest_controller import randomForestRouter
 from tf_iris.controller.tf_iris_controller import tfIrisRouter
 from train_test_evaluation.controller.train_test_evaluation_controller import trainTestEvaluationRouter
 
-app = FastAPI()
+# # 현재는 deprecated 라고 나타나지만 lifespan 이란 것을 대신 사용하라고 나타나고 있음
+# # 완전히 배제되지는 않았는데 애플리케이션이 시작할 때 실행될 함수를 지정함
+# # 고로 애플리케이션 시작 시 비동기 처리가 가능한 DB를 구성한다 보면 됨
+# @app.on_event("startup")
+# async def startup_event():
+#     app.state.db_pool = await getMySqlPool()
+#     await createTableIfNeccessary(app.state.db_pool)
+#
+#
+# # 위의 것이 킬 때 였으니 이건 반대라 보면 됨
+# @app.on_event("shutdown")
+# async def shutdown_event():
+#     app.state.db_pool.close()
+#     await app.state.db_pool.wait_closed()
+
+async def lifespan(app: FastAPI):
+    # Startup
+    app.state.dbPool = await getMySqlPool()
+    await createTableIfNeccessary(app.state.dbPool)
+
+    yield
+
+    # Shutdown
+    app.state.dbPool.close()
+    await app.state.dbPool.wait_closed()
 
 
-# 현재는 deprecated 라고 나타나지만 lifespan 이란 것을 대신 사용하라고 나타나고 있음
-# 완전히 배제되지는 않았는데 애플리케이션이 시작할 때 실행될 함수를 지정함
-# 고로 애플리케이션 시작 시 비동기 처리가 가능한 DB를 구성한다 보면 됨
-@app.on_event("startup")
-async def startup_event():
-    app.state.db_pool = await getMySqlPool()
-    await createTableIfNeccessary(app.state.db_pool)
-
-
-# 위의 것이 킬 때 였으니 이건 반대라 보면 됨
-@app.on_event("shutdown")
-async def shutdown_event():
-    app.state.db_pool.close()
-    await app.state.db_pool.wait_closed()
-
+app = FastAPI(lifespan=lifespan)
 
 # 웹 브라우저 상에서 "/" 을 입력하면 (key)Hello: (value)World가 리턴
 @app.get("/")
