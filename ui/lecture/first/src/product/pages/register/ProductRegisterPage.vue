@@ -63,8 +63,15 @@ export default {
                     imageFormData.append('productImage', this.productImage)
 
                     const response = await this.requestCreateProductToDjango(imageFormData)
-                    this.uploadedFileName = response.data.imageName
-                    this.$router.push({ name: 'ProductListPage' })
+                    // console.log('after create product:', response)
+                    // this.uploadedFileName = response.data.imageName
+                    await this.$router.push({ name: 'ProductListPage' });
+                    // await this.$router.push({ name: 'ProductListPage' });
+
+                    // 페이지를 강제로 새로고침
+                    // 이 부분은 사실 임시 방편임
+                    // 추후 AWS S3로 이동하면 문제가 없어질 예정
+                    window.location.reload(true);
                 } else {
                     console.log('이미지 파일을 선택하세요!')
                 }
