@@ -17,9 +17,9 @@ from tf_iris.controller.request_form.tf_iris_request_form import TfIrisRequestFo
 
 tfIrisRouter = APIRouter()
 
-MODEL_PATH = 'tf_iris_model.h5'
-SCALER_PATH = 'tf_iris_scaler.pk1'
-CLASSIFICATION_PATH = 'tf_iris_classification_label.pk1'
+MODEL_PATH = 'tf_iris_model.h5'     # 기장 잘 나왔을 때의 모델을 저장
+SCALER_PATH = 'tf_iris_scaler.pk1'  # 가장 잘 나온 스케일러값을 저장
+CLASSIFICATION_PATH = 'tf_iris_classification_label.pk1'    #label 정보(각 클래스의 이름, 여기선 꽃 이름 세토사,버지니카,버지컬러)
 CLASSIFICATION_NAME = None
 
 
@@ -75,14 +75,14 @@ async def tfTrainModel():
     # 현재 DPU / NPU 시장이 가장 큰 업체는 Apple에 해당함
     # 그리고 짐 켈러가 요즘 RISC V를 가지고 뭔가를 하려고해서 Nvidia 거품이 꺼질 전망임
     model = tf.keras.Sequential([
-        tf.keras.layers.Dense(64, activation='relu', input_shape=(4,)),
-        tf.keras.layers.Dense(64, activation='relu'),
-        tf.keras.layers.Dense(32, activation='relu'),
+        tf.keras.layers.Dense(64, activation='relu', input_shape=(4,)),  # input_shape이 4인 것은 특징이 4가지여서 그런 것. 즉, 이 4가지의 특징을 기준으로 분류를 한다. 이 iris 데이터의 input_shape는 sepal_length,sepal_width,petal_length,petal_width이다.
+        tf.keras.layers.Dense(64, activation='relu'),  # 히든 레이어 쌓는 부분
+        tf.keras.layers.Dense(32, activation='relu'),   #히든 레이어는 2의 제곱 단위로 줄어든다.
         tf.keras.layers.Dense(16, activation='relu'),
         tf.keras.layers.Dense(8, activation='relu'),
         tf.keras.layers.Dense(4, activation='relu'),
-        tf.keras.layers.Dense(3, activation='softmax')
-    ])
+        tf.keras.layers.Dense(3, activation='softmax')      #마지막 output_shape이 3인 이유는 꽃 종류가 3가지여서 그런 것.(즉, 최종 분류를 해야하는 클래스가 3개(세토사,버지니카,버지컬러))
+    ])                                                           # 히든 레이어의 결과는 지수가 나오기 때문에 사람이 알아보기 힘들다. 때문에 sofmax를 사용해서 사람이 알아보기 쉬운 확률로 바꾸는 것.
 
     # 몇 가지 팁: 학습을 했을 때 데이터가 들쭉날쭉하는 경향을 보일 수 있음
     #            아무리 학습을 많이 해도 데이터 자체가 파동을 만든다는 뜻임 (수렴하지 않고)
@@ -103,7 +103,8 @@ async def tfTrainModel():
     # 경사 하강법 기반을 사용하므로 학습 속도가 빠르고 보편적인 성능을 가짐
     # sparse_categorical_crossentropy의 경우 라벨이 정수로 인코딩 된 경우 다중 분류 문제에 적합함
     # 구성한 모델의 성능을 평가할 지표가 필요한데 해당 지표로 accuracy(정확도)를 사용
-    model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+    # optimizer='adam' -> 로스값을 어떻게 활용하여 다시 재학습 시킬 것인가 / loss='sparse_categorical_crossentropy' -> / metrics=['accuracy'] -> 평가지표
+    model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])   #loss값에 관한 것을 정하는 단계    / 모든 로스는 경사하강법으로 감소해야한다.
     # 훈련 모델 학습
     # epochs는 몇 회 반복 학습을 시키느냐에 해당하는 수치입니다.
     # 500번 반복 학습을 시키니 iris 라는 꽃 분야에 상당한 대가로 거듭나게 훈련시키는 것
@@ -119,7 +120,7 @@ async def tfTrainModel():
     return {"message": "Model / Scaler 훈련 완료"}
 
 
-@tfIrisRouter.get('/tf-predict')
+@tfIrisRouter.post('/tf-predict')
 def predict(tfIrisRequestForm: TfIrisRequestForm = Body(...)):
     if (not os.path.exists(MODEL_PATH) or
             not os.path.exists(SCALER_PATH) or
@@ -144,7 +145,7 @@ def predict(tfIrisRequestForm: TfIrisRequestForm = Body(...)):
     data = scaler.transform(data)
     prediction = model.predict(data)
     print(f"prediction: {prediction}")
-    whichOneIsMax= np.argmax(prediction)
+    whichOneIsMax= np.argmax(prediction)   #argmax는 리스트 안에 있는 값들 중 최대값의 인덱스 번호를 반환한다.
     print(f"which one is max ? whichOneIsMax")
 
     predictedClass = classificationLabel[np.argmax(prediction)]
