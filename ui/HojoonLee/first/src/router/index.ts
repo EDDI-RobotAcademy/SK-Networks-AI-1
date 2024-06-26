@@ -11,6 +11,7 @@ import PolynomialRegressionRoutes from '@/polynomialRegression/router/Polynomial
 import ExponentialRegressionRoutes from '@/exponentialRegression/router/ExponentialRegressionRoutes'
 import RandomForestRoutes from '@/random_forest/router/RandomForestRoutes'
 import CartRoutes from '@/cart/router/CartRoutes'
+import PostRoutes from '@/post/router/PostRoutes'
 
 
 
@@ -28,6 +29,7 @@ const routes: Array<RouteRecordRaw> = [
   ...ExponentialRegressionRoutes,
   ...RandomForestRoutes,
   ...CartRoutes,
+  ...PostRoutes,
 ]
 
 const router = createRouter({

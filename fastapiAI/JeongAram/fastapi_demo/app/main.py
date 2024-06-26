@@ -5,13 +5,26 @@ from fastapi import FastAPI
 
 from fastapi.middleware.cors import CORSMiddleware
 
+from async_db.database import getMySqlPool, createTableIfNeccessary
 from exponential_regression.controller.exponential_regression_controller import exponentialRegressionRouter
 from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
+from post.controller.post_controller import postRouter
 from train_test_evaluation.controller.train_test_evaluation_controller import trainTestEvaluationRouter
 from polynomialRegression.controller.polynomial_regression_controller import polynomialRegressionRouter
 from random_forest.controller.random_forest_controller import randomForestRouter
 
 app = FastAPI()
+
+
+@app.on_event("startup")
+async def startup_event():
+    app.state.db_pool = await getMySqlPool()
+    await createTableIfNeccessary(app.state.db_pool)
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    app.state.db_pool.close()
+    await app.state.db_pool.wait_closed()
 
 
 # 웹 브라우저 상에서 "/" 을 입력하면 (key)Hello: (value)World가 리턴
@@ -70,6 +83,7 @@ app.include_router(trainTestEvaluationRouter)
 app.include_router(polynomialRegressionRouter)
 app.include_router(exponentialRegressionRouter)
 app.include_router(randomForestRouter)
+app.include_router(postRouter, prefix="/post")
 # 여기까지 해야 router 연결됨
 
 # env 관련 설정
