@@ -1,10 +1,14 @@
+import os.path
+
 import joblib
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 
 import tensorflow as tf
 from sklearn.preprocessing import StandardScaler
+
+from tf_iris.controller.request_form.tf_iris_request_form import TfIrisRequestForm
 
 tfIrisRouter = APIRouter()
 
@@ -101,3 +105,10 @@ async def tfTrainModel():
     joblib.dump(scaler, SCALER_PATH)
     
     return {"message": "Model / Scaler 훈련 완료"}
+
+@tfIrisRouter.get('/tf-predict')
+def predict(tfIrisRequestForm: TfIrisRequestForm):
+    if not os.path.exists(MODEL_PATH) or not os.path.exists(SCALER_PATH):
+        raise HTTPException(status_code=400, detail="모델 및 스케일러 준비 안 됨")
+
+    print("추론 진행")
