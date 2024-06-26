@@ -53,7 +53,7 @@ async def tfTrainModel():
 
     return { "message": "Model / Scaler 훈련 완료"}
 
-@tfIrisRouter.get('/predict')
+@tfIrisRouter.get('/tf-predict')
 def predict(tfIrisRequestForm: TfIrisRequestForm):
     if not os.path.exists(MODEL_PATH) or not os.path.exists(SCALER_PATH):
         raise HTTPException(status_code=400, detail="모델 및 스케일러 준비 안됨")
