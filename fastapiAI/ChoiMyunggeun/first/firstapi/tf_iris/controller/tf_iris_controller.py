@@ -19,7 +19,8 @@ tfIrisRouter = APIRouter()
 
 MODEL_PATH = 'th_iris_model.h5'
 SCALER_PATH = 'th_iris_scaler.pk1'
-CLASSIFICATION_NAME = None
+# CLASSIFICATION_NAME = None
+CLASSIFICATION_PATH = 'tf_iris_classification_label.pkl'
 
 @tfIrisRouter.get("/tf-train")
 async def tfTraionModel():
@@ -46,17 +47,21 @@ async def tfTraionModel():
 
     model.save(MODEL_PATH)
     joblib.dump(scaler, SCALER_PATH)
+    joblib.dump(iris.target_names, CLASSIFICATION_PATH)
 
     return {'message':'Model/ Scaler 훈련 완료'}
 
 @tfIrisRouter.get('/tf-predict')
 def predict(tfIrisRequestForm: TfIrisRequestForm):
-    if not os.path.exists(MODEL_PATH) or not os.path.exists(SCALER_PATH):
-        raise HTTPException(status_code=400, detail='모델 및 스케일러 준비 안됨')
+    if (not os.path.exists(MODEL_PATH) or
+            not os.path.exists(SCALER_PATH) or
+            not os.path.exists(CLASSIFICATION_PATH)):
+        raise HTTPException(status_code=400, detail='학습부터 진행해 주세요 모델 및 스케일러 준비 안됨')
     print('추론 진행')
 
     model = tf.keras.models.load_model(MODEL_PATH)
     scaler = joblib.load(SCALER_PATH)
+    classificationLabels = joblib.load(CLASSIFICATION_PATH)
 
     data = np.array(([
         [
@@ -71,5 +76,11 @@ def predict(tfIrisRequestForm: TfIrisRequestForm):
     prediction = model.predict(data)
     print(f'prediction: {prediction}')
 
-    predictedClass = CLASSIFICATION_NAME[np.argmax(prediction)]
+    predictedClass = classificationLabels[np.argmax(prediction)]
     print(f'predictedClass: {predictedClass}')
+    whitchOneIsMax = np.argmax(prediction)
+    
+    return {
+        "prediction" : prediction[0][whitchOneIsMax].tolist(),
+        "predict_class" : predictedClass
+    }
