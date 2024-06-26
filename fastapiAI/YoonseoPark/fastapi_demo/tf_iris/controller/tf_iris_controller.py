@@ -115,7 +115,7 @@ async def tfTrainModel():
     
     return {"message": "Model / Scaler 훈련 완료"}
 
-@tfIrisRouter.get('/tf-predict')
+@tfIrisRouter.post('/tf-predict')
 def predict(tfIrisRequestForm: TfIrisRequestForm):
     if (not os.path.exists(MODEL_PATH) or
             not os.path.exists(SCALER_PATH) or
