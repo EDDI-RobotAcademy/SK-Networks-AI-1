@@ -9,4 +9,3 @@ class CartRepository(ABC):
     @abstractmethod
     def findByAccount(self, account):
         pass
-
