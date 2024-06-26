@@ -6,6 +6,7 @@ from fastapi.responses import JSONResponse
 
 import tensorflow as tf
 import numpy as np
+
 from sklearn.datasets import load_iris
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import  accuracy_score
@@ -18,7 +19,8 @@ tfIrisRouter = APIRouter()
 
 MODEL_PATH = 'tf_iris_model.h5'
 SCALER_PATH = 'tf_iris_scaler.pk1'
-CLASSIFICATION_NAME = None
+CLASSIFICATION_PATH = 'tf_iris_classification_label.pk1'
+# CLASSIFICATION_NAME = None
 
 @tfIrisRouter.get("/tf-train")
 async def tfTrainModel():
@@ -26,9 +28,9 @@ async def tfTrainModel():
     # Iris 꽃 데이터 로드
     iris = load_iris()
 
-    global CLASSIFICATION_NAME
-    CLASSIFICATION_NAME = iris.target_names
-    
+    # global CLASSIFICATION_NAME
+    # CLASSIFICATION_NAME = iris.target_names
+
     X, y = iris.data, iris.target
     X_train, X_test, y_train, y_test = train_test_split(X, y ,test_size=0.2, random_state=42)
 
@@ -54,19 +56,23 @@ async def tfTrainModel():
 
     # 훈련된 모델 저장(학습 완료 상태)
     model.save(MODEL_PATH)
+
+    # 모델 및 스케일러를 불러오기 위해 사용함 (joblib)
     joblib.dump(scaler, SCALER_PATH)
+    joblib.dump(iris.target_names, CLASSIFICATION_PATH)
 
     return { "message": "Model / Scaler 훈련 완료"}
 
 @tfIrisRouter.get('/tf-predict')
 def predict(tfIrisRequestForm: TfIrisRequestForm):
-    if not os.path.exists(MODEL_PATH) or not os.path.exists(SCALER_PATH):
-        raise HTTPException(status_code=400, detail="모델 및 스케일러 준비 안됨")
+    if (not os.path.exists(MODEL_PATH) or not os.path.exists(SCALER_PATH) or not os.path.exists(CLASSIFICATION_PATH)):
+        raise HTTPException(status_code=400, detail="train부터 진행해주세요! 모델 및 스케일러 준비 안됨!")
 
     print("추론 진행")
 
     model = tf.keras.models.load_model(MODEL_PATH)
     scaler = joblib.load(SCALER_PATH)
+    classificationLabel = joblib.load(CLASSIFICATION_PATH)
 
     data = np.array([
         [    tfIrisRequestForm.sepal_length,
@@ -78,8 +84,14 @@ def predict(tfIrisRequestForm: TfIrisRequestForm):
 
     data = scaler.transform(data)
     prediction = model.predict(data)
-    print(f"prediction: { prediction }")
-    print(f"which one is max ? {np.argmax(prediction)}")
+    print(f"prediction: {prediction}")
+    whichOneIsMax = np.argmax(prediction)
+    print(f"which one is max ? whichOneIsMax")
 
-    predictedClass = CLASSIFICATION_NAME[np.argmax(prediction)]
+    predictedClass = classificationLabel[np.argmax(prediction)]
     print(f"predictedClass: {predictedClass}")
+
+    return {
+        "prediction": prediction[0][whichOneIsMax].tolist(),
+        "predicted_class": predictedClass
+    }
