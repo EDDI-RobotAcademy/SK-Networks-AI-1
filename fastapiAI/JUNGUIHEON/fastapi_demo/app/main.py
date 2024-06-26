@@ -10,6 +10,7 @@ from kmeans.controller.kmeans_controller import kmeansRouter
 from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
 from polynomialRegression.controller.polynomial_regression_controller import polynomialRegressionRouter
 from random_forest.controller.random_forest_controller import randomForestRouter
+from tf_iris.controller.tf_iris_controller import tfIrisRouter
 from train_test_evaluation.controller.train_test_evaluation_controller import trainTestEvaluationRouter
 from post.controller.post_controller import postRouter
 
@@ -91,6 +92,7 @@ app.include_router(exponentialRegressionRouter)
 app.include_router(randomForestRouter)
 app.include_router(postRouter, prefix="/post")
 app.include_router(kmeansRouter)
+app.include_router(tfIrisRouter)
 
 load_dotenv()
 
