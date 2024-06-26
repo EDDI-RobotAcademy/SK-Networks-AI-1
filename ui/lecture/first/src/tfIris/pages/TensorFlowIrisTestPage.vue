@@ -3,6 +3,12 @@
         <v-form @submit.prevent="submitForm">
             <v-text-field label="Sepal Length" 
                             v-model="form.sepal_length" type="number"/>
+            <v-text-field label="Sepal Width" 
+                            v-model="form.sepal_width" type="number"/>
+            <v-text-field label="Petal Length" 
+                            v-model="form.petal_length" type="number"/>
+            <v-text-field label="Petal Width" 
+                            v-model="form.petal_width" type="number"/>
 
             <v-btn type="submit" color="primary">Predict</v-btn>
         </v-form>
@@ -30,8 +36,21 @@ export default {
     methods: {
         async submitForm () {
             try {
+                // const formData = new FormData()
+                // formData.append('sepal_length', this.form.sepal_length)
+                // formData.append('sepal_width', this.form.sepal_width)
+                // formData.append('petal_length', this.form.petal_length)
+                // formData.append('petal_width', this.form.petal_width)
+                
                 const response = await axios.get(
-                    'http://localhost:33333/tf-predict', this.form)
+                    'http://localhost:33333/tf-predict', {
+                        params: {
+                            sepal_length: this.form.sepal_length,
+                            sepal_width: this.from.sepal_width,
+                            petal_length: this.form.petal_length,
+                            petal_width: this.form.petal_width
+                        }
+                    })
             } catch (error) {
                 alert('딥러닝 모델이 훈련되지 않았으니 모델부터 훈련시키세요!')
             }
