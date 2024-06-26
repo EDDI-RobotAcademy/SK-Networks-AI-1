@@ -7,9 +7,9 @@
             </router-link>
         </div>
         <v-row v-if="productList.length > 0">
-            <v-col v-for="(product, index) in productList" :key = index cols="12" sm="6" md="4" lg="3">
+            <v-col v-for="(product, index) in productList" :key=index cols="12" sm="6" md="4" lg="3">
                 <v-card @click="goToProductReadPage(product.productId)">
-                    <v-img :src="getImageUrl(product.productImage)" aspect-ratio="1" class="grey lighten-2">
+                    <v-img :src="getProductImageUrl(product.productImage)" aspect-ratio="1" class="grey lighten-2">
                         <template v-slot:placeholder>
                             <v-row class="fill-height ma-0" align="center" justify="center">
                                 <v-progress-circular indeterminate color="grey lighten-5"/>
@@ -66,11 +66,14 @@ export default {
     },
     methods: {
         ...mapActions(productModule, ['requestProductListToDjango']),
-        getImageUrl (imageName) {
+        getProductImageUrl (imageName) {
             return require('@/assets/images/uploadImages/' + imageName)
         },
-        goToProductReadPage (event, { item }) {
-            console.log('읽기 구현 할 때 사용!')
+        goToProductReadPage (productId) {
+            this.$router.push({
+                name: 'ProductReadPage',
+                params: { productId: productId }
+            })
         }
     },
     data () {

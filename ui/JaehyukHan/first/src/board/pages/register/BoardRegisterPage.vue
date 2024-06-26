@@ -17,7 +17,7 @@
         <v-row>
             <v-col cols="12">
                 <!-- 아래로 늘어나야 하는데 가로로 늘어나고 있음 -->
-                <v-text-field v-model="content" label="내용" auto-grow/>
+                <v-textarea v-model="content" label="내용" auto-grow/>
             </v-col>
         </v-row>
         <v-row>
@@ -73,6 +73,7 @@ export default{
         },
         async onCancel() {
             console.log('취소 버튼 눌렀지?')
+            this.$router.go(-1)
         }
     }
 }
