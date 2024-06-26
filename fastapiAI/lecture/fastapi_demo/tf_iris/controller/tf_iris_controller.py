@@ -1,7 +1,7 @@
 import os.path
 
 import joblib
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query, Body
 from fastapi.responses import JSONResponse
 
 import tensorflow as tf
@@ -117,7 +117,7 @@ async def tfTrainModel():
     
     return {"message": "Model / Scaler 훈련 완료"}
 
-@tfIrisRouter.get('/tf-predict')
+@tfIrisRouter.post('/tf-predict')
 def predict(tfIrisRequestForm: TfIrisRequestForm):
     if (not os.path.exists(MODEL_PATH) or
             not os.path.exists(SCALER_PATH) or
