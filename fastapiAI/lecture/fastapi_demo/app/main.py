@@ -1,5 +1,6 @@
 import os
 
+import aiomysql
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -28,6 +29,10 @@ from train_test_evaluation.controller.train_test_evaluation_controller import tr
 # async def shutdown_event():
 #     app.state.db_pool.close()
 #     await app.state.db_pool.wait_closed()
+
+import warnings
+
+warnings.filterwarnings("ignore", category=aiomysql.Warning)
 
 async def lifespan(app: FastAPI):
     # Startup
