@@ -18,12 +18,17 @@ tfIrisRouter = APIRouter()
 
 MODEL_PATH = 'tf_iris_model.h5'
 SCALER_PATH = 'tf_iris_scaler.pk1'
+CLASSIFICATION_NAME = None
 
 @tfIrisRouter.get("/tf-train")
 async def tfTrainModel():
 
     # Iris 꽃 데이터 로드
     iris = load_iris()
+
+    global CLASSIFICATION_NAME
+    CLASSIFICATION_NAME = iris.target_names
+    
     X, y = iris.data, iris.target
     X_train, X_test, y_train, y_test = train_test_split(X, y ,test_size=0.2, random_state=42)
 
@@ -59,3 +64,22 @@ def predict(tfIrisRequestForm: TfIrisRequestForm):
         raise HTTPException(status_code=400, detail="모델 및 스케일러 준비 안됨")
 
     print("추론 진행")
+
+    model = tf.keras.models.load_model(MODEL_PATH)
+    scaler = joblib.load(SCALER_PATH)
+
+    data = np.array([
+        [    tfIrisRequestForm.sepal_length,
+             tfIrisRequestForm.sepal_width,
+             tfIrisRequestForm.petal_length,
+             tfIrisRequestForm.petal_width,
+        ]
+    ])
+
+    data = scaler.transform(data)
+    prediction = model.predict(data)
+    print(f"prediction: { prediction }")
+    print(f"which one is max ? {np.argmax(prediction)}")
+
+    predictedClass = CLASSIFICATION_NAME[np.argmax(prediction)]
+    print(f"predictedClass: {predictedClass}")
