@@ -1,7 +1,7 @@
 import os.path
 
 import joblib
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query, Body
 from fastapi.responses import JSONResponse
 
 import tensorflow as tf
@@ -63,7 +63,7 @@ async def tfTrainModel():
 
     return { "message": "Model / Scaler 훈련 완료"}
 
-@tfIrisRouter.get('/tf-predict')
+@tfIrisRouter.post('/tf-predict')
 def predict(tfIrisRequestForm: TfIrisRequestForm):
     if (not os.path.exists(MODEL_PATH) or not os.path.exists(SCALER_PATH) or not os.path.exists(CLASSIFICATION_PATH)):
         raise HTTPException(status_code=400, detail="train부터 진행해주세요! 모델 및 스케일러 준비 안됨!")
