@@ -1,5 +1,7 @@
 import os
+import warnings
 
+import aiomysql
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -16,6 +18,7 @@ from train_test_evaluation.controller.train_test_evaluation_controller import tr
 
 app = FastAPI()
 
+warnings.filterwarnings("ignore", category=aiomysql.Warning)
 
 # 현재는 deprecated 라고 나타나지만 lifespan 이란 것을 대신 사용하라고 나타나고 있음
 # 완전히 배제되지는 않았는데 애플리케이션이 시작할 때 실행될 함수를 지정함
