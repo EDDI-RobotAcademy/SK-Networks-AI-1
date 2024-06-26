@@ -14,9 +14,6 @@ SECRET_KEY = "django-insecure-w4bs$2b0our!4$75rf-fvjt(d@88lmwdpqqh7vi4i76qfpk@-)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -105,6 +102,10 @@ WSGI_APPLICATION = "fourth_exer.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+
+MY_IP = os.getenv('MY_IP')
+
+ALLOWED_HOSTS = [MY_IP]
 
 DATABASES = {
     "default": {
