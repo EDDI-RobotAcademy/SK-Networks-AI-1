@@ -1,5 +1,6 @@
 import os
 
+import aiomysql
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -17,6 +18,11 @@ from train_test_evaluation.controller.train_test_evaulation_controller import tr
 # 현재는 deprecated 라고 나타나지만 lifespan 이란 것을 대신 사용하라고 나타나고 있음
 # 완전히 배제되지는 않았는데 애플리케이션이 시작할 때 실행할 함수를 지정함
 # 고로 애플리케이션 시작 시 비동기 처리가 가능한 DB를 구성한다 보면 됨
+
+import warnings
+
+warnings.filterwarnings("ignore", category=aiomysql.Warning)
+
 async def lifespan(app: FastAPI):
     # Startup
     app.state.dbPool = await getMySqlPool()
@@ -27,7 +33,6 @@ async def lifespan(app: FastAPI):
     # Shutdown
     app.state.dbPool.close()
     await app.state.dbPool.wait_closed()
-
 
 app = FastAPI(lifespan=lifespan)
 
