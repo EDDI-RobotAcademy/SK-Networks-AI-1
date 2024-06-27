@@ -21,7 +21,7 @@ export default {
 
         const fetchExponentialRegressionData = async () => {
             try {
-                const response = await fetch('http://localhost:33333/exponential-regression')
+                const response = await fetch('http://192.168.0.42:33333/exponential-regression')
                 const data = await response.json()
 
                 originalData.value = data.original_data

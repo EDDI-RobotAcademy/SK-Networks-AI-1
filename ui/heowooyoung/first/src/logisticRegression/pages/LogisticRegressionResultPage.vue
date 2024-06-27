@@ -39,7 +39,7 @@ export default {
         async fetchLogisticRegressionData () {
             try {
                 const response = 
-                    await axiosInst.fastapiAxiosInst.get('http://localhost:33333/logistic-regression')
+                    await axiosInst.fastapiAxiosInst.get('http://192.168.0.42:33333/logistic-regression')
                 const data = response.data
                 console.log('result:', data)
 

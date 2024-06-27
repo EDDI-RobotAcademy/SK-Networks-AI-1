@@ -69,6 +69,8 @@ export default {
                 { title: 'Polynomial Regression', action: () => { router.push('/polynomial-regression-result') } },
                 { title: 'Exponential Regression', action: () => { router.push('/exponential-regression-result') } },
                 { title: 'Kmeans Regression', action: () => { router.push('/kmeans-test-result')}},
+                { title: 'TensorFlowIrisTestResult Regression', action: () => { router.push('/tf-iris-result')}},
+                { title: 'TrainTestEvaluationResult Regression', action: () => { router.push('/train-test-evaluation-result')}},
             ]
         }
     },

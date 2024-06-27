@@ -3,7 +3,7 @@
         <h2>Train Test Evaluation</h2>
         <p>Accuracy: {{ accuracy }}</p>
         <svg ref="svg" :viewBox="`0 0 ${svgWidth} ${svgHeight}`"
-                        preserveAspectRatio="xMidYMid meet"/>
+                        preserveAspectRatio="xMidYMid meet"></svg>
         <div class="report">
             <h2>Classification Report</h2>
             <table class="classification-report-table">
@@ -47,7 +47,7 @@ export default {
             // fetch가 자체적으로 get과 동일함
             // 현재 d3와 fastapi, 딥러닝 hard skill(기능) 자체에 집중하기 때문에
             // 일단 soft skill(DDD)는 잠시 접어뒀음
-            const response = await fetch('http://localhost:33333/train-test-evaluation')
+            const response = await fetch('http://192.168.0.42:33333/train-test-evaluation')
             const data = await response.json()
             console.log('data:', data)
 

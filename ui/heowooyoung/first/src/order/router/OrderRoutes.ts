@@ -1,13 +1,13 @@
-import CartListPage from '@/cart/pages/CartListPage.vue'
+import OrderReadPage from '@/order/pages/OrderReadPage.vue'
 
-const CartRoutes = [
+const OrderRoutes = [
     {
         path: '/order/read',
-        name: 'CartListPage',
+        name: 'OrderReadPage',
         components: {
-            default: CartListPage
+            default: OrderReadPage
         },
     },
 ]
 
-export default CartRoutes
+export default OrderRoutes

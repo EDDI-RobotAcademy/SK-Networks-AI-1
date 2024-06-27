@@ -24,7 +24,7 @@ export default {
     },
     async mounted() {
         try {
-            const response = await axios.get('http://localhost:33333/kmeans-test');
+            const response = await axios.get('http://192.168.0.42:33333/kmeans-test');
             this.centers = response.data.centers;
             this.labels = response.data.labels;
             this.points = response.data.points;
