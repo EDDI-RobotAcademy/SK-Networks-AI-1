@@ -67,7 +67,8 @@ export default {
                 { title: 'Logistic Regression', action: () => { router.push('/logistic-regression-result') } },
                 { title: 'Random Forest', action: () => { router.push('/random-forest-result') } },
                 { title: 'Polynomial Regression', action: () => { router.push('/polynomial-regression-result') } },
-                { title: 'Exponential Regression', action: () => { router.push('/exponential-regression-result') } }
+                { title: 'Exponential Regression', action: () => { router.push('/exponential-regression-result') } },
+                { title: 'Kmeans Regression', action: () => { router.push('/kmeans-test-result')}},
             ]
         }
     },

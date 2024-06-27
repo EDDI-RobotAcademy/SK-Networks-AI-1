@@ -3,11 +3,10 @@
         <h2>Train Test Evaluation</h2>
         <p>Accuracy: {{ accuracy }}</p>
         <svg ref="svg" :viewBox="`0 0 ${svgWidth} ${svgHeight}`"
-                        preserveAspectRatio="xMidYMid meet">
-        </svg>
-        <div>
+                        preserveAspectRatio="xMidYMid meet"/>
+        <div class="report">
             <h2>Classification Report</h2>
-            <table>
+            <table class="classification-report-table">
                 <thead>
                     <tr>
                         <th>Metric</th>
@@ -58,15 +57,9 @@ export default {
 
             this.classificationReport = data.classification_report
             this.formatClassificationReport()
-
         } catch (error) {
             console.error('train test evaluation 데이터 확보 중 에러:', error)
         }
-
-        window.addEventListener('resize', this.handleResize)
-    },
-    beforeUnmount () {
-        window.removeEventListener('resize', this.handleResize)
     },
     methods: {
         drawConfusionMatrix (matrix) {
@@ -84,7 +77,7 @@ export default {
 
             const color = d3.scaleSequential()
                             .domain([0, maxValue])
-                            .interpolator(d3.interpolateReds)
+                            .interpolator(d3.interpolateOranges)
 
             const cellSize = Math.min(width / matrix.length, height / matrix.length)
             console.log('cellSize:', cellSize)
@@ -114,7 +107,6 @@ export default {
                     .attr("text-anchor", "middle")
                     .text(d => d.toFixed(0))
         },
-
         formatClassificationReport () {
             const formattedData = this.classificationReport.map((report, index) => {
                 const formattedReport = {
@@ -123,26 +115,12 @@ export default {
                     recall: report.recall.toFixed(2),
                     'f1-score': report['f1-score'].toFixed(2),
                 }
+
                 return formattedReport
             })
 
             this.formattedReportData = formattedData
         },
-    
-        handleResize () {
-            // 브라우저 크기 변경을 감지하면 0.2초 단위로 화면 크기 조정하여 다시 그림
-            clearTimeout(this.resizeTimer)
-            this.resizeTimer = setTimeout(() => {
-                const chartContainer = this.$refs.chartContainer
-                this.svgWidth = chartContainer.clientWidth
-                this.svgHeight = chartContainer.clientHeight
-
-                d3.select(this.$refs.svg)
-                        .attr('viewBox', `0 0 ${this.svgWidth} ${this.svgHeight}`)
-
-                this.createChart()
-            }, 200)
-        }
     }
 }
 </script>
@@ -159,7 +137,7 @@ export default {
     margin-top: 20px;
 }
 
-.classification-report-table th, 
+.classification-report-table th,
 .classification-report-table td {
     border: 1px solid #ddd;
     padding: 8px;
@@ -167,6 +145,6 @@ export default {
 }
 
 .classification-report-table th {
-    background-color: #f2f2f2;
+    background-color: #f2f2f2
 }
 </style>
