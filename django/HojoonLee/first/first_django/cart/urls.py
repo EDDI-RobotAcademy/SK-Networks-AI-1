@@ -10,4 +10,5 @@ urlpatterns = [
     path('', include(router.urls)),
     path('list', CartView.as_view({'post': 'cartItemList'}), name='cart-list'),
     path('register', CartView.as_view({'post': 'cartRegister'}), name='cart-register'),
+    path('remove', CartView.as_view({'post': 'cartRemove'}), name='cart-remove'),
 ]

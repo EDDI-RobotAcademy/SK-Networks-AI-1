@@ -58,7 +58,9 @@ const actions: ProductActions = {
             })
 
             console.log('응답 데이터:', res.data)
-            return res
+            // await context.dispatch('requestProductListToDjango')
+            
+            return res.data
         } catch (error) {
             console.error('requestCreateProductToDjango():', error)
             throw error

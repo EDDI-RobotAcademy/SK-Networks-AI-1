@@ -60,11 +60,6 @@ export default {
         } catch (error) {
             console.error('train test evaluation 데이터 확보 중 에러:', error)
         }
-
-        window.addEventListener('resize', this.handleResize)
-    },
-    beforeUnmount () {
-        window.removeEventListener('resize', this.handleResize)
     },
     methods: {
         drawConfusionMatrix (matrix) {
@@ -150,6 +145,6 @@ export default {
 }
 
 .classification-report-table th {
-    background-color: #f2f2f2;
+    background-color: #f2f2f2
 }
 </style>
