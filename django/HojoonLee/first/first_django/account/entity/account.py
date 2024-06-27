@@ -10,12 +10,15 @@ class Account(models.Model):
     # 아래의 AccountRoleType도 마찬가지이나 우선은 이렇게 진행
     # 또한 이것은 정해진 것이 아니며 만드는 SW에 따라 유불리가 달라질 수 있음
     # 고로 표현하려는 Domain에 어떤 Entity들이 존재하는지 파악하는 것이 중요함
-    loginType = models.ForeignKey(AccountLoginType, on_delete=models.CASCADE) # model 바뀔 때 마다 사라진다.
-    roleType = models.ForeignKey(AccountRoleType, on_delete=models.CASCADE) # 관리자냐? 블랙리스트냐? 여부
+    loginType = models.ForeignKey(AccountLoginType, on_delete=models.CASCADE)
+    roleType = models.ForeignKey(AccountRoleType, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"Account -> id: {self.id}, loginType:{self.loginType}, roleType:{self.roleType}"
+        return f"Account -> id: {self.id}, loginType: {self.loginType}, roleType: {self.roleType}"
 
     class Meta:
         db_table = 'account'
-        app_label = 'account' # entity가 여럿이기 때문에 이것을 선언
+        app_label = 'account'
+
+    def getId(self):
+        return self.id
