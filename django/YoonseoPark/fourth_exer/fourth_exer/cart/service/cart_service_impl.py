@@ -25,7 +25,7 @@ class CartServiceImpl(CartService):
 
         return cls.__instance
 
-    def registerCart(self, cartData, accountId):
+    def cartRegister(self, cartData, accountId):
         account = self.__accountRepository.findById(accountId)
         cart = self.__cartRepository.findByAccount(account)
         if cart is None:
