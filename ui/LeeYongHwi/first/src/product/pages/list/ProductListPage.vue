@@ -1,6 +1,6 @@
 <template lang="">
     <v-container>
-        <h2>안녕 Vue3 TypeScript 기반 Product App이야</h2>
+        <h2>상품</h2>
         <div style="text-align: left; margin: 15px;">
             <router-link :to="{ name: 'ProductRegisterPage' }">
                 상품 등록
