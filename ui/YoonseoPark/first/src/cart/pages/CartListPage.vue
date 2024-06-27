@@ -17,21 +17,21 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="item in cartItems" :key="item.id">
+                            <tr v-for="item in cartItems" :key="item.cartItemId">
                                 <td>
                                     <v-checkbox v-model="selectedItems" :value="item"></v-checkbox>
                                 </td>
                                 <td>{{ item.productName }}</td>
-                                <td>{{ item.price }}</td>
+                                <td>{{ item.productPrice }}</td>
                                 <td>
                                     <v-text-field
-                                            v-model="item.quantity"
-                                            type="number"
-                                            min="1"
-                                            @change="updateQuantity(item)"
+                                        v-model="item.quantity"
+                                        type="number"
+                                        min="1"
+                                        @change="updateQuantity(item)"
                                     ></v-text-field>
                                 </td>
-                                <td>{{ item.price * item.quantity }}</td>
+                                <td>{{ item.productPrice * item.quantity }}</td>
                                 <td>
                                     <v-btn color="red" @click="removeItem(item)">Remove</v-btn>
                                 </td>
@@ -70,6 +70,10 @@
 import { mapActions } from "vuex";
 import router from "@/router"; // Assuming you have a router set up
 
+const cartModule = 'cartModule'
+// const orderModule = 'orderModule'
+
+
 export default {
     data() {
         return {
@@ -86,7 +90,7 @@ export default {
             return this.cartItems.reduce(
                 (total, item) => total + item.productPrice * item.quantity,
                 0
-            )
+            );
         },
         selectedItemsTotal() {
             if (!Array.isArray(this.selectedItems) || this.selectedItems.length === 0) {
@@ -100,6 +104,7 @@ export default {
     },
     methods: {
         ...mapActions("cartModule", ["requestCartListToDjango"]),
+        // ...mapActions("orderModule", ["requestCreateOrderToDjango"]),
         updateQuantity(item) {
             // 수량 업데이트 로직
         },
@@ -111,9 +116,29 @@ export default {
             this.isCheckoutDialogVisible = true;
         },
         async proceedToOrder() {
-            this.isCheckoutDialogVisible = false;
-            const response = await this.requestCreateOrderToDjango()
-            router.push({ name: 'OrderReadPage', params: { selectedItems: this.selectedItems } });
+            // this.isCheckoutDialogVisible = false;
+            // const response = await this.requestCreateOrderToDjango()
+            // try {
+            //     const selectedCartItems = this.cartItems.filter(
+            //         item => this.selectedItems.includes(item)
+            //     )
+            //     const orderItems = selectedCartItems.map(item => ({
+            //         cartItemId: item.cartItemId,
+            //         orderPrice: item.productPrice,
+            //         quantity: item.quantity
+            //     }))
+            //     console.log('orderItems: ', orderItems)
+            //     const response = await this.requestCreateOrderToDjango({ items: orderItems })
+            //     const orderId = response.orderId
+
+            //     this.$router.push({
+            //         name: 'OrderReadPage',
+            //         params: { orderId: orderId.toString() }
+            //     })
+
+            // } catch (error) {
+            //     console.error('Order creation failed: ', error)
+            // }
         },
         async fetchCartList() {
             try {

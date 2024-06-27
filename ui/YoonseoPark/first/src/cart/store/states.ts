@@ -1,18 +1,16 @@
 export interface CartState {
-    cartItemList: CartItem[]
-    cartItem: CartItem | null
+    cartItemList: CartItem[];
 }
 
 export interface CartItem {
-    productId: number
-    productName: string
-    productPrice: string
-    quantity: number
+    productId: number;
+    productName: string;
+    productPrice: number;
+    quantity: number;
 }
 
 const state: CartState = {
     cartItemList: [],
-    cartItem: null,
 }
 
 export default state

@@ -30,8 +30,8 @@ class CartItemRepositoryImpl(CartItemRepository):
             price=productPrice
         )
 
-    def findByProductName(self, productName):
-        pass
+    def findByCart(self, cart):
+        return list(CartItem.objects.filter(cart=cart))
 
     def findByProductId(self, productId):
         try:
