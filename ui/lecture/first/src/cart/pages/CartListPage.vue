@@ -111,34 +111,39 @@ export default {
             // 수량 업데이트 로직
         },
         removeItem(item) {
-            this.cartItems = this.cartItems.filter(cartItem => cartItem.cartItemId !== item.cartItemId);
-            this.selectedItems = this.selectedItems.filter(selectedItem => selectedItem.cartItemId !== item.cartItemId);
+            this.cartItems = 
+                this.cartItems.filter(
+                    cartItem => cartItem.cartItemId !== item.cartItemId);
+            this.selectedItems = 
+                this.selectedItems.filter(
+                    selectedItem => selectedItem.cartItemId !== item.cartItemId);
         },
         confirmCheckout() {
             this.isCheckoutDialogVisible = true;
         },
         async proceedToOrder() {
             this.isCheckoutDialogVisible = false;
-            // const response = await this.requestCreateOrderToDjango()
 
             try {
-                const selectedCartItems = this.cartItems.filter(item => this.selectedItems.includes(item));
+                const selectedCartItems = 
+                    this.cartItems.filter(
+                        item => this.selectedItems.includes(item));
                 const orderItems = selectedCartItems.map(item => ({
                     cartItemId: item.cartItemId,
                     orderPrice: item.productPrice,
                     quantity: item.quantity
                 }));
                 console.log('orderItems:', orderItems)
-                const response = await this.requestCreateOrderToDjango({ items: orderItems });
-                const orderId = response.orderId;
+                const orderId = await this.requestCreateOrderToDjango({ items: orderItems });
 
-                this.$router.push({ name: 'OrderReadPage', params: { orderId: orderId.toString() } });
+                this.$router.push({ 
+                    name: 'OrderReadPage', 
+                    params: { orderId: orderId.toString() } 
+                });
 
             } catch (error) {
                 console.error('Order creation failed:', error);
             }
-
-            // this.$router.push({ name: 'OrderReadPage', params: { selectedItems: this.selectedItems } });
         },
         async fetchCartList() {
             try {
