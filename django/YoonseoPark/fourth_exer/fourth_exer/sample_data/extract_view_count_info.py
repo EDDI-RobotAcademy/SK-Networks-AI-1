@@ -22,7 +22,7 @@ def generate_and_export_view_counts(filePath):
 
             data.append({
                 'accountId': account.id,
-                'productName': product.productName,
+                'productId': product.productId,
                 'viewCount': viewCount
             })
 
