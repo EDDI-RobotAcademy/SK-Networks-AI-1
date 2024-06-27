@@ -7,6 +7,5 @@ class CreatePostRequest(BaseModel):
     title: str
     content: str
 
-
     def toPost(self) -> Post:
-        return Post(title = self.title, content= self.content)
+        return Post(title=self.title, content=self.content)
