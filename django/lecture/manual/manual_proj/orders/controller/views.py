@@ -10,7 +10,6 @@ class OrdersView(viewsets.ViewSet):
     ordersService = OrdersServiceImpl.getInstance()
     redisService = RedisServiceImpl.getInstance()
 
-
     def createOrders(self, request):
         try:
             data = request.data
