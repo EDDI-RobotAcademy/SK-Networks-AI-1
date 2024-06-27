@@ -1,8 +1,8 @@
-import CartListPage from "@/cart/pages/list/CartListPage.vue";
+import CartListPage from '@/cart/pages/CartListPage.vue'
 
 const CartRoutes = [
     {
-        path: '/cart/list',
+        path: '/order/read',
         name: 'CartListPage',
         components: {
             default: CartListPage
