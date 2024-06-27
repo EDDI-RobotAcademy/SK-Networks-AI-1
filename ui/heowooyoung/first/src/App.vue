@@ -25,4 +25,4 @@ export default defineComponent({
 })
 </script>
 
-<!-- 여기 하단에 CSS 파트 -->
+// 여기 하단에 CSS 파트

@@ -29,11 +29,24 @@ class CartView(viewsets.ViewSet):
         except Exception as e:
             return Response({ 'error': str(e) }, status=status.HTTP_400_BAD_REQUEST)
 
-    def cartList(self, request):
-        userToken = request.data.get('userToken')
-        accountId = self.redisService.getValueByKey(userToken)
-        cartList = self.cartService.cartList(accountId)
+    def cartItemList(self, request):
+        # 내가 작성한 코드
+        # userToken = request.data.get('userToken')
+        # accountId = self.redisService.getValueByKey(userToken)
+        # cartList = self.cartService.cartList(accountId)
+        #
+        # return Response(CartItemResponseForm(
+        #     cartList=cartList
+        # ))
+        data = request.data
+        userToken = data.get('userToken')
 
-        return Response(CartItemResponseForm(
-            cartList=cartList
-        ))
+        if not userToken:
+            return Response({ 'error': 'User token is required' }, status=status.HTTP_400_BAD_REQUEST)
+
+        accountId = self.redisService.getValueByKey(userToken)
+        if not accountId:
+            return Response({ 'error': 'Invalid user token' }, status=status.HTTP_400_BAD_REQUEST)
+
+        cartItemListResponseForm = self.cartService.cartList(accountId)
+        return Response(cartItemListResponseForm, status=status.HTTP_200_OK)

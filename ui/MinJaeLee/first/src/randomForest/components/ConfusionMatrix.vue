@@ -2,7 +2,7 @@
     <v-card>
         <v-card-title className="headline">Confusion Matrix</v-card-title>
         <v-card-text>
-            <svg ref="confusionMatrix"/>
+            <svg ref="confusionMatrix"></svg>
         </v-card-text>
     </v-card>
 </template>

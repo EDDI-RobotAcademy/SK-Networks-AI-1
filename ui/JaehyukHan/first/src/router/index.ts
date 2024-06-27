@@ -11,6 +11,8 @@ import ExponentialRegressionRoutes from '@/exponentialRegression/router/Exponent
 import RandomForestRoutes from '@/randomForest/router/RandomForestRoutes'
 import PostRoutes from '@/post/router/PostRoutes'
 import KmeansRoutes from '@/kmeans/router/KmeansRoutes'
+import TensorFlowIrisTestRoutes from '@/tfIris/router/TensorFlowIrisTestRoutes'
+import CartRoutes from '@/cart/router/CartRoutes'
 
 const routes: Array<RouteRecordRaw> = [
   ...HomeRoutes,
@@ -29,6 +31,8 @@ const routes: Array<RouteRecordRaw> = [
   ...RandomForestRoutes,
   ...PostRoutes,
   ...KmeansRoutes,
+  ...TensorFlowIrisTestRoutes,
+  ...CartRoutes,
 ]
 
 const router = createRouter({
