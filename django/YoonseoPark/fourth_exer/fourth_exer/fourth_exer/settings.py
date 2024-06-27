@@ -107,7 +107,7 @@ WSGI_APPLICATION = "fourth_exer.wsgi.application"
 
 MY_IP = os.getenv('MY_IP')
 
-ALLOWED_HOSTS = [MY_IP]
+ALLOWED_HOSTS = [MY_IP, 'localhost']
 
 DATABASES = {
     "default": {
