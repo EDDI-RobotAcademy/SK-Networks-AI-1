@@ -129,8 +129,8 @@ export default {
                     quantity: item.quantity
                 }));
                 console.log('orderItems:', orderItems)
-                const response = await this.requestCreateOrderToDjango({ items: orderItems });
-                const orderId = response.orderId;
+                const orderId = await this.requestCreateOrderToDjango({ items: orderItems });
+                // const orderId = response.orderId;
 
                 this.$router.push({ name: 'OrderReadPage', params: { orderId: orderId.toString() } });
 

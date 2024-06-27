@@ -39,6 +39,7 @@ const routes: Array<RouteRecordRaw> = [
   ...PostRoutes,
   ...KmeansRoutes,
   ...TensorFlowIrisTestRoutes,
+  
 ]
 
 const router = createRouter({
