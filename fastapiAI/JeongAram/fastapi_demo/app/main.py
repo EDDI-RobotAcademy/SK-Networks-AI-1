@@ -1,5 +1,6 @@
 import os
 
+import aiomysql
 from dotenv import load_dotenv
 from fastapi import FastAPI
 
@@ -7,24 +8,44 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from async_db.database import getMySqlPool, createTableIfNeccessary
 from exponential_regression.controller.exponential_regression_controller import exponentialRegressionRouter
+from kmeans.controller.kmeans_controller import kmeansRouter
 from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
 from post.controller.post_controller import postRouter
+from tf_iris.controller.tf_iris_controller import tfIrisRouter
 from train_test_evaluation.controller.train_test_evaluation_controller import trainTestEvaluationRouter
 from polynomialRegression.controller.polynomial_regression_controller import polynomialRegressionRouter
 from random_forest.controller.random_forest_controller import randomForestRouter
 
-app = FastAPI()
 
 
-@app.on_event("startup")
-async def startup_event():
-    app.state.db_pool = await getMySqlPool()
-    await createTableIfNeccessary(app.state.db_pool)
 
-@app.on_event("shutdown")
-async def shutdown_event():
-    app.state.db_pool.close()
-    await app.state.db_pool.wait_closed()
+# @app.on_event("startup")
+# async def startup_event(): # 프로그램 시작
+#     app.state.db_pool = await getMySqlPool() # db 환경설정 확보 -> db_pool이라는 변수로 받겠다.
+#     await createTableIfNeccessary(app.state.db_pool) # 테이블 없다면 생성
+#
+# @app.on_event("shutdown")
+# async def shutdown_event():
+#     app.state.db_pool.close()
+#     await app.state.db_pool.wait_closed()
+
+import warnings
+
+warnings.filterwarnings("ignore", category=aiomysql.Warning)
+
+async def lifespan(app: FastAPI):
+    #Startup
+    app.state.dbPool = await getMySqlPool()
+    await createTableIfNeccessary(app.state.dbPool)
+
+    yield
+
+    #Shutdown
+    app.state.dbPool.close()
+    await app.state.dbPool.wait_closed()
+
+
+app = FastAPI(lifespan=lifespan)
 
 
 # 웹 브라우저 상에서 "/" 을 입력하면 (key)Hello: (value)World가 리턴
@@ -84,6 +105,8 @@ app.include_router(polynomialRegressionRouter)
 app.include_router(exponentialRegressionRouter)
 app.include_router(randomForestRouter)
 app.include_router(postRouter, prefix="/post")
+app.include_router(kmeansRouter)
+app.include_router(tfIrisRouter)
 # 여기까지 해야 router 연결됨
 
 # env 관련 설정

@@ -34,6 +34,7 @@ class CartServiceImpl(CartService):
             cart = self.__cartRepository.register(account)
 
         productId = cartData.get('productId')
+        print(f"productId: {productId}")
         cartItemList = self.__cartItemRepository.findAllByProductId(productId)
         print(f"cartItems: {cartItemList}")
 
@@ -53,14 +54,33 @@ class CartServiceImpl(CartService):
             self.__cartItemRepository.update(cartItem)
 
     def cartList(self, accountId):
+        # 내가 작성한 코드
+        # account = self.__accountRepository.findById(accountId)
+        # cart = self.__cartRepository.findByAccount(account)
+        # cartItems = self.__cartItemRepository.findByCart(cart)
+        # cartList = []
+        #
+        # for cartItem in cartItems:
+        #     if cartItem.cart == cart:
+        #         cartInfo = [cartItem.product.productName, cartItem.price, cartItem.quantity, cartItem.price * cartItem.quantity]
+        #         cartList.append(cartInfo)
+        #
+        # return cartList
         account = self.__accountRepository.findById(accountId)
         cart = self.__cartRepository.findByAccount(account)
-        cartItems = self.__cartItemRepository.findByCart(cart)
-        cartList = []
+        print(f"cartList -> cart: {cart}")
+        cartItemList = self.__cartItemRepository.findByCart(cart)
+        print(f"cartList -> cartItemList: {cartItemList}")
+        cartItemListResponseForm = []
 
-        for cartItem in cartItems:
-            if cartItem.cart == cart:
-                cartInfo = [cartItem.product.productName, cartItem.price, cartItem.quantity, cartItem.price * cartItem.quantity]
-                cartList.append(cartInfo)
+        for cartItem in cartItemList:
+            cartItemResponseForm = {
+                'cartItemId': cartItem.cartItemId,
+                'productName': cartItem.product.productName,
+                'productPrice': cartItem.product.productPrice,
+                'productId': cartItem.product.productId,
+                'quantity': cartItem.quantity,
+            }
+            cartItemListResponseForm.append(cartItemResponseForm)
 
-        return cartList
+        return cartItemListResponseForm

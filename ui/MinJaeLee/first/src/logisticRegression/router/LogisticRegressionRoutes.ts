@@ -2,7 +2,7 @@ import LogisticRegressionResultPage from "@/logisticRegression/pages/LogisticReg
 
 const LogisticRegressionRoutes = [
     {
-        path: '/logistic/regression',
+        path: '/logistic-regression-result',
         name: 'LogisticRegressionResultPage',
         component: LogisticRegressionResultPage
     },

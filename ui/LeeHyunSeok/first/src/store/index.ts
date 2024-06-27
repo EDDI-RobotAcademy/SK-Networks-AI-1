@@ -7,6 +7,7 @@ import accountModule from '@/account/store/accountModule'
 import cartModule from "@/cart/store/cartModule";
 import postModule from '@/post/store/postModule'
 
+
 export default createStore({
   state: {
   },
