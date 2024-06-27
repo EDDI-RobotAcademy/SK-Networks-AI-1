@@ -42,7 +42,7 @@
                 <v-icon>mdi-cart</v-icon>
                 <span class="button-text">구매하기</span>
             </v-btn>
-            <v-btn color="sucess" @click="onAddTocart" class="action-button">
+            <v-btn color="success" @click="onAddToCart" class="action-button">
                 <v-icon>mdi-cart-plus</v-icon>
                 <span class="button-text">장바구니에 추가</span>
             </v-btn>
@@ -106,32 +106,35 @@ export default {
 </script>
 
 <style scoped>
-.action-button{
-    display:flex;
+.action-button {
+    display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1.1rem;
     font-weight: bold;
-    padding:0.75rem 1rem;
+    padding: 0.75rem 1rem;
     margin: 0.5rem;
-    border-radius:8px;
+    border-radius: 8px;
 }
-.button-text{
-    margin-left:0.5rem;
+
+.button-text {
+    margin-left: 0.5rem;
 }
-.button-container{
-    display:flex;
+
+.button-container {
+    display: flex;
     justify-content: center;
     margin-top: 1rem;
 }
 
 /* 하이퍼링크 스타일 제거 */
-.no-underline{
-    text-decoration:none;
+.no-underline {
+    text-decoration: none;
 }
+
 /* router-link 스타일 재정의 */
-.router-link{
-    text-decoration:none;
-    color:inherit
+.router-link {
+    text-decoration: none;
+    color: inherit;
 }
 </style>

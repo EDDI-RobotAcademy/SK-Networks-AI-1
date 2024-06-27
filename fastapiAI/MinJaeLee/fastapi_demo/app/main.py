@@ -3,35 +3,59 @@ import os
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import aiomysql
 
 from async_db.database import getMySqlPool, createDatabaseTableIfNeccessary
 from exponential_regression.controller.exponential_regression_controller import exponentialRegressionRouter
+from kmeans.controller.kmeans_controller import kmeansRouter
 from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
 from polynomialRegression.controller.polynomial_regression_controller import polynomialRegressionRouter
 from post.controller.post_controller import postRouter
 from random_forest.controller.random_forest_controller import randomForestRouter
+from tf_iris.controller.tf_iris_controller import tfIrisRouter
 from train_test_evaluation.controller.train_test_evaluation_controller import trainTestEvaluationRouter
 
-app = FastAPI()
+# app = FastAPI()
+#
+# # 현재는 deprecated라고 나타나지만 lifespan 이란것을 대신 사용하라고 나타나고 있음
+# # 완전히 배제되지는 않았는데, 애플리케이션이 시작할 때 실행될 함수를 지정함
+# # 고로 애플리케이션 시작 시 비동기 처리 가능한 DB를 구성한다 보면 됨
+# @app.on_event("startup")
+# async def startup_event():
+#     app.state.db_pool = await getMySqlPool()
+#     await createDatabaseTableIfNeccessary(app.state.db_pool)
+#
+# # 위의 것이 켜질 때 였으니, 이건 반대라 보면 됨
+# @app.on_event("shutdown")
+# async def shutdown_event():
+#     app.state.db_pool.close()
+#     await app.state.db_pool.wait_closed()
 
-# 현재는 deprecated라고 나타나지만 lifespan 이란것을 대신 사용하라고 나타나고 있음
-# 완전히 배제되지는 않았는데, 애플리케이션이 시작할 때 실행될 함수를 지정함
-# 고로 애플리케이션 시작 시 비동기 처리 가능한 DB를 구성한다 보면 됨
-@app.on_event("startup")
-async def startup_event():
-    app.state.db_pool = await getMySqlPool()
-    await createDatabaseTableIfNeccessary(app.state.db_pool)
+import warnings
 
-# 위의 것이 켜질 때 였으니, 이건 반대라 보면 됨
-@app.on_event("shutdown")
-async def shutdown_event():
-    app.state.db_pool.close()
-    await app.state.db_pool.wait_closed()
+warnings.filterwarnings("ignore", category=aiomysql.Warning)
+
+
+async def lifespan(app: FastAPI):
+    # Startup
+    app.state.dbPool = await getMySqlPool()
+    await createDatabaseTableIfNeccessary(app.state.dbPool)
+
+    yield
+
+    # shutdown
+    app.state.dbPool.close()
+    await app.state.dbPool.wait_closed()
+
+
+app = FastAPI(lifespan=lifespan)
+
 
 # 웹 브라우저 상에서 "/" 을 입력하면 (key)Hello: (value)World가 리턴
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
+
 
 # 브라우저 상에 /items/4?q=test 같은 것을 넣으면
 # item_id로 4, q로는 "test"를 획득하게 됨
@@ -42,6 +66,7 @@ def read_root():
 @app.get("/items/{item_id}")
 def read_item(item_id: int, q: str = None):
     return {"item_id": item_id, "q": q}
+
 
 # 사실 현재 위의 코드는 매우 근본이 없는 .... 코드임
 # 왜냐하면 모든 로직을 main에 전부 따 때려박았기 때문
@@ -85,6 +110,8 @@ app.include_router(polynomialRegressionRouter)
 app.include_router(exponentialRegressionRouter)
 app.include_router(randomForestRouter)
 app.include_router(postRouter, prefix="/post")
+app.include_router(kmeansRouter)
+app.include_router(tfIrisRouter)
 
 load_dotenv()
 
@@ -98,7 +125,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="127.0.0.1", port=33333)
