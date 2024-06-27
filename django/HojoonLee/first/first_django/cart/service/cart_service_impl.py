@@ -28,15 +28,26 @@ class CartServiceImpl(CartService):
     def cartRegister(self, cartData, accountId):
         account = self.__accountRepository.findById(accountId)
         cart = self.__cartRepository.findByAccount(account)
-        if cart is None: # 장바구니가 없다면
+        if cart is None:
             print("장바구니 새롭게 생성")
             cart = self.__cartRepository.register(account)
 
         print("기존 장바구니 사용")
 
         productId = cartData.get('productId')
-        # 기존 아이템 2번이상 넣었나? 체크를 위해 cartItem 객체 호출
-        cartItem = self.__cartItemRepository.findByProductId(productId)
+        print(f"productId: {productId}")
+
+        cartItemList = self.__cartItemRepository.findAllByProductId(productId)
+        print(f"cartItemList: {cartItemList}")
+
+        cartItem = None
+        for item in cartItemList:
+            cartFromCartItem = item.cart
+            accountFromCart = cartFromCartItem.account
+            if accountFromCart.id == account.id:
+                cartItem = item
+                break
+
         if cartItem is None:
             print("신규 상품 추가")
             product = self.__productRepository.findByProductId(productId)
@@ -45,7 +56,7 @@ class CartServiceImpl(CartService):
             print("기존 상품 추가")
 
             cartItem.quantity += 1
-            self.__cartItemRepository.update(cartItem) # save보단 update가 나음 (register와 save의 모호성이 생김)
+            self.__cartItemRepository.update(cartItem)
 
     def cartList(self, accountId):
         account = self.__accountRepository.findById(accountId)
@@ -66,3 +77,16 @@ class CartServiceImpl(CartService):
             cartItemListResponseForm.append(cartItemResponseForm)
 
         return cartItemListResponseForm
+
+    # def cartList(self, accountId):
+    #     return self.cartRepository.findByAccount(accountId)
+
+    # def cartList(self, accountId):
+    #     account = self.__accountRepository.findById(accountId)
+    #     print(f"cartList -> account:", account)
+    #     if account:
+    #         cart = self.__cartRepository.findByAccount(account)
+    #         print(f"cartList -> cart:", cart)
+    #         if cart:
+    #             return cart.items.all()
+    #     return []

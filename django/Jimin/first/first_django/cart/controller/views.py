@@ -27,3 +27,9 @@ class CartView(viewsets.ViewSet):
             print('상품 등록 과정 중 문제 발생:', e)
             return Response({ 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+    def cartList(self, request):
+        try:
+
+        except Exception as e:
+            print('문제 발생:', e)
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)

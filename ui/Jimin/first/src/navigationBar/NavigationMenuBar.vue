@@ -28,11 +28,11 @@
             <v-icon left>mdi-store</v-icon>
             <span>게시판</span>
         </v-btn>
-        <v-btn v-if="!isLogin" text @click="signIn" class="btn-text">
+        <v-btn v-if="!isAuthenticated" text @click="signIn" class="btn-text">
             <v-icon left>mdi-login</v-icon>
             <span>로그인</span>
         </v-btn>
-        <v-btn v-if="isLogin" text @click="signOut" class="btn-text">
+        <v-btn v-if="isAuthenticated" text @click="signOut" class="btn-text">
             <v-icon left>mdi-logout</v-icon>
             <span>로그아웃</span>
         </v-btn>
@@ -42,6 +42,9 @@
 <script>
 import '@mdi/font/css/materialdesignicons.css'
 import router from'@/router'
+import { mapState, mapActions } from 'vuex'
+
+const authenticationModule = 'authenticationModule'
 
 
 export default{
@@ -58,7 +61,11 @@ export default{
             // ]
         }
     },
+    computed: {
+        ...mapState(authenticationModule, ['isAuthenticated'])
+    },
     methods: {
+        ...mapActions(authenticationModule, ['requestLogoutToDjango']),
         goToHome () {
             router.push('/')
         },
@@ -72,8 +79,8 @@ export default{
             router.push('/account/login')
         },
         signOut () {
-            localStorage.removeItem("accessToken")
-            this.isLogin = false
+            
+            this.requestLogoutToDjango()
             router.push('/')
         },
         updateLoginStatus () {
