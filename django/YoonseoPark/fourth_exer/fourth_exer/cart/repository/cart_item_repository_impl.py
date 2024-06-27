@@ -11,6 +11,7 @@ class CartItemRepositoryImpl(CartItemRepository):
 
         return cls.__instance
 
+
     @classmethod
     def getInstance(cls):
         if cls.__instance is None:
@@ -29,6 +30,9 @@ class CartItemRepositoryImpl(CartItemRepository):
             quantity=quantity,
             price=productPrice
         )
+
+    def findById(self, id):
+        return CartItem.objects.get(cartItemId=id)
 
     def findByCart(self, cart):
         return list(CartItem.objects.filter(cart=cart))

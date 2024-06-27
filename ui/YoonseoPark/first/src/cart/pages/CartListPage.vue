@@ -104,7 +104,7 @@ export default {
     },
     methods: {
         ...mapActions("cartModule", ["requestCartListToDjango"]),
-        // ...mapActions("orderModule", ["requestCreateOrderToDjango"]),
+        ...mapActions("orderModule", ["requestCreateOrderToDjango"]),
         updateQuantity(item) {
             // 수량 업데이트 로직
         },
@@ -116,29 +116,29 @@ export default {
             this.isCheckoutDialogVisible = true;
         },
         async proceedToOrder() {
-            // this.isCheckoutDialogVisible = false;
-            // const response = await this.requestCreateOrderToDjango()
-            // try {
-            //     const selectedCartItems = this.cartItems.filter(
-            //         item => this.selectedItems.includes(item)
-            //     )
-            //     const orderItems = selectedCartItems.map(item => ({
-            //         cartItemId: item.cartItemId,
-            //         orderPrice: item.productPrice,
-            //         quantity: item.quantity
-            //     }))
-            //     console.log('orderItems: ', orderItems)
-            //     const response = await this.requestCreateOrderToDjango({ items: orderItems })
-            //     const orderId = response.orderId
+            this.isCheckoutDialogVisible = false;
+            const response = await this.requestCreateOrderToDjango()
+            try {
+                const selectedCartItems = this.cartItems.filter(
+                    item => this.selectedItems.includes(item)
+                )
+                const orderItems = selectedCartItems.map(item => ({
+                    cartItemId: item.cartItemId,
+                    orderPrice: item.productPrice,
+                    quantity: item.quantity
+                }))
+                console.log('orderItems: ', orderItems)
+                const response = await this.requestCreateOrderToDjango({ items: orderItems })
+                const orderId = response.orderId
 
-            //     this.$router.push({
-            //         name: 'OrderReadPage',
-            //         params: { orderId: orderId.toString() }
-            //     })
+                this.$router.push({
+                    name: 'OrderReadPage',
+                    params: { orderId: orderId.toString() }
+                })
 
-            // } catch (error) {
-            //     console.error('Order creation failed: ', error)
-            // }
+            } catch (error) {
+                console.error('Order creation failed: ', error)
+            }
         },
         async fetchCartList() {
             try {
