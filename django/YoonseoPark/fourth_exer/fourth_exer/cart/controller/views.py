@@ -7,7 +7,6 @@ from oauth.service.redis_service_impl import RedisServiceImpl
 
 
 class CartView(viewsets.ViewSet):
-    queryset = Cart.objects.all()
     cartService = CartServiceImpl.getInstance()
     redisService = RedisServiceImpl.getInstance()
 
