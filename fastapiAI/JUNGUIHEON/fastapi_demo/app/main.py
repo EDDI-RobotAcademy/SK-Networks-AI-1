@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from async_db.database import getMySqlPool, createTableIfNeccessary
+from async_db.database import getMySqlPool, createTableIfNecessary
 from exponential_regression.controller.exponential_regression_controller import exponentialRegressionRouter
 from kmeans.controller.kmeans_controller import kmeansRouter
 from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
@@ -37,7 +37,7 @@ warnings.filterwarnings("ignore", category=aiomysql.Warning)
 async def lifespan(app: FastAPI):
     # Startup
     app.state.dbPool = await getMySqlPool()
-    await createTableIfNeccessary(app.state.dbPool)
+    await createTableIfNecessary(app.state.dbPool)
 
     yield
 
@@ -123,4 +123,4 @@ app.add_middleware(
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=33333)
+    uvicorn.run(app, host="192.168.0.55", port=33333)

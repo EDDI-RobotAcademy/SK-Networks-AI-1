@@ -55,11 +55,15 @@
         <v-dialog v-model="isCheckoutDialogVisible" max-width="500">
             <v-card>
                 <v-card-title>Confirm Checkout</v-card-title>
-                <v-card-text>Are you sure you want to order the selected items?</v-card-text>
+                <v-card-text>
+                    Are you sure you want to order the selected items?
+                </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text @click="isCheckoutDialogVisible = false">Cancel</v-btn>
-                    <v-btn color="blue darken-1" text @click="proceedToOrder">Confirm</v-btn>
+                    <v-btn color="blue darken-1" text 
+                            @click="isCheckoutDialogVisible = false">Cancel</v-btn>
+                    <v-btn color="blue darken-1" text 
+                            @click="proceedToOrder">Confirm</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -68,7 +72,9 @@
 
 <script>
 import { mapActions } from "vuex";
-import router from "@/router"; // Assuming you have a router set up
+
+const cartModule = 'cartModule'
+const orderModule = 'orderModule'
 
 export default {
     data() {
@@ -100,6 +106,7 @@ export default {
     },
     methods: {
         ...mapActions("cartModule", ["requestCartListToDjango"]),
+        ...mapActions("orderModule", ["requestCreateOrderToDjango"]),
         updateQuantity(item) {
             // 수량 업데이트 로직
         },
@@ -112,8 +119,26 @@ export default {
         },
         async proceedToOrder() {
             this.isCheckoutDialogVisible = false;
-            const response = await this.requestCreateOrderToDjango()
-            router.push({ name: 'OrderReadPage', params: { selectedItems: this.selectedItems } });
+            // const response = await this.requestCreateOrderToDjango()
+
+            try {
+                const selectedCartItems = this.cartItems.filter(item => this.selectedItems.includes(item));
+                const orderItems = selectedCartItems.map(item => ({
+                    cartItemId: item.cartItemId,
+                    orderPrice: item.productPrice,
+                    quantity: item.quantity
+                }));
+                console.log('orderItems:', orderItems)
+                const response = await this.requestCreateOrderToDjango({ items: orderItems });
+                const orderId = response.orderId;
+
+                this.$router.push({ name: 'OrderReadPage', params: { orderId: orderId.toString() } });
+
+            } catch (error) {
+                console.error('Order creation failed:', error);
+            }
+
+            // this.$router.push({ name: 'OrderReadPage', params: { selectedItems: this.selectedItems } });
         },
         async fetchCartList() {
             try {
