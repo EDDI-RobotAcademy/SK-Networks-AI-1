@@ -44,4 +44,3 @@ class ProfileRepositoryImpl(ProfileRepository):
         profile = Profile.objects.create(nickname=nickname, email=email, account=account)
         return profile
 
-
