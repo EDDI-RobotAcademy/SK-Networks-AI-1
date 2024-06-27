@@ -17,5 +17,7 @@ urlpatterns = [
                                 name='get-kakao-user-info-uri'),
     path('redis-access-token/', OauthView.as_view({'post': 'redisAccessToken'}),
                                 name='redis-access-token'),
+    path('logout', OauthView.as_view({'post': 'dropRedisTokenForLogout'}),
+                                name='drop-redis-token-for-logout')
 ]
 
