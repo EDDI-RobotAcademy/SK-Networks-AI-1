@@ -55,11 +55,15 @@
         <v-dialog v-model="isCheckoutDialogVisible" max-width="500">
             <v-card>
                 <v-card-title>Confirm Checkout</v-card-title>
-                <v-card-text>Are you sure you want to order the selected items?</v-card-text>
+                <v-card-text>
+                    Are you sure you want to order the selected items?
+                </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text @click="isCheckoutDialogVisible = false">Cancel</v-btn>
-                    <v-btn color="blue darken-1" text @click="proceedToOrder">Confirm</v-btn>
+                    <v-btn color="blue darken-1" text 
+                            @click="isCheckoutDialogVisible = false">Cancel</v-btn>
+                    <v-btn color="blue darken-1" text 
+                            @click="proceedToOrder">Confirm</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
