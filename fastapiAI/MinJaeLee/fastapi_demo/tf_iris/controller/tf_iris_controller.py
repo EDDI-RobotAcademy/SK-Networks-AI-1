@@ -2,7 +2,7 @@ import os.path
 
 import joblib
 import numpy as np
-from fastapi import APIRouter, HTTPException, Body
+from fastapi import APIRouter, HTTPException, Body, Query
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 import tensorflow as tf
@@ -110,8 +110,8 @@ async def tfTrainModel():
     return {"message": "Model/Scaler 훈련완료"}
 
 
-@tfIrisRouter.get('/tf-predict')
-def predict(tfIrisRequestForm: TfIrisRequestForm):
+@tfIrisRouter.post('/tf-predict')
+def predict(tfIrisRequestForm: TfIrisRequestForm = Body(...)):
     if not os.path.exists(MODEL_PATH) or not os.path.exists(SCALER_PATH) or not os.path.exists(CLASSIFICATION_PATH):
         raise HTTPException(status_code=400, detail="모델 및 스케일러 준비 안됨")
     print("추론 진행")

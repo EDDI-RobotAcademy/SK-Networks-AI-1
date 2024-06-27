@@ -8,6 +8,10 @@
             <v-btn type="submit" color="primary">Predict</v-btn>
         </v-form>
         <v-btn @click="trainModel" color="secondary">Train Model</v-btn>
+        <div if="prediction">
+            <p>Predicted Class: {{ predicted_class }}</p>
+            <p>Predicted Probability: {{ prediction }}</p>
+        </div>
     </v-container>
 </template>
 
@@ -25,18 +29,30 @@ export default {
                 petal_width: 0.17,
             },
             prediction: null,
+            predicted_class:null,
         }
     },
     methods: {
         async submitForm() {
             try {
-                const formData = new FormData()
-                formData.append('sepal_length', this.form.sepal_length)
-                formData.append('sepal_width', this.form.sepal_width)
-                formData.append('petal_length', this.form.petal_length)
-                formData.append('petal_width', this.form.petal_width)
+                // const formData = new FormData()
+                // formData.append('sepal_length', this.form.sepal_length)
+                // formData.append('sepal_width', this.form.sepal_width)
+                // formData.append('petal_length', this.form.petal_length)
+                // formData.append('petal_width', this.form.petal_width)
 
-                const response = await axios.get('http://localhost:33333/tf-predict', this.form)
+                const response = await axios.post('http://localhost:33333/tf-predict', {
+                    // params: {
+                    //     sepal_length: this.form.sepal_length,
+                    //     sepal_width: this.from.sepal_width,
+                    //     petal_length: this.form.petal_length,
+                    //     petal_width: this.form.petal_width
+                    // }
+                    sepal_length, sepal_width, petal_length, petal_width
+                })
+                console.log('prediction:', response.data)
+                this.prediction = response.data.prediction
+                this.predicted_class = response.data.predicted_class
             } catch (error) {
                 alert('훈련된 모델 존재하지 않음')
             }
