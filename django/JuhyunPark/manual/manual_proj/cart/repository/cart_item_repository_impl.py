@@ -39,5 +39,8 @@ class CartItemRepositoryImpl(CartItemRepository):
         except CartItem.DoesNotExist:
             return None
 
+    def findAllByProductId(self, productId):
+          #################### 단체는 filter 낱개는 get #####
+        return CartItem.objects.filter(product_id=productId)
     def update(self, cartItem):
         cartItem.save()

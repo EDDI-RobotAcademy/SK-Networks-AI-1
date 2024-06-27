@@ -10,6 +10,8 @@ class CreatePostRequestForm(BaseModel):
     def toCreatePostRequest(self) -> CreatePostRequest:
         return CreatePostRequest(title=self.title, content=self.content)
 
+# request_form을 사용하는 이유
+
 # form은 항상 웹에서 온다.
 # UI 관점에서 보는 domain은 특정 관점에 국한되지 않음
 # 상품정보, 회원정보 등이 묶여서 올수도 있음

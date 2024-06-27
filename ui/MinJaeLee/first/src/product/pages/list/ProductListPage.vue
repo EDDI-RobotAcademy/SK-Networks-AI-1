@@ -62,6 +62,11 @@ export default {
         }
     },
     mounted () {
+        // console.log('ProductListPage mounted()')
+        // if (this.isFirstRefresh) {
+        //     window.location.reload(true)
+        //     this.isFirstRefresh = false
+        // }
         this.requestProductListToDjango()
     },
     methods: {
@@ -78,6 +83,7 @@ export default {
     },
     data () {
         return {
+            // isFirstRefresh: true,
             headerTitle: [
                 {
                     title: 'No',

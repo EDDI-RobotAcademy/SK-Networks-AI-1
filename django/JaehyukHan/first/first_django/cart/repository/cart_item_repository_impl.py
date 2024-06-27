@@ -44,17 +44,22 @@ class CartItemRepositoryImpl(CartItemRepository):
             return None
 
     def findAllByProductId(self, productId):
-        return CartItem.objects.filter(productId=productId)
+        return CartItem.objects.filter(product_id=productId)
 
     def update(self, cartItem):
         cartItem.save()
 
     def findByCart(self, cart):
-        cartItemList = CartItem.objects.all()
-        cartItems = []
+        # 내가 작성한 코드
+        # cartItemList = CartItem.objects.all()
+        # cartItems = []
+        #
+        # for cartItem in cartItemList:
+        #     if cartItem.cart == cart:
+        #         cartItems.append(cartItem)
+        #
+        # return cartItems
+        return list(CartItem.objects.filter(cart=cart))
 
-        for cartItem in cartItemList:
-            if cartItem.cart == cart:
-                cartItems.append(cartItem)
-
-        return cartItems
+    def findById(self, id):
+        return CartItem.objects.get(cartItemId=id)
