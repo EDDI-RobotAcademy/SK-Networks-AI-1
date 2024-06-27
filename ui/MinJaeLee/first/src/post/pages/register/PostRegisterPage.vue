@@ -2,12 +2,12 @@
     <v-container>
         <v-row>
             <v-col cols="12">
-                <v-text-field v-model="title" label="제목" />
+                <v-text-field v-model="title" label="제목"/>
             </v-col>
         </v-row>
         <v-row>
             <v-col cols="12">
-                <v-text-field v-model="content" label="내용" auto-grow />
+                <v-textarea v-model="content" label="내용" auto-grow/>
             </v-col>
         </v-row>
         <v-row>
@@ -25,7 +25,7 @@ import { mapActions } from 'vuex'
 const postModule = 'postModule'
 
 export default {
-    data() {
+    data () {
         return {
             title: '',
             content: '',
@@ -33,23 +33,24 @@ export default {
     },
     methods: {
         ...mapActions(postModule, ['requestCreatePostToFastapi']),
-        async onSubmit() {
-            console.log('상품 등록 눌렀음')
+        async onSubmit () {
             const payload = {
                 title: this.title,
                 content: this.content,
             }
+
             const postId = await this.requestCreatePostToFastapi(payload)
+            console.log('postId:', postId)
             await this.$router.push({
                 name: 'PostReadPage',
                 params: { id: postId.toString() }
             })
         },
-        async onCancel() {
-            console.log('취소 버튼 눌렀음')
-            // '이전 routing 경로로 이동해줘'를 의미함
+        async onCancel () {
+            console.log('취소 버튼 눌럿음')
+            // '이전 routing 경로로 이동해줘' 를 의미함
             this.$router.go(-1)
         }
-    },
+    }
 }
 </script>

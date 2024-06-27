@@ -1,4 +1,5 @@
-import KmeansResultPage from "../pages/KmeansResultPage.vue";
+import KmeansResultPage from "@/kmeans/pages/KmeansResultPage.vue";
+
 
 const KmeansRoutes = [
     {

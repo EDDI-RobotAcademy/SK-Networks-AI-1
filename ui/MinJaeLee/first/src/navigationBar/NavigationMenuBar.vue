@@ -7,18 +7,19 @@
         </v-btn>
         <v-spacer></v-spacer>
 
-        <!-- <v-menu>
+        <v-menu close-on-content-click>
             <template v-slot:activator="{ props }">
-                <v-btn color="white" v-bind="props">
-                    <b>Activator Slot</b>
+                <v-btn color="black" v-bind="props">
+                    <b>Regression Analysis</b>
                 </v-btn>
             </template>
-<v-list>
-    <v-list-item v-for="(item, index) in items" :key="index" :value="index" @click="item.action">
-        <v-list-item-title>{{ item.title }}</v-list-item-title>
-    </v-list-item>
-</v-list>
-</v-menu> -->
+            <v-list>
+                <v-list-item v-for="(item, index) in items"
+                             :key="index" @click="item.action">
+                    <v-list-item-title>{{ item.title }}</v-list-item-title>
+                </v-list-item>
+            </v-list>
+        </v-menu>
 
         <v-btn text @click="goToProductList" class="btn-text">
             <v-icon left>mdi-store</v-icon>
@@ -27,6 +28,18 @@
         <v-btn text @click="goToBoardList" class="btn-text">
             <v-icon left>mdi-forum</v-icon>
             <span>게시판</span>
+        </v-btn>
+        <v-btn text @click="goToPostPage" class="btn-text">
+            <v-icon left>mdi-forum</v-icon>
+            <span>익명 게시판</span>
+        </v-btn>
+        <v-btn v-if="isAuthenticated" text @click="goToCart" class="btn-text">
+            <v-icon left>mdi-cart</v-icon>
+            <span>장바구니</span>
+        </v-btn>
+        <v-btn v-if="isAuthenticated" text @click="goToOrder" class="btn-text">
+            <v-icon left>mdi-receipt</v-icon>
+            <span>주문</span>
         </v-btn>
         <v-btn v-if="!isAuthenticated" text @click="signIn" class="btn-text">
             <v-icon left>mdi-login</v-icon>
@@ -47,9 +60,15 @@ import { mapActions, mapState } from 'vuex'
 const authenticationModule = 'authenticationModule'
 
 export default {
-    data() {
+    data () {
         return {
             isLogin: !!localStorage.getItem("userToken"),
+            items: [
+                { title: 'Logistic Regression', action: () => { router.push('/logistic-regression-result') } },
+                { title: 'Random Forest', action: () => { router.push('/random-forest-result') } },
+                { title: 'Polynomial Regression', action: () => { router.push('/polynomial-regression-result') } },
+                { title: 'Exponential Regression', action: () => { router.push('/exponential-regression-result') } }
+            ]
         }
     },
     computed: {
@@ -57,31 +76,37 @@ export default {
     },
     methods: {
         ...mapActions(authenticationModule, ['requestLogoutToDjango']),
-        goToHome() {
+        goToHome () {
             router.push('/')
         },
-        goToProductList() {
+        goToProductList () {
             router.push('/product/list')
         },
-        goToBoardList() {
+        goToBoardList () {
             router.push('/board/list')
         },
-        signIn() {
+        signIn () {
             router.push('/account/login')
         },
-        signOut() {
+        signOut () {
             this.requestLogoutToDjango()
             router.push('/')
         },
+        goToCart () {
+            router.push('/cart/list')
+        },
+        goToOrder () {
+            router.push('/order')
+        },
+        goToPostPage () {
+            router.push('/post/list')
+        },
     },
-    mounted() {
+    mounted () {
         window.addEventListener('storage', this.updateLoginStatus)
-        // TODO: 로그인이후 즉시로그아웃화면 갱신안되는 문제발견
-        // 새로고침하면 반영됨
     },
-    beforeUnmount() {
+    beforeUnmount () {
         window.removeEventListener('storage', this.updateLoginStatus)
     },
 }
-
 </script>

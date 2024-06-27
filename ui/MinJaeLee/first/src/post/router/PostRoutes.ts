@@ -1,7 +1,8 @@
-import PostListPage from "../pages/list/PostListPage.vue"
-import PostRegisterPage from "../pages/register/PostRegisterPage.vue"
-import PostReadPage from "../pages/read/PostReadPage.vue"
-const ProductRoutes = [
+import PostListPage from '@/post/pages/list/PostListPage.vue'
+import PostRegisterPage from '@/post/pages/register/PostRegisterPage.vue'
+import PostReadPage from '@/post/pages/read/PostReadPage.vue'
+
+const PostRoutes = [
     {
         path: '/post/list',
         name: 'PostListPage',
@@ -16,7 +17,7 @@ const ProductRoutes = [
         path: '/post/read/:id',
         name: 'PostReadPage',
         components: {
-            default: PostReadPage,
+            default: PostReadPage
         },
         props: {
             default: true
@@ -24,4 +25,4 @@ const ProductRoutes = [
     },
 ]
 
-export default ProductRoutes
+export default PostRoutes

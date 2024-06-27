@@ -30,6 +30,9 @@ class CartItemRepositoryImpl(CartItemRepository):
             price=productPrice
         )
 
+    def findById(self, id):
+        return CartItem.objects.get(cartItemId=id)
+
     def findByCart(self, cart):
         return list(CartItem.objects.filter(cart=cart))
 
@@ -39,11 +42,8 @@ class CartItemRepositoryImpl(CartItemRepository):
         except CartItem.DoesNotExist:
             return None
 
+    def findAllByProductId(self, productId):
+        return CartItem.objects.filter(product_id=productId)
+
     def update(self, cartItem):
         cartItem.save()
-
-    def findAllByProductId(self, productId):
-        # 단수 출력의 경우 None 출력으로 오류가 날 수 있으나
-        # 아래 filter를 사용하면 내용이 없어도 빈 리스트가 반환되기에
-        # try except 구문이 필요 없음.
-        return CartItem.objects.filter(product_id = productId)

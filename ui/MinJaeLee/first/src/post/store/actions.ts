@@ -22,7 +22,9 @@ const actions: PostActions = {
     async requestPostListToFastapi(
         context: ActionContext<PostState, any>
     ): Promise<void> {
+
         try {
+            console.log('requestPostListToFastapi()')
             const res: AxiosResponse<any, any> = await axiosInst.fastapiAxiosInst.get('/post/list')
             const data: Post[] = res.data
             console.log('data:', data)
@@ -36,14 +38,18 @@ const actions: PostActions = {
         context: ActionContext<PostState, unknown>,
         payload: { title: string, content: string }
     ): Promise<number> {
+
         const { title, content } = payload
 
         try {
-            const res = await axiosInst.fastapiAxiosInst.post('/post/create', { title, content })
+            const res = await axiosInst.fastapiAxiosInst.post(
+                '/post/create', { title, content })
+
             console.log('res:', res.data.id)
             return res.data.id
+
         } catch (error) {
-            console.error('requestCreatePostFastapi()중 에러발생:', error)
+            console.error('requestCreatePostToFastapi() 중 에러 발생:', error)
             throw error
         }
     },
@@ -63,5 +69,6 @@ const actions: PostActions = {
             throw error
         }
     }
-}
+};
+
 export default actions;

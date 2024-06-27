@@ -37,7 +37,7 @@ class CartServiceImpl(CartService):
         productId = cartData.get('productId')
         print(f"productId: {productId}")
 
-        cartItemList = self.__cartItemRepository.findByProductId(productId)
+        cartItemList = self.__cartItemRepository.findAllByProductId(productId)
         print(f"cartItemList: {cartItemList}")
 
         cartItem = None
@@ -47,6 +47,7 @@ class CartServiceImpl(CartService):
             if accountFromCart.id == account.id:
                 cartItem = item
                 break
+
         if cartItem is None:
             print("신규 상품 추가")
             product = self.__productRepository.findByProductId(productId)
@@ -76,3 +77,18 @@ class CartServiceImpl(CartService):
             cartItemListResponseForm.append(cartItemResponseForm)
 
         return cartItemListResponseForm
+
+    # def cartList(self, accountId):
+    #     return self.cartRepository.findByAccount(accountId)
+
+    # def cartList(self, accountId):
+    #     account = self.__accountRepository.findById(accountId)
+    #     print(f"cartList -> account:", account)
+    #     if account:
+    #         cart = self.__cartRepository.findByAccount(account)
+    #         print(f"cartList -> cart:", cart)
+    #         if cart:
+    #             return cart.items.all()
+    #     return []
+
+
