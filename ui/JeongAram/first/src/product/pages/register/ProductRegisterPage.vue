@@ -62,6 +62,11 @@ export default {
                     const response = await this.requestCreateProductToDjango(imageFormData)
                     this.uploadedFileName = response.data.imageName
                     this.$router.push({ name: 'ProductListPage' })
+
+                    // 페이지를 강제로 새로 고침
+                    // 사실 임시방편임
+                    // 나중에 AWS 
+                    window.location.reload(true);
                 } else {
                     console.log('이미지 파일을 선택하세요!')
                 }
