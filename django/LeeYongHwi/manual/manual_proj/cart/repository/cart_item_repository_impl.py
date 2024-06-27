@@ -35,3 +35,6 @@ class CartItemRepositoryImpl(CartItemRepository):
             return CartItem.objects.get(product_id=productId)
         except CartItem.DoesNotExist:
             return None
+
+    def findAllByProductId(self, productId):
+        return CartItem.objects.filter(product_id=productId)

@@ -10,3 +10,7 @@ class RedisService(ABC):
     def getValueByKey(self, key):
         pass
 
+    @abstractmethod
+    def deleteKey(self, key):
+        pass
+

@@ -17,7 +17,9 @@ def main():
         ) from exc
 
     # if len(sys.argv) == 1 or sys.argv[1] == 'runserver':
-    #     sys.argv.append('0.0.0.0:9135')
+    #     sys.argv.append('192.168.0.18:8000')
+    # python manage.py runserver 192.168.0.18:8000
+    # 여러분들이 서버가 될 경우엔 자신의 IP를 직접 넣어야함
 
     execute_from_command_line(sys.argv)
 

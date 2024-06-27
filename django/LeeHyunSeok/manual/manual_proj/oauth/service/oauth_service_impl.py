@@ -47,8 +47,6 @@ class OauthServiceImpl(OauthService):
         print(f"code: {kakaoAuthCode}")
         print(f"tokenRequestUri: {self.tokenRequestUri}")
 
-        print(f"accessTokenRequestForm: {accessTokenRequestForm}")
-
         response = requests.post(self.tokenRequestUri, data=accessTokenRequestForm)
         print(f"response: {response}")
 
@@ -58,5 +56,4 @@ class OauthServiceImpl(OauthService):
         headers = {'Authorization': f'Bearer {accessToken}'}
         response = requests.post(self.userinfoRequestUri, headers=headers)
         return response.json()
-
 

@@ -35,13 +35,41 @@ class CartServiceImpl(CartService):
     def cartRegister(self, cartData, accountId):
         account = self.__accountRepository.findById(accountId)
         cart = self.__cartRepository.findByAccount(account)
-
         if cart is None:
+            print("장바구니 새롭게 생성")
             cart = self.__cartRepository.register(account)
 
-        product = self.__productRepository.findByProductId(cartData.get('productId'))
+        print("기존 장바구니 사용")
 
-        self.__cartItemRepository.register(cartData, cart, product)
+        productId = cartData.get('productId')
+        cartItemList = self.__cartItemRepository.findByProductId(productId)
+
+        cartItem = None
+        for item in cartItemList:
+            cartFromCartItem = item.cart
+            accountFromCart = cartFromCartItem.account
+            if accountFromCart.id == account.id:
+                cartItem = item
+                break
+
+        if cartItem is None:
+            print("신규 상품 추가")
+            product = self.__productRepository.findByProductId(productId)
+            self.__cartItemRepository.register(cartData, cart, product)
+        else:
+            print("기존 상품 추가")
+
+            cartItem.quantity += 1
+            self.__cartItemRepository.update(cartItem)
+
+    def cartList(self, accountId):
+        account = self.__accountRepository.findById(accountId)
+
+
+
+
+
+
 
 
 

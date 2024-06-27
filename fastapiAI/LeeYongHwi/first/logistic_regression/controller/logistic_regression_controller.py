@@ -22,9 +22,6 @@ def logistic_regression_test():
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
 
-    print('X:', X)
-    print('y:', y)
-
     # 회귀 분석이란?
     # 결론적으로 Y = AX + B를 찾는 수학적인 기법이라 볼 수 있음
     # 기본적으로 증명을 위해선 편미분을 사용해야하나 여기는 수학 학원이 아니니 배제
