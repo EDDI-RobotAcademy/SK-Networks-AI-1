@@ -2,7 +2,7 @@
     <v-card>
         <v-card-title className="headline">{{ title }}</v-card-title>
         <v-card-text>
-            <svg ref="chart"></svg>
+            <svg ref="chart"/>
         </v-card-text>
     </v-card>
 </template>

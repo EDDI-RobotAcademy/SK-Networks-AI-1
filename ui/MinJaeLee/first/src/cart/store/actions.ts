@@ -1,6 +1,6 @@
 import { ActionContext } from "vuex"
 import {CartItem, CartState} from "./states"
-import { Axios, AxiosResponse } from "axios"
+import { AxiosResponse } from "axios"
 import axiosInst from "@/utility/axiosInstance"
 import { REQUEST_CART_LIST_TO_DJANGO } from "./mutation-types"
 
@@ -11,7 +11,7 @@ export type CartActions = {
     ): Promise<AxiosResponse>;
 
     requestCartListToDjango(
-        context:ActionContext<CartState, any>
+        context: ActionContext<CartState, any>
     ): Promise<AxiosResponse>;
 }
 
@@ -37,22 +37,22 @@ const actions: CartActions = {
             throw error;
         }
     },
-    async requestCartListToDjango({commit}){
-        try{
+    async requestCartListToDjango({ commit }) {
+        try {
             const userToken = localStorage.getItem('userToken');
-            if(!userToken){
+            if (!userToken) {
                 throw new Error('User token not found');
             }
 
-            const requestData={
+            const requestData = {
                 userToken
-            }
+            };
 
-            console.log('requsetCartListToDjango requestData:', requestData);
+            console.log('requestCartListToDjango requestData:', requestData);
 
-            const response= await axiosInst.djangoAxiosInst.post('/cart/list', requestData);
+            const response = await axiosInst.djangoAxiosInst.post('/cart/list', requestData);
             return response.data;
-        }catch(error){
+        } catch (error) {
             console.error('Error fetching cart list:', error);
             throw error;
         }

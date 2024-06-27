@@ -6,27 +6,35 @@
                 익명 포스트 작성
             </router-link>
         </div>
-        <v-data-table v-model:items-per-page="perPage" :headers="headerTitle" :items="pagedItems"
-            v-model:pagination="pagination" class="elevation-1" @click:row="readRow" item-value="id" />
-        <v-pagination v-model="pagination.page" :length="Math.ceil(postList.length / perPage)" color="primary" />
+        <v-data-table
+                v-model:items-per-page="perPage"
+                :headers="headerTitle"
+                :items="pagedItems"
+                v-model:pagination="pagination"
+                class="elevation-1"
+                @click:row="readRow"
+                item-value="id"/>
+        <v-pagination
+                v-model="pagination.page"
+                :length="Math.ceil(postList.length / perPage)"
+                color="primary"/>
     </v-container>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 const postModule = 'postModule'
 
 export default {
     computed: {
         ...mapState(postModule, ['postList']),
-        pagedItems() {
+        pagedItems () {
             const startIdx = (this.pagination.page - 1) * this.perPage
             const endIdx = startIdx + this.perPage
             return this.postList.slice(startIdx, endIdx)
         }
     },
-    mounted() {
-        // requestPostListToFastapi
+    mounted () {
         this.requestPostListToFastapi()
     },
     methods: {
@@ -39,7 +47,7 @@ export default {
             })
         }
     },
-    data() {
+    data () {
         return {
             headerTitle: [
                 { title: 'No', align: 'start', sortable: true, key: 'id', width: "20%", },
