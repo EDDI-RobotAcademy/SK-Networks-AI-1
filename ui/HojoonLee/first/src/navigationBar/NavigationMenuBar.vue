@@ -1,8 +1,8 @@
 <template>
-    <v-app-bar color="orange" app dark height="64">
+    <v-app-bar color="brown" app dark height="64">
         <v-btn @click="goToHome">
             <v-toolbar-title class="text-uppercase text--darken-4">
-                <span>SK Networks AI Camp with EDDI</span>
+                <span>말하는 감자의 유쾌한 반란</span>
             </v-toolbar-title>
         </v-btn>
         <v-spacer></v-spacer>
@@ -61,11 +61,11 @@ export default {
         goToHome () {
             router.push('/')
         },
-        goToProductList () {
-            router.push('/product/list')
+        goToTravelList () {
+            router.push('/travel/list')
         },
-        goToBoardList () {
-            router.push('/board/list')
+        goToTravelBoardList () {
+            router.push('/travel_board/list')
         },
         signIn () {
             router.push('/account/login')
