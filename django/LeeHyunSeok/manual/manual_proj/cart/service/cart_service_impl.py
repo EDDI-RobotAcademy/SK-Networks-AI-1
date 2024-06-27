@@ -35,7 +35,19 @@ class CartServiceImpl(CartService):
         print("기존 장바구니 사용")
 
         productId = cartData.get('productId')
-        cartItem = self.__cartItemRepository.findByProductId(productId)
+        print(f"productId: {productId}")
+
+        cartItemList = self.__cartItemRepository.findAllByProductId(productId)
+        print(f"cartItemList: {cartItemList}")
+
+        cartItem = None
+        for item in cartItemList:
+            cartFromCartItem = item.cart
+            accountFromCart = cartFromCartItem.account
+            if accountFromCart.id == account.id:
+                cartItem = item
+                break
+
         if cartItem is None:
             print("신규 상품 추가")
             product = self.__productRepository.findByProductId(productId)

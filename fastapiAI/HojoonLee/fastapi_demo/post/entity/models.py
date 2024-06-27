@@ -6,4 +6,6 @@ class Post(BaseModel):
     content: str
 
     class Config:
-        orm_mode = True
+        # 계속 warning 뜨던거 해결
+        # orm_mode = True
+        from_attributes = True

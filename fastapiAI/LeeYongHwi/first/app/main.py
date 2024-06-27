@@ -2,13 +2,32 @@ import os
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
+from async_db.database import getMySqlPool, createTableIfNeccessary
+from kmeans.controller.kmeans_controller import kmeansRouter
 from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
 from polynomialRegression.controller.polynomial_regression_controller import polynomialRegressionRouter
 from exponential_regression.controller.exponential_regression_controller import exponentialRegressionRouter
+from post.controller.post_controller import postRouter
 from random_forest.controller.random_forest_controller import randomForestRouter
 from train_test_evaluation.controller.train_test_evaluation_controller import trainTestEvaluationRouter
 
 app = FastAPI()
+
+# 현재는 deprecated라고 나타나지만 lifespan이란 것을 대신 사용하라고 나타나고 있음
+# 완전히 배제되지는 않았는데 애플리케이션이 시작할 때 실행될 함수를 지정함
+# 고로 애플리케이션 시작 시 비동기 처리가 가능한 DB를 구성한다 보면 됨
+@app.on_event('startup')
+async def startup_event():
+    app.state.db_pool = await getMySqlPool()
+    await createTableIfNeccessary(app.state.db_pool)
+
+# 위의 것이 켤 때 였으니 이건 반대라 보면 됨
+@app.on_event('shutdown')
+async def shutdown_event():
+    app.state.db_pool.close()
+    await app.state.db_pool.wait_closed()
+
 
 # 웹 브라우저 상에서 "/"를 입력하면 (key)Hello: (value)World가 리턴
 @app.get("/")
@@ -60,11 +79,14 @@ def read_item(item_id: int, q: str = None):
 # 만들어 놓고 이런 분이 좀 별론데? 하면서
 # 점진적으로 개선시키는 것이 '애자일' 방식임
 
+
 app.include_router(logisticRegressionRouter)
 app.include_router(trainTestEvaluationRouter)
 app.include_router(polynomialRegressionRouter)
 app.include_router(exponentialRegressionRouter)
 app.include_router(randomForestRouter)
+app.include_router(postRouter, prefix="/post")
+app.include_router(kmeansRouter)
 
 load_dotenv()
 

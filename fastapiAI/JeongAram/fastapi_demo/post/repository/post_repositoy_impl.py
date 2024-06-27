@@ -17,7 +17,7 @@ class PostRepositoryImpl(PostRepository):
         async with self.dbPool.acquire() as connection:
             async with connection.cursor() as cur:
                 # post에 있는 모든 id, title, content를 찾아와서 postList를 만들어 변환
-                await cur.execute("select id, title, content from post")
+                await cur.execute("select id, title, content from post") # 쿼리문 실행 by aiomysql(비동기에서 수동으로 처리)
                 result = await cur.fetchall()
                 postList = [Post(id=row[0], title=row[1], content=row[2]) for row in result]
                 return postList

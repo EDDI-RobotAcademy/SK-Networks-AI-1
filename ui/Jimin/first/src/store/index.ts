@@ -23,5 +23,6 @@ export default createStore({
     accountModule,
     cartModule,
     postModule,
+    
   }
 })
