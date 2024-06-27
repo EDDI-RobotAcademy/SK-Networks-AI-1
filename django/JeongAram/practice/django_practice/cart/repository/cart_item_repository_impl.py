@@ -27,5 +27,20 @@ class CartItemRepositoryImpl(CartItemRepository):
             price=productPrice
         )
 
+    def findByCart(self, cart):
+        return list(CartItem.objects.filter(cart=cart))
+
+    def findByProductId(self, productId):
+        try:
+            return CartItem.objects.get(product_id=productId)
+        except CartItem.DoesNotExist:
+            return None
+
+    def findAllByProductId(self, productId):
+        return CartItem.objects.filter(product_id=productId)
+
+    def update(self, cartItem):
+        cartItem.save()
+
 
 

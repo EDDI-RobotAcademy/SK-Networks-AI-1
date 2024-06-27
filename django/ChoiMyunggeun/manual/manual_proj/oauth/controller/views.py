@@ -53,7 +53,9 @@ class OauthView(viewsets.ViewSet):
     def redisAccessToken(self, request):
         try:
             email = request.data.get('email')
-            #  할 일 : 토큰이 위험하니 이쪽의 엑세스 토큰 로직을 제거할 필요가 있다.
+            # TODO: 처음에 좀 비몽사몽한 상태로 만들어서 쓸대없이 accessToken 넣었으나 필요 없음
+            #       향후 로직에서 제거할 필요가 있음 (일단 되게 만들기)
+            #       토큰 탈취 시 카카오 계정까지 털려버림
             access_token = request.data.get('accessToken')
             print(f"redisAccessToken -> email: {email}")
 
@@ -62,12 +64,22 @@ class OauthView(viewsets.ViewSet):
                 return Response({'error': 'Account not found'}, status=status.HTTP_404_NOT_FOUND)
 
             userToken = str(uuid.uuid4())
-            self.redisService.store_access_token(account.id, access_token)
-            # key 로 value 찾기 테스트
-            accessId = self.redisService.getValueByKey(userToken)
-            print(f'accountId: {accessId}')
+            self.redisService.store_access_token(account.id, userToken)
+            # key로 value 찾기 테스트
+            accountId = self.redisService.getValueByKey(userToken)
+            print(f"accountId: {accountId}")
 
-            return Response({'userToken': userToken}, status=status.HTTP_200_OK)
+            return Response({ 'userToken': userToken }, status=status.HTTP_200_OK)
         except Exception as e:
             print('Error storing access token in Redis:', e)
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+    def dropRedisTokenForLogout(self, request):
+        try:
+            userToken = request.data.get('userToken')
+            isSuccess = self.redisService.deleteKey(userToken)
+
+            return Response({'isSuccess': isSuccess}, status=status.HTTP_200_OK)
+        except Exception as e:
+            print('래디스 토큰 해제 중 에러 발생:', e)
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)

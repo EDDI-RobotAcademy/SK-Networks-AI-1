@@ -25,6 +25,8 @@ SECRET_KEY = "django-insecure-scqot-0#@@67b_(cr%p^k+48)&r(j*4v%td!1c5(p)!svs!jv=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+ALLOWED_HOSTS = ['192.168.0.42']
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -39,6 +41,7 @@ INSTALLED_APPS = [
     'board',
     'product',
     'account',
+    'cart',
 ]
 
 MIDDLEWARE = [

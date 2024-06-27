@@ -13,6 +13,8 @@ import PolynomialRegressionRoutes from '@/polynomialRegression/router/Polynomial
 import ExponentialRegressionRoutes from '@/exponentialRegression/router/ExponentialRegressionRoutes'
 import RandomForestRoutes from '@/randomForest/router/RandomForestRoutes'
 import PostRoutes from '@/post/router/PostRoutes'
+import KmeansRoutes from "@/kmeans/router/KmeansRoutes";
+import TensorFlowIrisTestRoutes from '@/tfIris/router/TensorFlowIrisTestRoutes'
 
 const routes: Array<RouteRecordRaw> = [
   ...HomeRoutes,
@@ -31,6 +33,8 @@ const routes: Array<RouteRecordRaw> = [
   ...ExponentialRegressionRoutes,
   ...RandomForestRoutes,
   ...PostRoutes,
+  ...KmeansRoutes,
+  ...TensorFlowIrisTestRoutes,
 ]
 
 const router = createRouter({
