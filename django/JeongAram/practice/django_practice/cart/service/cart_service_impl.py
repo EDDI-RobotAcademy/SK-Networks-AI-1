@@ -42,8 +42,10 @@ class CartServiceImpl(CartService):
         print("기존 장바구니 사용")
 
         productId = cartData.get('productId')
-        cartItemList = self.__cartItemRepository.findByProductId(productId)
-
+        print(f"productId : {productId}")
+        product = self.__productRepository.findByProductId(productId)
+        cartItemList = self.__cartItemRepository.findAllByProduct(product)
+        print(f"cartItemList : {cartItemList}")
         cartItem = None
         for item in cartItemList:
             cartFromCartItem = item.cart
@@ -64,6 +66,24 @@ class CartServiceImpl(CartService):
 
     def cartList(self, accountId):
         account = self.__accountRepository.findById(accountId)
+        cart = self.__cartRepository.findByAccount(account)
+        print(f"cartList -> cart: {cart}")
+        cartItemList = self.__cartItemRepository.findByCart(cart)
+        print(f"cartList -> cartItemList: {cartItemList}")
+        cartItemListResponseForm = []
+
+        # responseForm을 안만들면 아래와 같은 코드를 작성해줘야 한다.
+        for cartItem in cartItemList:
+            cartItemResponseForm = {
+                'cartItemId': cartItem.cartItemId,
+                'productName': cartItem.product.productName,
+                'productPrice': cartItem.product.productPrice,
+                'productId': cartItem.product.productId,
+                'quantity': cartItem.quantity,
+            }
+            cartItemListResponseForm.append(cartItemResponseForm)
+
+        return cartItemListResponseForm
 
 
 
