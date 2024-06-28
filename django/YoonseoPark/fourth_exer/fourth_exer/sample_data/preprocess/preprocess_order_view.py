@@ -26,7 +26,7 @@ if __name__ == "__main__":
 
     orders_info_file = "../../orders_data.xlsx"
     view_count_info_file = "../../view_counts_data.xlsx"
-    output_file = "../../preprocessed_order_data.xlsx"
+    output_file = "../../preprocessed_orders_data.xlsx"
 
     orders_df, view_counts_df = load_data(orders_info_file, view_count_info_file)
     merged_df = merge_data(orders_df, view_counts_df)
