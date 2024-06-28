@@ -12,6 +12,7 @@ import PostRoutes from '@/post/router/PostRoutes'
 import KmeansRoutes from '@/kmeans/router/KmeansRoutes'
 import TensorFlowIrisTestRoutes from '@/tfIris/router/TensorFlowIrisTestRoutes'
 import CartRoutes from '@/cart/router/CartRoutes'
+import RandomForestRoutes from '@/randomForest/router/RandomForestRoutes'
 
 
 
@@ -28,6 +29,7 @@ const routes: Array<RouteRecordRaw> = [
   ...TrainTestEvaluationRoutes,
   ...PolynomialRegressionRoutes,
   ...ExponentialRegressionRoutes,
+  ...RandomForestRoutes,
   ...PostRoutes,
   ...KmeansRoutes,
   ...TensorFlowIrisTestRoutes,
