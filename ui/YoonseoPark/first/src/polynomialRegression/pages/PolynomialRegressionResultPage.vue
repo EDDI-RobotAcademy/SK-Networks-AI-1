@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import axiosInstance from '@/utility/axiosInstance';
 import * as d3 from 'd3'
 
 export default {
@@ -18,9 +19,11 @@ export default {
     },
     async created () {
         try {
-            const response = 
-                await fetch('http://localhost:33333/polynomial-regression')
-            const data = await response.json()
+            const response = await axiosInstance.fastapiAxiosInst.get('/polynomial-regression')
+            const data = response.data
+            // const response = 
+            //     await fetch('http://localhost:33333/polynomial-regression')
+            // const data = await response.json()
             this.regressionData = data
             console.log('data:', data)
             this.drawChart()

@@ -89,6 +89,7 @@
 </template>
 
 <script>
+import env from "@/env"
 import ConfusionMatrix from '@/randomForest/components/ConfusionMatrix.vue'
 import CommonChart from '@/randomForest/components/CommonChart.vue'
 
@@ -114,9 +115,9 @@ export default {
     },
     methods: {
         async fetchFlightDataOnRandomForestAnalysis () {
-            const response = await fetch('http://localhost:33333/random-forest')
+            const response = await fetch(`${env.api.AI_BASE_URL}/random-forest`)
             const data = await response.json()
-
+            // const response = await axiosInstance.fastapiAxiosInst.get('/random-forest')
             console.log('data:', data)
 
             this.confusionMatrixInfoBeforeSmote = data.confusion_matrix_info_before_smote

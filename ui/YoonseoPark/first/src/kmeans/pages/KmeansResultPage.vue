@@ -10,7 +10,7 @@
 </template>
 
 <script>
-
+import axiosInstance from '@/utility/axiosInstance';
 import * as d3 from 'd3';
 import axios from 'axios';
 
@@ -25,7 +25,9 @@ export default {
     },
     async mounted() {
         try {
-            const response = await axios.get('http://localhost:33333/kmeans-test');
+            // const response = await axios.get('http://192.168.0.40:33333/kmeans-test');
+            const response = await axiosInstance.fastapiAxiosInst.get('/kmeans-test')
+
             this.centers = response.data.centers;
             this.labels = response.data.labels;
             this.points = response.data.points;
