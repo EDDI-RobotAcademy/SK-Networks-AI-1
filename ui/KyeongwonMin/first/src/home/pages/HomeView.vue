@@ -1,5 +1,5 @@
 <template>
-    <p>이거시호미다</p>
+    <p>This is Home Page</p>
 </template>
 
 <script lang="ts">

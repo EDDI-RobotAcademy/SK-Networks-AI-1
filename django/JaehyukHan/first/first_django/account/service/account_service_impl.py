@@ -35,5 +35,3 @@ class AccountServiceImpl(AccountService):
 
     def findAccountByEmail(self, email):
         return self.__profileRepository.findByEmail(email)
-
-

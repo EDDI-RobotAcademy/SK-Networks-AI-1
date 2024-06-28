@@ -1,3 +1,4 @@
+from account.entity.account import Account
 from account.repository.account_repository_impl import AccountRepositoryImpl
 from account.repository.profile_repository_impl import ProfileRepositoryImpl
 from account.service.account_service import AccountService
@@ -35,3 +36,4 @@ class AccountServiceImpl(AccountService):
 
     def findAccountByEmail(self, email):
         return self.__profileRepository.findByEmail(email)
+

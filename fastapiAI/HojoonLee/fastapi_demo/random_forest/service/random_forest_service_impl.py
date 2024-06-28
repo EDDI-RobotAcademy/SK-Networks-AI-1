@@ -16,11 +16,11 @@ class RandomForestServiceImpl(RandomForestService):
 
         # app에는 data없으므로 데이터가 잇는 경로로 다시 맞춰주기
         filePath = os.path.join(currentDirectory, '..', 'assets', 'customer_booking.csv')
-        #print(f"filePath: {filePath}")
+        #print(f"filePath: {filePath}") : fastapi_demo/assets//customer_booking.csv
 
         dataFrame = pd.read_csv(filePath, encoding='latin1')
         #print(f"dataFrame: {dataFrame}")
-        return dataFrame
+        return dataFrame # csv 파일 내용물
 
     def featureTargetVariableDefinition(self, dataEncoded):
         print(f"featureTargetVariableDefinition()")

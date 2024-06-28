@@ -302,3 +302,15 @@ pyrightconfig.json
 
 # exclude *.csv
 *.csv
+
+# exclude *.h5
+*.h5
+
+# exclude *.pk1
+*.pk1
+
+# exclude *.xlsx
+*.xlsx
+
+# exclude *.svg
+*.svg

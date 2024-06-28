@@ -37,12 +37,15 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_extensions",
     "corsheaders",
     "rest_framework",
     'board',
     "product",
     "oauth",
     "account",
+    "cart",
+    "orders"
 ]
 
 MIDDLEWARE = [
@@ -61,6 +64,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+# KAKAO Settings
 KAKAO = {
     'LOGIN_URL': os.getenv('KAKAO_LOGIN_URL'),
     'CLIENT_ID': os.getenv('KAKAO_CLIENT_ID'),
@@ -71,6 +75,7 @@ KAKAO = {
 
 ROOT_URLCONF = "first_django.urls"
 
+# CORS Settings
 CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', '').split(',')
 CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', '').split(',')
 
@@ -96,6 +101,7 @@ WSGI_APPLICATION = "first_django.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# MySQL Settings
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
@@ -107,6 +113,7 @@ DATABASES = {
     }
 }
 
+# Redis Settings
 REDIS_HOST = os.getenv('REDIS_HOST')
 REDIS_PORT = os.getenv('REDIS_PORT')
 REDIS_PASSWORD = os.getenv('REDIS_PASSWORD')
