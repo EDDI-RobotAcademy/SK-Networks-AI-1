@@ -9,7 +9,7 @@ export type OrderActions = {
         payload: {
             userToken: string;
             items: {
-                cartItemId: number;
+                cartItemsId: number;
                 quantity: number;
                 orderPrice: number
             }[]
@@ -30,12 +30,12 @@ const actions: OrderActions = {
             const requestData = {
                 userToken,
                 items: payload.items.map(item => ({
-                    cartItemId: item.cartItemId,
+                    cartItemId: item.cartItemsId,
                     quantity: item.quantity,
                     orderPrice: item.orderPrice
                 }))
             };
-
+            console.log(requestData.items)
             const response =
                 await axiosInst.djangoAxiosInst.post('/orders/create', requestData);
             console.log('response data:', response.data)
