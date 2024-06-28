@@ -100,9 +100,11 @@ export default {
     },
     methods: {
         ...mapActions("cartModule", ["requestCartListToDjango"]),
+        ...mapActions("orderModule", ["requesCreateOrderToDjango"]),
         updateQuantity(item) {
             // 수량 업데이트 로직
         },
+        //get과 filter의 -> get은 하나만 가져올 때, filter는 모두 다 가져올 때
         removeItem(item) {
             this.cartItems = this.cartItems.filter(cartItem => cartItem.cartItemId !== item.cartItemId);
             this.selectedItems = this.selectedItems.filter(selectedItem => selectedItem.cartItemId !== item.cartItemId);
@@ -112,8 +114,26 @@ export default {
         },
         async proceedToOrder() {
             this.isCheckoutDialogVisible = false;
-            const response = await this.requestCreateOrderToDjango()
-            router.push({ name: 'OrderReadPage', params: { selectedItems: this.selectedItems } });
+            // const response = await this.requestCreateOrderToDjango()
+
+            try {
+                const selectedCartItems = this.cartItems.filter(item => this.selectedItems.includes(item));
+                const orderItems = selectedCartItems.map(item => ({
+                    cartItemId: item.cartItemId,
+                    orderPrice: item.productPrice,
+                    quantity: item.quantity
+                }));
+                console.log('orderItems:', orderItems)
+                const response = await this.requestCreateOrderToDjango({ items: orderItems });
+                const orderId = response.orderId;
+
+                this.$router.push({ name: 'OrderReadPage', params: { orderId: orderId.toString() } });
+
+            } catch (error) {
+                console.error('Order creation failed:', error);
+            }
+
+            // this.$router.push({ name: 'OrderReadPage', params: { selectedItems: this.selectedItems } });
         },
         async fetchCartList() {
             try {

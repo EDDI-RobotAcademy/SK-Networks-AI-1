@@ -29,6 +29,8 @@ class OauthServiceImpl(OauthService):
     # https://developers.kakao.com/docs/latest/ko/kakaologin/rest-api#request-code
     def kakaoLoginAddress(self):
         print("kakaoLoginAddress()")
+        print(f"{self.loginUrl}/oauth/authorize?"
+                f"client_id={self.clientId}&redirect_uri={self.redirectUri}&response_type=code")
         return (f"{self.loginUrl}/oauth/authorize?"
                 f"client_id={self.clientId}&redirect_uri={self.redirectUri}&response_type=code")
 
