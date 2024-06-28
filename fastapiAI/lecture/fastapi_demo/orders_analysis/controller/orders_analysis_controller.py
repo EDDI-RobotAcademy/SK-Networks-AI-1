@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import JSONResponse
 
+from orders_analysis.service.orders_analysis_service_impl import OrdersAnalysisServiceImpl
 
 ordersAnalysisRouter = APIRouter()
 
