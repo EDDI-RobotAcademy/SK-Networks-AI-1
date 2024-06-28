@@ -3,7 +3,7 @@
         <v-row>
             <v-col cols="12">
                 <v-card>
-                    <v-card-title>Order Summary</v-card-title>
+                    <v-card-title>주문 상세 내역 보기</v-card-title>
                     <v-card-text>
                         <v-table v-if="order">
                             <thead>
@@ -15,12 +15,12 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="item in order.items" :key="item.productId">
-                                <td>{{ item.productName }}</td>
-                                <td>{{ item.productPrice }}</td>
-                                <td>{{ item.quantity }}</td>
-                                <td>{{ item.productPrice * item.quantity }}</td>
-                            </tr>
+                                <tr v-for="item in order.items" :key="item.productId">
+                                    <td>{{ item.productName }}</td>
+                                    <td>{{ item.productPrice }}</td>
+                                    <td>{{ item.quantity }}</td>
+                                    <td>{{ item.productPrice * item.quantity }}</td>
+                                </tr>
                             </tbody>
                         </v-table>
                         <v-divider></v-divider>
@@ -59,7 +59,9 @@ export default {
     },
     computed: {
         orderTotal() {
-            if (!this.order || !Array.isArray(this.order.items) || this.order.items.length === 0) {
+            if (!this.order || 
+                    !Array.isArray(this.order.items) || 
+                    this.order.items.length === 0) {
                 return 0;
             }
             return this.order.items.reduce(
