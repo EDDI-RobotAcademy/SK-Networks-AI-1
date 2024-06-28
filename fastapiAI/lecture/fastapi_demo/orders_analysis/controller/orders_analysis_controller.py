@@ -32,7 +32,9 @@ async def ordersPredict(request: ViewCountRequestForm,
     try:
         print(f"request.count: {request.count}")
 
-        ordersAnalysisService.predictQuantityFromModel(request.count)
+        predictedQuantity = await ordersAnalysisService.predictQuantityFromModel(request.count)
+        return JSONResponse(content=predictedQuantity, status_code=status.HTTP_200_OK)
+
     except FileNotFoundError:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Model File이 없음")
     except Exception as e:
