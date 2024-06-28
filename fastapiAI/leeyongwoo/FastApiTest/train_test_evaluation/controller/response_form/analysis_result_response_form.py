@@ -6,7 +6,7 @@ from pydantic import BaseModel
 # 실질적으로 Domain이 협력하는 상황에 대해서도 고민해 볼 필요가 있음
 # 당장 여기서는 그냥 다 랜덤이고 존재하는 데이터 가지고 하기 때문에 그냥 효용을 못느낄 수 있음
 # 그러나 order 만 생각해봐도 벌써 account와 product와 연동하고 있음
-# 이런 경우 order 정보만 주는게 아니라
+# 이런 경우 order 정보만 주는게 아니라 
 # 경우에 따라서 account와 product 정보의 일부를 추출해서 줘야할 수 있음
 # 그럼 '어떻게 줄 것이냐 ?' 라는 문제에 봉착하게 됨
 

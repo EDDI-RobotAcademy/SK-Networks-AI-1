@@ -10,7 +10,6 @@ from sklearn.model_selection import train_test_split
 # 생성한 router 이름으로 get, post 등등의 router를 구성할 수 있음
 logisticRegressionRouter = APIRouter()
 
-
 # @GetMapping
 # @RequestMapping(get)
 @logisticRegressionRouter.get("/logistic-regression")
@@ -19,7 +18,7 @@ def logistic_regression_test():
 
     np.random.seed(0)
     # 임의의 (x, y) 2차원 벡터(좌표)를 100개 생성
-    X = np.random.randn(50, 2)
+    X = np.random.randn(100, 2)
     # x 좌표와 y 좌표를 더해서 0 보다 크면 1, 아니면 0
     y = (X[:, 0] + X[:, 1] > 0).astype(int)
     # 자동으로 100개 중 30% 를 테스트 셋으로 지정함
@@ -27,7 +26,7 @@ def logistic_regression_test():
 
     print('X:', X)
     print('y:', y)
-
+    
     # 학습 모델로 Logistic Regression을 선택
     model = LogisticRegression()
     # 테스트 외의 훈련 데이터를 가지고 실제 회귀 분석 진행
@@ -49,12 +48,12 @@ def logistic_regression_test():
     # 결론적으로 회귀 분석에 여러 종류가 있는 이유는 여러 다양한 형태의 그래프를 표현하기 위해서임
     # 그리고 그 판단은 어쩔 수 없이 사람이 결정해줘야함
     # 무엇이 이 데이터에 더 적합한지
-
+    
     # 테스트용 좌표를 가지고 결과값을 추론
     # X = [(1, 2), (3, 4), (2, 3), ... ]
-    # y = [   1  ,    1  ,   1   , ... ]
+    # y = [   1  ,    1  ,   1   , ... ]   
     y_pred = model.predict(X_test)
-
+    
     # 예측치인 pred 값과 실제 테스트 셋인 test를
     # 비교하여 정확도가 어느정도인지 판별
     accuracy = accuracy_score(y_test, y_pred)
@@ -65,7 +64,7 @@ def logistic_regression_test():
 
     # x 값을 일정 범위로 설정!
     # 100개의 x 성분 중 최소값과 최대값을 뽑아서 일정 간격으로 분할
-    x_values = np.linspace(X[:, 0].min(), X[:, 0].max(), 50)
+    x_values = np.linspace(X[:, 0].min(), X[:, 0].max(), 100)
     # 어떤 데이터를 볼 때 가중치(weight) 값이 존재함
     # 이 부분은 가중치를 고려하여 경계선을 구분하기 위해 사용하는 부분임
     # 즉 0 혹은 1을 결정짓는 경계선을 만들기 위한 작업이라 정리할 수 있음

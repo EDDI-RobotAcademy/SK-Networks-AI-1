@@ -8,6 +8,7 @@ export interface Product {
     productName: string
     productPrice: string
     productDescription: string
+    productImage: string
     registeredDate: string
     updatedDate: string
 }
