@@ -15,6 +15,13 @@ export type OrderActions = {
             }[]
         }
     ): Promise<AxiosResponse>;
+
+    // requestReadOrderToDjango(
+    //     context: ActionContext<OrderState, any>,
+    //     payload: {
+    //         orderId: string
+    //     }
+    // ): Promise<AxiosResponse>
 }
 
 const actions: OrderActions = {
@@ -45,7 +52,17 @@ const actions: OrderActions = {
             console.error('Error creating order:', error);
             throw error;
         }
-    }
+    },
+    // async requestReadOrderToDjango({ state }, payload: { orderId: string }) {
+        
+    //     try {
+    //         const { orderId } = payload
+    //         const response = await axiosInst.djangoAxiosInst.post(`/orders/read/${orderId}`, requestData)
+    //         return response.data
+    //     } catch (error) {
+    //         console.error('Error reading order:', error)
+    //     }
+    // }
 };
 
 export default actions;

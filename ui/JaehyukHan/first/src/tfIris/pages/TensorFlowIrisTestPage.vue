@@ -37,7 +37,7 @@ export default {
         async submitForm() {
             try {
                 const { sepal_length, sepal_width, petal_length, petal_width } = this.form
-                const response = await axios.post('http://localhost:33333/tf-predict', {
+                const response = await axios.post('http://192.168.0.41:33333/tf-predict', {
                     sepal_length,
                     sepal_width,
                     petal_length,
@@ -51,7 +51,7 @@ export default {
             }
         },
         async trainModel() {
-            await axios.get('http://localhost:33333/tf-train')
+            await axios.get('http://192.168.0.41:33333/tf-train')
             alert('딥러닝 모델 훈련이 완료되었습니다!')
         }
     }
