@@ -11,8 +11,13 @@ import TrainTestEvaluationRoutes from '@/trainTestEvaluation/router/TrainTestEva
 import CartRoutes from "@/cart/router/CartRoutes";
 import PolynomialRegressionRoutes from '@/polynomialRegression/router/PolynomialRegressionRoutes'
 import ExponentialRegressionRoutes from '@/exponentialRegression/router/ExponentialRegressionRoutes'
+import WordCloudRoutes from "@/wordCloud/router/WordCloudRoutes";
+import NaturalLanguageProcessingRoutes from "@/naturalLanguageProcessing/router/NaturalLanguageProcessingRoutes";
 import RandomForestRoutes from '@/randomForest/router/RandomForestRoutes'
 import PostRoutes from '@/post/router/PostRoutes'
+import KmeansRoutes from "@/kmeans/router/KmeansRoutes";
+import TensorFlowIrisTestRoutes from '@/tfIris/router/TensorFlowIrisTestRoutes'
+import OrderRoutes from '@/order/router/OrderRoutes'
 
 const routes: Array<RouteRecordRaw> = [
   ...HomeRoutes,
@@ -29,8 +34,14 @@ const routes: Array<RouteRecordRaw> = [
   ...CartRoutes,
   ...PolynomialRegressionRoutes,
   ...ExponentialRegressionRoutes,
+  ...WordCloudRoutes,
+  ...NaturalLanguageProcessingRoutes,
   ...RandomForestRoutes,
   ...PostRoutes,
+  ...KmeansRoutes,
+  ...TensorFlowIrisTestRoutes,
+  ...OrderRoutes,
+
 ]
 
 const router = createRouter({

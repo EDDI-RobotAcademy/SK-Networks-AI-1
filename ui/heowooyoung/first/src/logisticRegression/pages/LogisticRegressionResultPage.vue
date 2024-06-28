@@ -4,8 +4,7 @@
         <p>Accuracy: {{ accuracy }}</p>
         <div ref="chartContainer" class="chart-wrapper">
             <svg ref="svg" :viewBox="`0 0 ${svgWidth} ${svgHeight}`"
-                            preserveAspectRatio="xMidYMid meet">
-            </svg>
+                            preserveAspectRatio="xMidYMid meet"></svg>
         </div>
     </v-container>
 </template>
@@ -29,21 +28,18 @@ export default {
             resizeTimer: null,
         }
     },
-
     mounted () {
         this.fetchLogisticRegressionData()
         window.addEventListener('resize', this.handleResize)
     },
-
-    beforeUnmount() {
+    beforeUnmount () {
         window.removeEventListener('resize', this.handleResize)
     },
-
     methods: {
         async fetchLogisticRegressionData () {
             try {
                 const response = 
-                    await axiosInst.fastapiAxiosInst.get('/logistic-regression')
+                    await axiosInst.fastapiAxiosInst.get('http://192.168.0.42:33333/logistic-regression')
                 const data = response.data
                 console.log('result:', data)
 
@@ -134,18 +130,23 @@ export default {
                 .attr('r', 5)
                 .style('fill', (d, i) => this.y[i] === 1 ? 'green' : 'blue')
 
+            // 결정 경계 (Decision Boundary) 를 파악하기 위한 선 그릴 준비
             const line = d3.line()
                     .x(d => x(d[0]))
                     .y(d => x(d[1]))
 
-            
             // 실제 fastapi에서 분석했던 로지스틱 회귀 분석의 결정 경계 x 값을 추출함
-            // x_values는 100개의 데이터이므로 아래 map을 통해서 낱개인 x_value로 재해석됨
-            // 즉 x_value인 낱개 데이터와 인덱스 번호(i) 로 맵핑하여 좌표화함
-            // 이 정보들을 전부 [x_value, this.y_value[i]] 로 맵핑하여 좌표화함
+            // x_values는 100개의 데이터이므로 아래 map을 통해서
+            // 낱개인 x_value로 재해석됨
+            // 즉 x_value인 낱개 데이터와 인덱스 번호(i)로 구성되고
+            // 이 정보들을 전부 [x_value, this.y_values[i]] 로 맵핑하여 좌표화함
             const decisionBoundary = this.x_values.map((x_value, i) => [x_value, this.y_values[i]])
-            console.log('decisionBoundary: ', decisionBoundary)
+            console.log('decisionBoundary:', decisionBoundary)
 
+            // 이제 여기서 실제 결정 경계에 해당하는 라인을 빨간색 선으로 그립니다
+            // stroke <- red는 선 색상 빨강
+            // stroke-width <- 선 굵기
+            // fill none <- 실선
             g.append('path')
                 .datum(decisionBoundary)
                 .attr('d', line)
@@ -153,17 +154,19 @@ export default {
                 .attr('stroke-width', 2)
                 .attr('fill', 'none')
         },
-
         handleResize () {
+            // 브라우저 크기 변경을 감지하면 0.2초 단위로 화면 크기 조정하여 다시 그림
             clearTimeout(this.resizeTimer)
             this.resizeTimer = setTimeout(() => {
                 const chartContainer = this.$refs.chartContainer
                 this.svgWidth = chartContainer.clientWidth
                 this.svgHeight = chartContainer.clientHeight
 
-                d3.select(this.$refs.svg).attr('viewBox', `0 0 ${this.svgWidth} ${this.svgHeight}`)
+                d3.select(this.$refs.svg)
+                        .attr('viewBox', `0 0 ${this.svgWidth} ${this.svgHeight}`)
+
                 this.createChart()
-            })
+            }, 200)
         }
     }
 }

@@ -62,6 +62,9 @@ export default {
                     
                     const response = await this.requestCreateProductToDjango(imageFormData)
                     this.uploadedFileName = response.data.imageName
+                    // 페이지를 강제로 새로고침 >> 새로운 이미지 넣을 때 생기는 에러 해결
+                    //window.location.reload(true)
+
                     this.$router.push({ name: 'ProductListPage' })
                 } else {
                     console.log('이미지 파일을 선택하세요!')
