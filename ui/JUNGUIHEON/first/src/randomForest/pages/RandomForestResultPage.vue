@@ -55,7 +55,7 @@
                     graphType="histplot"
                     xKey="length_of_stay"
                     hueKey="booking_complete"
-                    bins = "30"/>
+                    bins="30"/>
             </v-col>
             <v-col cols="6">
                 <common-chart
@@ -114,7 +114,7 @@ export default {
     },
     methods: {
         async fetchFlightDataOnRandomForestAnalysis () {
-            const response = await fetch('http://localhost:33333/random-forest')
+            const response = await fetch('http://192.168.0.55:33333/random-forest')
             const data = await response.json()
 
             console.log('data:', data)

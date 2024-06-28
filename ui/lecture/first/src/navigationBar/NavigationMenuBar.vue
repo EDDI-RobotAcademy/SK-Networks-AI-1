@@ -108,7 +108,7 @@ export default {
         const userToken = localStorage.getItem("userToken")
 
         if (userToken) {
-            console.log('You already has a userToken!!!')
+            console.log('You already have a userToken!!!')
 
             // this.$store를 통해 Vue가 관리하는 Vuex 스토리지 접근
             // Vuex 내에 존재하는 state 중 우리가 모듈로 만든
@@ -117,7 +117,6 @@ export default {
             // mount 중에는 불가하므로 아래와 같이 직접 처리
             this.$store.state.authenticationModule.isAuthenticated = true
         }
-
     },
     // beforeUnmount () {
     //     console.log('navigation bar beforeUnmount()')
