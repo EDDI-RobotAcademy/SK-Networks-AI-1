@@ -61,9 +61,9 @@ class OrdersAnalysisServiceImpl(OrdersAnalysisService):
         for index in range(1, 11):
             ordersModel = tf.keras.models.load_model(f"ordersModel_{index}.h5")
             X_pred = np.array([[viewCount]])
-            X_pred_scaled = self.__ordersAnalysisRepository.transformFromScaler(scaler, X_pred)
+            X_pred_scaled = await self.__ordersAnalysisRepository.transformFromScaler(scaler, X_pred)
 
-            ordersPredict = self.__ordersAnalysisRepository.predictFromModel(ordersModel, X_pred_scaled)
+            ordersPredict = await self.__ordersAnalysisRepository.predictFromModel(ordersModel, X_pred_scaled)
 
             ordersPredictionList.append(float(ordersPredict))
 

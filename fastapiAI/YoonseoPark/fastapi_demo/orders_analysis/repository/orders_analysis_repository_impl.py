@@ -54,8 +54,8 @@ class OrdersAnalysisRepositoryImpl(OrdersAnalysisRepository):
     async def fitModel(self, model, X_train, y_train):
         model.fit(X_train, y_train, epochs=100, validation_split=0.2, batch_size=32, verbose=0)
 
-    def transformFromScaler(self, scaler, X_pred):
+    async def transformFromScaler(self, scaler, X_pred):
         return scaler.transform(X_pred)
 
-    def predictFromModel(self, ordersModel, X_pred_scaled):
+    async def predictFromModel(self, ordersModel, X_pred_scaled):
         return ordersModel.predict(X_pred_scaled).flatten()[0]
