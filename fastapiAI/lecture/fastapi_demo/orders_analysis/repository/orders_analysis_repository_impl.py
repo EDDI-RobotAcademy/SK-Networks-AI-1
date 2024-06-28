@@ -59,8 +59,8 @@ class OrdersAnalysisRepositoryImpl(OrdersAnalysisRepository):
                   batch_size=32,
                   verbose=0)
 
-    def transformFromScaler(self, scaler, X_pred):
+    async def transformFromScaler(self, scaler, X_pred):
         return scaler.transform(X_pred)
 
-    def predictFromModel(self, ordersModel, X_pred_scaled):
+    async def predictFromModel(self, ordersModel, X_pred_scaled):
         return ordersModel.predict(X_pred_scaled).flatten()[0]
