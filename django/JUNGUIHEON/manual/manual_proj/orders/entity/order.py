@@ -3,7 +3,7 @@ from django.db import models
 from account.entity.account import Account
 from django.utils import timezone
 
-from order.entity.order_status import OrderStatus
+from orders.entity.order_status import OrderStatus
 
 
 class Order(models.Model):

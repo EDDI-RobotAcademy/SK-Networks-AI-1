@@ -1,6 +1,6 @@
-import PostListPage from "@/post/pages/list/PostListPage.vue"
-import PostRegisterPage from "@/post/pages/register/PostRegisterPage.vue"
-import PostReadPage from "@/post/pages/read/PostReadPage.vue" 
+import PostListPage from '@/post/pages/list/PostListPage.vue'
+import PostRegisterPage from '@/post/pages/register/PostRegisterPage.vue'
+import PostReadPage from '@/post/pages/read/PostReadPage.vue'
 
 const PostRoutes = [
     {
