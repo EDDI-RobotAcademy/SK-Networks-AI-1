@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import axiosInstance from '@/utility/axiosInstance';
+import axios from 'axios';
 import * as d3 from 'd3'
 import { ref, onMounted } from 'vue'
 
@@ -23,8 +25,10 @@ export default {
        // fetchExponentialRegressionData는 함수가 아니라 변수 -> 포인터처럼 함수를 불어오는 역할을 해줌
        const fetchExponentialRegressionData = async () => {
             try {
-                const response = await fetch('http://localhost:33333/exponential-regression')
-                const data = await response.json()
+                // const response = await fetch('http://localhost:33333/exponential-regression')
+                const response = await axiosInstance.fastapiAxiosInst.get('/exponential-regression')
+                const data = response.data
+
                 originalData.value = data.original_data
                 predictedData.value = data.predicted_data
             } catch (error) {
