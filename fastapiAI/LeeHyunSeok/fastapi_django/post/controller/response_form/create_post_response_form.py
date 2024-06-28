@@ -7,5 +7,5 @@ class CreatePostResponseForm(BaseModel):
     id: int
 
     @classmethod
-    def fromCreatePostResponse(cls, response: CreatePostResponse) -> 'CreatePostResponse':
+    def fromCreatePostResponse(cls, response: CreatePostResponse) -> 'CreatePostResponseForm':
         return cls(id=response.id)

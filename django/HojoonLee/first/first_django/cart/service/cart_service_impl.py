@@ -50,6 +50,7 @@ class CartServiceImpl(CartService):
 
         if cartItem is None:
             print("신규 상품 추가")
+            # 여기서 product 객체를 받았기 때문에, cartItem.product가 가능해짐
             product = self.__productRepository.findByProductId(productId)
             self.__cartItemRepository.register(cartData, cart, product)
         else:
@@ -59,13 +60,22 @@ class CartServiceImpl(CartService):
             self.__cartItemRepository.update(cartItem)
 
     def cartList(self, accountId):
+        # redis key를 가지고 해당 account 객체 찾기
         account = self.__accountRepository.findById(accountId)
+        # 해당 계정의 cart 가져오기 >> 장바구니 목록 가져올 때 사용예정
         cart = self.__cartRepository.findByAccount(account)
         print(f"cartList -> cart: {cart}")
+        # 해당 계정의 장바구니 목록 가져오기
         cartItemList = self.__cartItemRepository.findByCart(cart)
         print(f"cartList -> cartItemList: {cartItemList}")
+
+        # controller에 responseForm이 없어서 responseForm 만드는 작업을 여기서 직접 구현한 것임
+        # 실제로 여기서는 다양한 도메인이(product, cartItem) 엮여서 포장하는 과정을 진행중
+        # 다른 사람들은 여기 부분은 그리 궁금하지 않고 그저 어떻게 돌아가는지만 관심있는데 여기 때문에 코드가 지저분해짐
         cartItemListResponseForm = []
 
+        # cartItem.product 가 가능한 이유는 cartItem entity에서 product를 외래키로 삼았기 때문
+        # 이미 register에서 cartItem에 product를 append했기 때문에 이용가능한거 같기도 ?
         for cartItem in cartItemList:
             cartItemResponseForm = {
                 'cartItemId': cartItem.cartItemId,
@@ -73,6 +83,7 @@ class CartServiceImpl(CartService):
                 'productPrice': cartItem.product.productPrice,
                 'productId': cartItem.product.productId,
                 'quantity': cartItem.quantity,
+                # 'image': cartItem.product.productImage 이렇게 하면 이미지도 처리 가능
             }
             cartItemListResponseForm.append(cartItemResponseForm)
 

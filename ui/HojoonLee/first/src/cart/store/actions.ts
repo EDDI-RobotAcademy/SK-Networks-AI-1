@@ -18,12 +18,14 @@ export type CartActions = {
 const actions: CartActions = {
     async requestAddCartToDjango({ commit }, cartData: CartItem) {
         try {
+            // 상품등록은 누구건지 알아야하므로 userToken이 필요
             const userToken = localStorage.getItem('userToken');
             if (!userToken) {
                 throw new Error('User token not found');
             }
 
             const requestData = {
+                // ... : spread 기능 검색해보기
                 ...cartData,
                 userToken
             };
@@ -37,13 +39,14 @@ const actions: CartActions = {
             throw error;
         }
     },
+
     async requestCartListToDjango({ commit }) {
         try {
             const userToken = localStorage.getItem('userToken');
             if (!userToken) {
                 throw new Error('User token not found');
             }
-
+            // 나와 관련된 정보만 list로 보여줘니까 userToken이 입력으로 필요
             const requestData = {
                 userToken
             };

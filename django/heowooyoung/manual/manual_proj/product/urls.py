@@ -12,5 +12,3 @@ urlpatterns = [
     path('register', ProductView.as_view({'post': 'register'}), name='product-register'),
     path('read/<int:pk>', ProductView.as_view({'get': 'readProduct'}), name='product-read'),
 ]
-
-# localhost:8000/board/list
