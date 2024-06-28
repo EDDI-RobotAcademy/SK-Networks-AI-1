@@ -28,6 +28,7 @@ export default {
                 // const response = await fetch('http://localhost:33333/exponential-regression')
                 const response = await axiosInstance.fastapiAxiosInst.get('/exponential-regression')
                 const data = response.data
+                console.log('data:', response.data)
 
                 originalData.value = data.original_data
                 predictedData.value = data.predicted_data
