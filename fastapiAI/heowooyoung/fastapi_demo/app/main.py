@@ -1,19 +1,24 @@
 import os
+import warnings
 
+import aiomysql
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from async_db.database import getMySqlPool, createTableIfNeccessary
 from exponential_regression.controller.exponential_regression_controller import exponentialRegressionRouter
+from kmeans.controller.kmeans_controller import kmeansRouter
 from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
 from polynomialRegression.controller.polynomial_regression_controller import polynomialRegressionRouter
 from post.controller.post_controller import postRouter
 from random_forest.controller.random_forest_controller import randomForestRouter
+from tf_iris.controller.tf_iris_controller import tfIrisRouter
 from train_test_evaluation.controller.train_test_evaluation_controller import trainTestEvaluationRouter
 
 app = FastAPI()
 
+warnings.filterwarnings("ignore", category=aiomysql.Warning)
 
 # 현재는 deprecated 라고 나타나지만 lifespan 이란 것을 대신 사용하라고 나타나고 있음
 # 완전히 배제되지는 않았는데 애플리케이션이 시작할 때 실행될 함수를 지정함
@@ -88,6 +93,8 @@ app.include_router(polynomialRegressionRouter)
 app.include_router(exponentialRegressionRouter)
 app.include_router(randomForestRouter)
 app.include_router(postRouter, prefix="/post")
+app.include_router(kmeansRouter)
+app.include_router(tfIrisRouter)
 
 load_dotenv()
 
@@ -104,4 +111,4 @@ app.add_middleware(
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=33333)
+    uvicorn.run(app, host="192.168.0.42", port=33333)

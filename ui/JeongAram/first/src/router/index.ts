@@ -9,6 +9,8 @@ import TrainTestEvaluationRoutes from '@/trainTestEvaluation/router/TrainTestEva
 import PolynomialRegressionRoutes from '@/polynomialRegression/router/PolynomialRegressionRoutes'
 import ExponentialRegressionRoutes from '@/exponentialRegression/router/ExponentialRegressionRoutes'
 import PostRoutes from '@/post/router/PostRoutes'
+import KmeansRoutes from '@/kmeans/router/KmeansRoutes'
+import TensorFlowIrisTestRoutes from '@/tfIris/router/TensorFlowIrisTestRoutes'
 
 
 const routes: Array<RouteRecordRaw> = [
@@ -25,6 +27,8 @@ const routes: Array<RouteRecordRaw> = [
   ...PolynomialRegressionRoutes,
   ...ExponentialRegressionRoutes,
   ...PostRoutes,
+  ...KmeansRoutes,
+  ...TensorFlowIrisTestRoutes,
     // 항상 도메인의 router 추가했으면 main router 에도 추가해줘야함
 
 ]
