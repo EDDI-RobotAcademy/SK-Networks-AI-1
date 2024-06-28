@@ -39,6 +39,7 @@ export type AuthenticationActions = {
 const actions: AuthenticationActions = {
     async requestKakaoOauthRedirectionToDjango(): Promise<void> {
         return axiosInst.djangoAxiosInst.get('/oauth/kakao').then((res) => {
+            console.log('res:', res.data)
             window.location.href = res.data.url
         })
     },
