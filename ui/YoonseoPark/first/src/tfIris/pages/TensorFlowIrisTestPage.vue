@@ -21,7 +21,7 @@
 
 <script>
 import axios from 'axios'
-import * as d3 from 'd3'
+import env from "@/env"
 
 export default {
     data() {
@@ -46,11 +46,11 @@ export default {
                     petal_width 
                 } = this.form;
 
-                const response = await axios.post('http://192.168.0.40:33333/tf-predict', {
+                const response = await axios.post(`${env.api.AI_BASE_URL}/tf-predict`, {
                     sepal_length, 
-                        sepal_width, 
-                        petal_length, 
-                        petal_width 
+                    sepal_width, 
+                    petal_length, 
+                    petal_width 
                 })
 
                 console.log('prediction:', response.data)
@@ -61,7 +61,7 @@ export default {
             }
         },
         async trainModel () {
-            await axios.get('http://192.168.0.40:33333/tf-train')
+            await axios.get(`${env.api.AI_BASE_URL}/tf-train`)
             alert('딥러닝 모델 훈련이 완료되었습니다!')
         }
     },

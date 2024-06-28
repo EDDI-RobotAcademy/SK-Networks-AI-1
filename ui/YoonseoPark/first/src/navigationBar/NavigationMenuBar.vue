@@ -68,7 +68,9 @@ export default {
                 { title: 'Random Forest', action: () => { router.push('/random-forest-result') } },
                 { title: 'Polynomial Regression', action: () => { router.push('/polynomial-regression-result') } },
                 { title: 'Exponential Regression', action: () => { router.push('/exponential-regression-result') } },
-                { title: 'K-means Clustering', action: () => { router.push('/kmeans-test-result') } }
+                { title: 'Train Test Evaluation', action: () => { router.push('/train-test-evaluation-result') } },
+                { title: 'K-means Clustering', action: () => { router.push('/kmeans-test-result') } },
+                { title: 'TensorFlow Iris Test', action: () => { router.push('/tf-iris-result') } }
             ]
         }
     },

@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import axiosInst from '@/utility/axiosInstance'
+import axiosInstance from '@/utility/axiosInstance'
 import * as d3 from 'd3'
 
 export default {
@@ -47,8 +47,10 @@ export default {
             // fetch가 자체적으로 get과 동일함
             // 현재 d3와 딥러닝 hard skill(기능) 자체에 집중하기 때문에
             // 일단 soft skill(DDD)는 잠시 접어뒀음
-            const response = await fetch('http://localhost:33333/train-test-evaluation')
-            const data = await response.json()
+            const response = await axiosInstance.fastapiAxiosInst.get('/train-test-evaluation')
+            const data = response.data
+            // const response = await fetch('http://localhost:33333/train-test-evaluation')
+            // const data = await response.json()
             console.log('data:', data)
 
             this.accuracy = data.accuracy
