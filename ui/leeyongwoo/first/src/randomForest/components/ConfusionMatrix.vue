@@ -2,7 +2,7 @@
     <v-card>
         <v-card-title className="headline">Confusion Matrix</v-card-title>
         <v-card-text>
-            <svg ref="confusionMatrix"/>
+            <svg ref="confusionMatrix"></svg>
         </v-card-text>
     </v-card>
 </template>
@@ -54,7 +54,7 @@ export default {
                 .append('title')
                 .text(d => d)
 
-                cells.selectAll('.cell-text')
+            cells.selectAll('.cell-text')
                 .data(d => d)
                 .enter().append('text')
                 .attr('class', 'cell-text')
@@ -63,7 +63,6 @@ export default {
                 .attr('dy', '.35em')
                 .attr('text-anchor', 'middle')
                 .text(d => d)
-
         }
     }
 }
