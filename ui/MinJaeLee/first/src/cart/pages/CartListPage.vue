@@ -7,35 +7,31 @@
                     <v-card-text>
                         <v-table>
                             <thead>
-                            <tr>
-                                <th>Select</th>
-                                <th>Product</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Total</th>
-                                <th>Actions</th>
-                            </tr>
+                                <tr>
+                                    <th>Select</th>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th>Actions</th>
+                                </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="item in cartItems" :key="item.cartItemId">
-                                <td>
-                                    <v-checkbox v-model="selectedItems" :value="item"></v-checkbox>
-                                </td>
-                                <td>{{ item.productName }}</td>
-                                <td>{{ item.productPrice }}</td>
-                                <td>
-                                    <v-text-field
-                                        v-model="item.quantity"
-                                        type="number"
-                                        min="1"
-                                        @change="updateQuantity(item)"
-                                    ></v-text-field>
-                                </td>
-                                <td>{{ item.productPrice * item.quantity }}</td>
-                                <td>
-                                    <v-btn color="red" @click="removeItem(item)">Remove</v-btn>
-                                </td>
-                            </tr>
+                                <tr v-for="item in cartItems" :key="item.cartItemId">
+                                    <td>
+                                        <v-checkbox v-model="selectedItems" :value="item"></v-checkbox>
+                                    </td>
+                                    <td>{{ item.productName }}</td>
+                                    <td>{{ item.productPrice }}</td>
+                                    <td>
+                                        <v-text-field v-model="item.quantity" type="number" min="1"
+                                            @change="updateQuantity(item)"></v-text-field>
+                                    </td>
+                                    <td>{{ item.productPrice * item.quantity }}</td>
+                                    <td>
+                                        <v-btn color="red" @click="removeItem(item)">Remove</v-btn>
+                                    </td>
+                                </tr>
                             </tbody>
                         </v-table>
                         <v-divider></v-divider>
@@ -60,10 +56,8 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text 
-                            @click="isCheckoutDialogVisible = false">Cancel</v-btn>
-                    <v-btn color="blue darken-1" text 
-                            @click="proceedToOrder">Confirm</v-btn>
+                    <v-btn color="blue darken-1" text @click="isCheckoutDialogVisible = false">Cancel</v-btn>
+                    <v-btn color="blue darken-1" text @click="proceedToOrder">Confirm</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -111,34 +105,37 @@ export default {
             // 수량 업데이트 로직
         },
         removeItem(item) {
-            this.cartItems = this.cartItems.filter(cartItem => cartItem.cartItemId !== item.cartItemId);
-            this.selectedItems = this.selectedItems.filter(selectedItem => selectedItem.cartItemId !== item.cartItemId);
+            this.cartItems =
+                this.cartItems.filter(cartItem => cartItem.cartItemId !== item.cartItemId);
+            this.selectedItems =
+                this.selectedItems.filter(selectedItem => selectedItem.cartItemId !== item.cartItemId);
         },
         confirmCheckout() {
             this.isCheckoutDialogVisible = true;
         },
         async proceedToOrder() {
             this.isCheckoutDialogVisible = false;
-            // const response = await this.requestCreateOrderToDjango()
 
             try {
-                const selectedCartItems = this.cartItems.filter(item => this.selectedItems.includes(item));
+                const selectedCartItems =
+                    this.cartItems.filter(
+                        item => this.selectedItems.includes(item));
                 const orderItems = selectedCartItems.map(item => ({
                     cartItemId: item.cartItemId,
                     orderPrice: item.productPrice,
                     quantity: item.quantity
                 }));
                 console.log('orderItems:', orderItems)
-                const response = await this.requestCreateOrderToDjango({ items: orderItems });
-                const orderId = response.orderId;
+                const orderId = await this.requestCreateOrderToDjango({ items: orderItems });
 
-                this.$router.push({ name: 'OrderReadPage', params: { orderId: orderId.toString() } });
+                this.$router.push({
+                    name: 'OrderReadPage',
+                    params: { orderId: orderId.toString() }
+                });
 
             } catch (error) {
                 console.error('Order creation failed:', error);
             }
-
-            // this.$router.push({ name: 'OrderReadPage', params: { selectedItems: this.selectedItems } });
         },
         async fetchCartList() {
             try {

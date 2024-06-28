@@ -24,6 +24,7 @@
 <script>
 import { mapActions, mapState } from 'vuex'
 const postModule = 'postModule'
+
 export default {
     computed: {
         ...mapState(postModule, ['postList']),
@@ -39,6 +40,7 @@ export default {
     methods: {
         ...mapActions(postModule, ['requestPostListToFastapi']),
         readRow(event, { item }) {
+            console.log('which one selected ?', item['id'])
             this.$router.push({
                 name: 'PostReadPage',
                 params: { id: item['id'].toString() }

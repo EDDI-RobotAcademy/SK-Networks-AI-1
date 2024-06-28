@@ -17,10 +17,9 @@ from tf_iris.controller.request_form.tf_iris_request_form import TfIrisRequestFo
 
 tfIrisRouter = APIRouter()
 
-MODEL_PATH = 'tf_iris_model.h5'
-SCALER_PATH = 'tf_iris_scaler.pk1'
-CLASSIFICATION_PATH = 'tf_iris_classification_label.pk1'
-
+MODEL_PATH = 'tf_iris_model.h5' # 최고의 지식인 상태를 저장 하기 위한 용도
+SCALER_PATH = 'tf_iris_scaler.pk1' # 가장 잘 나왔을 때 scaler 값
+CLASSIFICATION_PATH = 'tf_iris_classification_label.pk1' # label 정보
 
 # CLASSIFICATION_NAME = None
 
@@ -144,8 +143,8 @@ def predict(tfIrisRequestForm: TfIrisRequestForm):
 
     data = scaler.transform(data)
     prediction = model.predict(data)
-    print(f"prediction: {prediction}")
-    whichOneIsMax = np.argmax(prediction)
+    print(f"prediction: {prediction}") # [ 99.xxx, 0.01xxx, 0.0005 xxx]
+    whichOneIsMax = np.argmax(prediction) # argmax : 현재 list 안에 있는 최대 값의 index
     print(f"which one is max ? {whichOneIsMax}")
 
     predictedClass = classificationLabel[np.argmax(prediction)]

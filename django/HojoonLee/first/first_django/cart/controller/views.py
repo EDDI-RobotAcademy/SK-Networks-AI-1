@@ -17,10 +17,14 @@ class CartView(viewsets.ViewSet):
         if not userToken:
             return Response({'error': 'User token is required'}, status=status.HTTP_400_BAD_REQUEST)
 
+        # redis를 통해 account Id 할당
         accountId = self.redisService.getValueByKey(userToken)
+        # redis를 통한 accountId가 없다면 제끼기
         if not accountId:
             return Response({'error': 'Invalid user token'}, status=status.HTTP_400_BAD_REQUEST)
 
+        # cartList를 찾는 방법 : 현재 cart에는 cart와 cartitem table로 구성
+        # 먼저 누구의 카트인지를 찾고, 거기에 있는 장바구니들을 반환하면 됨
         cartItemListResponseForm = self.cartService.cartList(accountId)
         return Response(cartItemListResponseForm, status=status.HTTP_200_OK)
 

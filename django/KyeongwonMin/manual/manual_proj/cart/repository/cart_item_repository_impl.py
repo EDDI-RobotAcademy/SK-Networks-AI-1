@@ -30,6 +30,9 @@ class CartItemRepositoryImpl(CartItemRepository):
             price=productPrice
         )
 
+    def findById(self, id):
+        return CartItem.objects.get(cartItemId=id)
+
     def findByCart(self, cart):
         return list(CartItem.objects.filter(cart=cart))
 

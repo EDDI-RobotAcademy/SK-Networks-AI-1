@@ -2,7 +2,7 @@ import LogisticRegressionResultPage from "@/logisticRegression/pages/LogisticReg
 
 const LogisticRegressionRoutes = [
     {
-        path: '/logistic-regression', // "localhost8080:/logistic-regression" 하면 vue에서 구현한 화면이 나온다.
+        path: '/logistic-regression-result', // "localhost8080:/logistic-regression" 하면 vue에서 구현한 화면이 나온다.
         name: 'LogisticRegressionResultPage',
         component : LogisticRegressionResultPage
     }

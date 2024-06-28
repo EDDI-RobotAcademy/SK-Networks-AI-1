@@ -13,8 +13,8 @@ class CartItem(models.Model):
 
     def __str__(self):
         return (f"CartItem -> id: {self.cartItemId},"
-                f"cart: {self.cart.cartId}",
-                f"product: {self.product.productName}",
+                f"cart: {self.cart.cartId},"
+                f"product: {self.product.productName},"
                 f"quantity: {self.quantity}")
 
 
