@@ -91,6 +91,7 @@
 <script>
 import ConfusionMatrix from '@/random_forest/components/ConfusionMatrix.vue'
 import CommonChart from '@/random_forest/components/CommonChart.vue'
+import axiosInstance from '@/utility/axiosInstance';
 
 export default {
     components: {
@@ -114,6 +115,8 @@ export default {
     },
     methods: {
         async fetchFlightDataOnRandomForestAnalysis () {
+            //const response = await axiosInstance.fastapiAxiosInst.get('random-forest')
+            //const data = await response.data
             const response = await fetch('http://localhost:33333/random-forest') // fastAPI에서 최종 return JsonResponse(content=result)
             const data = await response.json() // data == fastAPI에서 result
 

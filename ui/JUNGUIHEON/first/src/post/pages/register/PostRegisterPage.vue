@@ -21,7 +21,9 @@
 
 <script>
 import { mapActions } from 'vuex'
+
 const postModule = 'postModule'
+
 export default {
     data () {
         return {
@@ -36,6 +38,7 @@ export default {
                 title: this.title,
                 content: this.content,
             }
+
             const postId = await this.requestCreatePostToFastapi(payload)
             console.log('postId:', postId)
             await this.$router.push({

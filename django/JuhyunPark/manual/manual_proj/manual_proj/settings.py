@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-q4_7x*-lpbkl5u#+9oho7b%pfj!r!i_y%_f5alj6$p2)cbc38p
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.0.11']
+ALLOWED_HOSTS = ['192.168.0.37', 'localhost']
 
 # Application definition
 
@@ -42,8 +42,10 @@ INSTALLED_APPS = [
     'product',
     'account',
     'cart',
+    'django_extensions',
+    'orders'
 ]
-
+## 위에 왜 order가 아니고 orders일 까?? mysql에 order가 있어 충돌이 날 수 있음.
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',

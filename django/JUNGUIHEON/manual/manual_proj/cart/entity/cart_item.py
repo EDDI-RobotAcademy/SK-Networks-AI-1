@@ -20,3 +20,6 @@ class CartItem(models.Model):
     class Meta:
         db_table = 'cart_item'
         app_label = 'cart'
+
+    def getCart(self):
+        return self.cart

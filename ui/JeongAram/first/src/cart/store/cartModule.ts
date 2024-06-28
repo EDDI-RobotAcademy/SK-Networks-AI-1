@@ -6,14 +6,14 @@ export interface CartModule {
     namespaced: true
     state: CartState
     actions: CartActions
-    //mutations: CartMutations
+    // mutations: CartMutations
 }
 
 const cartModule: CartModule = {
     namespaced: true,
     state,
     actions,
-    //mutations,
+    // mutations,
 }
 
 export default cartModule
