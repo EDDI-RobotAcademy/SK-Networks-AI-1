@@ -1,10 +1,17 @@
-export interface AuthenticationMutations {
-    isAuthenticated: boolean
+import { MutationTree } from "vuex";
+import { AuthenticationState } from "./states";
+import { 
+    REQUEST_IS_AUTHENTICATED_TO_DJANGO,
+} from "./mutation-types";
+
+export interface AuthenticationMutations extends MutationTree<AuthenticationState> {
+    [REQUEST_IS_AUTHENTICATED_TO_DJANGO] (state: AuthenticationState, settingValue: boolean): void
 }
 
-// 여기선 단순히 얘가 인증 되었나 안되었나만 봄
-const mutations: AuthenticationMutations = {
-    isAuthenticated: false // 처음엔 당연히 false로 초기화
+const mutations: MutationTree<AuthenticationState> = {
+    [REQUEST_IS_AUTHENTICATED_TO_DJANGO] (state: AuthenticationState, settingValue: boolean): void {
+        state.isAuthenticated = settingValue
+    }
 }
 
-export default mutations
+export default mutations as AuthenticationMutations
