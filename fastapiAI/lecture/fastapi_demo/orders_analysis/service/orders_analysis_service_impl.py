@@ -55,7 +55,7 @@ class OrdersAnalysisServiceImpl(OrdersAnalysisService):
 
         return f"Trained {numberOfModels} models 성공~~!!~!"
 
-    def predictQuantityFromModel(self, viewCount):
+    async def predictQuantityFromModel(self, viewCount):
         print(f"predictQuantityFromModel -> viewCount: {viewCount}")
 
         scaler = joblib.load('ordersModelScaler.pkl')
@@ -69,9 +69,9 @@ class OrdersAnalysisServiceImpl(OrdersAnalysisService):
             ordersModel = tf.keras.models.load_model(f"./{ordersModelFileName}", compile=True)
             print(f"after load model")
             X_pred = np.array([[viewCount]])
-            X_pred_scaled = self.__ordersAnalysisRepository.transformFromScaler(scaler, X_pred)
+            X_pred_scaled = await self.__ordersAnalysisRepository.transformFromScaler(scaler, X_pred)
 
-            ordersPredict = self.__ordersAnalysisRepository.predictFromModel(
+            ordersPredict = await self.__ordersAnalysisRepository.predictFromModel(
                 ordersModel, X_pred_scaled)
 
             ordersPredictionList.append(float(ordersPredict))
