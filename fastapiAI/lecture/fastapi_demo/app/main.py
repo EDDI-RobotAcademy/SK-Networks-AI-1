@@ -123,4 +123,4 @@ app.add_middleware(
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=33333)
+    uvicorn.run(app, host="192.168.0.18", port=33333)
