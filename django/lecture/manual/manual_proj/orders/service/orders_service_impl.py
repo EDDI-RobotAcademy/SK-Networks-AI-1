@@ -44,28 +44,43 @@ class OrdersServiceImpl(OrdersService):
             print('Error creating order:', e)
             raise e
 
-    # def createOrder(self, account_id, order_items):
-    #     try:
-    #         # Example: Create orders in database
-    #         order_ids = []
-    #         for item in order_items:
-    #             cart_item_id = item['cartItemId']
-    #             quantity = item['quantity']
-    #             order_price = item['orderPrice']
-    #
-    #             # Create Order object and save it to database
-    #             order = Orders.objects.create(
-    #                 account_id=account_id,
-    #                 cart_item_id=cart_item_id,
-    #                 quantity=quantity,
-    #                 order_price=order_price,
-    #             )
-    #             order_ids.append(order.id)  # Collecting created order ids
-    #
-    #         # Return list of order ids (assuming multiple orders can be created at once)
-    #         return order_ids
-    #
-    #     except Exception as e:
-    #         # Handle exceptions
-    #         print('Error creating order:', e)
-    #         raise e
+    def readOrderDetails(self, orderId, accountId):
+        try:
+            order = self.__ordersRepository.findById(orderId)
+            print(f"order.account.id: {order.account.id}, accountId: {accountId}")
+            if order.account.id != accountId:
+                raise ValueError('Invalid accountId for this order')
+
+            print("check order object <- readOrderDetails()")
+
+            # OrdersItemRepositoryImpl을 통해 해당 주문의 상세 항목들을 조회합니다.
+            order_items = self.__ordersItemRepository.list_by_order(orderId)
+
+            # 조회된 주문 상세 내역을 필요한 형식으로 반환할 수 있도록 구성합니다.
+            order_details = {
+                'order': {
+                    'id': order.id,
+                    'status': order.status,
+                    'created_date': order.created_date,
+                    'total_price': order.total_price,
+                    'shipping_address': order.shipping_address,
+                    'billing_address': order.billing_address,
+                },
+                'order_items': [
+                    {
+                        'product_id': item.product_id,
+                        'quantity': item.quantity,
+                        'price': item.price,
+                        'total_price': item.total_price(),
+                    }
+                    for item in order_items
+                ]
+            }
+
+            return order_details
+
+        except Exception as e:
+            print('Error reading order details:', e)
+            raise e
+
+
