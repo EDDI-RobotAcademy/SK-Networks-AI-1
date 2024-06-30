@@ -20,6 +20,8 @@ const actions: KafkaTestActions = {
         try {
             const res =
                 await axiosInst.fastapiAxiosInst.post(`/kafka-endpoint`, requestData);
+
+            context.commit('REQUEST_KAFKA_TEST_DATA_TO_FASTAPI', true)
             return res
         } catch (error) {
             console.error('requestKafkaTestDataToFastapi() 문제 발생:', error);

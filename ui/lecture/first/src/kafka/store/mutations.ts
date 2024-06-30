@@ -5,12 +5,12 @@ import {
 } from "./mutation-types";
 
 export interface KafkaTestMutations extends MutationTree<KafkaTestState> {
-    [REQUEST_KAFKA_TEST_DATA_TO_FASTAPI] (state: KafkaTestState, receivedData: KafkaTestItem): void
+    [REQUEST_KAFKA_TEST_DATA_TO_FASTAPI] (state: KafkaTestState, isRequest: boolean): void
 }
 
 const mutations: MutationTree<KafkaTestState> = {
-    [REQUEST_KAFKA_TEST_DATA_TO_FASTAPI] (state: KafkaTestState, receivedData: KafkaTestItem): void {
-        state.kafkaTestData = receivedData
+    [REQUEST_KAFKA_TEST_DATA_TO_FASTAPI] (state: KafkaTestState, isRequest: boolean): void {
+        state.isRequest = isRequest
     },
 }
 

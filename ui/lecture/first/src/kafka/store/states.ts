@@ -1,5 +1,6 @@
 export interface KafkaTestState {
     kafkaTestData: KafkaTestItem | null;
+    isRequest: boolean
 }
 
 export interface KafkaTestItem {
@@ -9,7 +10,8 @@ export interface KafkaTestItem {
 }
 
 const state: KafkaTestState = {
-    kafkaTestData: null
+    kafkaTestData: null,
+    isRequest: false,
 };
 
 export default state;

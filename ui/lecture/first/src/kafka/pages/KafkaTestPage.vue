@@ -5,6 +5,9 @@
         <v-card>
             <v-card-text>
                 <v-row>
+                    <v-col cols="12">
+                        <p>요청 상태: {{ requestStatus }}</p>
+                    </v-col>
                     <v-col v-if="!kafkaTestData" cols="12">
                         <p>No response yet.</p>
                     </v-col>
@@ -33,7 +36,20 @@ export default {
         };
     },
     computed: {
-        ...mapState(kafkaTestModule, ['kafkaTestData']), // Map the kafkaTestData state from Vuex
+        ...mapState(kafkaTestModule, ['kafkaTestData']),
+        requestStatus () {
+            if (this.kafkaTestData) {
+                return "데이터 처리 완료!"
+            }
+
+            if (this.response) {
+                return `${this.response.status}`;
+            } else if (this.$store.state.kafkaTestModule.isRequest) {
+                return "데이터를 처리 중입니다"
+            } else {
+                return '아직 요청하지 않았음';
+            }
+        }
     },
     methods: {
         ...mapActions(kafkaTestModule, ['requestKafkaTestDataToFastapi']),
