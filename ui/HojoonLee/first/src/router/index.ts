@@ -13,9 +13,7 @@ import RandomForestRoutes from '@/random_forest/router/RandomForestRoutes'
 import CartRoutes from '@/cart/router/CartRoutes'
 import PostRoutes from '@/post/router/PostRoutes'
 import TensorFlowIrisTestRoutes from '@/tfIris/router/TensorFlowIrisTestRoutes'
-
-
-
+import OrderRoutes from '@/order/router/OrderRoutes'
 
 const routes: Array<RouteRecordRaw> = [
   // 항상 도메인의 router 추가했으면 main router 에도 추가해줘야함
@@ -32,6 +30,7 @@ const routes: Array<RouteRecordRaw> = [
   ...CartRoutes,
   ...PostRoutes,
   ...TensorFlowIrisTestRoutes,
+  ...OrderRoutes,
 ]
 
 const router = createRouter({

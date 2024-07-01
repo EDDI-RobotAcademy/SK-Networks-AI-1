@@ -36,7 +36,6 @@ import { mapActions, mapState } from 'vuex'
 
 const postModule = 'postModule'
 
-
 export default {
     props: {
         id: {

@@ -67,7 +67,10 @@ export default {
                 { title: 'Logistic Regression', action: () => { router.push('/logistic-regression-result') } },
                 { title: 'Random Forest', action: () => { router.push('/random-forest-result') } },
                 { title: 'Polynomial Regression', action: () => { router.push('/polynomial-regression-result') } },
-                { title: 'Exponential Regression', action: () => { router.push('/exponential-regression-result') } }
+                { title: 'Exponential Regression', action: () => { router.push('/exponential-regression-result') } },
+                { title: 'Kmeans Regression', action: () => { router.push('/kmeans-test-result')}},
+                { title: 'TensorFlowIrisTestResult Regression', action: () => { router.push('/tf-iris-result')}},
+                { title: 'TrainTestEvaluationResult Regression', action: () => { router.push('/train-test-evaluation-result')}},
             ]
         }
     },
@@ -103,10 +106,24 @@ export default {
         },
     },
     mounted () {
-        window.addEventListener('storage', this.updateLoginStatus)
+        console.log('navigation bar mounted()')
+        
+        const userToken = localStorage.getItem("userToken")
+        if (userToken) {
+            console.log('You already has a userToken!!!')
+            // this.$store를 통해 Vue가 관리하는 Vuex 스토리지 접근
+            // Vuex 내에 존재하는 state 중 우리가 모듈로 만든
+            // authenticationModule의 isAuthenticated에 접근
+            // 실제 위의 ...mapState로 간편하게 접근했지만
+            // mount 중에는 불가하므로 아래와 같이 직접 처리
+            this.$store.state.authenticationModule.isAuthenticated = true
+        }
     },
-    beforeUnmount () {
-        window.removeEventListener('storage', this.updateLoginStatus)
-    },
+    // beforeUnmount () {
+    //     console.log('navigation bar beforeUnmount()')
+    // },
+    // beforeUpdate () {
+    //     console.log('navigation bar beforeUpdate()')
+    // }
 }
 </script>
