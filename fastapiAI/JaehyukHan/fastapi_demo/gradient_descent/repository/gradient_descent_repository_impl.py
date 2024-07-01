@@ -12,6 +12,8 @@ class GradientDescentRepositoryImpl(GradientDescentRepository):
 
     async def createTrainData(self):
         np.random.seed(self.RECALL)
+        # X, y가 서로 종속되어 있기 때문에 랜덤이지만 진짜 랜덤과는 다르다고 할 수 있음
+        # Kalman Filter를 이용하면 확실하게 추적이 가능
         X = 2 * np.random.rand(self.RANGE_MAX, self.RANGE_MIN)
         y = 4 + 3 * X + np.random.rand(self.RANGE_MAX, self.RANGE_MIN)
 
@@ -46,7 +48,6 @@ class GradientDescentRepositoryImpl(GradientDescentRepository):
                 loss = await self.calcMeanSquaredError(y_tensor, y_prediction)
 
             gradients = tape.gradient(loss, [selectedModel.weight, selectedModel.intercept])
-            print(f"gradients: {gradients}")
 
             selectedModel.weight.assign_sub(gradients[0] * learningRate)
             selectedModel.intercept.assign_sub(gradients[1] * learningRate)
@@ -56,3 +57,15 @@ class GradientDescentRepositoryImpl(GradientDescentRepository):
 
         return selectedModel
 
+    def loadModel(self, wantToBeLoadModel):
+        model = LinearRegressionModel()
+
+        data = np.load(wantToBeLoadModel)
+
+        model.weight.assign(data['weight'])
+        model.intercept.assign(data['intercept'])
+
+        return model
+
+    def predict(self, loadedModel, tensor):
+        return loadedModel(tensor).numpy().tolist()

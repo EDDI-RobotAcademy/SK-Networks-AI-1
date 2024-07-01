@@ -89,7 +89,7 @@ export default {
             // authenticationModule의 isAuthenticated에 접근
             // 실제 위의 ...mapState로 간편하게 접근했지만
             // mount 중에는 불가하므로 아래와 같이 직접 처리
-            this.$store.state.authenticationModule.isAuthenticated = true
+            this.$store.state.authenticationModule.isAuthenticated = true.
         }
     },
 }
