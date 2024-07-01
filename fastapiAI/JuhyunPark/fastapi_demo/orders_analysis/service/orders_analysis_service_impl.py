@@ -18,6 +18,7 @@ class OrdersAnalysisServiceImpl(OrdersAnalysisService):
         currentDirectory = os.getcwd()
         print(f"currentDirectory: {currentDirectory}")
 
+          ## 상대경로. join을 엮어준다. 그래서 / 가 필요없다.
         filePath = os.path.join(
             currentDirectory, "..", "assets", "orders_data_after_drop_duplication.xlsx"
         )
@@ -76,6 +77,7 @@ class OrdersAnalysisServiceImpl(OrdersAnalysisService):
 
             ordersPredictionList.append(float(ordersPredict))
 
+                              #평균값
         averagePrediction = np.mean(ordersPredictionList)
         print(f"averagePrediction: {averagePrediction}")
 
