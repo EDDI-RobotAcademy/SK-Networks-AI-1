@@ -62,6 +62,8 @@ class OauthView(viewsets.ViewSet):
             if not account:
                 return Response({'error': 'Account not found'}, status=status.HTTP_404_NOT_FOUND)
 
+            # 랜덤한 값을 만들어 userToken으로 준다.
+            # random함수를 사용하는 것 보다 중복가능성이 낮아 uuid4를 사용
             userToken = str(uuid.uuid4())
             self.redisService.store_access_token(account.id, userToken)
             # key로 value 찾기 테스트

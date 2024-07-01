@@ -15,6 +15,10 @@ export type OrderActions = {
             }[]
         }
     ): Promise<AxiosResponse>
+
+    // requestReadOrderToDjango(
+    //     context: 
+    // )
 }
 
 const actions: OrderActions = {
@@ -44,7 +48,16 @@ const actions: OrderActions = {
             console.error('Error creating order:', error)
             throw error
         }
-    }
+    },
+
+    // async requestReadOrderToDjango({ state }, payload) {
+    //     try {
+    //         const response = 
+    //             await axiosInst.djangoAxiosInst.post(`/orders/read${orderId}`, requestData)
+
+    //         return 
+    //     }
+    // }
 
 }
 
