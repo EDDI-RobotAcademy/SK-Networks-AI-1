@@ -7,8 +7,10 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from async_db.database import getMySqlPool, createTableIfNeccessary
 from exponential_regression.controller.exponential_regression_controller import exponentialRegressionRouter
+from gradient_descent.controller.gradient_descent_controller import gradientDescentRouter
 from kmeans.controller.kmeans_controller import kmeansRouter
 from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
+from orders_analysis.controller.orders_analysis_controller import ordersAnalysisRouter
 from polynomialRegression.controller.polynomial_regression_controller import polynomialRegressionRouter
 from post.controller.post_controller import postRouter
 from random_forest.controller.random_forest_controller import randomForestRouter
@@ -107,6 +109,8 @@ app.include_router(randomForestRouter)
 app.include_router(postRouter, prefix="/post")
 app.include_router(kmeansRouter)
 app.include_router(tfIrisRouter)
+app.include_router(ordersAnalysisRouter)
+app.include_router(gradientDescentRouter)
 
 load_dotenv()
 
@@ -123,4 +127,4 @@ app.add_middleware(
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=33333)
+    uvicorn.run(app, host="192.168.0.37", port=33333)
