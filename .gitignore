@@ -314,3 +314,9 @@ pyrightconfig.json
 
 # exclude *.svg
 *.svg
+
+# exclude *.keras
+*.keras
+
+# exclude *.npz
+*.npz

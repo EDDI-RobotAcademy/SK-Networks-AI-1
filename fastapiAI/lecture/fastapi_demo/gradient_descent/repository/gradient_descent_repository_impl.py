@@ -21,7 +21,7 @@ class GradientDescentRepositoryImpl(GradientDescentRepository):
         return LinearRegressionModel()
 
     async def calcMeanSquaredError(self, y_real, y_prediction):
-        return tf.reduce_mean(tf.square(y_real, y_prediction))
+        return tf.reduce_mean(tf.square(y_real - y_prediction))
 
     # Gradient Descent는 변화율이 최소가 되는 최적 경로를 찾기 위해 사용하는 편임
     # 그렇기 때문에 위와 같은 MSE(mean squared error) 계산이 진행됨
@@ -36,29 +36,32 @@ class GradientDescentRepositoryImpl(GradientDescentRepository):
         X_tensor = tf.constant(X, dtype=tf.float32)
         y_tensor = tf.constant(y, dtype=tf.float32)
 
-        print(f"selectedModel: {selectedModel}")
-
         for epoch in range(numEpoches):
             with tf.GradientTape() as tape:
                 y_prediction = selectedModel(X_tensor)
-                print(f"y_prediction: {y_prediction}")
 
                 # 여기서 손실이 최소가 되는 것을 찾는 것임 (변화율 최소)
                 loss = await self.calcMeanSquaredError(y_tensor, y_prediction)
-                print(f"loss: {loss}")
 
-            print(f"weight: {selectedModel.weight}")
-            print(f"intercept: {selectedModel.intercept}")
             gradients = tape.gradient(loss, [selectedModel.weight, selectedModel.intercept])
-            print(f"gradients: {gradients}")
 
-            # selectedModel.weight.assign_sub(gradients[0] * learningRate)
-            # selectedModel.intercept.assign_sub(gradients[1] * learningRate)
+            selectedModel.weight.assign_sub(gradients[0] * learningRate)
+            selectedModel.intercept.assign_sub(gradients[1] * learningRate)
 
             if epoch % 100 == 0:
                 print(f"Epoch: {epoch}, Loss: {loss.numpy()}")
 
         return selectedModel
+
+    def loadModel(self, wantToBeLoadModel):
+        model = LinearRegressionModel()
+
+        data = np.load(wantToBeLoadModel)
+
+        model.weight.assign(data['weight'])
+        model.intercept.assign(data['intercept'])
+
+        return model
 
 
 
