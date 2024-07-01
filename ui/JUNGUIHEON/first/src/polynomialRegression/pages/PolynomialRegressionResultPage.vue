@@ -19,7 +19,7 @@ export default {
     async created () {
         try {
             const response = 
-                await fetch('http://localhost:33333/polynomial-regression')
+                await fetch('http://192.168.0.55:33333/polynomial-regression')
             const data = await response.json()
             this.regressionData = data
             console.log('data:', data)

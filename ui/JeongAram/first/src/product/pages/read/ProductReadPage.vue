@@ -87,7 +87,7 @@ export default {
                     quantity: 1, // 임시로 기본 수량 1로 설정
                 };
                 await this.requestAddCartToDjango(cartData);
-                // this.$router.push({ name: 'CartListPage' });
+                this.$router.push({ name: 'CartListPage' });
             } catch (error) {
                 console.log('장바구니 추가 과정에서 에러 발생:', error);
             }

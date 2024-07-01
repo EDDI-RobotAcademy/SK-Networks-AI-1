@@ -18,6 +18,7 @@ import PostRoutes from '@/post/router/PostRoutes'
 import KmeansRoutes from "@/kmeans/router/KmeansRoutes";
 import TensorFlowIrisTestRoutes from '@/tfIris/router/TensorFlowIrisTestRoutes'
 
+
 const routes: Array<RouteRecordRaw> = [
   ...HomeRoutes,
   // 실제 Javascript 던 Typescript 던 spread 문법을 가지고 있습니다.
@@ -38,7 +39,7 @@ const routes: Array<RouteRecordRaw> = [
   ...RandomForestRoutes,
   ...PostRoutes,
   ...KmeansRoutes,
-  ...TensorFlowIrisTestRoutes,
+  ...TensorFlowIrisTestRoutes,  
 ]
 
 const router = createRouter({

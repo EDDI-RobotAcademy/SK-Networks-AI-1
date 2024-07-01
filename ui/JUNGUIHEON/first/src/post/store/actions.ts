@@ -33,42 +33,39 @@ const actions: PostActions = {
             console.error('requestPostListToFastapi() 중 에러 발생:', error)
             throw error
         }
-
     },
-
     async requestCreatePostToFastapi(
         context: ActionContext<PostState, unknown>,
         payload: { title: string, content: string }
     ): Promise<number> {
 
         const { title, content } = payload
-        
+
         try {
             const res = await axiosInst.fastapiAxiosInst.post(
-                '/post/create', {title, content})
-            
-            console.log('res: ', res.data.id)
-            return res.data.id    
+                '/post/create', { title, content })
+
+            console.log('res:', res.data.id)
+            return res.data.id
 
         } catch (error) {
-            console.error('requestCreatePostoFastapi() 중 에러 발생: ', error)
+            console.error('requestCreatePostToFastapi() 중 에러 발생:', error)
             throw error
         }
     },
-
     async requestPostToFastapi(
         context: ActionContext<PostState, any>,
         id: number
-    ): Promise<void>{
+    ): Promise<void> {
 
         try {
             const res: AxiosResponse<Post> = 
-            await axiosInst.fastapiAxiosInst.get(`/post/read/${id}`)
-        
-            console.log('res.data: ', res.data)
+                await axiosInst.fastapiAxiosInst.get(`/post/read/${id}`)
+
+            console.log('res.data:', res.data)
             context.commit(REQUEST_POST_TO_FASTAPI, res.data)
         } catch (error) {
-            console.error('requestPostToFastapi() 중 에러 발생: ', error)
+            console.error('requestPostToFastapi() 중 에러 발생:', error)
             throw error
         }
     }
