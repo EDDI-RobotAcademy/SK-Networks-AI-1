@@ -39,7 +39,6 @@ class GradientDescentServiceImpl(GradientDescentService):
         print("학습이 잘 되어있는 상태입니다!")
         loadedModel = self.gradientDescentRepository.loadModel(self.SAVED_MODEL_PATH)
 
-        # X_new = tf.constant(request.X, dtype=tf.float32)
-        # predictions = model(X_new).numpy().tolist()
-        #
-        # return {"predictions": predictions}
+        predictions = self.gradientDescentRepository.predict(loadedModel, request.toTensor())
+
+        return predictions

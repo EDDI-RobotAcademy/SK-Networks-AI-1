@@ -37,4 +37,6 @@ async def gradientDescentPredict(requestForm: PredictRequestForm,
 
     print(f"controller -> gradientDescentPredict()")
 
-    await gradientDescentService.gradientDescentPredict(requestForm.toPredictRequest())
+    predictions = await gradientDescentService.gradientDescentPredict(requestForm.toPredictRequest())
+
+    return JSONResponse(content={"predictions": predictions}, status_code=status.HTTP_200_OK)

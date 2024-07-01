@@ -62,3 +62,6 @@ class GradientDescentRepositoryImpl(GradientDescentRepository):
         model.intercept.assign(data['intercept'])
 
         return model
+
+    def predict(self, loadedModel, tensor):
+        return loadedModel(tensor).numpy().tolist()

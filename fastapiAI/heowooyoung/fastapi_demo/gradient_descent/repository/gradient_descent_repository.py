@@ -17,3 +17,7 @@ class GradientDescentRepository(ABC):
     @abstractmethod
     def loadModel(self, wantToBeLoadModel):
         pass
+
+    @abstractmethod
+    def predict(self, loadedModel, tensor):
+        pass
