@@ -27,8 +27,11 @@ class CartItemRepositoryImpl(CartItemRepository):
             price=productPrice
         )
 
+    def findById(self, id):
+        return CartItem.objects.get(cartItemId=id)
+
     def findByCart(self, cart):
-        return list(CartItem.objects.filter(cart=cart))
+        return list(CartItem.objects.filter(cart=cart))  # filter() 를 사용하면 리스트로 가져옴
 
     def findByProductId(self, productId):
         try:
@@ -36,8 +39,8 @@ class CartItemRepositoryImpl(CartItemRepository):
         except CartItem.DoesNotExist:
             return None
 
-    def findAllByProductId(self, productId):
-        return CartItem.objects.filter(product_id=productId)
+    def findAllByProduct(self, product):
+        return CartItem.objects.filter(product=product)
 
     def update(self, cartItem):
         cartItem.save()

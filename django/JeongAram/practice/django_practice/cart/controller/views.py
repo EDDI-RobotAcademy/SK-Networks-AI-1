@@ -16,7 +16,7 @@ class CartView(viewsets.ViewSet):
 
     def cartRegister(self, request):
         try:
-            data= request.data
+            data = request.data
             print('data:', data)
 
             userToken = data.get('userToken')
@@ -29,4 +29,18 @@ class CartView(viewsets.ViewSet):
             print('상픔 등록 과정 중 문제 발생:', e)
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+
+    def cartItemList(self, request):
+            data = request.data
+            userToken = data.get('userToken')
+
+            if not userToken:
+                return Response({'error': 'User token is required'}, status=status.HTTP_400_BAD_REQUEST)
+
+            accountId = self.redisService.getValueByKey(userToken)
+            if not accountId:
+                return Response({'error': 'Invalid user token'}, status=status.HTTP_400_BAD_REQUEST)
+
+            cartItemListResponseForm = self.cartService.cartList(accountId)
+            return Response(cartItemListResponseForm, status=status.HTTP_200_OK)
 

@@ -26,7 +26,7 @@ class OrdersView(viewsets.ViewSet):
             orderItemList = data.get('items')
             print(f"orderItemList: {orderItemList}")
 
-            orderId = self.ordersSerivce.createOrder(accountId, orderItemList)
+            orderId = self.ordersService.createOrder(accountId, orderItemList)
             return Response(orderId, status=status.HTTP_200_OK)
 
         except Exception as e:
