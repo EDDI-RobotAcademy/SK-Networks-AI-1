@@ -1,13 +1,8 @@
-import os.path
-
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, status
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel
 
+from gradient_descent.controller.request_form.predict_request_form import PredictRequestForm
 from gradient_descent.service.gradient_descent_service_impl import GradientDescentServiceImpl
-
-import numpy as np
-import tensorflow as tf
 
 gradientDescentRouter = APIRouter()
 
@@ -26,16 +21,14 @@ async def gradientDescentTrain(gradientDescentService: GradientDescentServiceImp
 
     return JSONResponse(content={"result": result}, status_code=status.HTTP_200_OK)
 
-class PredictRequest(BaseModel):
-    X: list
 
 @gradientDescentRouter.post("/gradient-descent-predict")
-async def gradientDescentPredict(request: PredictRequest):
-    if not os.path.exists('linear_regression_model.npz'):
-        return {"error": "모델 학습부터 시키세요!"}
+async def gradientDescentPredict(requestForm: PredictRequestForm,
+                                 gradientDescentService: GradientDescentServiceImpl =
+                                 Depends(injectGradientDescentService)):
 
-    # model = loadModel('linear_regression_model.npz')
-    # X_new = tf.constant(request.X, dtype=tf.float32)
-    # predictions = model(X_new).numpy().tolist()
-    #
-    # return {"predictions": predictions}
+    print(f"controller -> gradientDescentPredict()")
+
+    predictions = await gradientDescentService.gradientDescentPredict(requestForm.toPredictRequest())
+
+    return JSONResponse(content={"predictions": predictions}, status_code=status.HTTP_200_OK)

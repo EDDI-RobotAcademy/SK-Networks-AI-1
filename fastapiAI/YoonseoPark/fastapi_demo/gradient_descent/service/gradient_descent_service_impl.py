@@ -1,4 +1,7 @@
+import os
+
 import numpy as np
+import tensorflow as tf
 
 from gradient_descent.repository.gradient_descent_repository_impl import GradientDescentRepositoryImpl
 from gradient_descent.service.gradient_descent_service import GradientDescentService
@@ -28,3 +31,21 @@ class GradientDescentServiceImpl(GradientDescentService):
         self.saveTrainedModel(trainedModel, self.SAVED_MODEL_PATH)
 
         return True
+
+    def checkValidation(self):
+        if not os.path.exists('linear_regression_model.npz'):
+            return False
+
+        return True
+
+
+    async def gradientDescentPredict(self, request):
+        if (self.checkValidation() == False):
+            return {"error": "모델 학습부터 시키세요!"}
+
+        print("학습이 잘 되어있는 상태입니다!")
+        loadedModel = await self.gradientDescentRepository.loadModel(self.SAVED_MODEL_PATH)
+
+        predictions = await self.gradientDescentRepository.predict(loadedModel, request.toTensor())
+
+        return predictions

@@ -56,3 +56,16 @@ class GradientDescentRepositoryImpl(GradientDescentRepository):
                 print(f"Epoch: {epoch}, Loss: {loss.numpy()}")
 
         return selectedModel
+
+    async def loadModel(self, wantToBeLoadModel):
+        model = LinearRegressionModel()
+
+        data = np.load(wantToBeLoadModel)
+
+        model.weight.assign(data['weight'])
+        model.intercept.assign(data['intercept'])
+
+        return model
+
+    async def predict(self, loadedModel, tensor):
+        return loadedModel(tensor).numpy().tolist()
