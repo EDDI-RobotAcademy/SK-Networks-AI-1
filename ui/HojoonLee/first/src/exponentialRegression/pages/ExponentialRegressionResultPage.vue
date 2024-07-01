@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import axiosInstance from '@/utility/axiosInstance';
 import * as d3 from 'd3'
 import { ref, onMounted } from 'vue'
 
@@ -21,9 +22,12 @@ export default {
 
         const fetchExponentialRegressionData = async () => {
             try {
-                const response = await fetch('http://localhost:33333/exponential-regression')
-                const data = await response.json()
-
+                const response = await axiosInstance.fastapiAxiosInst.get('/exponential-regression')
+                const data = await response.data
+                // 이렇게 fetch를 하게 되면 문제가 생김
+                // const response = await fetch('http://localhost:33333/exponential-regression')
+                // const data = await response.json()
+                
                 originalData.value = data.original_data
                 console.log('originalData:', originalData.value)
 

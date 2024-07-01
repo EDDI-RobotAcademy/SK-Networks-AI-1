@@ -7,14 +7,14 @@
                     <v-cart-text>
                         <v-table>
                             <thead>
-                            <tr>
-                                <th>Select</th>
-                                <th>Product</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Total</th>
-                                <th>Actions</th>
-                            </tr>
+                                <tr>
+                                    <th>Select</th>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th>Actions</th>
+                                </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="item in cartItems" :key="item.cartItemsId">
@@ -24,10 +24,7 @@
                                     <td>{{ item.productName }}</td>
                                     <td>{{ item.productPrice }}</td>
                                     <td>
-                                        <v-text-field
-                                            v-model="item.quantity"
-                                            type="number"
-                                            min="1"
+                                        <v-text-field v-model="item.quantity" type="number" min="1"
                                             @change="updateQuantity(item)"></v-text-field>
                                     </td>
                                     <td>{{ item.productPrice * item.quantity }}</td>
@@ -51,7 +48,7 @@
             </v-col>
         </v-row>
         <!-- Confirmation Dialog -->
-         <v-dialog v-model="isCheckoutDialogVisible" max-width="500">
+        <v-dialog v-model="isCheckoutDialogVisible" max-width="500">
             <v-card>
                 <v-card-title>Confirm Checkout</v-card-title>
                 <v-card-text>Are you sure you want to order the selected items?</v-card-text>
@@ -61,7 +58,7 @@
                     <v-btn color="blue darken-1" text @click="proceedToOrder">Confirm</v-btn>
                 </v-card-actions>
             </v-card>
-         </v-dialog>
+        </v-dialog>
     </v-container>
 </template>
 
@@ -80,7 +77,7 @@ export default {
         }
     },
     computed: {
-        cartTotal () {
+        cartTotal() {
             if (!Array.isArray(this.cartItems) || this.cartItems.length == 0) {
                 return 0
             }
@@ -88,7 +85,7 @@ export default {
                 (total, item) => total + item.productPrice * item.quantity, 0
             )
         },
-        selectedItemsTotal () {
+        selectedItemsTotal() {
             if (!Array.isArray(this.selectedItems) || this.selectedItems.length == 0) {
                 return 0
             }
@@ -100,19 +97,19 @@ export default {
     methods: {
         ...mapActions('cartModule', ["requestCartListToDjango"]),
         ...mapActions('orderModule', ["requestCreateOrderToDjango"]),
-        updateQuantity (item) {
+        updateQuantity(item) {
             // 수량 업데이트 로직
         },
-        removeItem (item) {
+        removeItem(item) {
             this.cartItems = this.cartItems.filter(
                 cartItem => cartItem.cartItemsId !== item.cartItemId)
             this.selectedItems = this.selectedItems.filter(
                 selectedItem => selectedItem.cartItemId !== item.cartItemsId)
         },
-        confirmCheckout () {
+        confirmCheckout() {
             this.isCheckoutDialogVisible = true
         },
-        async proceedToOrder () {
+        async proceedToOrder() {
             this.isCheckoutDialogVisible = false
 
             try {
@@ -123,8 +120,7 @@ export default {
                     quantity: item.quantity
                 }))
                 console.log('orderItems:', orderItems)
-                const response = await this.requestCreateOrderToDjango({ items: orderItems })
-                const orderId = response.orderId
+                const orderId = await this.requestCreateOrderToDjango({ items: orderItems })
 
                 this.$router.push({
                     name: 'OrderReadPage',
