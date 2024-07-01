@@ -1,5 +1,5 @@
 from django.db import models
-from product.models import Product
+from product.entity.models import Product
 from .order import Order
 
 class OrderItem(models.Model):

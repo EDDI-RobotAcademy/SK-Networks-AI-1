@@ -35,7 +35,7 @@ class CartServiceImpl(CartService):
         print("기존 장바구니 사용")
 
         productId = cartData.get('productId')
-        cartItemList = self.__cartItemRepository.findByProductId(productId)
+        cartItemList = self.__cartItemRepository.findAllByProductId(productId)
 
         cartItem = None
         for item in cartItemList:
@@ -54,6 +54,29 @@ class CartServiceImpl(CartService):
 
             cartItem.quantity += 1
             self.__cartItemRepository.update(cartItem)
+
+    def cartList(self, accountId):
+        account = self.__accountRepository.findById(accountId)
+        cart = self.__cartRepository.findByAccount(account)
+        print(f"cartList -> cart: {cart}")
+        cartItemList = self.__cartItemRepository.findByCart(cart)
+        print(f"cartList -> cartItemList: {cartItemList}")
+        cartItemListResponseForm = []
+
+        for cartItem in cartItemList:
+            cartItemResponseForm = {
+                'cartItemId': cartItem.cartItemId,
+                'productName': cartItem.product.productName,
+                'productPrice': cartItem.product.productPrice,
+                'productId': cartItem.product.productId,
+                'quantity': cartItem.quantity
+            }
+            cartItemListResponseForm.append(cartItemResponseForm)
+
+        return cartItemListResponseForm
+        # form을 따로 안만들었을 때 이렇게 지저분한 코드가 만들어진다.
+
+
 
 
 
