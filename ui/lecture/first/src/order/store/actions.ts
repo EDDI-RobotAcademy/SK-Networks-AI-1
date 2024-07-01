@@ -65,7 +65,6 @@ const actions: OrderActions = {
 
             const requestData = {
                 userToken,
-                orderId
             }
 
             const response =
