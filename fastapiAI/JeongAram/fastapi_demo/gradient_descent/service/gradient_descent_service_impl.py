@@ -43,8 +43,11 @@ class GradientDescentServiceImpl(GradientDescentService):
 
         loadedModel = self.gradientDescentRepository.loadModel(self.SAVED_MODEL_PATH)
 
+        # predict request에 있는 toTensor() 함수를 통해 request를 tensor화 시킨다.
+        # 예측(잘 학습시켰던 모델, 테스트 입력 데이터)
         predictions = self.gradientDescentRepository.predict(loadedModel, request.toTensor())
 
+        # X와 y를 입력했을 때 최적의 w, b를 예측해준다.
         return predictions
 
         # X_new = tf.constant(request.X, dtype=tf.float32)
