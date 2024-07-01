@@ -74,19 +74,20 @@ export default {
 
             try {
                 const response = await this.requestReadOrderToDjango({ orderId })
-            } catch error{
-
+            } catch (error) {
+                console.error('주문 내역 확인 중 에러', error)
             }
-        }, 
-        placeOrder(){
+        },
+        placeOrder() {
             alert("Order has been placed successfully!")
-            this.$router.push({name:'HomePage'})
+            this.$router.push({ name: 'HomePage' })
         }
     },
-    created(){
+    created() {
         this.fetchOrderData()
     }
-},
+}
+
 </script>
 
 <style>
