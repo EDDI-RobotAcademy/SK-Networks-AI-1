@@ -17,4 +17,4 @@ async def gradientDescentTrain(gradientDescentService: GradientDescentServiceImp
 
     print(f"controller -> gradientDescentTrain()")
 
-    gradientDescentService.gradientDescentTrain()
+    await gradientDescentService.gradientDescentTrain()
