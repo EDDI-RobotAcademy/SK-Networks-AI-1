@@ -23,6 +23,7 @@ class GradientDescentServiceImpl(GradientDescentService):
         # print(f"type check : {type(selectedModel)}")
         # type check : <class 'gradient_descent.entity.linear_regression_model.LinearRegressionModel'>
 
+        # y = wx + b 모델에 X,y
         trainedModel = await self.gradientDescentRepository.trainModel(selectedModel, X, y) # 선택된 모델로 학습
 
         self.saveTrainedModel(trainedModel, self.SAVED_MODEL_PATH)
@@ -43,6 +44,7 @@ class GradientDescentServiceImpl(GradientDescentService):
 
         # prediction
         # predict request에 있는 toTensor() 함수를 통해 request를 tensor화 시킨다.
+        # 예측(잘 학습시켰던 모델, 테스트 입력 데이터)
         predictions = self.gradientDescentRepository.predict(loadedModel, request.toTensor())
 
         return predictions
