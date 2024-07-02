@@ -22,3 +22,10 @@ class DecisionTreeRepository(ABC):
     @abstractmethod
     def sliceTensor(self, scaledTrainDataFrame, scaledTestDataFrame):
         pass
+    @abstractmethod
+    def applyBatchSize(self, trainDataFrameAfterSlice, testDataFrameAfterSlice, batchSize):
+        pass
+
+    @abstractmethod
+    def learn(self, readyForLearnTrainData):
+        pass

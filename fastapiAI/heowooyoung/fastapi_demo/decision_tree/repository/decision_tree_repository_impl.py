@@ -5,6 +5,9 @@ from sklearn.preprocessing import StandardScaler
 
 from decision_tree.repository.decision_tree_repository import DecisionTreeRepository
 
+# pip install tensorflow_decision_forests (설치 명령어)
+# pip install --upgrade typing_extensions (위 명령어 실패시 설치 명렁어)
+import tensorflow_decision_forests as tfdf
 import tensorflow as tf
 import pandas as pd
 
@@ -38,3 +41,17 @@ class DecisionTreeRepositoryImpl(DecisionTreeRepository):
              scaledTestDataFrame['target'].astype(int))
         )
         # print(f"trainDataFrameAfterSlice: {trainDataFrameAfterSlice}")
+
+        return trainDataFrameAfterSlice, testDataFrameAfterSlice
+
+    def applyBatchSize(self, trainDataFrameAfterSlice, testDataFrameAfterSlice, batchSize):
+        readyForLearnTrainData = trainDataFrameAfterSlice.batch(batchSize)
+        readyForLearnTestData = testDataFrameAfterSlice.batch(batchSize)
+
+        return readyForLearnTrainData, readyForLearnTestData
+
+    def learn(self, readyForLearnTrainData):
+        model = tfdf.keras.RandomForestModel(num_trees=100, max_depth=12, min_examples=6)
+        model.fit(readyForLearnTrainData)
+
+        return model

@@ -23,5 +23,12 @@ class DecisionTreeServiceImpl(DecisionTreeService):
 
         scaledTrainDataFrame, scaledTestDataFrame = self.decisionTreeRepository.applyStandardScaler(trainDataFrame, testDataFrame, wineInfo.feature_names)
 
-        self.decisionTreeRepository.sliceTensor(scaledTrainDataFrame, scaledTestDataFrame)
+        trainDataFrameAfterSlice, testDataFrameAfterSlice = self.decisionTreeRepository.sliceTensor(scaledTrainDataFrame, scaledTestDataFrame)
+
+        readyForLearnTrainData, readyForLearnTestData = self.decisionTreeRepository.applyBatchSize(trainDataFrameAfterSlice, testDataFrameAfterSlice, 32)
+
+        trainedModel = self.decisionTreeRepository.learn(readyForLearnTrainData)
+
+
+
 
