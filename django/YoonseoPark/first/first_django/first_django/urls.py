@@ -19,5 +19,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    # board Domain으로 요청이 들어가는 모든 것을
+    # board 디렉토리 하위의 urls.py에서 관리하겠다는 의미
     path('board/', include('board.urls'))
 ]

@@ -29,6 +29,14 @@
             <v-icon left>mdi-forum</v-icon>
             <span>게시판</span>
         </v-btn>
+        <v-btn text @click="goToPostPage" class="btn-text">
+            <v-icon left>mdi-forum</v-icon>
+            <span>익명 게시판</span>
+        </v-btn>
+        <v-btn v-if="isAuthenticated" text @click="goToCart" class="btn-text">
+            <v-icon left>mdi-cart</v-icon>
+            <span>장바구니</span>
+        </v-btn>
         <v-btn v-if="!isAuthenticated" text @click="signIn" class="btn-text">
             <v-icon left>mdi-login</v-icon>
             <span>로그인</span>
@@ -82,12 +90,32 @@ export default {
             this.requestLogoutToDjango()
             router.push('/')
         },
+        goToPostPage () {
+            router.push('/post/list')
+        },
+        goToCart () {
+            router.push('/cart/list')
+        },
     },
     mounted () {
-        window.addEventListener('storage', this.updateLoginStatus)
+        console.log('navigation bar mounted()')
+        
+        const userToken = localStorage.getItem("userToken")
+        if (userToken) {
+            console.log('You already have a userToken!!!')
+            // this.$store를 통해 Vue가 관리하는 Vuex 스토리지 접근
+            // Vuex 내에 존재하는 state 중 우리가 모듈로 만든
+            // authenticationModule의 isAuthenticated에 접근
+            // 실제 위의 ...mapState로 간편하게 접근했지만
+            // mount 중에는 불가하므로 아래와 같이 직접 처리
+            this.$store.state.authenticationModule.isAuthenticated = true
+        }
     },
-    beforeUnmount () {
-        window.removeEventListener('storage', this.updateLoginStatus)
-    },
+    // beforeUnmount () {
+    //     console.log('navigation bar beforeUnmount()')
+    // },
+    // beforeUpdate () {
+    //     console.log('navigation bar beforeUpdate()')
+    // }
 }
 </script>

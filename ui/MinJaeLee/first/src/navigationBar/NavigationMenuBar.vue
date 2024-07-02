@@ -14,8 +14,7 @@
                 </v-btn>
             </template>
             <v-list>
-                <v-list-item v-for="(item, index) in items"
-                             :key="index" @click="item.action">
+                <v-list-item v-for="(item, index) in items" :key="index" @click="item.action">
                     <v-list-item-title>{{ item.title }}</v-list-item-title>
                 </v-list-item>
             </v-list>
@@ -60,7 +59,7 @@ import { mapActions, mapState } from 'vuex'
 const authenticationModule = 'authenticationModule'
 
 export default {
-    data () {
+    data() {
         return {
             isLogin: !!localStorage.getItem("userToken"),
             items: [
@@ -76,37 +75,44 @@ export default {
     },
     methods: {
         ...mapActions(authenticationModule, ['requestLogoutToDjango']),
-        goToHome () {
+        goToHome() {
             router.push('/')
         },
-        goToProductList () {
+        goToProductList() {
             router.push('/product/list')
         },
-        goToBoardList () {
+        goToBoardList() {
             router.push('/board/list')
         },
-        signIn () {
+        signIn() {
             router.push('/account/login')
         },
-        signOut () {
+        signOut() {
             this.requestLogoutToDjango()
             router.push('/')
         },
-        goToCart () {
+        goToCart() {
             router.push('/cart/list')
         },
-        goToOrder () {
+        goToOrder() {
             router.push('/order')
         },
-        goToPostPage () {
+        goToPostPage() {
             router.push('/post/list')
         },
     },
-    mounted () {
-        window.addEventListener('storage', this.updateLoginStatus)
+    mounted() {
+        // window.addEventListener('storage', this.updateLoginStatus)
+        console.log('navigation bar mounted()')
+
+        const userToken = localStorage.getItem("userToken")
+        if (userToken) {
+            console.log("you already has a userToken!!!")
+            this.$store.state.authenticationModule.isAuthenticated = true
+        }
     },
-    beforeUnmount () {
-        window.removeEventListener('storage', this.updateLoginStatus)
-    },
+    // beforeUnmount () {
+    //     window.removeEventListener('storage', this.updateLoginStatus)
+    // }
 }
 </script>
