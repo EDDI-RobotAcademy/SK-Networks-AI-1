@@ -118,6 +118,8 @@ export default {
                 }
                 await this.requestCreateNewAccountToDjango(accountInfo)
                 console.log('전송한 데이터 : ', accountInfo)
+                alert('완료되었습니다.')
+                this.$router.push('/')
             }
         }
     }

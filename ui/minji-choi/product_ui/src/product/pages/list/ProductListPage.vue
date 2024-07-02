@@ -16,8 +16,8 @@
                             </v-row>
                         </template>
                     </v-img>
-                        <v-card-title>{{product.prodname}}</v-card-title>
-                        <v-card-subtitle>{{product.price}}</v-card-subtitle> 
+                        <v-card-title>{{product.productName}}</v-card-title>
+                        <v-card-subtitle>{{product.productPrice}}</v-card-subtitle> 
                     </v-card>
                 </v-col>
             </v-row>
@@ -86,8 +86,8 @@ export default {
                     sortable: true,
                     key: 'productId',
                 },
-                { title: '상품명', align: 'end', key: 'prodname' },
-                { title: '상품가격(원)', align: 'end', key: 'price' },
+                { title: '상품명', align: 'end', key: 'productName' },
+                { title: '상품가격(원)', align: 'end', key: 'productPrice' },
                 { title: '판매자', align: 'end', key: 'writer' },
             ],
             perPage: 5,

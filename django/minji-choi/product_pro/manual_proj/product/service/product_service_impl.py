@@ -20,11 +20,12 @@ class ProductServiceImpl(ProductService):
         return cls.__instance
 
     def list(self):
+        print('서비스 list')
         return self.__productRepository.list()
 
 
-    def createProduct(self, prodname, price, writer, content, productImage):
-        return self.__productRepository.create(prodname, price, writer, content, productImage)
+    def createProduct(self, productName, productPrice, writer, productCategory, content, productImage):
+        return self.__productRepository.create(productName, productPrice, writer, productCategory, content, productImage)
 
 
     def readProduct(self, productId):

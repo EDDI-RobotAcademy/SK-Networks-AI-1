@@ -3,7 +3,7 @@ import TrainTestEvaluationResultPage from "@/trainTestEvaluation/pages/TrainTest
 const TrainTestEvaluationRoutes = [
     {
         path: '/train-test-evaluation-result',
-        name: 'LogisticRegressionResultPage',
+        name: 'TrainTestEvaluationResultPage',
         component: TrainTestEvaluationResultPage
     },
 ]

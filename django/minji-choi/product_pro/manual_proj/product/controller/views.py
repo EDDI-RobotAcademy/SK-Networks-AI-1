@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 
-from product.entity.models import Product
+from product.entity.product import Product
 from product.serializers import ProductSerializer
 from product.service.product_service_impl import ProductServiceImpl
 
@@ -12,22 +12,24 @@ class ProductView(viewsets.ViewSet):
 
     def list(self, request):
         productList = self.productService.list()
+        print(productList)
         serializer = ProductSerializer(productList, many=True)
         return Response(serializer.data)
 
-    def register (self, request):
+    def register(self, request):
         try:
             data = request.data
 
             productImage = request.FILES.get('productImage')
-            prodname = data.get('prodname')
+            productName = data.get('productName')
             writer = data.get('writer')
-            price = data.get('price')
+            productCategory = data.get('productCategory')
+            productPrice = data.get('productPrice')
             content = data.get('content')
-            if not all ([productImage, prodname, writer,price, content]):
+            if not all ([productName, productPrice, writer, productCategory, content, productImage]):
                 return Response({'error': '모든 내용을 채워주세요!'}, status=status.HTTP_400_BAD_REQUEST)
 
-            self.productService.createProduct(prodname, price, writer, content, productImage)
+            self.productService.createProduct(productName, productPrice, writer, productCategory, content, productImage)
             serializer = ProductSerializer(data=request.data)
             return Response(status=status.HTTP_200_OK)
 

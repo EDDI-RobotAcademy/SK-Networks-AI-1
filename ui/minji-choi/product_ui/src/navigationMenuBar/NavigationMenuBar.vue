@@ -29,11 +29,19 @@
             <v-icon left>mdi-forum</v-icon>
             <span>게시판</span>
         </v-btn>
-        <v-btn v-if="!isLogin" text @click="signIn" class="btn-text">
+        <v-btn text @click="goToPostList" class="btn-text">
+            <v-icon left>mdi-pen-off</v-icon>
+            <span>익명 게시판</span>
+        </v-btn>
+        <v-btn text @click="goToCartList" class="btn-text">
+            <v-icon left>mdi-cart</v-icon>
+            <span>장바구니</span>
+        </v-btn>
+        <v-btn v-if="!isAuthenticated" text @click="signIn" class="btn-text">
             <v-icon left>mdi-login</v-icon>
             <span>로그인</span>
         </v-btn>
-        <v-btn v-if="isLogin" text @click="signOut" class="btn-text">
+        <v-btn v-if="isAuthenticated" text @click="signOut" class="btn-text">
             <v-icon left>mdi-logout</v-icon>
             <span>로그아웃</span>
         </v-btn>
@@ -43,6 +51,8 @@
 <script>
 import '@mdi/font/css/materialdesignicons.css'
 import router from '@/router'
+import { mapState, mapActions } from 'vuex'
+const authenticationModule = 'authenticationModule'
 
 export default {
     data () {
@@ -50,14 +60,18 @@ export default {
             navigation_drawer: false,
             // links: [{ icon: 'mdi-home', action: this.goToHome, route: '/' }],
             accessToken: null,
-            isLogin: false,
+            isLogin: !!localStorage.getItem('userToken'),
             // items: [
             //     { title: 'Product', action: this.goToProductList() },
             //     { title: 'Board', action: this.goToBoardList() },
             // ]
         }
     },
+    computed: {
+        ...mapState(authenticationModule, ['isAuthenticated']),
+    },
     methods: {
+        ...mapActions(authenticationModule, ['requestLogoutToDjango']),
         goToHome () {
             router.push('/')
         },
@@ -67,20 +81,30 @@ export default {
         goToBoardList () {
             router.push('/board/list')
         },
+        goToCartList () {
+            router.push ('/cart/list')
+        },
+        goToPostList () {
+            router.push('/post/list')
+        },
         signIn () {
             router.push('/account/login')
         },
         signOut () {
-            localStorage.removeItem("accessToken")
-            this.isLogin = false
-            router.push('/') // 홈페이지(가장 상위)로 돌아감
+            this.requestLogoutToDjango()
+            router.push('/')
+        },
+        updateLoginStatus () {
+            this.userToken = localStorage.getItem("userToken")
+            this.isLogin = !!this.userToken
         }
     },
     mounted () {
-        this.accessToken = localStorage.getItem("accessToken")
-        this.isLogin = !!this.accessToken
-        // TODO: 로그인 이후 즉시 로그아웃 화면 갱신 안되는 문제 발견
-        //       새로고침하면 반영됨
-    }
+        this.updateLoginStatus()
+        window.addEventListener('storage', this.updateLoginStatus)
+    },
+    beforeUnmount () {
+        window.removeEventListener('storage', this.updateLoginStatus)
+    },
 }
 </script>

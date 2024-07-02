@@ -9,7 +9,14 @@ import D3PlotRoutes from '@/d3plot/router/D3PlotRoutes'
 import LogisticRegressionRoutes from '@/logisticRegression/router/LogisticRegressionRoutes'
 import TrainTestEvaluationRoutes from '@/trainTestEvaluation/router/TrainTestEvaluationRoutes'
 import PolynomialRegressionRoutes from '@/polynomialRegression/router/PolynomialRegressionRoutes'
-
+import ExponentialRegressionRoutes from '@/exponentialRegression/router/ExponentialRegressionRoutes'
+import CartRoutes from '@/cart/router/CartRoutes'
+import RandomForestRoutes from '@/randomForest/router/RandomForestRoutes'
+import PostRoutes from '@/post/router/PostRoutes'
+import KmeansRoutes from "@/kmeans/router/KmeansRoutes"
+import ReportRoutes from "@/report/router/ReportRoutes"
+import OrderRoutes from "@/order/router/OrderRoutes"
+import TensorFlowIrisTestRoutes from "@/tfIris/router/TensorFlowIrisTestRoutes"
 
 const routes: Array<RouteRecordRaw> = [
   ...HomeRoutes,
@@ -24,7 +31,15 @@ const routes: Array<RouteRecordRaw> = [
   ...LogisticRegressionRoutes,
   ...D3PlotRoutes,
   ...TrainTestEvaluationRoutes,
-  ...PolynomialRegressionRoutes
+  ...PolynomialRegressionRoutes,
+  ...ExponentialRegressionRoutes,
+  ...CartRoutes,
+  ...RandomForestRoutes,
+  ...PostRoutes,
+  ...KmeansRoutes,
+  ...ReportRoutes,
+  ...TensorFlowIrisTestRoutes,
+  ...OrderRoutes,
 ]
 
 const router = createRouter({

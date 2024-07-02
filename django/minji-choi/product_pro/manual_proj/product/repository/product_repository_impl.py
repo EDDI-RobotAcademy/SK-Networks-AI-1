@@ -1,7 +1,6 @@
 import os
-from product.entity.models import Product
+from product.entity.product import Product
 from product.repository.product_repository import ProductRepository
-from manual_proj import settings
 
 
 class ProductRepositoryImpl(ProductRepository):
@@ -21,9 +20,9 @@ class ProductRepositoryImpl(ProductRepository):
         return cls.__instance
 
     def list(self):
-        return Product.objects.all().order_by('prodname')
+        return Product.objects.all().order_by('productName')
 
-    def create(self, prodname, price, writer, content, productImage):
+    def create(self, productName, productPrice, writer, productCategory, content, productImage):
 
         uploadDirectory='C:/sk_project/SK-Networks-AI-1/ui/minji-choi/product_ui/src/assets/images/uploadImages'
 
@@ -35,10 +34,11 @@ class ProductRepositoryImpl(ProductRepository):
                 destination.write(chunk)
 
         product = Product(
-            prodname=prodname,
+            productName=productName,
             content=content,
             writer=writer,
-            price=price,
+            productPrice=productPrice,
+            productCategory=productCategory,
             productImage=productImage.name
         )
         product.save()

@@ -22,7 +22,7 @@ class AccountServiceImpl(AccountService):
 
         return cls.__instance
 
-    def checkEmailDuplication(self, email):
+    def checkEmailDuplication(self, email): # 사용자가 카트를 이미 가지고 잇는지 체크
         print("service checkEmailDuplication()")
         profile = self.__profileRepository.findByEmail(email)
         return profile is not None

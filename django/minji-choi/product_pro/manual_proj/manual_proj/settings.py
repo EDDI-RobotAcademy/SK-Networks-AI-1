@@ -17,7 +17,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
-
+DEBUG=True
+ALLOWED_HOSTS = ['192.168.0.52', 'localhost']
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-q4_7x*-lpbkl5u#+9oho7b%pfj!r!i_y%_f5alj6$p2)cbc38p'
 
@@ -35,10 +36,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
+    'django_extensions',
     'board',
     'product',
     'oauth',
-    'account'
+    'account',
+    'cart',
+    'report',
+    'orders'
 ]
 
 MIDDLEWARE = [

@@ -3,17 +3,27 @@
         <v-row>
             <v-col cols="12">
         
-                <v-text-field v-model="prodname" label="상품명"/>
+                <v-text-field v-model="productName" label="상품명"/>
             </v-col>
         </v-row>
         <v-row>
             <v-col cols="12">
-                <v-text-field v-model="price" label="상품가격"/>
+                <v-text-field v-model="productPrice" label="상품가격"/>
             </v-col>
         </v-row>
         <v-row>
             <v-col cols="12">
                 <v-text-field v-model="writer" label="상품등록자"/>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col cols="12">
+                <v-select
+                v-model="productCategory"
+                :items="categories"
+                label="상품 카테고리"
+                clearable
+                solo/>
             </v-col>
         </v-row>
         <v-row>
@@ -51,12 +61,14 @@ export default {
     // 현재 이 Vue 컴포넌트에서 사용하는 변수는 모두 data에 배치됨
     data () {
         return {
-            prodname: '',
-            price: '',
+            productName: '',
+            productPrice: '',
             writer: '',
+            productCategory: '',
             content: '',
             productImage: null,
             uploadedFilename: '',
+            categories: ['귀여운','재밌는','다정한']
         }
     },
     methods: {
@@ -67,9 +79,10 @@ export default {
             try {
                 if (this.productImage) {
                     const imageFormData = new FormData()
-                    imageFormData.append('prodname', this.prodname)
-                    imageFormData.append('price', this.price)
+                    imageFormData.append('productName', this.productName)
+                    imageFormData.append('productPrice', this.productPrice)
                     imageFormData.append('writer', this.writer)
+                    imageFormData.append('productCategory', this.productCategory)
                     imageFormData.append('content', this.content)
                     imageFormData.append('productImage', this.productImage)
 
@@ -84,24 +97,11 @@ export default {
 
             }
 
-            // const payload = {
-            //     prodname: this.prodname,
-            //     price: this.price,
-            //     writer: this.writer,
-            //     content: this.content,
-            // }
-            // console.log('payload check:', payload)
-            // // const product = await this.requestCreateProductToDjango(payload)
-
-            // await this.$router.push({
-            //     name: 'ProductReadPage',
-            //     params: { productId: product.productId.toString() }
-            // })
         },
         async onCancel () {
             console.log('취소 버튼 누름')
             alert('상품 등록이 취소되었습니다.');
-            this.$router.go(-1) // 이전 routing 경로로 이동해줘를 의미
+            this.$router.go(-1)
         }
     }
 }

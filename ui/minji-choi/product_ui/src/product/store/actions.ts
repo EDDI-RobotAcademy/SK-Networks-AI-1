@@ -12,7 +12,7 @@ export type ProductActions = {
   
     requestDeleteProductToDjango(context: ActionContext<ProductState, unknown>, productId: number): Promise<void>
     // requestModifyProductToDjango(context: ActionContext<ProductState, any>, payload:{
-    //     prodname: string, price: number, content: string, productId: number}): Promise<void>
+    //     productName: string, productPrice: number, content: string, productId: number}): Promise<void>
 }
 
 const actions: ProductActions = {
@@ -71,10 +71,10 @@ const actions: ProductActions = {
         }
     },
     // async requestModifyProductToDjango(context: ActionContext<ProductState, any>, 
-    //     payload:{ prodname: string, price: number, content: string, productId: number}): Promise<void> {
-    //     const { prodname, price, content, productId} = payload
+    //     payload:{ productName: string, productPrice: number, content: string, productId: number}): Promise<void> {
+    //     const { productName, productPrice, content, productId} = payload
     //     try {
-    //         await axiosInst.djangoAxiosInst.put(`/product/modify/${productId}`, {prodname, price, content})
+    //         await axiosInst.djangoAxiosInst.put(`/product/modify/${productId}`, {productName, productPrice, content})
     //         console.log('수정 성공!')
     //     } catch (error) {
     //         console.log('requestModifyProductToDjango() 과정에서 문제 발생')
@@ -82,6 +82,6 @@ const actions: ProductActions = {
     //     }
     // }
 
-};
+}
 
 export default actions;

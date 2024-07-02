@@ -35,11 +35,12 @@ export default {
 
                 if (accessToken) {
                     await this.requestAddRedisAccessTokenToDjango({ email, accessToken });  // Fix: Pass as object directly
+                    
                 } else {
                     console.error('AccessToken is missing');
                 }
+                this.$router.push('/')  // 이거 안 넣으면 타임아웃 발생함
 
-                this.$router.push('/')
             } else {
                 alert('신규 가입 고객입니다!')
                 console.log('신규 가입 고객입니다!')

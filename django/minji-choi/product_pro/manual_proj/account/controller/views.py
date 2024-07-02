@@ -5,6 +5,7 @@ from account.service.account_service_impl import AccountServiceImpl
 from account.serializers import AccountSerializer
 
 
+
 class AccountView(viewsets.ViewSet):
     accountService = AccountServiceImpl.getInstance()
 
