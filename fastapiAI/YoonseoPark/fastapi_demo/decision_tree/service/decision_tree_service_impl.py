@@ -23,4 +23,15 @@ class DecisionTreeServiceImpl(DecisionTreeService):
         # print(f"scaledTrainDataFrame: {scaledTrainDataFrame}")
         # print(f"scaledTestDataFrame: {scaledTestDataFrame}")
 
-        await self.decisionTreeRepository.sliceTensor(scaledTrainDataFrame, scaledTestDataFrame)
+        trainDataFrameAfterSlice, testDataFrameAfterSlice =\
+            await self.decisionTreeRepository.sliceTensor(scaledTrainDataFrame, scaledTestDataFrame)
+        # print(f"trainDataFrameAfterSlice: {trainDataFrameAfterSlice}")
+        # print(f"testDataFrameAfterSlice: {testDataFrameAfterSlice}")
+
+        readyForLearnTrainData, readyForLearnTestData = \
+            await self.decisionTreeRepository.applyBatchSize(trainDataFrameAfterSlice, testDataFrameAfterSlice, 32)
+        # print(f"readyForLearnTrainData: {readyForLearnTrainData}")
+        # print(f"readyForLearnTestData: {readyForLearnTestData}")
+
+        trainedModel = await self.decisionTreeRepository.learn(readyForLearnTrainData)
+        print(f"trainedModel: {trainedModel}")
