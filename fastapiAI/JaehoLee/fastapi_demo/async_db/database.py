@@ -1,7 +1,6 @@
 import glob
 import os
 
-import aiomysql
 from dotenv import load_dotenv
 
 load_dotenv()
