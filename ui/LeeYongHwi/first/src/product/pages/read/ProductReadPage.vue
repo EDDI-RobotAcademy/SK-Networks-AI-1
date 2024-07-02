@@ -23,7 +23,7 @@
                     
                     <v-row>
                         <v-col cols="12">
-                            <v-img :src="getProductImageUrl(product.productImage)" aspect-ratio="2" class="grey lighten-2">
+                            <v-img :src="getProductImageUrl(product.productImage)" aspect-ratio="2.5" class="grey lighten-2">
                                 <template v-slot:placeholder>
                                     <v-row class="fill-height ma-0" align="center" justify="center">
                                         <v-progress-circular indeterminate color="grey lighten-5"/>
@@ -75,7 +75,7 @@ export default {
     },
     methods: {
         ...mapActions(productModule, ['requestProductToDjango']),
-        ...mapActions(cartModule, ['requestAddToCartToDjango']),
+        ...mapActions(cartModule, ['requestAddCartToDjango']),
         async onPurchase () {
             console.log('구매하기 버튼 눌렀음')
         },
@@ -88,8 +88,8 @@ export default {
                     productPrice: this.product.productPrice,
                     quantity: 1, //임시로 기본 수량 1로 설정
                 }
-                await this.requestAddToCartToDjango(cartData)
-                // this.$router.push({ name: 'CartListPage'})
+                await this.requestAddCartToDjango(cartData)
+                this.$router.push({ name: 'CartListPage'})
             } catch (error) {
                 console.log('장바구니 추가 과정에서 에러 발생:', error)
             }

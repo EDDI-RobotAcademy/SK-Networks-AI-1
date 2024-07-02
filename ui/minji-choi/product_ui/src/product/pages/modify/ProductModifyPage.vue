@@ -7,17 +7,27 @@
                 <v-container>
                     <v-row>
                         <v-col cols="12">
-                            <v-text-field v-model="prodname" label="상품명"/>
+                            <v-text-field v-model="productName" label="상품명"/>
                         </v-col>
                     </v-row>
                     <v-row>
                         <v-col cols="12">
-                            <v-text-field v-model="price" label="상품가격"/>
+                            <v-text-field v-model="productPrice" label="상품가격"/>
                         </v-col>
                     </v-row>
                     <v-row>
                         <v-col cols="12">
                             <v-text-field v-model="product.writer" readonly label="상품등록자"/>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="12">
+                                <v-select
+                                v-model="productCategory"
+                                :items="categories"
+                                label="상품 카테고리"
+                                clearable
+                                solo/>
                         </v-col>
                     </v-row>
                     <v-row>
@@ -55,9 +65,10 @@ export default {
     },
     data () {
         return {
-            prodname: '',
-            price: '',
+            productName: '',
+            productPrice: '',
             writer: '',
+            productCategory: '',
             content: '',
         }
     },
@@ -65,12 +76,13 @@ export default {
         ...mapState(productModule, ['product'])
     },
     methods: {
-        ...mapActions(productModule, ['requestProductToDjango', 'requestModifyProductToDjango']),
+        ...mapActions(productModule, ['requestProductToDjango', 'requestModifyProductToDjango', 'requestDeleteProductToDjango']),
         async onModify () {
             console.log('수정 완료 누름')
             const payload = {
-                prodname: this.prodname, // 해당 title을 써야 수정된 title. writer는 수정 없으므로 생략
-                price: this.price,
+                productName: this.productName, // 해당 title을 써야 수정된 title. writer는 수정 없으므로 생략
+                productPrice: this.productPrice,
+                productCategory: this.productCategory,
                 content : this.content,
                 productId : this.productId,
             }
@@ -78,11 +90,18 @@ export default {
             alert('수정이 완료되었습니다.');
             await this.$router.push({ name : 'ProductReadPage', params: { productId: this.productId} })
         },
+        async onDelete () {
+            console.log('삭제를 누르셨습니다!')
+            alert('상품이 삭제되었습니다.');
+            await this.requestDeleteProductToDjango(this.productId)
+            await this.$router.push({ name : 'ProductListPage' })
+        },
     },
     created () {
         this.requestProductToDjango(this.productId).then(() => {
-            this.prodname = this.product.prodname
-            this.price = this.product.price
+            this.productName = this.product.productName
+            this.productPrice = this.product.productPrice
+            this.productCategory = this.product.productCategory
             this.writer = this.product.writer
             this.content = this.product.content
         })
