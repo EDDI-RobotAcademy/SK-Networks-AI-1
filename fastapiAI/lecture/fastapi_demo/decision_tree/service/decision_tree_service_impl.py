@@ -11,4 +11,18 @@ class DecisionTreeServiceImpl(DecisionTreeService):
         print("service -> decisionTreeTrain()")
 
         wineInfo = self.decisionTreeRepository.loadWineInfo()
-        print(f"wine feature names: {wineInfo.feature_names}")
+        # print(f"wine feature names: {wineInfo.feature_names}")
+
+        wineDataFrame = self.decisionTreeRepository.createDataFrame(
+                                    wineInfo.data, wineInfo.feature_names)
+        wineDataFrame['target'] = wineInfo.target
+        # print(f"wineDataFrame: {wineDataFrame}")
+
+        trainDataFrame, testDataFrame = self.decisionTreeRepository.splitTrainTestSet(wineDataFrame)
+        scaledTrainDataFrame, scaledTestDataFrame = self.decisionTreeRepository.applyStandardScaler(
+                                trainDataFrame, testDataFrame, wineInfo.feature_names)
+
+        self.decisionTreeRepository.sliceTensor(
+            scaledTrainDataFrame,
+            scaledTestDataFrame
+        )
