@@ -8,6 +8,10 @@ import LogisticRegressionRoutes from '@/logisticRegression/router/LogisticRegres
 import PolynomialRegressionRoutes from '@/polynomialRegression/router/PolynomialRegressionRoutes'
 import ExponentialRegressionRoutes from '@/exponentialRegression/router/ExponentialRegressionRoutes'
 import PostRoutes from '@/post/router/PostRoutes'
+import KmeansRoutes from '@/kmeans/router/KmeansRoutes'
+import CartRoutes from '@/cart/router/CartRoutes'
+import TensorFlowIrisTestRoutes from '@/tfIris/router/TensorFlowIrisTestRoutes'
+import OrderRoutes from '@/order/router/OrderRoutes'
 
 const routes: Array<RouteRecordRaw> = [
   ...HomeRoutes,
@@ -18,7 +22,11 @@ const routes: Array<RouteRecordRaw> = [
   ...LogisticRegressionRoutes,
   ...PolynomialRegressionRoutes,
   ...ExponentialRegressionRoutes,
-  ...PostRoutes
+  ...PostRoutes,
+  ...CartRoutes,
+  ...KmeansRoutes,
+  ...TensorFlowIrisTestRoutes,
+  ...OrderRoutes
 ]
 
 const router = createRouter({

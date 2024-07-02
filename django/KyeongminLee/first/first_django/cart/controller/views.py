@@ -2,6 +2,7 @@ from django.shortcuts import render
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 
+from cart.entity.cart import Cart
 from cart.service.cart_service_impl import CartServiceImpl
 from oauth.service.redis_service_impl import RedisServiceImpl
 
@@ -38,4 +39,24 @@ class CartView(viewsets.ViewSet):
         except Exception as e:
             print('상품 등록 과정 중 문제 발생:', e)
             return Response({ 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+    def cartItemInCartList(self, request):
+        try:
+            data = request.data
+            userToken = data.get('userToken')
+            accountId = self.redisService.getValueByKey(userToken)
+            cartItemInCart = self.cartService.cartItemList(accountId)
+
+            return Response(cartItemInCart, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            print("장바구니 조회 과정 중 문제 발생:", e)
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+        # if not userToken:
+        #     return Response({'error': 'User token is required'}, status=status.HTTP_400_BAD_REQUEST)
+        #
+        # cartListResponseForm = self.cartService.cartList(accountId)
+        # return Response(cartItemListResponseForm, status=status.HTTP_200_OK)
 

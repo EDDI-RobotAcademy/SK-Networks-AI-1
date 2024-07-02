@@ -13,7 +13,7 @@ class Product(models.Model):
     updatedDate = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.title
+        return self.productName
 
     class Meta:
         db_table = 'product'

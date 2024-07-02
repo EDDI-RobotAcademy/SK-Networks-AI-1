@@ -1,5 +1,5 @@
 <template>
-    <v-app-bar color="orange" app dark height="64">
+    <v-app-bar color="#333" app dark height="64">
         <v-btn @click="goToHome">
             <v-toolbar-title class="text-uppercase text--darken-4">
                 <span>SK Networks AI Camp with EDDI</span>
@@ -15,11 +15,11 @@
             <v-icon left>mdi-forum</v-icon>
             <span>게시판</span>
         </v-btn>
-        <v-btn v-if="!isLogin" text @click="signIn" class="btn-text">
+        <v-btn v-if="!isAuthenticated" text @click="signIn" class="btn-text">
             <v-icon left>mdi-login</v-icon>
             <span>로그인</span>
         </v-btn>
-        <v-btn v-if="isLogin" text @click="signOut" class="btn-text">
+        <v-btn v-if="isAuthenticated" text @click="signOut" class="btn-text">
             <v-icon left>mdi-logout</v-icon>
             <span>로그아웃</span>
         </v-btn>
@@ -29,6 +29,9 @@
 <script>
 import '@mdi/font/css/materialdesignicons.css'
 import router from '@/router'
+import { mapState, mapActions } from 'vuex'
+
+const authenticationModule = 'authenticationModule'
 
 export default {
     data () {
@@ -36,7 +39,11 @@ export default {
             isLogin: !!localStorage.getItem("userToken")
         }
     },
+    computed: {
+        ...mapState(authenticationModule, ['isAuthenticated'])
+    },
     methods: {
+        ...mapActions(authenticationModule, ['requestLogoutToDjango']),
         goToHome () {
             router.push('/')
         },
@@ -50,8 +57,7 @@ export default {
             router.push('/account/login')
         },
         signOut () {
-            localStorage.removeItem("userToken")
-            this.updateLoginStatus()
+            this.requestLogoutToDjango()
             router.push('/')
         },
         updateLoginStatus () {

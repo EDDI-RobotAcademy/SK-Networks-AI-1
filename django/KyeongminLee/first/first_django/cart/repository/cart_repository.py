@@ -9,3 +9,7 @@ class CartRepository(ABC):
     @abstractmethod
     def findByAccount(self, account):
         pass
+
+    @abstractmethod
+    def findByAccountId(self, accountId):
+        pass

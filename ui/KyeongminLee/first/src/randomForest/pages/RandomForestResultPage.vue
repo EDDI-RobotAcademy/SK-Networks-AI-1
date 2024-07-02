@@ -116,7 +116,7 @@ export default {
         async fetchFlightDataOnRandomForestAnalysis () {
             const response = await fetch('http://localhost:33333/random-forest')
             const data = await response.json()
-
+            
             console.log('data:', data)
 
             this.confusionMatrixInfoBeforeSmote = data.confusion_matrix_info_before_smote

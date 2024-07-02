@@ -7,4 +7,6 @@ class Post(BaseModel):
     content: str
 
     class Config:
-        orm_mode = True
+        # deprecated!!!
+        # orm_mode = True
+        from_attributes = True
