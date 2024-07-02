@@ -2,7 +2,7 @@ from sklearn.datasets import load_wine
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
-from decision_tree.repository.decison_tree_repository import DecisionTreeRepository
+from decision_tree.repository.decision_tree_repository import DecisionTreeRepository
 import pandas as pd
 import tensorflow as tf
 # pip install tensorflow_decision_forests
