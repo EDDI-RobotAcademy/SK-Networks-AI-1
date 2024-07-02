@@ -46,11 +46,12 @@ class DecisionTreeRepositoryImpl(DecisionTreeRepository):
              scaledTrainDataFrame['target'].astype(int))
         )
         testDataFrameAfterSlice = tf.data.Dataset.from_tensor_slices(
-            (dict(scaledTestDataFrame.drop("target", axis=1)),
+            (dict(scaledTestDataFrame.drop("target", axis=1)),      # drop("target", axis=1)의 의미는 target의 열(axis=1)을 전부 드랍하겠다는 의미 (+ axis=0은 행)
              scaledTestDataFrame['target'].astype(int))
         )
 
         return trainDataFrameAfterSlice, testDataFrameAfterSlice
+
 
     def applyBatchSize(self, trainDataFrameAfterSlice, testDataFrameAfterSlice, batchSize):
         readyForLearnTrainData = trainDataFrameAfterSlice.batch(batchSize)
@@ -58,6 +59,8 @@ class DecisionTreeRepositoryImpl(DecisionTreeRepository):
 
         return readyForLearnTrainData, readyForLearnTestData
 
+
+    # 학습
     def learn(self, readyForLearnTrainData):
         model = tfdf.keras.RandomForestModel(num_trees=100, max_depth=12, min_examples=6)
         model.fit(readyForLearnTrainData)
