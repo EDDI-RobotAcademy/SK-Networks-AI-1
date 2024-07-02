@@ -7,12 +7,12 @@
                 <v-container>
                     <v-row>
                         <v-col cols="12">
-                            <v-text-field v-model="product.prodname" readonly label="상품명"/>
+                            <v-text-field v-model="product.productName" readonly label="상품명"/>
                         </v-col>
                     </v-row>
                     <v-row>
                         <v-col cols="12">
-                            <v-text-field v-model="product.price" readonly label="상품가격"/>
+                            <v-text-field v-model="product.productPrice" readonly label="상품가격"/>
                         </v-col>
                     </v-row>
                     <v-row>
@@ -22,34 +22,57 @@
                     </v-row>
                     <v-row>
                         <v-col cols="12">
-                            <v-textarea v-model="product.content" readonly label="상품상세설명" auto-grow/>
+                            <v-text-field v-model="product.productCategory" readonly label="상품 카테고리"/>
                         </v-col>
                     </v-row>
-                    <v-row justify="end">
-                        <v-col cols="auto">
-                            <router-link :to="{ name: 'ProductModifyPage', params: {productId} }">
-                                <v-btn color="primary">수정</v-btn>
-                            </router-link>
+                    <v-row>
+                        <v-col cols="12">
+                            <v-text-field v-model="product.content" readonly label="상품 상세 설명"/>
                         </v-col>
-                        <v-col cols="auto">
-                            <v-btn color="error" @click="onDelete">삭제</v-btn>
-                        </v-col>
-                        <v-col cols="auto">
-                            <router-link :to="{ name: 'ProductListPage' }">
-                                <v-btn color="secondary">목록</v-btn>
-                            </router-link>
+                    </v-row>
+    
+                    <v-row>
+                        <v-col cols="12">
+                            <v-img :src="getProductImageUrl(product.productImage)" aspect-ratio="1" color="grey lighten-2">
+                                <template v-slot:placeholder>
+                                    <v-row class="fill-height ma-0" align="center" justify="center">
+                                        <v-progress-circular indeterminate color="grey lighten-5"/>
+                                    </v-row>
+                                </template> 
+                            </v-img>
                         </v-col>
                     </v-row>
                 </v-container>
             </v-card-text>
-        </v-card>
+        </v-card> 
+        
+        <v-alert v-else type="info">현재 등록된 상품이 없습니다!</v-alert>
+        <div class="button-container">
+            <v-btn color="primary" @click="onPurchase" class="action-button">
+                <v-icon>mdi-cart</v-icon>
+                <span class="button-text">구매하기</span>
+            </v-btn>
+            <v-btn color="success" @click="onAddToCart" class="action-button">
+                <v-icon>mdi-cart-plus</v-icon>
+                <span class="button-text">장바구니에 추가</span>
+            </v-btn>
+            <router-link :to="{ name: 'ProductListPage' }" 
+                            class="router-link no-underline">
+                <v-btn color="secondary" class="action-button">
+                    <v-icon>mdi-arrow-left</v-icon>
+                    <span class="button-text">목록</span>
+                </v-btn>
+            </router-link>
+        </div>
     </v-container>
 </template>
+
 
 <script>
 import { mapActions, mapState } from 'vuex'
 
 const productModule = 'productModule'
+const cartModule = 'cartModule'
 
 export default {
     props: {
@@ -62,12 +85,31 @@ export default {
         ...mapState(productModule, ['product'])
     },
     methods: {
-        ...mapActions(productModule, ['requestProductToDjango', 'requestDeleteProductToDjango']),
-        async onDelete () {
-            console.log('삭제를 누르셨습니다!')
-            alert('상품이 삭제되었습니다.');
-            await this.requestDeleteProductToDjango(this.productId)
-            await this.$router.push({ name : 'ProductListPage' })
+        ...mapActions(productModule, ['requestProductToDjango']),
+        ...mapActions(cartModule, ['requestAddCartToDjango']),
+
+        async onPurchase () {
+            console.log('구매하기 버튼 눌렀음')
+        },
+        async onAddToCart () {
+            console.log('장바구니에 추가 버튼 눌렀음')
+            try {
+                const cartData = {
+                    productId: this.product.productId,
+                    productName: this.product.productName,
+                    productImage: this.product.productImage,
+                    productPrice: this.product.productPrice,
+                    quantity: 1, // 임시로 기본 수량 1로 설정
+                };
+                await this.requestAddCartToDjango(cartData);
+                alert('장바구니에 상품이 추가되었습니다. 장바구니로 이동합니다!')
+                this.$router.push({ name: 'CartListPage' });
+            } catch (error) {
+                console.log('장바구니 추가 과정에서 에러 발생:', error);
+            }
+        },
+    getProductImageUrl (imageName) {
+            return require(`@/assets/images/uploadimages/${imageName}`)
         },
     },
     created () {
@@ -75,3 +117,37 @@ export default {
         },
 }
 </script>
+
+<style scoped>
+.action-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding: 0.75rem 1rem;
+    margin: 0.5rem;
+    border-radius: 8px;
+}
+
+.button-text {
+    margin-left: 0.5rem;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+/* 하이퍼링크 스타일 제거 */
+.no-underline {
+    text-decoration: none;
+}
+
+/* router-link 스타일 재정의 */
+.router-link {
+    text-decoration: none;
+    color: inherit;
+}
+</style>

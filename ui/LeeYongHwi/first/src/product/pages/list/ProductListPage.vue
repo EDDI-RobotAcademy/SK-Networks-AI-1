@@ -41,9 +41,10 @@
     </v-container>
 </template>
 
-// npm install axios --legacy-peer-deps
 
 <script>
+// npm install axios --legacy-peer-deps
+
 // 이것은 vuex 때문에 사용 가능
 import { mapActions, mapState } from 'vuex'
 
