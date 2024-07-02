@@ -13,13 +13,12 @@
                     <b>Activator Slot</b>
                 </v-btn>
             </template>
-            <v-list>
-                <v-list-item v-for="(item, index) in items" 
-                            :key="index" :value="index" @click="item.action">
-                    <v-list-item-title>{{ item.title }}</v-list-item-title>
-                </v-list-item>
-            </v-list>
-        </v-menu> -->
+<v-list>
+    <v-list-item v-for="(item, index) in items" :key="index" :value="index" @click="item.action">
+        <v-list-item-title>{{ item.title }}</v-list-item-title>
+    </v-list-item>
+</v-list>
+</v-menu> -->
 
         <v-btn text @click="goToProductList" class="btn-text">
             <v-icon left>mdi-store</v-icon>
@@ -48,7 +47,7 @@ import router from '@/router'
 const authenticationModule = 'authenticationModule'
 
 export default {
-    data () {
+    data() {
         return {
             navigation_drawer: false,
             accessToken: null,
@@ -57,36 +56,41 @@ export default {
     },
     computed: {
         ...mapState(authenticationModule, ['isAuthenticated'])
-    },  
+    },
     methods: {
         ...mapActions(authenticationModule, ['requestLogoutToDjango']),
-        goToHome () {
+        goToHome() {
             router.push('/')
         },
-        goToProductList () {
+        goToProductList() {
             router.push('/product/list')
         },
-        goToBoardList () {
+        goToBoardList() {
             router.push('/board/list')
         },
-        signIn () {
+        signIn() {
             router.push('/account/login')
         },
-        signOut () {
+        signOut() {
             this.requestLogoutToDjango()
             router.push('/')
         },
-        updateLoginStatus () {
-            this.userToken = localStorage.getItem('userToken')
-            this.isAuthenticated = !!this.userToken
+    },
+    mounted() {
+        console.log('navigation bar mounted()')
+
+        const userToken = localStorage.getItem("userToken")
+
+        if (userToken) {
+            console.log('You already has a userToken!!!')
+
+            // this.$store를 통해 Vue가 관리하는 Vuex 스토리지 접근
+            // Vuex 내에 존재하는 state 중 우리가 모듈로 만든
+            // authenticationModule의 isAuthenticated에 접근
+            // 실제 위의 ...mapState로 간편하게 접근했지만
+            // mount 중에는 불가하므로 아래와 같이 직접 처리
+            this.$store.state.authenticationModule.isAuthenticated = true.
         }
-    },
-    mounted () {
-        this.updateLoginStatus()
-        window.addEventListener('storage', this.updateLoginStatus)
-    },
-    beforeUnmount () {
-        window.removeEventListener('storage', this.updateLoginStatus)
     },
 }
 </script>

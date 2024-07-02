@@ -13,4 +13,4 @@ const state: CartState = {
     cartItemList: [],
 }
 
-export default state
+export default state;

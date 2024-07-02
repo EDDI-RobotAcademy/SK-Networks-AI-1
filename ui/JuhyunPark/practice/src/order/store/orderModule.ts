@@ -1,5 +1,5 @@
 import actions, { OrderActions } from "./actions"
-// import mutations, { CartMutations } from "./mutations"
+// import mutations, { OrderMutations } from "./mutations"
 import state, { OrderState } from "./states"
 
 export interface OrderModule {

@@ -13,6 +13,7 @@ import PostRoutes from '@/post/router/PostRoutes'
 import KmeansRoutes from '@/kmeans/router/KmeansRoutes'
 import TensorFlowIrisTestRoutes from '@/tfIris/router/TensorFlowIrisTestRoutes'
 import CartRoutes from '@/cart/router/CartRoutes'
+import OrderRoutes from '@/order/router/OrderRoutes'
 
 
 const routes: Array<RouteRecordRaw> = [
@@ -32,7 +33,8 @@ const routes: Array<RouteRecordRaw> = [
   ...PostRoutes,
   ...KmeansRoutes,
   ...TensorFlowIrisTestRoutes,
-  ...CartRoutes
+  ...CartRoutes,
+  ...OrderRoutes,
 ]
 
 const router = createRouter({
