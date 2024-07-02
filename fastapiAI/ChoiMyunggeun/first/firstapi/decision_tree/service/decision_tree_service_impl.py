@@ -1,4 +1,4 @@
-from decision_tree.repository.decison_tree_repository_impl import DecisionTreeRepositoryImpl
+from decision_tree.repository.decision_tree_repository_impl import DecisionTreeRepositoryImpl
 from decision_tree.service.decision_tree_service import DecisionTreeService
 
 
@@ -11,24 +11,26 @@ class DecisionTreeServiceImpl(DecisionTreeService):
         print("service -> decisionTreeTrain()")
 
         wineInfo = self.decisionTreeRepository.loadWineInfo()
-        print(f'wine feature names: {wineInfo.feature_names}')
+        # print(f"wine feature names: {wineInfo.feature_names}")
 
         wineDataFrame = self.decisionTreeRepository.createDataFrame(
-                    wineInfo.data, wineInfo.feature_names)
+                                    wineInfo.data, wineInfo.feature_names)
         wineDataFrame['target'] = wineInfo.target
-        # print(f'wineDataFrame: {wineDataFrame}')
+        # print(f"wineDataFrame: {wineDataFrame}")
 
         trainDataFrame, testDataFrame = self.decisionTreeRepository.splitTrainTestSet(wineDataFrame)
         scaledTrainDataFrame, scaledTestDataFrame = self.decisionTreeRepository.applyStandardScaler(
                                 trainDataFrame, testDataFrame, wineInfo.feature_names)
 
-        self.decisionTreeRepository.sliceTensor(
+        trainDataFrameAfterSlice,testDataFrameAfterSlice = self.decisionTreeRepository.sliceTensor(
             scaledTrainDataFrame,
             scaledTestDataFrame
         )
 
-        readyForLearnTrainData, readyForLearnTestData = (
-            self.decisionTreeRepository.applyBatchSize(
-            trainDataFrameAfterSlice, testDataFrameAfterSlice, 32))
+        readyForLearnTrainData,readyForLearnTestData=self.decisionTreeRepository.applyBatchSize(
+            trainDataFrameAfterSlice,
+            testDataFrameAfterSlice,
+            32
+        )
 
-        self.decisionTreeRepository.learn(readyForLearningTrainData)
+        trainModel = self.decisionTreeRepository.learn(readyForLearnTrainData)
