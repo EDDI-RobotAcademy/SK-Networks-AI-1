@@ -15,7 +15,7 @@ class DecisionTreeRepository(ABC):
         pass
 
     @abstractmethod
-    def applyStandardScaler(self, trainDataFrame, testDataFrame, featureNames):
+    def applyStandardScaler(self, trainDataFrame, testDataFrame, featureName):
         pass
 
     @abstractmethod
@@ -23,7 +23,7 @@ class DecisionTreeRepository(ABC):
         pass
 
     @abstractmethod
-    def applyBatchSize(self, trainDataFrameAfterSlice, testDataFrameAfterSlice, batchSize):
+    def applyBatchSize(self, trainDataFrameAfterSlice, testDataFrameAfterSlice, batchsize):
         pass
 
     @abstractmethod
