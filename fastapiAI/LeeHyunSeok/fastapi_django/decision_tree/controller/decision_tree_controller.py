@@ -55,11 +55,11 @@ async def decisionTreePredict(wineFeatureRequestForm: WineFeatureRequestForm):
 
     inputData = pd.DataFrame([
         [
-            feature_names.alcohol, feature_names.malic_acid, feature_names.ash, feature_names.alcalinity_of_ash,
-            feature_names.magnesium, feature_names.total_phenols, feature_names.flavanoids,
-            feature_names.nonflavanoid_phenols, feature_names.proanthocyanins,
-            feature_names.color_intensity, feature_names.hue, feature_names.od280_od315_of_diluted_wines,
-            feature_names.proline
+            wineFeatureRequestForm.alcohol, wineFeatureRequestForm.malic_acid, wineFeatureRequestForm.ash, wineFeatureRequestForm.alcalinity_of_ash,
+            wineFeatureRequestForm.magnesium, wineFeatureRequestForm.total_phenols, wineFeatureRequestForm.flavanoids,
+            wineFeatureRequestForm.nonflavanoid_phenols, wineFeatureRequestForm.proanthocyanins,
+            wineFeatureRequestForm.color_intensity, wineFeatureRequestForm.hue, wineFeatureRequestForm.od280_od315_of_diluted_wines,
+            wineFeatureRequestForm.proline
          ]
     ], columns=feature_names)
 
