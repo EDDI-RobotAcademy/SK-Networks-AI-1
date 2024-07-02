@@ -12,3 +12,4 @@ async def decisionTreeTrain(decisionTreeService: DecisionTreeServiceImpl =
                             Depends(injectDecisionTreeService)):
 
     print(f"controller -> decisionTreeTrain()")
+    await decisionTreeService.decisionTreeTrain()
