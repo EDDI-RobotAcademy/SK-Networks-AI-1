@@ -1,5 +1,6 @@
 export interface OrderState {
     orderList: OrderItem[];
+    order: null
 //     loading: boolean;
 //     error: string | null;
 }
@@ -13,6 +14,7 @@ export interface OrderItem {
 
 const state: OrderState = {
     orderList: [],
+    order: null
 }
 
 export default state
