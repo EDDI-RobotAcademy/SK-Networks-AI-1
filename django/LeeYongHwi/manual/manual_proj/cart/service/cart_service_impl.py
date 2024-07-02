@@ -53,3 +53,25 @@ class CartServiceImpl(CartService):
             print("기존 상품 추가")
             cartItem.quantity += 1
             self.__cartItemRepository.update(cartItem)
+
+    def cartList(self, accountId):
+        account = self.__accountRepository.findById(accountId)
+        cart = self.__cartRepository.findByAccount(account)
+        print(f"cartList -> cart: {cart}")
+        cartItemList = self.__cartItemRepository.findByCart(cart)
+        print(f"cartList -> cartItemList: {cartItemList}")
+
+        # 원래는 controller에 cartItemListResponseForm이 있는 것이 더 깔끔함
+        cartItemListResponseForm = []
+
+        for cartItem in cartItemList:
+            cartItemResponseForm = {
+                'cartItemId': cartItem.cartItemId,
+                'productName': cartItem.product.productName,
+                'productPrice': cartItem.product.productPrice,
+                'productId': cartItem.product.productId,
+                'quantity': cartItem.quantity,
+            }
+            cartItemListResponseForm.append(cartItemResponseForm)
+
+        return cartItemListResponseForm

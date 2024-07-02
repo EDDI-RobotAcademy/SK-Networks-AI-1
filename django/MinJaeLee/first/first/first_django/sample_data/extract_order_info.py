@@ -17,7 +17,7 @@ def export_orders_to_excel(file_path):
         product = order_item.product
         data.append({
             'accountId': order.account_id,
-            'productName': product.productName,
+            'productId': product.productId,
             'quantity': order_item.quantity,
             'price': order_item.price
         })
