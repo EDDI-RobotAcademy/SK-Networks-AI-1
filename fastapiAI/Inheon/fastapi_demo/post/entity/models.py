@@ -6,7 +6,6 @@ class Post(BaseModel):
     title: str
     content: str
 
-
     class Config:
         # orm_mode = True
-        from_attribute = True
+        from_attributes = True

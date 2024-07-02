@@ -11,10 +11,12 @@ export interface ProductState {
 // TypeScript에서는 다시 타입을 명시하게 됩니다.
 export interface Product {
     productId: number
-    prodname: string
-    price: number
+    productName: string
+    productPrice: number
     writer: string
     content: string
+    productCategory: string
+    productImage: string
     regDate: string
     updDate: string
 }

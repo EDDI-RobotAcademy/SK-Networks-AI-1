@@ -17,3 +17,11 @@ class CartItemRepository(ABC):
     @abstractmethod
     def findAllByProductId(self, productId):
         pass
+
+    @abstractmethod
+    def findByCart(self, cart):
+        pass
+
+    @abstractmethod
+    def findById(self, id):
+        pass
