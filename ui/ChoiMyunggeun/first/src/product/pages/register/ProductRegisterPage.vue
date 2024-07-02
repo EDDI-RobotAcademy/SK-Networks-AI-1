@@ -51,6 +51,9 @@ export default {
     },
     methods: {
         ...mapActions(productModule, ['requestCreateProductToDjango']),
+        async forceRefresh () {
+            window.location.reload(true);
+        },
         async onSubmit () {
             console.log('상품 등록 눌렀음')
 
@@ -63,8 +66,15 @@ export default {
                     imageFormData.append('productImage', this.productImage)
 
                     const response = await this.requestCreateProductToDjango(imageFormData)
-                    this.uploadedFileName = response.data.imageName
-                    this.$router.push({ name: 'ProductListPage' })
+
+                    // console.log('after create product:', response)
+                    // this.uploadedFileName = response.data.imageName
+                    await this.$router.push({ name: 'ProductListPage' });
+
+                    // 페이지를 강제로 새로고침
+                    // 이 부분은 사실 임시 방편임
+                    // 추후 AWS S3로 이동하면 문제가 없어질 예정
+                    await this.forceRefresh()
                 } else {
                     console.log('이미지 파일을 선택하세요!')
                 }
@@ -77,7 +87,8 @@ export default {
             console.log('취소 버튼 눌럿음')
             // '이전 routing 경로로 이동해줘' 를 의미함
             this.$router.go(-1)
-        }
+        },
+        
     }
 }
 </script>
