@@ -13,6 +13,7 @@ import KmeansRoutes from '@/kmeans/router/KmeansRoutes'
 import TensorFlowIrisTestRoutes from '@/tfIris/router/TensorFlowIrisTestRoutes'
 import CartRoutes from '@/cart/router/CartRoutes'
 import RandomForestRoutes from '@/randomForest/router/RandomForestRoutes'
+import OrderRoutes from '@/order/router/OrderRoutes'
 
 
 
@@ -34,6 +35,7 @@ const routes: Array<RouteRecordRaw> = [
   ...KmeansRoutes,
   ...TensorFlowIrisTestRoutes,
   ...CartRoutes,
+  ...OrderRoutes
   
     // 항상 도메인의 router 추가했으면 main router 에도 추가해줘야함
 
