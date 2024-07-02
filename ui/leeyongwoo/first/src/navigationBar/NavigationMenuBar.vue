@@ -1,5 +1,5 @@
 <template>
-    <v-app-bar color="orange" app dark height="64">
+    <v-app-bar color="orange-lighten-3" app dark height="64">
         <v-btn @click="goToHome">
             <v-toolbar-title class="text--darken-4">
                 <span>^모^b</span>

@@ -9,7 +9,7 @@
       <!--  -->
     </v-navigation-drawer>
 
-    <v-main class="bg-green-lighten-2">
+    <v-main class="bg-yellow-lighten-5">
       <v-container>
 
         <!-- 카테고리 1 -->

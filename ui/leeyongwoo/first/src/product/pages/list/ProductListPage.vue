@@ -1,13 +1,15 @@
 <template lang="">
-    <v-container>
-        <h2>안녕 Vue3 TypeScript 기반 Product App이야</h2>
+    <v-container class="bg-yellow-lighten-5">
+        <h2>이모티콘 상품 페이지</h2>
         <div style="text-align: left; margin: 15px;">
             <router-link :to="{ name: 'ProductRegisterPage' }">
                 상품 등록
             </router-link>
         </div>
+        <h2 class="bg-orange-lighten-2">#인기있는 이모티콘</h2>
+        <h2>``</h2>
         <v-row v-if="productList.length > 0">
-            <v-col v-for="(product, index) in productList" :key=index cols="12" sm="6" md="4" lg="3">
+            <v-col v-for="(product, index) in productList" :key=index cols="6" sm="3" md="2" lg="1.5">
                 <v-card @click="goToProductReadPage(product.productId)">
                     <v-img :src="getProductImageUrl(product.productImage)" aspect-ratio="1" class="grey lighten-2">
                         <template v-slot:placeholder>
