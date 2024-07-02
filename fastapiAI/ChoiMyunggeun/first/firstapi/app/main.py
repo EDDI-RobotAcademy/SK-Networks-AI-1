@@ -42,14 +42,15 @@ warnings.filterwarnings("ignore", category=aiomysql.Warning)
 
 async def lifespan(app: FastAPI):
     # Startup
-    app.state.dbPool = await getMySqlPool()
-    await createTableIfNeccessary(app.state.dbPool)
-
-    yield
-
-    # Shutdown
-    app.state.dbPool.close()
-    await app.state.dbPool.wait_closed()
+    # app.state.dbPool = await getMySqlPool()
+    # await createTableIfNeccessary(app.state.dbPool)
+    #
+    # yield
+    #
+    # # Shutdown
+    # app.state.dbPool.close()
+    # await app.state.dbPool.wait_closed()
+    ...
 
 
 app = FastAPI(lifespan=lifespan)
