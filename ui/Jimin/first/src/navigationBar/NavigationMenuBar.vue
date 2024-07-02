@@ -28,11 +28,11 @@
             <v-icon left>mdi-store</v-icon>
             <span>게시판</span>
         </v-btn>
-        <v-btn v-if="!isLogin" text @click="signIn" class="btn-text">
+        <v-btn v-if="!isAuthenticated" text @click="signIn" class="btn-text">
             <v-icon left>mdi-login</v-icon>
             <span>로그인</span>
         </v-btn>
-        <v-btn v-if="isLogin" text @click="signOut" class="btn-text">
+        <v-btn v-if="isAuthenticated" text @click="signOut" class="btn-text">
             <v-icon left>mdi-logout</v-icon>
             <span>로그아웃</span>
         </v-btn>
@@ -42,6 +42,9 @@
 <script>
 import '@mdi/font/css/materialdesignicons.css'
 import router from'@/router'
+import { mapState, mapActions } from 'vuex'
+
+const authenticationModule = 'authenticationModule'
 
 
 export default{
@@ -58,7 +61,11 @@ export default{
             // ]
         }
     },
+    computed: {
+        ...mapState(authenticationModule, ['isAuthenticated'])
+    },
     methods: {
+        ...mapActions(authenticationModule, ['requestLogoutToDjango']),
         goToHome () {
             router.push('/')
         },
@@ -72,8 +79,8 @@ export default{
             router.push('/account/login')
         },
         signOut () {
-            localStorage.removeItem("accessToken")
-            this.isLogin = false
+            
+            this.requestLogoutToDjango()
             router.push('/')
         },
         updateLoginStatus () {
@@ -82,12 +89,23 @@ export default{
         }
     },
     mounted () {
-        this.updateLoginStatus()
-        window.addEventListener('storage', this.updateLoginStatus)
+        // this.updateLoginStatus()
+        // window.addEventListener('storage', this.updateLoginStatus)
+        const userToken = localStorage.getItem("userToken")
+
+        if(userToken !== '') {
+            console.log('You already has a userToken!!')
+            // this.$store를 통해 Vue가 관리하는 Vuex 스토리지 접근
+            // Vuex 내에 존재하는 state 중 우리가 모듈로 만든
+            // authenticationModule의 isAuthenticated에 접근
+            // 실제 위의 ...mapState로 간편하게 접근했지만
+            // mount 중에서는 불가하므로 아래와 같이 직접 처리
+            this.$store.state.authenticationModule.isAuthenticated = true
+        }
         
     },
-    beforeUnmount () {
-        window.removeEventListener('storage', this.updateLoginStatus)
-    }
+    // beforeUnmount () {
+    //     window.removeEventListener('storage', this.updateLoginStatus)
+    // }
 }
 </script>

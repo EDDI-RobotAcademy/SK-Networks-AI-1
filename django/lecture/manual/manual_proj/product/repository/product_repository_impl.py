@@ -47,7 +47,10 @@ class ProductRepositoryImpl(ProductRepository):
             productImage=productImage.name
         )
         product.save()
-        return product
+
+        savedProduct = Product.objects.get(productId=product.productId)
+        print(f"savedProduct: {savedProduct.productImage}")
+        return savedProduct
 
     def findByProductId(self, productId):
         try:

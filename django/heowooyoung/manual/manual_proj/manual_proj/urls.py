@@ -17,6 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from orders.entity import orders
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     # board Domain으로 요청이 들어가는 모든 것을
@@ -25,4 +27,6 @@ urlpatterns = [
     path('product/', include('product.urls')),
     path('oauth/', include('oauth.urls')),
     path('account/', include('account.urls')),
+    path('cart/', include('cart.urls')),
+    path('orders/', include('orders.urls')),
 ]

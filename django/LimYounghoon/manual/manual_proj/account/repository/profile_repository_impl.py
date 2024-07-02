@@ -41,7 +41,7 @@ class ProfileRepositoryImpl(ProfileRepository):
             return None
 
     def create(self, nickname, email, account):
-        profile = Profile.objects.create(
-            nickname=nickname, email=email, account=account
-        )
+        profile = Profile.objects.create(nickname=nickname, email=email, account=account)
         return profile
+
+

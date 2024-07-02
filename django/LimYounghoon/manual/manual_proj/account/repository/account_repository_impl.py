@@ -25,7 +25,9 @@ class AccountRepositoryImpl(AccountRepository):
         loginTypeEntity, _ = AccountLoginType.objects.get_or_create(loginType=loginType)
         roleTypeEntity, _ = AccountRoleType.objects.get_or_create(roleType=roleType)
 
-        account = Account.objects.create(
-            loginType=loginTypeEntity, roleType=roleTypeEntity
-        )
+        account = Account.objects.create(loginType=loginTypeEntity, roleType=roleTypeEntity)
+        return account
+
+    def findById(self, accountId):
+        account = Account.objects.get(id=accountId)
         return account

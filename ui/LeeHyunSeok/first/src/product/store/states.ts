@@ -1,20 +1,21 @@
 export interface ProductState {
     productList: Product[]
+    product: Product | null
 }
 
-
-//DB에 들어갈 필드를 정의(entity와 같은 역할인듯)
 export interface Product {
     productId: number
     productName: string
     productPrice: string
     productDescription: string
+    productImage: string
     registeredDate: string
     updatedDate: string
 }
 
 const state: ProductState = {
     productList: [],
+    product: null,
 }
 
 export default state

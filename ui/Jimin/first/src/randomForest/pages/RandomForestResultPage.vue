@@ -76,6 +76,7 @@
 <script>
 import ConfusionMatrix from '@/randomForest/components/ConfusionMatrix.vue'
 import CommonChart from '@/randomForest/components/CommonChart.vue'
+import axiosInstance from '@/utility/axiosInstance';
 
 export default {
     components: {
@@ -102,6 +103,9 @@ export default {
         async fetchFlightDataOnRandomForestAnalysis () {
             const response = await fetch('http://localhost:33333/random-forest')
             const data = await response.json()
+            // const response = await axiosInstance.fastapiAxiosInst.get('/random-forest')
+                
+            // const data = response.data
 
             console.log('data:', data)
 

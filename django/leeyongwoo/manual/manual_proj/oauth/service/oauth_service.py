@@ -13,4 +13,3 @@ class OauthService(ABC):
     @abstractmethod
     def requestUserInfo(self, accessToken):
         pass
-
