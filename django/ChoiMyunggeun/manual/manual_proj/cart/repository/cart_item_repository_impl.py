@@ -22,13 +22,15 @@ class CartItemRepositoryImpl(CartItemRepository):
     def register(self, cartData, cart, product):
         productPrice = cartData.get('productPrice')
         quantity = cartData.get('quantity')
-
         CartItem.objects.create(
             cart=cart,
             product=product,
             quantity=quantity,
             price=productPrice
         )
+
+    def findById(self, id):
+        return CartItem.objects.get(cartItemId=id)
 
     def findByCart(self, cart):
         return list(CartItem.objects.filter(cart=cart))
