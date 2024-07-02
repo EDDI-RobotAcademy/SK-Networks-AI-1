@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 
-class WineFeatures(BaseModel):
+class WineFeatureRequestForm(BaseModel):
     alcohol: float
     malic_acid: float
     ash: float
