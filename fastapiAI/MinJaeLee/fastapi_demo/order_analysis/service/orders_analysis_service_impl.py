@@ -5,7 +5,7 @@ import pandas as pd
 import tensorflow as tf
 import numpy as np
 from imblearn import keras
-from keras.src.legacy.saving import legacy_h5_format
+# from keras.src.legacy.saving import legacy_h5_format
 
 from order_analysis.repository.orders_analysis_repository_impl import OrdersAnalysisRepositoryImpl
 from order_analysis.service.orders_analysis_service import OrdersAnalysisService
