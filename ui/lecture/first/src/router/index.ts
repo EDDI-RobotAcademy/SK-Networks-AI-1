@@ -19,6 +19,7 @@ import KmeansRoutes from "@/kmeans/router/KmeansRoutes";
 import TensorFlowIrisTestRoutes from '@/tfIris/router/TensorFlowIrisTestRoutes'
 import OrderRoutes from '@/order/router/OrderRoutes'
 import KafkaTestRoutes from "@/kafka/router/KafkaTestRoutes";
+import FileS3TestRoutes from "@/fileS3/router/FileS3TestRoutes";
 
 const routes: Array<RouteRecordRaw> = [
   ...HomeRoutes,
@@ -43,6 +44,7 @@ const routes: Array<RouteRecordRaw> = [
   ...TensorFlowIrisTestRoutes,
   ...OrderRoutes,
   ...KafkaTestRoutes,
+  ...FileS3TestRoutes,
 ]
 
 const router = createRouter({
