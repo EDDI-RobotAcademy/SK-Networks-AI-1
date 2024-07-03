@@ -18,8 +18,8 @@ from tf_iris.controller.request_form.tf_iris_request_form import TfIrisRequestFo
 tfIrisRouter = APIRouter()
 
 MODEL_PATH = 'tf_iris_model.h5'
-SCALER_PATH = 'tf_iris_scaler.pk1'
-CLASSIFICATION_PATH = 'tf_iris_classification_label.pk1'
+SCALER_PATH = 'tf_iris_scaler.pkl'
+CLASSIFICATION_PATH = 'tf_iris_classification_label.pkl'
 # CLASSIFICATION_NAME = None
 
 @tfIrisRouter.get('/tf-train')
