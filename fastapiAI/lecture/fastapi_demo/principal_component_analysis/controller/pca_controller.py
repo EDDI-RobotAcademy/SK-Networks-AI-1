@@ -70,5 +70,11 @@ async def pcaAnalysis(principalComponentAnalysisService: PrincipalComponentAnaly
 
     print(f"controller -> pcaAnalysis()")
 
-    principalComponentAnalysisService.pcaAnalysis()
+    originalData, pcaData, explainedVarianceRatio = principalComponentAnalysisService.pcaAnalysis()
+
+    return {
+        "original_data": originalData,
+        "pca_data": pcaData,
+        "explained_variance_ratio": explainedVarianceRatio,
+    }
     
