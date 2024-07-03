@@ -12,6 +12,7 @@ from kmeans.controller.kmeans_controller import kmeansRouter
 from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
 from orders_analysis.controller.orders_analysis_controller import ordersAnalysisRouter
 from post.controller.post_controller import postRouter
+from principal_component_analysis.controller.pca_controller import principalComponentAnalysisRouter
 from random_forest.controller.random_forest_controller import randomForestRouter
 from tf_iris.controller.tf_iris_controller import tfIrisRouter
 from train_test_evaluation.controller.train_test_evalutation_controller import trainTestEvaluationRouter
@@ -114,6 +115,7 @@ app.include_router(tfIrisRouter)
 app.include_router(ordersAnalysisRouter)
 app.include_router(gradientDescentRouter)
 app.include_router(decisionTreeRouter)
+app.include_router(principalComponentAnalysisRouter)
 
 load_dotenv()
 
