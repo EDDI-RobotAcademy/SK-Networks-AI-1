@@ -15,6 +15,7 @@ import RandomForestRoutes from '@/randomForest/router/RandomForestRoute'
 import PostRoutes from '@/post/router/PostRoutes'
 import KmeansRoutes from '@/kmeans/router/KmeansRoutes'
 import TensorFlowIrisTestRoutes from '@/tfiris/router/TensorFlowIrisTestRoutes'
+import PrincipalComponentAnalysisRoutes from '@/principalComponentAnalysis/router/PrincipalComponentAnalysisRoutes'
 
 const routes: Array<RouteRecordRaw> = [
   ...HomeRoutes,
@@ -35,6 +36,7 @@ const routes: Array<RouteRecordRaw> = [
   ...PostRoutes,
   ...KmeansRoutes,
   ...TensorFlowIrisTestRoutes,
+  ...PrincipalComponentAnalysisRoutes,
 ]
 
 const router = createRouter({
