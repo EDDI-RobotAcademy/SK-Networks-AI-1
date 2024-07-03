@@ -27,6 +27,7 @@ class PrincipalComponentAnalysisServiceImpl(PrincipalComponentAnalysisService):
         pca = self.principalComponentAnalysisRepository.readyForAnalysis(numberOfComponents)
         principalComponentList = self.principalComponentAnalysisRepository.fitTransform(
                                                                     pca, createdDataFrame)
+        print(f"principalComponentList: {principalComponentList}")
 
         originalData = createdDataFrame.values.tolist()
         pcaData = principalComponentList.tolist()
