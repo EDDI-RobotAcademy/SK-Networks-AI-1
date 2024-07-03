@@ -21,9 +21,9 @@
     "webfontloader": "^1.0.0"
   },
   "devDependencies": {
-    "@aws-sdk/client-cognito-identity": "^3.606.0",
-    "@aws-sdk/client-s3": "^3.608.0",
-    "@aws-sdk/credential-providers": "^3.606.0",
+    "@aws-sdk/client-cognito-identity": "^3.609.0",
+    "@aws-sdk/client-s3": "^3.609.0",
+    "@aws-sdk/credential-providers": "^3.609.0",
     "@types/jest": "^27.0.1",
     "@types/webfontloader": "^1.0.0",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
