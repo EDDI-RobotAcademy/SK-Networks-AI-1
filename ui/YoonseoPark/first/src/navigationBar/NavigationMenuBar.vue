@@ -70,7 +70,8 @@ export default {
                 { title: 'Exponential Regression', action: () => { router.push('/exponential-regression-result') } },
                 { title: 'Train Test Evaluation', action: () => { router.push('/train-test-evaluation-result') } },
                 { title: 'K-means Clustering', action: () => { router.push('/kmeans-test-result') } },
-                { title: 'TensorFlow Iris Test', action: () => { router.push('/tf-iris-result') } }
+                { title: 'TensorFlow Iris Test', action: () => { router.push('/tf-iris-result') } },
+                { title: 'Principal Component Analysis', action: () => { router.push('/pca-result') } }
             ]
         }
     },
