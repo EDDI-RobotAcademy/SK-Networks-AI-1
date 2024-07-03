@@ -4,6 +4,9 @@ from sklearn.preprocessing import StandardScaler
 
 from decision_tree.repository.decision_tree_repository import DecisionTreeRepository
 
+# pip install tensorflow_decision_forests
+# pip install --upgrade typing_extensions
+import tensorflow_decision_forests as tfdf
 import tensorflow as tf
 import pandas as pd
 
@@ -35,10 +38,33 @@ class DecisionTreeRepositoryImpl(DecisionTreeRepository):
         return trainDataFrame, testDataFrame
 
     def sliceTensor(self, scaledTrainDataFrame, scaledTestDataFrame):
+        # from_tensor_slices()는 pandas에서 읽은 데이터를
+        # TensorFlow 사용 primitives로 구성하기 위해 필요한 라이브러리입니다.
+        # 결론적으로 pandas 데이터 -> TensorFlow 데이터로 만들 떄 사용한다고 파악하면 됩니다.
         trainDataFrameAfterSlice = tf.data.Dataset.from_tensor_slices(
             (dict(scaledTrainDataFrame.drop("target", axis=1)),
             scaledTrainDataFrame['target'].astype(int))
         )
-        # print(f"trainDataFrameAfterSlice: {trainDataFrameAfterSlice}")
+        testDataFrameAfterSlice = tf.data.Dataset.from_tensor_slices(
+            (dict(scaledTestDataFrame.drop("target", axis=1)),
+             scaledTestDataFrame['target'].astype(int))
+        )
+
+        return trainDataFrameAfterSlice, testDataFrameAfterSlice
+
+    def applyBatchSize(self, trainDataFrameAfterSlice, testDataFrameAfterSlice, batchSize):
+        readyForLearnTrainData = trainDataFrameAfterSlice.batch(batchSize)
+        readyForLearnTestData = testDataFrameAfterSlice.batch(batchSize)
+
+        return readyForLearnTrainData, readyForLearnTestData
+
+    def learn(self, readyForLearnTrainData):
+        model = tfdf.keras.RandomForestModel(num_trees=100, max_depth=12, min_examples=6)
+        model.fit(readyForLearnTrainData)
+
+        return model
+
+
+
 
 
