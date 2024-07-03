@@ -40,6 +40,7 @@ class DecisionTreeServiceImpl(DecisionTreeService):
 
         # tensor화 시켰으므로 학습시키기 전 batchsize 조정
         # batch : 1번의 학습에 한번에 몇개씩 데이터(샘플)를 줄것인가?
+        # 학습의 효율을 위해서 사용한다. (gpu의 병렬처리 장점을 이용해서 자원 관리 효율적으로)
         readyForLearnTrainData, readyForLearnTestData = self.decisionTreeRepository.applyBatchSize(
             trainedDataFrameAfterSlice,
             testedDataFrameAfterSlice,

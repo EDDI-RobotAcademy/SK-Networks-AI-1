@@ -26,6 +26,7 @@ async def decisionTreeTrain(decisionTreeService: DecisionTreeServiceImpl =
     print(f"controller -> decisionTreeTrain()")
 
     decisionTreeService.decisionTreeTrain()
+
 def load_model():
     if os.path.exists(TRAINED_MODEL_PATH):
         return load(TRAINED_MODEL_PATH)
