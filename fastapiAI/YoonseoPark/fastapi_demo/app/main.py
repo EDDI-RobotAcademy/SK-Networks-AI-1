@@ -1,4 +1,5 @@
 import asyncio
+import json
 import os
 
 import aiomysql
@@ -22,6 +23,7 @@ from principal_component_analysis.controller.pca_controller import principalComp
 from random_forest.controller.random_forest_controller import randomForestRouter
 from tf_iris.controller.tf_iris_controller import tfIrisRouter
 from train_test_evaluation.controller.train_test_evaulation_controller import trainTestEvaluationRouter
+
 
 async def create_kafka_topics():
     adminClient = AIOKafkaAdminClient(
@@ -174,6 +176,22 @@ app.include_router(ordersAnalysisRouter)
 app.include_router(gradientDescentRouter)
 # app.include_router(decisionTreeRouter)
 app.include_router(principalComponentAnalysisRouter)
+
+
+async def testTopicConsume(app: FastAPI):
+    consumer = app.state.kafka_test_topic_consumer
+
+    while not app.state.stop_event.is_set():
+        try:
+            msg = await consumer.getone()
+            data = json.load(msg.value.decode("utf-8"))
+            print(f"request data: {data}")
+        except asyncio.CancelledError:
+            print("소비자 태스크 종료")
+            break
+
+        except Exception as e:
+            print(f"소비자 중 에러 발생: {e}")
 
 load_dotenv()
 
