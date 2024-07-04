@@ -10,6 +10,7 @@ from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 
 from aiokafka import AIOKafkaProducer, AIOKafkaConsumer
+from pydantic import BaseModel
 
 from async_db.database import getMySqlPool, createTableIfNeccessary
 # from decision_tree.controller.decision_tree_controller import decisionTreeRouter
@@ -225,6 +226,16 @@ app.add_middleware(
 )
 
 app.state.connections = set()
+
+class KafkaRequest(BaseModel):
+    message: str
+
+@app.post("/kafka-endpoint")
+async def kafka_endpoint(request: KafkaRequest):
+    eventData = request.dict()
+    await app.state.kafka_producer.send_and_wait("test-topic", json.dumps(eventData).encode())
+
+    return {"status": "processing"}
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
