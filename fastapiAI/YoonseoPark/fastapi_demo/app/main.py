@@ -6,7 +6,7 @@ from aiokafka import AIOKafkaProducer, AIOKafkaConsumer
 from aiokafka.admin import NewTopic, AIOKafkaAdminClient
 from aiokafka.errors import TopicAlreadyExistsError
 from dotenv import load_dotenv
-from fastapi import FastAPI
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 
 from async_db.database import getMySqlPool, createTableIfNecessary
@@ -81,7 +81,7 @@ async def lifespan(app: FastAPI):
 
     # Kafka Consumer (소비자) 구성
     app.state.kafka_consumer = AIOKafkaConsumer(
-        'completion_topic',
+        'completion-topic',
         bootstrap_servers='localhost:9092',
         group_id="my_group",
         client_id='fastapi-kafka-consumer'
@@ -186,6 +186,22 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.state.connections = set()
+
+@app.websocket("/ws")
+async def websocket_endpoint(websocket:WebSocket):
+    await websocket.accept()
+    app.state.connections.add(websocket)
+
+    try:
+        while True:
+            await websocket.receive_text()
+    except WebSocketDisconnect:
+        app.state.connections.remove(websocket)
+
+
 if __name__ == "__main__":
     import uvicorn
+    asyncio.run(create_kafka_topics())
     uvicorn.run(app, host="192.168.0.40", port=33333)
