@@ -38,6 +38,7 @@ class OrdersView(viewsets.ViewSet):
 
             userToken = data.get('userToken')
             accountId = self.redisService.getValueByKey(userToken)
+            print(f"accountId: {accountId}")
 
             if not accountId:
                 raise ValueError('Invalid userToken')
