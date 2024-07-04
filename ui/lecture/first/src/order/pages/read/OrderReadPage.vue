@@ -8,18 +8,18 @@
                         <v-table v-if="order">
                             <thead>
                             <tr>
-                                <th>Product</th>
+                                <th>Product Name</th>
                                 <th>Price</th>
                                 <th>Quantity</th>
                                 <th>Total</th>
                             </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="item in order.items" :key="item.productId">
-                                    <td>{{ item.productName }}</td>
-                                    <td>{{ item.productPrice }}</td>
+                                <tr v-for="item in order.order_items" :key="item.productId">
+                                    <td>{{ item.product_name }}</td>
+                                    <td>{{ item.price }}</td>
                                     <td>{{ item.quantity }}</td>
-                                    <td>{{ item.productPrice * item.quantity }}</td>
+                                    <td>{{ item.price * item.quantity }}</td>
                                 </tr>
                             </tbody>
                         </v-table>
@@ -31,7 +31,7 @@
                         </v-row>
                         <v-row>
                             <v-col class="text-right">
-                                <v-btn color="green" @click="placeOrder">Place Order</v-btn>
+                                <v-btn color="green" @click="goToBack">돌아가기</v-btn>
                             </v-col>
                         </v-row>
                     </v-card-text>
@@ -60,12 +60,18 @@ export default {
     computed: {
         orderTotal() {
             if (!this.order || 
-                    !Array.isArray(this.order.items) || 
-                    this.order.items.length === 0) {
+                    !Array.isArray(this.order.order_items) || 
+                    this.order.order_items.length === 0) {
                 return 0;
             }
-            return this.order.items.reduce(
-                (total, item) => total + item.productPrice * item.quantity,
+            return this.order.order_items.reduce(
+                (total, item) => { 
+                    console.log('item.price:', item.price)
+                    console.log('item.quantity:', item.quantity)
+                    const newTotal = total + item.price * item.quantity
+                    console.log('total:', total)
+                    return newTotal
+                },
                 0
             );
         }
@@ -78,6 +84,8 @@ export default {
 
             try {
                 const response = await this.requestReadOrderToDjango({ orderId })
+                this.order = response
+                console.log('ordersItemInfo:', this.order)
             } catch (error) {
                 console.error('주문 내역 확인 중 에러:', error)
             }
@@ -95,11 +103,8 @@ export default {
             //     ]
             // };
         },
-        placeOrder() {
-            // 최종 주문 처리 로직
-            alert("Order has been placed successfully!");
-            // 주문 후 장바구니 초기화 또는 다른 로직 추가
-            this.$router.push({ name: 'HomePage' }); // Assuming you want to redirect to HomePage after order
+        goToBack () {
+            this.$router.push({ name: 'HomeView' })
         }
     },
     created() {
