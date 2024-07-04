@@ -28,7 +28,10 @@ class DecisionTreeServiceImpl(DecisionTreeService):
             scaledTrainDataFrame,
             scaledTestDataFrame
         )
+
         # 모델한테 32개의 샘플들을 주고 학습시키는 것 -> batch size 가 끝나면 딥러닝만 시키면 됨
+        # tensor화 시켰으므로 학습시키기 전 batchsize 조정
+        # 학습의 효율을 위해서 사용 (GPU의 병렬처리 장점을 이용해서 자원 관리 효율적으로)
         readyForLearnTrainData, readyForLearnTestData = self.decisionTreeRepository.applyBatchSize(
             trainDataFrameAfterSlice,
             testDataFrameAfterSlice,
@@ -36,5 +39,6 @@ class DecisionTreeServiceImpl(DecisionTreeService):
         )
 
         trainedModel = self.decisionTreeRepository.learn(readyForLearnTrainData)
+
 
 

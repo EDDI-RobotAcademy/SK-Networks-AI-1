@@ -1,4 +1,4 @@
-from keras.src.models import model
+
 
 from gradient_descent.entity.linear_regression_model import LinearRegressionModel
 from gradient_descent.repository.gradient_descent_repository import GradientDescentRepository

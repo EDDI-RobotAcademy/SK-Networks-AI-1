@@ -51,7 +51,7 @@ class DecisionTreeRepositoryImpl(DecisionTreeRepository):
             scaledTrainDataFrame['target'].astype(int))
         )
         testDataFrameAfterSlice = tf.data.Dataset.from_tensor_slices(
-            (dict(scaledTestDataFrame.drop("target", axis=1)),
+            (dict(scaledTestDataFrame.drop("target", axis=1)), # axis=1 : 열 -> 열 성분 drop 시킬 거임
              scaledTestDataFrame['target'].astype(int))
         )
 
@@ -59,6 +59,7 @@ class DecisionTreeRepositoryImpl(DecisionTreeRepository):
         # print(f"trainDataFrameAfterSlice(): {trainDataFrameAfterSlice}")
 
     def applyBatchSize(self, trainDataFrameAfterSlice, testDataFrameAfterSlice, batchSize):
+        # tf.Tensor화 시켰기 때문에 batch의 기능을 이용 가능(내장 기능)
         readyForLearnTrainData = trainDataFrameAfterSlice.batch(batchSize)
         readyForLearnTestData = testDataFrameAfterSlice.batch(batchSize)
 
