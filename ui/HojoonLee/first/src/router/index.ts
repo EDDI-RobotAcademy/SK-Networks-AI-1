@@ -15,6 +15,7 @@ import PostRoutes from '@/post/router/PostRoutes'
 import TensorFlowIrisTestRoutes from '@/tfIris/router/TensorFlowIrisTestRoutes'
 import OrderRoutes from '@/order/router/OrderRoutes'
 import PrincioalComponentAnalysisRoutes from '@/principalComponentAnalysis/router/PrincipalComponentsAnalysisRoutes'
+import KafkaTestRoutes from '@/kafka/router/KafkaTestRoutes'
 
 const routes: Array<RouteRecordRaw> = [
   // 항상 도메인의 router 추가했으면 main router 에도 추가해줘야함
@@ -33,6 +34,7 @@ const routes: Array<RouteRecordRaw> = [
   ...TensorFlowIrisTestRoutes,
   ...OrderRoutes,
   ...PrincioalComponentAnalysisRoutes,
+  ...KafkaTestRoutes,
 ]
 
 const router = createRouter({
