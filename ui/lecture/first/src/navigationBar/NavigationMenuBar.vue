@@ -15,7 +15,8 @@
                 </v-btn>
             </template>
             <v-list>
-                <v-list-item v-for="(item, index) in testItems" :key="index" @click="item.action">
+                <v-list-item v-for="(item, index) in testItems" 
+                            :key="index" @click="item.action">
                     <v-list-item-title>
                         {{ item.title }}
                         <span v-if="item.processed" class="status-indicator">!</span>
@@ -79,7 +80,7 @@ const authenticationModule = 'authenticationModule'
 export default {
     data () {
         return {
-            isLogin: !!localStorage.getItem("userToken"),
+            // isLogin: !!localStorage.getItem("userToken"),
             items: [
                 { title: 'Logistic Regression', action: () => { router.push('/logistic-regression-result') } },
                 { title: 'Random Forest', action: () => { router.push('/random-forest-result') } },
@@ -141,7 +142,7 @@ export default {
     mounted () {
         console.log('navigation bar mounted()')
 
-        this.socket = new WebSocket('ws://localhost:33333/ws');
+        this.socket = new WebSocket('ws://192.168.0.18:33333/ws');
 
         this.socket.onmessage = (event) => {
             const data = JSON.parse(event.data);
