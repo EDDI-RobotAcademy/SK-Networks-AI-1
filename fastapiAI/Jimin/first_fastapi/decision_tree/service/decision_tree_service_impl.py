@@ -31,7 +31,8 @@ class DecisionTreeServiceImpl(DecisionTreeService):
             scaledTrainDataFrame,
             scaledTestDataFrame
         )
-
+        # batch : 1번의 학습에 한번에 몇개씩 데이터를 줄것인가?
+        # 학습의 효율을 위해서 사용한다. (gpu의 병렬처리 장점을 이용해서 자원 관리 효율적으로)
         readyForLearnTrainData, readyForLearnTestData = self.decisionTreeRepository.applyBatchSize(
             trainDataFrameAfterSlice,
             testDataFrameAfterSlice,

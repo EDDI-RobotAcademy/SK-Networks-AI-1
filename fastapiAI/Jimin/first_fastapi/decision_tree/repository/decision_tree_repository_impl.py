@@ -29,7 +29,7 @@ class DecisionTreeRepositoryImpl(DecisionTreeRepository):
         # fit은 데이터를 분석하여 내부 파라미터를 학습하게 됨
         # transform은 학습된 내부 파라미터를 사용하여 데이터를 변환합
         # 고로 transform은 fit이 반드시 먼저 선행되어야 함
-        trainDataFrame[featureNames] = scaler.fit_transform(trainDataFrame[featureNames])
+        trainDataFrame[featureNames] = scaler.fit_transform(trainDataFrame[featureNames]) # 사람들이 직접 추출해줘야 하는걸 fit_transform을 쓰면 컴퓨터가 해줌
         testDataFrame[featureNames] = scaler.transform(testDataFrame[featureNames])
 
         return trainDataFrame, testDataFrame
@@ -51,7 +51,7 @@ class DecisionTreeRepositoryImpl(DecisionTreeRepository):
         # print(f"trainDataFrameAfterSlice: {trainDataFrameAfterSlice}")
 
     def applyBatchSize(self, trainDataFrameAfterSlice, testDataFrameAfterSlice, batchSize):
-        readyForLearnTrainData = trainDataFrameAfterSlice.batch(batchSize)
+        readyForLearnTrainData = trainDataFrameAfterSlice.batch(batchSize) # tensor화를 시켰기 때문에 그 내장되어 있는 것으로 .batch를 썼다.
         readyForLearnTestData = testDataFrameAfterSlice.batch(batchSize)
 
         return readyForLearnTrainData, readyForLearnTestData
