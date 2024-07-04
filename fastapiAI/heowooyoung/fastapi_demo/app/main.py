@@ -26,6 +26,7 @@ from random_forest.controller.random_forest_controller import randomForestRouter
 from tf_iris.controller.tf_iris_controller import tfIrisRouter
 from train_test_evaluation.controller.train_test_evaluation_controller import trainTestEvaluationRouter
 
+
 async def create_kafka_topics():
     adminClient = AIOKafkaAdminClient(
         bootstrap_servers='localhost:9092',
@@ -59,6 +60,7 @@ async def create_kafka_topics():
     finally:
         await adminClient.close()
 
+
 # # 현재는 deprecated 라고 나타나지만 lifespan 이란 것을 대신 사용하라고 나타나고 있음
 # # 완전히 배제되지는 않았는데 애플리케이션이 시작할 때 실행될 함수를 지정함
 # # 고로 애플리케이션 시작 시 비동기 처리가 가능한 DB를 구성한다 보면 됨
@@ -77,6 +79,7 @@ async def create_kafka_topics():
 import warnings
 
 warnings.filterwarnings("ignore", category=aiomysql.Warning)
+
 
 async def lifespan(app: FastAPI):
     # Startup
@@ -131,10 +134,12 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
+
 # 웹 브라우저 상에서 "/" 을 입력하면 (key)Hello: (value)World가 리턴
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
+
 
 # 브라우저 상에 /items/4?q=test 같은 것을 넣으면
 # item_id로 4, q로는 "test"를 획득하게 됨
@@ -145,6 +150,7 @@ def read_root():
 @app.get("/items/{item_id}")
 def read_item(item_id: int, q: str = None):
     return {"item_id": item_id, "q": q}
+
 
 # 사실 현재 위의 코드는 매우 근본이 없는 .... 코드임
 # 왜냐하면 모든 로직을 main에 전부 따 때려박았기 때문
@@ -195,16 +201,26 @@ app.include_router(gradientDescentRouter)
 # app.include_router(decisionTreeRouter)
 app.include_router(principalComponentAnalysisRouter)
 
+
 async def testTopicConsume(app: FastAPI):
     consumer = app.state.kafka_test_topic_consumer
 
     while not app.state.stop_event.is_set():
         try:
             msg = await consumer.getone()
-            data = json.load(msg.value.decode("utf-8"))
+            print(f"msg: {msg}")
+            data = json.loads(msg.value.decode("utf-8"))
             print(f"request data: {data}")
 
             # 실제로 여기서 뭔가 요청을 하던 뭘 하던 지지고 볶으면 됨
+            await asyncio.sleep(6)
+
+            for connection in app.state.connections:
+                await connection.send_json({
+                    'message': 'Processing completed.',
+                    'data': data,
+                    'title': "Kafka Test"
+                })
 
         except asyncio.CancelledError:
             print("소비자 태스크 종료")
@@ -212,6 +228,7 @@ async def testTopicConsume(app: FastAPI):
 
         except Exception as e:
             print(f"소비 중 에러 발생: {e}")
+
 
 load_dotenv()
 
@@ -227,8 +244,10 @@ app.add_middleware(
 
 app.state.connections = set()
 
+
 class KafkaRequest(BaseModel):
     message: str
+
 
 @app.post("/kafka-endpoint")
 async def kafka_endpoint(request: KafkaRequest):
@@ -236,6 +255,7 @@ async def kafka_endpoint(request: KafkaRequest):
     await app.state.kafka_producer.send_and_wait("test-topic", json.dumps(eventData).encode())
 
     return {"status": "processing"}
+
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
@@ -248,7 +268,9 @@ async def websocket_endpoint(websocket: WebSocket):
     except WebSocketDisconnect:
         app.state.connections.remove(websocket)
 
+
 if __name__ == "__main__":
     import uvicorn
+
     asyncio.run(create_kafka_topics())
     uvicorn.run(app, host="192.168.0.42", port=33333)

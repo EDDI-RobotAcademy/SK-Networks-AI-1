@@ -15,8 +15,8 @@
                 </v-btn>
             </template>
             <v-list>
-                <v-list-item v-for="(item, index) in testItems"
-                             :key="index" @click="item.action">
+                <v-list-item v-for="(item, index) in testItems" 
+                            :key="index" @click="item.action">
                     <v-list-item-title>
                         {{ item.title }}
                         <span v-if="item.processed" class="status-indicator">!</span>
