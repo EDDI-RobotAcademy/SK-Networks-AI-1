@@ -1,4 +1,3 @@
-version: '3'
 services:
   zookeeper:
     container_name: zookeeper-container
@@ -14,4 +13,4 @@ services:
     environment:
       KAFKA_ADVERITSED_HOST_NAME: ${KAFKA_ADVERTISED_HOST_NAME}
       KAFKA_ZOOKEEPER_CONNECT: zookeeper-container:${ZOOKEEPER_PORT}
-      KAFKA_CREATE_TOPICS: ${KAFKA_CREATED_TOPICS}
+      KAFKA_CREATE_TOPICS: ${KAFKA_CREATE_TOPICS}
