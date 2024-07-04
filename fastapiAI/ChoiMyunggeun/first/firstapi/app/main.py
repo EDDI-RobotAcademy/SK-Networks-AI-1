@@ -6,7 +6,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from async_db.database import getMySqlPool, createTableIfNeccessary
-from decision_tree.controller.decision_tree_controller import decisionTreeRouter
+# from decision_tree.controller.decision_tree_controller import decisionTreeRouter
 from exponential_regression.controller.exponential_regression_controller import exponentialRegressionRouter
 from gradient_descent.controller.gradient_descent_controller import gradientDescentRouter
 from kmeans.controller.kmeans_controller import kmeansRouter
@@ -14,15 +14,14 @@ from logistic_regression.controller.logistic_regression_controller import logist
 from orders_analysis.controller.orders_analysis_controller import ordersAnalysisRouter
 from polynomialRegression.controller.polynomial_regression_controller import polynomialRegressionRouter
 from post.controller.post_controller import postRouter
+from principal_component_analysis.controller.pca_controller import principalComponentAnalysisRouter
 from random_forest.controller.random_forest_controller import randomForestRouter
 from tf_iris.controller.tf_iris_controller import tfIrisRouter
 from train_test_evaluation.controller.train_test_evaluation_controller import trainTestEvaluationRouter
 
-# app = FastAPI()
-
-# 현재는 deprecated 라고 나타나지만 lifespan 이란 것을 대신 사용하라고 나타나고 있음
-# 완전히 배제되지는 않았는데 애플리케이션이 시작할 때 실행될 함수를 지정함
-# 고로 애플리케이션 시작 시 비동기 처리가 가능한 DB를 구성한다 보면 됨
+# # 현재는 deprecated 라고 나타나지만 lifespan 이란 것을 대신 사용하라고 나타나고 있음
+# # 완전히 배제되지는 않았는데 애플리케이션이 시작할 때 실행될 함수를 지정함
+# # 고로 애플리케이션 시작 시 비동기 처리가 가능한 DB를 구성한다 보면 됨
 # @app.on_event("startup")
 # async def startup_event():
 #     app.state.db_pool = await getMySqlPool()
@@ -39,18 +38,16 @@ import warnings
 
 warnings.filterwarnings("ignore", category=aiomysql.Warning)
 
-
 async def lifespan(app: FastAPI):
     # Startup
-    # app.state.dbPool = await getMySqlPool()
-    # await createTableIfNeccessary(app.state.dbPool)
-    #
-    # yield
-    #
-    # # Shutdown
-    # app.state.dbPool.close()
-    # await app.state.dbPool.wait_closed()
-    ...
+    app.state.dbPool = await getMySqlPool()
+    await createTableIfNeccessary(app.state.dbPool)
+
+    yield
+
+    # Shutdown
+    app.state.dbPool.close()
+    await app.state.dbPool.wait_closed()
 
 
 app = FastAPI(lifespan=lifespan)
@@ -116,7 +113,8 @@ app.include_router(kmeansRouter)
 app.include_router(tfIrisRouter)
 app.include_router(ordersAnalysisRouter)
 app.include_router(gradientDescentRouter)
-app.include_router(decisionTreeRouter)
+# app.include_router(decisionTreeRouter)
+app.include_router(principalComponentAnalysisRouter)
 
 load_dotenv()
 
