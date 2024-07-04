@@ -197,7 +197,7 @@ app.include_router(principalComponentAnalysisRouter)
 async def testTopicConsume(app: FastAPI):
     consumer = app.state.kafka_test_topic_consumer
 
-    while not app.state_event.is_set():
+    while not app.state.stop_event.is_set():
         try:
             msg = await consumer.getone()
             data = json.load(msg.value.decode("utf-8"))
