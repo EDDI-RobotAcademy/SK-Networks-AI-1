@@ -108,7 +108,7 @@ export default {
     mounted () {
         console.log('navigation bar mounted()')
 
-        this.socket = new WebSocket('ws://localshot:33333/ws');
+        this.socket = new WebSocket('ws://192.168.0.42:33333/ws');
 
         this.socket.onmessage = (event) => {
             const data = JSON.parse(event.data);
