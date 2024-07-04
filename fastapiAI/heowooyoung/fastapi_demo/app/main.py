@@ -1,11 +1,12 @@
 import asyncio
+import json
 import os
 
 import aiomysql
 from aiokafka.admin import AIOKafkaAdminClient, NewTopic
 from aiokafka.errors import TopicAlreadyExistsError
 from dotenv import load_dotenv
-from fastapi import FastAPI
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 
 from aiokafka import AIOKafkaProducer, AIOKafkaConsumer
@@ -51,6 +52,7 @@ async def create_kafka_topics():
                 await adminClient.create_topics([topic])
             except TopicAlreadyExistsError:
                 print(f"Topic '{topic.name}' already exists, skipping creation")
+
     except Exception as e:
         print(f"카프카 토픽 생성 실패: {e}")
     finally:
@@ -110,7 +112,7 @@ async def lifespan(app: FastAPI):
     await app.state.kafka_test_topic_consumer.start()
 
     # asyncio.create_task(consume(app))
-    # asyncio.create_task(testTopicConsume(app))
+    asyncio.create_task(testTopicConsume(app))
 
     try:
         yield
@@ -124,13 +126,6 @@ async def lifespan(app: FastAPI):
         await app.state.kafka_producer.stop()
         await app.state.kafka_consumer.stop()
         await app.state.kafka_test_topic_consumer.stop()
-
-
-    yield
-
-    # Shutdown
-    app.state.dbPool.close()
-    await app.state.dbPool.wait_closed()
 
 
 app = FastAPI(lifespan=lifespan)
@@ -199,6 +194,24 @@ app.include_router(gradientDescentRouter)
 # app.include_router(decisionTreeRouter)
 app.include_router(principalComponentAnalysisRouter)
 
+async def testTopicConsume(app: FastAPI):
+    consumer = app.state.kafka_test_topic_consumer
+
+    while not app.state_event.is_set():
+        try:
+            msg = await consumer.getone()
+            data = json.load(msg.value.decode("utf-8"))
+            print(f"request data: {data}")
+
+            # 실제로 여기서 뭔가 요청을 하던 뭘 하던 지지고 볶으면 됨
+
+        except asyncio.CancelledError:
+            print("소비자 태스크 종료")
+            break
+
+        except Exception as e:
+            print(f"소비 중 에러 발생: {e}")
+
 load_dotenv()
 
 origins = os.getenv("ALLOWED_ORIGINS", "").split(",")
@@ -211,6 +224,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.state.connections = set()
+
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    app.state.connections.add(websocket)
+
+    try:
+        while True:
+            await websocket.receive_text()
+    except WebSocketDisconnect:
+        app.state.connections.remove(websocket)
 
 if __name__ == "__main__":
     import uvicorn
