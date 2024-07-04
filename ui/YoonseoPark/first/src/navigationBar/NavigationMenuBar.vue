@@ -108,6 +108,14 @@ export default {
     },
     mounted () {
         console.log('navigation bar mounted()')
+
+        this.socket = new WebSocket('ws://localhost:33333/ws');
+
+        this.socket.onmessage = (event) => {
+            const data = JSON.parse(event.data)
+            console.log('received data:', data)
+            this.updateProcessingStatus(data)
+        }
         
         const userToken = localStorage.getItem("userToken")
         if (userToken) {
