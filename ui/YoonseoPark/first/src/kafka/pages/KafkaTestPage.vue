@@ -1,6 +1,7 @@
 <template>
     <v-container fluid>
         <h2 class="mb-4">Kafka Test Page</h2>
+
         <v-card>
             <v-card-text>
                 <v-row>

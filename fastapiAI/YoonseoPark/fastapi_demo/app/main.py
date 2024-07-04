@@ -103,7 +103,7 @@ async def lifespan(app: FastAPI):
     await app.state.kafka_test_topic_consumer.start()
 
     # asyncio.create_task(consume(app))
-    # asyncio.create_task(testTopicConsume(app))
+    asyncio.create_task(testTopicConsume(app))
 
     try:
         yield
@@ -185,8 +185,19 @@ async def testTopicConsume(app: FastAPI):
     while not app.state.stop_event.is_set():
         try:
             msg = await consumer.getone()
-            data = json.load(msg.value.decode("utf-8"))
-            print(f"request data: {data}")
+            print(f"msg: {msg}")
+            data = json.loads(msg.value.decode("utf-8"))
+
+            # 실제로 여기서 뭔가 요청을 하던 뭘 하던 지지고 볶으면 됨
+            await asyncio.sleep(1)
+
+            for connection in app.state.connections:
+                await connection.send_json({
+                    'message': 'Processing completed.',
+                    'data': data,
+                    'title': "Kafka Test"
+                })
+
         except asyncio.CancelledError:
             print("소비자 태스크 종료")
             break
