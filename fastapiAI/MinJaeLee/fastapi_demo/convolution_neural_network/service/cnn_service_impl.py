@@ -13,5 +13,5 @@ class ConvolutionNeuralNetworkServiceImpl(ConvolutionNeuralNetworkService):
         (trainImages, trainLabels), (
             testImages, testLabels) = self.convolutionNeuralNetworkRepositoryImpl.loadCifar10Data()
 
-        print(f"trianLabels: {trainLabels}")
+        print(f"trainLabels: {trainLabels}")
         print(f"testLabels: {testLabels}")
