@@ -50,3 +50,21 @@ class OrdersView(viewsets.ViewSet):
         except Exception as e:
             print('주문 상세 내역 조회 중 문제 발생:', e)
             return Response({ 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+    def ordersList(self, request):
+        try:
+            data = request.data
+            userToken = data.get('userToken')
+            accountId = self.redisService.getValueByKey(userToken)
+            print(f"accountId: {accountId}")
+
+            if not accountId:
+                raise ValueError('Invalid userToken')
+
+            ordersList = self.ordersService.ordersList(accountId)
+
+            return Response(ordersList, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            print('주문 리스트 조회 중 문제 발생:', e)
+            return Response({ 'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)

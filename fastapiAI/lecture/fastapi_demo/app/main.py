@@ -13,6 +13,7 @@ from aiokafka import AIOKafkaProducer, AIOKafkaConsumer
 from pydantic import BaseModel
 
 from async_db.database import getMySqlPool, createTableIfNeccessary
+from convolution_neural_network.controller.cnn_controller import convolutionNeuralNetworkRouter
 # from decision_tree.controller.decision_tree_controller import decisionTreeRouter
 from exponential_regression.controller.exponential_regression_controller import exponentialRegressionRouter
 from gradient_descent.controller.gradient_descent_controller import gradientDescentRouter
@@ -194,6 +195,7 @@ app.include_router(ordersAnalysisRouter)
 app.include_router(gradientDescentRouter)
 # app.include_router(decisionTreeRouter)
 app.include_router(principalComponentAnalysisRouter)
+app.include_router(convolutionNeuralNetworkRouter)
 
 async def testTopicConsume(app: FastAPI):
     consumer = app.state.kafka_test_topic_consumer
