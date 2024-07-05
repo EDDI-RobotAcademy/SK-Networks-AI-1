@@ -3,7 +3,7 @@ import json
 import os
 
 import aiomysql
-from aiokafka.admin import NewTopic, AIOKafkaAdminClient
+from aiokafka.admin import AIOKafkaAdminClient, NewTopic
 from aiokafka.errors import TopicAlreadyExistsError
 from dotenv import load_dotenv
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
@@ -13,6 +13,7 @@ from aiokafka import AIOKafkaProducer, AIOKafkaConsumer
 from pydantic import BaseModel
 
 from async_db.database import getMySqlPool, createTableIfNeccessary
+from convolution_neural_network.controller.cnn_controller import convolutionNeuralNetworkRouter
 # from decision_tree.controller.decision_tree_controller import decisionTreeRouter
 from exponential_regression.controller.exponential_regression_controller import exponentialRegressionRouter
 from gradient_descent.controller.gradient_descent_controller import gradientDescentRouter
@@ -38,15 +39,15 @@ async def create_kafka_topics():
 
         topics = [
             NewTopic(
-                'test-topic',
+                "test-topic",
                 num_partitions=1,
-                replication_factor=1
+                replication_factor=1,
             ),
             NewTopic(
-                'completion-topic',
+                "completion-topic",
                 num_partitions=1,
-                replication_factor=1
-            )
+                replication_factor=1,
+            ),
         ]
 
         for topic in topics:
@@ -56,7 +57,7 @@ async def create_kafka_topics():
                 print(f"Topic '{topic.name}' already exists, skipping creation")
 
     except Exception as e:
-        print(f'카프카 토픽 생성 실패: {e}')
+        print(f"카프카 토픽 생성 실패: {e}")
     finally:
         await adminClient.close()
 
@@ -80,6 +81,7 @@ import warnings
 
 warnings.filterwarnings("ignore", category=aiomysql.Warning)
 
+
 async def lifespan(app: FastAPI):
     # Startup
     app.state.dbPool = await getMySqlPool()
@@ -90,15 +92,15 @@ async def lifespan(app: FastAPI):
 
     # Kafka Producer (생산자) 구성
     app.state.kafka_producer = AIOKafkaProducer(
-        bootstrap_servers = 'localhost:9092',
-        client_id = 'fastapi-kafka-producer'
+        bootstrap_servers='localhost:9092',
+        client_id='fastapi-kafka-producer'
     )
 
     # Kafka Consumer (소비자) 구성
     app.state.kafka_consumer = AIOKafkaConsumer(
         'completion_topic',
         bootstrap_servers='localhost:9092',
-        group_id='my_group',
+        group_id="my_group",
         client_id='fastapi-kafka-consumer'
     )
 
@@ -106,7 +108,7 @@ async def lifespan(app: FastAPI):
     app.state.kafka_test_topic_consumer = AIOKafkaConsumer(
         'test-topic',
         bootstrap_servers='localhost:9092',
-        group_id='another_group',
+        group_id="another_group",
         client_id='fastapi-kafka-consumer'
     )
 
@@ -116,6 +118,7 @@ async def lifespan(app: FastAPI):
 
     # asyncio.create_task(consume(app))
     asyncio.create_task(testTopicConsume(app))
+
     try:
         yield
     finally:
@@ -129,17 +132,15 @@ async def lifespan(app: FastAPI):
         await app.state.kafka_consumer.stop()
         await app.state.kafka_test_topic_consumer.stop()
 
-    # Shutdown
-    app.state.dbPool.close()
-    await app.state.dbPool.wait_closed()
-
 
 app = FastAPI(lifespan=lifespan)
+
 
 # 웹 브라우저 상에서 "/" 을 입력하면 (key)Hello: (value)World가 리턴
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
+
 
 # 브라우저 상에 /items/4?q=test 같은 것을 넣으면
 # item_id로 4, q로는 "test"를 획득하게 됨
@@ -150,6 +151,7 @@ def read_root():
 @app.get("/items/{item_id}")
 def read_item(item_id: int, q: str = None):
     return {"item_id": item_id, "q": q}
+
 
 # 사실 현재 위의 코드는 매우 근본이 없는 .... 코드임
 # 왜냐하면 모든 로직을 main에 전부 따 때려박았기 때문
@@ -199,6 +201,8 @@ app.include_router(ordersAnalysisRouter)
 app.include_router(gradientDescentRouter)
 # app.include_router(decisionTreeRouter)
 app.include_router(principalComponentAnalysisRouter)
+app.include_router(convolutionNeuralNetworkRouter)
+
 
 async def testTopicConsume(app: FastAPI):
     consumer = app.state.kafka_test_topic_consumer
@@ -206,9 +210,9 @@ async def testTopicConsume(app: FastAPI):
     while not app.state.stop_event.is_set():
         try:
             msg = await consumer.getone()
-            print(f'msg: {msg}')
-            data = json.loads(msg.value.decode('utf-8'))
-            print(f'request data: {data}')
+            print(f"msg: {msg}")
+            data = json.loads(msg.value.decode("utf-8"))
+            print(f"request data: {data}")
 
             # 실제로 여기서 뭔가 요청을 하던 뭘 하던 지지고 볶으면 됨
             await asyncio.sleep(60)
@@ -217,15 +221,16 @@ async def testTopicConsume(app: FastAPI):
                 await connection.send_json({
                     'message': 'Processing completed.',
                     'data': data,
-                    'title': 'Kafka Test'
+                    'title': "Kafka Test"
                 })
 
         except asyncio.CancelledError:
-            print('소비자 태스크 종료')
+            print("소비자 태스크 종료")
             break
 
         except Exception as e:
-            print(f'소비 중 에러 발생: {e}')
+            print(f"소비 중 에러 발생: {e}")
+
 
 load_dotenv()
 
@@ -241,8 +246,10 @@ app.add_middleware(
 
 app.state.connections = set()
 
+
 class KafkaRequest(BaseModel):
     message: str
+
 
 @app.post("/kafka-endpoint")
 async def kafka_endpoint(request: KafkaRequest):
@@ -251,7 +258,8 @@ async def kafka_endpoint(request: KafkaRequest):
 
     return {"status": "processing"}
 
-@app.websocket('/ws')
+
+@app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     app.state.connections.add(websocket)
@@ -265,5 +273,6 @@ async def websocket_endpoint(websocket: WebSocket):
 
 if __name__ == "__main__":
     import uvicorn
+
     asyncio.run(create_kafka_topics())
     uvicorn.run(app, host="localhost", port=33333)
