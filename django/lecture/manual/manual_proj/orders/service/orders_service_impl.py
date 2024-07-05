@@ -91,9 +91,11 @@ class OrdersServiceImpl(OrdersService):
             print('Error reading order details:', e)
             raise e
 
-    def ordersList(self, accountId):
+    def ordersList(self, accountId, data):
+        page = data.get('page')
+
         account = self.__accountRepository.findById(accountId)
-        accountOrderPage = self.__ordersRepository.findAllByAccount(account)
+        accountOrderPage = self.__ordersRepository.findAllByAccount(account, page)
         # print(f"accountOrderPage: {accountOrderPage}")
 
         pagenatedAccountOrderList = list(accountOrderPage.object_list)

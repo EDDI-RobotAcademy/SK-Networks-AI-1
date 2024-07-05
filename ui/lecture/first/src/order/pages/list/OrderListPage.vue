@@ -63,9 +63,11 @@ export default {
             console.log('currentPageNumber:', this.currentPageNumber)
             await this.requestOrderListToDjango({ page: this.currentPageNumber })
         },
-        onPageChange (page) {
+        async onPageChange (page) {
+            console.log("is it operate ? onPageChange():", page)
             this.SET_CURRENT_PAGE_NUMBER(page)
-            this.fetchOrderList()
+            this.currentPageNumber = page
+            // await this.fetchOrderList()
         },
         goToHome () {
             this.$router.push({ name: 'HomeView' })
