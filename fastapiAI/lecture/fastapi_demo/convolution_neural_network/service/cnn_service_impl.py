@@ -1,3 +1,5 @@
+import numpy as np
+
 from convolution_neural_network.repository.cnn_repository_impl import ConvolutionNeuralNetworkRepositoryImpl
 from convolution_neural_network.service.cnn_service import ConvolutionNeuralNetworkService
 
@@ -8,6 +10,8 @@ class ConvolutionNeuralNetworkServiceImpl(ConvolutionNeuralNetworkService):
     # 고양이(3), 개(5)
     TARGET_CIFAR10_CLASSES = [3, 5]
     CIFAR10_INPUT_SHAPE = (32, 32, 3)
+
+    targetClassName = ['고양이', '개']
 
     def __init__(self):
         self.convolutionNeuralNetworkRepositoryImpl = ConvolutionNeuralNetworkRepositoryImpl()
@@ -41,3 +45,14 @@ class ConvolutionNeuralNetworkServiceImpl(ConvolutionNeuralNetworkService):
         compiledModel = self.convolutionNeuralNetworkRepositoryImpl.modelCompile(model)
         fittedModel = self.convolutionNeuralNetworkRepositoryImpl.fitModel(
                                     compiledModel, trainGenerator, testGenerator)
+
+        fittedModel.save('cnn_model.h5')
+
+    def imagePredict(self, file):
+        image = self.convolutionNeuralNetworkRepositoryImpl.readImageFile(file)
+        loadedModel = self.convolutionNeuralNetworkRepositoryImpl.loadModel('cnn_model.h5')
+        prediction = self.convolutionNeuralNetworkRepositoryImpl.predict(image, loadedModel)
+        print(f"prediction: {prediction}")
+
+        predictedClass = self.targetClassName[np.argmax(prediction)]
+        return predictedClass

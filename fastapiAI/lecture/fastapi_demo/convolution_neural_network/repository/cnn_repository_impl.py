@@ -1,9 +1,15 @@
+import io
+
 import numpy as np
 from keras.src.preprocessing.image import ImageDataGenerator
 
 from convolution_neural_network.repository.cnn_repository import ConvolutionNeuralNetworkRepository
 
+from tensorflow.keras.models import load_model
 from tensorflow.keras import datasets, models, layers
+from fastapi import HTTPException
+
+from PIL import Image
 
 
 class ConvolutionNeuralNetworkRepositoryImpl(ConvolutionNeuralNetworkRepository):
@@ -99,8 +105,28 @@ class ConvolutionNeuralNetworkRepositoryImpl(ConvolutionNeuralNetworkRepository)
         return model
 
     def fitModel(self, compiledModel, trainGenerator, testGenerator):
-        compiledModel.fit(trainGenerator, epochs=100, validation_data=testGenerator)
+        compiledModel.fit(trainGenerator, epochs=1000, validation_data=testGenerator)
 
         return compiledModel
 
+    def readImageFile(self, file):
+        try:
+            # from PIL import Image
+            image = Image.open(io.BytesIO(file))
+            return image
+        except Exception as e:
+            raise HTTPException(status_code=400, detail=f"파일 읽는 중 문제 발생: {e}")
+
+    def loadModel(self, savedModelPath):
+        return load_model(savedModelPath)
+
+    def predict(self, image, loadedModel):
+        resizedImage = image.resize((32, 32))
+        rgbConvertedImage = resizedImage.convert('RGB')
+        arrayImage = np.array(rgbConvertedImage)
+        dimExpandedArrayImage = np.expand_dims(arrayImage, axis=0)
+        scaledImage = dimExpandedArrayImage / 255.0
+
+        prediction = loadedModel.predict(scaledImage)
+        return prediction
 
