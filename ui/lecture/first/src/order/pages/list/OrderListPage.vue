@@ -26,24 +26,24 @@
 
                         <v-divider></v-divider>
 
-                        <v-row justify="end">
-                            <v-btn color="green" @click="goToHome">홈으로 돌아가기</v-btn>
-                        </v-row>
-
                         <v-pagination
                             v-if="totalPageNumber > 1"
                             v-model:page="currentPageNumber"
                             :length="totalPageNumber"
-                            @input="fetchOrderList"/>
+                            @update:modelValue="onPageChange"/>
                     </v-card-text>
                 </v-card>
             </v-col>
+        </v-row>
+
+        <v-row justify="end">
+            <v-btn color="green" @click="goToHome">홈으로 돌아가기</v-btn>
         </v-row>
     </v-container>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 
 const orderModule = 'orderModule'
 
@@ -58,8 +58,14 @@ export default {
     },
     methods: {
         ...mapActions(orderModule, ['requestOrderListToDjango']),
+        ...mapMutations(orderModule, ['SET_CURRENT_PAGE_NUMBER']),
         async fetchOrderList () {
+            console.log('currentPageNumber:', this.currentPageNumber)
             await this.requestOrderListToDjango({ page: this.currentPageNumber })
+        },
+        onPageChange (page) {
+            this.SET_CURRENT_PAGE_NUMBER(page)
+            this.fetchOrderList()
         },
         goToHome () {
             this.$router.push({ name: 'HomeView' })
