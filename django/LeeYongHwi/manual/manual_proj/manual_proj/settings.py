@@ -25,7 +25,6 @@ SECRET_KEY = "django-insecure-vst!u(6k*+$ymrvg9c=4kdh(5ylr*t=i4w2gprj+p@mjn_=k**
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -66,13 +65,15 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
+
+
 KAKAO = {
     'LOGIN_URL': os.getenv('KAKAO_LOGIN_URL'),
     'CLIENT_ID': os.getenv('KAKAO_CLIENT_ID'),
     'REDIRECT_URI': os.getenv('KAKAO_REDIRECT_URI'),
     'TOKEN_REQUEST_URI': os.getenv('KAKAO_TOKEN_REQUEST_URI'),
-    'USERINFO_REQUEST_URI': os.getenv('KAKAO_USERINFO_REQUEST_URI')
-
+    'USERINFO_REQUEST_URI': os.getenv('KAKAO_USERINFO_REQUEST_URI'),
 }
 
 ROOT_URLCONF = "manual_proj.urls"
