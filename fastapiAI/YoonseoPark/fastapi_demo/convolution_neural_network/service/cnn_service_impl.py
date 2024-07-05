@@ -1,0 +1,10 @@
+from convolution_neural_network.repository.cnn_repository_impl import ConvolutionNeuralNetworkRepositoryImpl
+from convolution_neural_network.service.cnn_service import ConvolutionNeuralNetworkService
+
+
+class ConvolutionNeuralNetworkServiceImpl(ConvolutionNeuralNetworkService):
+    def __init__(self):
+        self.convolutionNeuralNetworkRepositoryImpl = ConvolutionNeuralNetworkRepositoryImpl()
+    def imageTrain(self):
+        print("service -> imageTrain()")
+        self.convolutionNeuralNetworkRepositoryImpl.loadCifar10Data()
