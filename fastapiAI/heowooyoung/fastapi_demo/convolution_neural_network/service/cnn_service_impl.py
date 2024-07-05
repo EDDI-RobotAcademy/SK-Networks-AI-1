@@ -46,12 +46,15 @@ class ConvolutionNeuralNetworkServiceImpl(ConvolutionNeuralNetworkService):
         fittedModel = self.convolutionNeuralNetworkRepositoryImpl.fitModel(
                                     compiledModel, trainGenerator, testGenerator)
 
-        fittedModel.save('cnn_model.h5')
+        fittedModel.save('app/cnn_model.h5')
 
     def imagePredict(self, file):
         image = self.convolutionNeuralNetworkRepositoryImpl.readImageFile(file)
+
         loadedModel = self.convolutionNeuralNetworkRepositoryImpl.loadModel('cnn_model.h5')
+
         prediction = self.convolutionNeuralNetworkRepositoryImpl.predict(image, loadedModel)
+
         print(f"prediction: {prediction}")
 
         predictedClass = self.targetClassName[np.argmax(prediction)]
