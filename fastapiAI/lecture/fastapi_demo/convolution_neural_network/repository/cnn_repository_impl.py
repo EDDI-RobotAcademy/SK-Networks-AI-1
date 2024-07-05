@@ -99,7 +99,7 @@ class ConvolutionNeuralNetworkRepositoryImpl(ConvolutionNeuralNetworkRepository)
         return model
 
     def fitModel(self, compiledModel, trainGenerator, testGenerator):
-        compiledModel.fit(trainGenerator, epochs=100, validation_data=testGenerator)
+        compiledModel.fit(trainGenerator, epochs=1000, validation_data=testGenerator)
 
         return compiledModel
 
