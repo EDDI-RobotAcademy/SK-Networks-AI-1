@@ -130,7 +130,7 @@ export default {
                     .attr("y", margin.top)
                     .attr("text-anchor", "middle")
                     .attr("font-size", "16px")
-                    .style("text-decoration", "undedrline")
+                    .style("text-decoration", "underline")
                     .text(`PCA Data: PC1=${(this.explainedVarianceRatio[0] * 100).toFixed(2)}%, PC2=${(this.explainedVarianceRatio[1] * 100).toFixed(2)}%`)
 
             // .text("PCA Data: 
