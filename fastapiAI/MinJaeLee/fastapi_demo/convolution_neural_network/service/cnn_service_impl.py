@@ -1,3 +1,5 @@
+import numpy as np
+
 from convolution_neural_network.respository.cnn_repository_impl import ConvolutionNeuralNetworkRepositoryImpl
 from convolution_neural_network.service.cnn_service import ConvolutionNeuralNetworkService
 
@@ -6,6 +8,9 @@ class ConvolutionNeuralNetworkServiceImpl(ConvolutionNeuralNetworkService):
     # cifar10 데이터 중 개(5), 고양이(3) 라벨만을 선택
     # 0:비행기, 1:자동차, 2:새, 4:사슴, 6:개구리, 7:말, 8:배, 9:트럭
     TARGET_CIFAR_CLASSES = [3, 5]
+    CIFAR10_INPUT_SHAPE = (32, 32, 3)
+
+    targetClassName = ['cat', 'dog']
 
     def __init__(self):
         self.convolutionNeuralNetworkRepositoryImpl = ConvolutionNeuralNetworkRepositoryImpl()
@@ -21,8 +26,8 @@ class ConvolutionNeuralNetworkServiceImpl(ConvolutionNeuralNetworkService):
         print(f"testLabels: {testLabelList}")
 
         trainImageList, trainLabelList = self.convolutionNeuralNetworkRepositoryImpl.filteringClasses(trainImageList,
-                                                                                                trainLabelList,
-                                                                                                self.TARGET_CIFAR_CLASSES)
+                                                                                                      trainLabelList,
+                                                                                                      self.TARGET_CIFAR_CLASSES)
 
         testImageList, testLabelList = self.convolutionNeuralNetworkRepositoryImpl.filteringClasses(testImageList,
                                                                                                     testLabelList,
@@ -33,4 +38,21 @@ class ConvolutionNeuralNetworkServiceImpl(ConvolutionNeuralNetworkService):
 
         trainGenerator, testGenerator = (
             self.convolutionNeuralNetworkRepositoryImpl.createDataGenerator(trainImageList, trainLabelList,
-                                                                           testImageList, testLabelList))
+                                                                            testImageList, testLabelList))
+
+        numberOfClass = len(self.TARGET_CIFAR_CLASSES)
+        model = self.convolutionNeuralNetworkRepositoryImpl.createModel(self.CIFAR10_INPUT_SHAPE, numberOfClass)
+
+        compiledModel = self.convolutionNeuralNetworkRepositoryImpl.modelCompile(model)
+        fittedModel = self.convolutionNeuralNetworkRepositoryImpl.fitModel(compiledModel, trainGenerator, testGenerator)
+
+        fittedModel.save('cnn_model.h5')
+
+    async def imagePredict(self, file):
+        print(f"service -> imagePredict()")
+        image = self.convolutionNeuralNetworkRepositoryImpl.readImageFile(file)
+        loadedModel = self.convolutionNeuralNetworkRepositoryImpl.loadModel('cnn_model.h5')
+        prediction = self.convolutionNeuralNetworkRepositoryImpl.predict(image, loadedModel)
+
+        predictedClass = self.targetClassName[np.argmax(prediction)]
+        return predictedClass
