@@ -117,4 +117,8 @@ class OrdersServiceImpl(OrdersService):
                 'ordersItemTotalPrice': totalPrice
             })
 
-        return ordersList
+        return {
+            'orders': ordersList,
+            'currentPageNumber': accountOrderPage.number,
+            'totalPageNumber': accountOrderPage.paginator.num_pages
+        }
