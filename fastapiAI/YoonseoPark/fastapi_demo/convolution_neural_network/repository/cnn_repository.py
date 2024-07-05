@@ -25,3 +25,15 @@ class ConvolutionNeuralNetworkRepository(ABC):
     @abstractmethod
     def fitModel(self, compiledModel, trainGenerator, testGenerator):
         pass
+
+    @abstractmethod
+    def readImageFile(self, file):
+        pass
+
+    @abstractmethod
+    def loadModel(self, savedModelPath):
+        pass
+
+    @abstractmethod
+    def predict(self, image, loadedModel):
+        pass
