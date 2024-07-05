@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.responses import JSONResponse
 
 from convolution_neural_network.service.cnn_service_impl import ConvolutionNeuralNetworkServiceImpl
 
@@ -15,3 +16,5 @@ async def cnnBasedImageTrain(convolutionNeuralNetworkService: ConvolutionNeuralN
     print(f"controller -> cnnBasedImageTrain()")
 
     convolutionNeuralNetworkService.imageTrain()
+
+    return JSONResponse(content={"status": "모델 훈련 및 저장이 완료되었습니다!"})

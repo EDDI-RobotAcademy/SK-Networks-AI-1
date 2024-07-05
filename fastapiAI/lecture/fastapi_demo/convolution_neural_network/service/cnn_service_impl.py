@@ -41,3 +41,5 @@ class ConvolutionNeuralNetworkServiceImpl(ConvolutionNeuralNetworkService):
         compiledModel = self.convolutionNeuralNetworkRepositoryImpl.modelCompile(model)
         fittedModel = self.convolutionNeuralNetworkRepositoryImpl.fitModel(
                                     compiledModel, trainGenerator, testGenerator)
+
+        fittedModel.save('cnn_model.h5')
