@@ -81,6 +81,8 @@ export default {
 
             try {
                 const response = await this.requestReadOrderToDjango({ orderId })
+                this.order = response
+                console.log('ordersItemInfo:', this.order)
             } catch (error) {
                 console.error('주문 내역 확인 중 에러:', error)
             }
