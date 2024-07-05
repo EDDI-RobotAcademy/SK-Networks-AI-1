@@ -49,8 +49,14 @@ class ConvolutionNeuralNetworkServiceImpl(ConvolutionNeuralNetworkService):
         fittedModel.save('cnn_model.h5')
 
     def imagePredict(self, file):
+        print("service -> imagePredict()")
+
         image = self.convolutionNeuralNetworkRepositoryImpl.readImageFile(file)
+        print("service -> imagePredict(): after readImageFile()")
+
         loadedModel = self.convolutionNeuralNetworkRepositoryImpl.loadModel('cnn_model.h5')
+        print("service -> imagePredict(): after loadModel()")
+
         prediction = self.convolutionNeuralNetworkRepositoryImpl.predict(image, loadedModel)
         print(f"prediction: {prediction}")
 
