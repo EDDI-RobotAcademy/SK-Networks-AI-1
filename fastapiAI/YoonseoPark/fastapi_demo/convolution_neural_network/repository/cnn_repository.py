@@ -9,3 +9,7 @@ class ConvolutionNeuralNetworkRepository(ABC):
     @abstractmethod
     def filteringClasses(self, imageList, labelList, targetClassList):
         pass
+
+    @abstractmethod
+    def createDataGenerator(self, trainImageList, trainLabelList, testImageList, testLabelList):
+        pass
