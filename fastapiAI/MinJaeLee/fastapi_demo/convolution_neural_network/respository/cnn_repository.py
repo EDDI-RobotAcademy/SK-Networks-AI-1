@@ -5,3 +5,11 @@ class ConvolutionNeuralNetworkRepository(ABC):
     @abstractmethod
     def loadCifar10Data(self):
         pass
+
+    @abstractmethod
+    def filteringClasses(self, imageList, labelList, targetClassList):
+        pass
+
+    @abstractmethod
+    def createDataGenerator(selfself, trainImageList, trainLabelList, testImageList, testLabelList):
+        pass
