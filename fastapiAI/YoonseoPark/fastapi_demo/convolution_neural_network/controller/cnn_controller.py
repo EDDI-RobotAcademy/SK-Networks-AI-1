@@ -23,6 +23,7 @@ async def cnnBasedImagePredict(file: UploadFile = File(...),
                                convolutionNeuralNetworkService: ConvolutionNeuralNetworkServiceImpl =
                                Depends(injectConvolutionNeuralNetworkService)):
     try:
+        file = await file.read()
         predictedClass = convolutionNeuralNetworkService.imagePredict(file)
         return JSONResponse(content={"predictedClass": predictedClass})
     except Exception as e:
