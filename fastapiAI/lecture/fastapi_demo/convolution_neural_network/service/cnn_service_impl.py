@@ -15,11 +15,20 @@ class ConvolutionNeuralNetworkServiceImpl(ConvolutionNeuralNetworkService):
         print("service -> imageTrain()")
 
         # 발음 주의
-        (trainImages, trainLabels), (testImages, testLabels) = (
+        (trainImageList, trainLabelList), (testImageList, testLabelList) = (
             self.convolutionNeuralNetworkRepositoryImpl.loadCifar10Data())
 
-        trainImages, trainLabels = self.convolutionNeuralNetworkRepositoryImpl.filteringClasses(
-            trainImages, trainLabels, self.TARGET_CIFAR10_CLASSES
+        trainImageList, trainLabelList = self.convolutionNeuralNetworkRepositoryImpl.filteringClasses(
+            trainImageList, trainLabelList, self.TARGET_CIFAR10_CLASSES
+        )
+        testImageList, testLabelList = self.convolutionNeuralNetworkRepositoryImpl.filteringClasses(
+            testImageList, testLabelList, self.TARGET_CIFAR10_CLASSES
         )
 
+        trainImageList = trainImageList.astype('float32')
+        testImageList = testImageList.astype('float32')
 
+        trainGenerator, testGenerator = (
+            self.convolutionNeuralNetworkRepositoryImpl.createDataGenerator(
+                trainImageList, trainLabelList, testImageList, testLabelList
+            ))
