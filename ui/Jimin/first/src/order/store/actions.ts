@@ -15,6 +15,12 @@ export type OrderActions = {
             }[]
         }
     ): Promise<AxiosResponse>
+    requestReadOrderToDjango(
+        context: ActionContext<OrderState, any>,
+        payload: {
+            orderId: string
+        }
+    ): Promise<AxiosResponse>
 
     // requestReadOrderToDjango(
     //     context: 
@@ -49,6 +55,30 @@ const actions: OrderActions = {
             throw error
         }
     },
+
+    async requestReadOrderToDjango({ state }, payload) {
+        try {
+            const userToken = localStorage.getItem('userToken');
+            if (!userToken) {
+                throw new Error('User token not found');
+            }
+
+            const { orderId } = payload
+
+            const requestData = {
+                userToken,
+            }
+
+            const response =
+                await axiosInst.djangoAxiosInst.post(`/orders/read/${orderId}`, requestData)
+            console.log('data:', response.data)
+
+            return response.data
+        } catch (error) {
+            console.error('주문 내역 요청 중 에러:', error)
+            throw error
+        }
+    }
 
     // async requestReadOrderToDjango({ state }, payload) {
     //     try {

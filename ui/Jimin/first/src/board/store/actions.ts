@@ -72,7 +72,7 @@ const actions: BoardActions = {
         try{
             console.log('requestDeleteBoardToDjango()')
             // HTTP상으로 DELETE 요청을 전송함
-            await await axiosInst.djangoAxiosInst.delete(`/board/delete/${boardId}`)
+            await axiosInst.djangoAxiosInst.delete(`/board/delete/${boardId}`)
         }catch (error){
             console.log('requestDeleteBoardToDjango() 과정에서 문제 발생')
             throw error
