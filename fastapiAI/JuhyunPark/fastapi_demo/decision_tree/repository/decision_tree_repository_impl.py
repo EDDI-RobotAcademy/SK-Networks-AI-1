@@ -61,7 +61,7 @@ class DecisionTreeRepositoryImpl(DecisionTreeRepository):
         return readyForLearnTrainData, readyForLearnTestData
 
     def learn(self, readyForLearnTrainData):
-        model = tfdf.keras.RandomForesModel(num_trees=100, max_depth=12, min_examples=6)
+        model = tfdf.keras.RandomForestModel(num_trees=100, max_depth=12, min_examples=6)
         model.fit(readyForLearnTrainData)
 
         return model

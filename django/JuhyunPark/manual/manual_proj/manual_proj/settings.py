@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-q4_7x*-lpbkl5u#+9oho7b%pfj!r!i_y%_f5alj6$p2)cbc38p
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.0.37', 'localhost']
+ALLOWED_HOSTS = ['192.168.0.12', 'localhost']
 
 # Application definition
 
@@ -76,10 +76,10 @@ CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', '').split(',')
 print('CORS_ALLOWED_ORIGINS:', CORS_ALLOWED_ORIGINS)
 
 # CORS_ALLOWED_ORIGINS = [
-#     "http://localhost:8080",
-#     "http://127.0.0.1:8080",
+#     'localhost',
+#     '127.0.0.1',
+#     '192.168.0.12',
 # ]
-
 # CORS 설정 옵션
 CORS_ALLOW_CREDENTIALS = True
 
