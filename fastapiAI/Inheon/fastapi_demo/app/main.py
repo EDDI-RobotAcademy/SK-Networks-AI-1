@@ -1,32 +1,50 @@
 import os
+import warnings
 
+import aiomysql
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from async_db.database import getMySqlPool, createTableIfNeccessary
+from decision_tree.controller.decision_tree_controller import decisionTreeRouter
 from exponential_regression.controller.exponential_regression_controller import exponentialRegressionRouter
+from kmeans.controller.kmeans_controller import kmeansRouter
 from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
+from orders_analysis.controller.orders_analysis_controller import ordersAnalysisRouter
 from polynomialRegression.controller.polynomial_regression_controller import polynomialRegressionRouter
-from random_forest.controller.random_forest_controller import randomForestRouter
-
 from post.controller.post_controller import postRouter
+from random_forest.controller.random_forest_controller import randomForestRouter
+from tf_iris.controller.tf_iris_controller import tfIrisRouter
 from train_test_evaluation.controller.train_test_evaluation_controller import trainTestEvaluationRouter
 
-app = FastAPI()
+warnings.filterwarnings("ignore", category=aiomysql.Warning)
+
+async def lifespan(app: FastAPI):
+    # Startup
+    app.state.dbPool = await getMySqlPool()
+    await createTableIfNeccessary(app.state.dbPool)
+
+    yield
+
+    # Shutdown
+    app.state.dbPool.close()
+    await app.state.dbPool.wait_closed()
+
+app = FastAPI(lifespan = lifespan)
 
 # 현재는 deprecated 라고 나타났지만 lifespan이란 것을 대신 사용하라고 나타나고 있음
 # 완전히 배제되지는 않았는데 애플리케이션이 시작할 때 실행될 함수를 지정함
 
-@app.on_event("startup")
-async def startup_event():
-    app.state.db_pool = await getMySqlPool()
-    await createTableIfNeccessary(app.state.db_pool)
-
-@app.on_event("shutdown")
-async def shutdown_event():
-    app.state.db_pool.close()
-    await app.state.db_pool.wait_closed()
+# @app.on_event("startup")
+# async def startup_event():
+#     app.state.db_pool = await getMySqlPool()
+#     await createTableIfNeccessary(app.state.db_pool)
+#
+# @app.on_event("shutdown")
+# async def shutdown_event():
+#     app.state.db_pool.close()
+#     await app.state.db_pool.wait_closed()
 # 웹 브라우저 상에서 "/" 을 입력하면 (key)Hello: (value)World가 리턴
 @app.get("/")
 def read_root():
@@ -84,6 +102,10 @@ app.include_router(polynomialRegressionRouter)
 app.include_router(exponentialRegressionRouter)
 app.include_router(randomForestRouter)
 app.include_router(postRouter, prefix = '/post')
+app.include_router(kmeansRouter)
+app.include_router(tfIrisRouter)
+app.include_router(ordersAnalysisRouter)
+app.include_router(decisionTreeRouter)
 
 load_dotenv()
 

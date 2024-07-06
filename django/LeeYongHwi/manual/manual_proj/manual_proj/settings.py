@@ -40,11 +40,13 @@ INSTALLED_APPS = [
     # 추가
     "corsheaders",
     "rest_framework",
+    'django_extensions',
     "board",
     "product",
     "oauth",
     "account",
     "cart",
+    "orders",
 ]
 
 MIDDLEWARE = [

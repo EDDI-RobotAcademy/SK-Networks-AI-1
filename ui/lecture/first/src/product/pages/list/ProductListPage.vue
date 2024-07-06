@@ -7,7 +7,7 @@
             </router-link>
         </div>
         <v-row v-if="productList.length > 0">
-            <v-col v-for="(product, index) in productList" :key=index cols="12" sm="6" md="4" lg="3">
+            <v-col v-for="(product, index) in productList" :key=index sm="6">
                 <v-card @click="goToProductReadPage(product.productId)">
                     <v-img :src="getProductImageUrl(product.productImage)" aspect-ratio="1" class="grey lighten-2">
                         <template v-slot:placeholder>
@@ -41,7 +41,6 @@
     </v-container>
 </template>
 
-// npm install axios --legacy-peer-deps
 
 <script>
 // 이것은 vuex 때문에 사용 가능
