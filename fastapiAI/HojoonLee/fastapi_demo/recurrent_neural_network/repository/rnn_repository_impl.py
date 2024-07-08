@@ -1,7 +1,9 @@
 from recurrent_neural_network.repository.rnn_repository import RecurrentNeuralNetworkRepository
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Embedding, SimpleRNN, Dense
+from keras.models import load_model
 import tensorflow as tf
+import numpy as np
 class RecurrentNeuralNetworkRepositoryImpl(RecurrentNeuralNetworkRepository):
 
     def createRnnModel(self, vocabSize, embeddingDimension, rnnUnits, batchSize):
@@ -41,16 +43,92 @@ class RecurrentNeuralNetworkRepositoryImpl(RecurrentNeuralNetworkRepository):
             SimpleRNN(rnnUnits, return_sequences=True, stateful=True, recurrent_initializer='glorot_uniform'),
 
             # Dense를 통해 출력벡터의 차원을 지정함
-            # 입력에 대해 예측할 단어의 사이즈라 봐도 무방
+            # 입력에 대해 예측할 단어의 분포로 봐도 무방
             Dense(vocabSize)
         ])
 
         return model
 
-    def train(self, rnnModel, batchSize):
+    def compile(self, rnnModel):
+        rnnModel.compile(optimizer='adam', loss='sparse_categorical_crossentropy')
+        return rnnModel
+
+    def build(self, rnnModel, batchSize):
         print("repository -> train()")
 
         # 입력은 1 출력은 가변으로 설정
         rnnModel.build(tf.TensorShape([batchSize, None]))
+        return rnnModel
 
-        return
+    def printModelSummary(self, buildRnnModel):
+        buildRnnModel.summary()
+
+    def createData(self, vocabSize, numberOfSample, sequenceLength):
+        xData = np.random.randint(0, vocabSize, (numberOfSample, sequenceLength))
+        yData = np.roll(xData, shift=-1, axis=1)
+
+        return xData, yData
+
+    def train(self, x, y, compiledRnnModel, batchSize):
+        compiledRnnModel.fit(x, y, epochs=1, batch_size=batchSize)
+        return compiledRnnModel
+
+    def loadModel(self):
+        return load_model('rnn_model.h5')
+
+    def generateText(self, loadedModel, inputText):
+        # ord(char)를 통해 문자를 ASCII 코드로 변환합니다.
+        # tf.expand_dims()를 통해 모델 입력에 맞게 차원을 확장합니다.
+        numGenerate = 100
+
+        # 65 범주 안에 넣을 수 있도록 inputText를 매칭시킴: text -> ascii화가 아닌 0~65로 범주화
+        charToIndex = {data:index for index, data in enumerate(inputText)}
+        # 중복 제거
+        inputEval = [charToIndex[char] if char in charToIndex else 0 for char in inputText]
+        tfInputEval = tf.expand_dims(inputEval, 0) # (5) -> (1,5)
+
+        #inputEval = [ord(char) for char in inputText] # 숫자화 (ascii code)
+        #tfinputEval = tf.expand_dims(inputEval, 0)
+        #print(f"tfinputEval : {tfinputEval.shape}")
+
+        # 생성된 텍스트 저장
+        generatedText = []
+        # 무작위성을 제어하기 위한 엔트로피용 변수 (값이 낮을 수록 더 예측 가능하며, 높을수록 무작위 성이 높아짐)
+        # entropy tau(parameter)
+        temperature = 1.0
+
+        # 모델 상태 초기화
+        loadedModel.reset_states()
+
+        # 실질적인 텍스트 생성
+        for index in range(numGenerate):
+            predictions = loadedModel(tfInputEval)
+            # tf.squeeze() 메서드는 쥐어 짜내는 것입니다 >> 차원을 축소
+            # predictions 의 0차원 부분을 없앤다.
+            # print(f"before predictions shape : {predictions.shape}")
+            tfPredictions = tf.squeeze(predictions, 0) # [5, 65]
+            # print(f"after predictions shape : {tfPredictions.shape}")
+
+            entropicalPredictions = tfPredictions / temperature
+
+            # 이 부분 알아보기
+            if index == 0:
+                print(f"이건 뭐지 : {tf.random.categorical(entropicalPredictions, num_samples=1)}")
+                print(f"이건 뭐지2 : {tf.random.categorical(entropicalPredictions, num_samples=1)[-1]}")
+                print(f"이건 뭐지3 : {tf.random.categorical(entropicalPredictions, num_samples=1)[-1, 0]}")
+                # 여긴 numpy 화를 위함
+                # print(f"이건 뭐지4 : {tf.random.categorical(entropicalPredictions, num_samples=1)[-1, 0].numpy()}")
+
+            # tf.random.categorical 파트는 주어진 예측 확률 분포에서 하나의 문자를 무작위로 선택합니다. (num_samples=1)
+            # 이 녀석은 num_samples의 샘플을 무작위로 선택합니다.
+            # [-1, 0]의 의미는 굉장히 독특한데
+            # [-1]은 마지막 배치를 선택
+            # [0]은 첫 번째 샘플을 선택한다는 의미 >> 곧 마지막 배치의 첫 번째 샘플을 선택한다는 뜻
+            # 즉, predictedId는 예측된 문자의 인덱스라고 보면 됨
+            predictedId = tf.random.categorical(entropicalPredictions, num_samples=1)[-1, 0].numpy()
+
+            tfInputEval = tf.expand_dims([predictedId], 0) # (predictedId = 1) -> (1,1)로 확장
+            # print(f"tfInputEval : {tfInputEval.shape}")
+            generatedText.append(chr(predictedId)) # 십진수 다시 문자화(list)
+
+        return inputText + ''.join(generatedText) # list를 str로 바꿔서 이어줌

@@ -7,5 +7,29 @@ class RecurrentNeuralNetworkRepository(ABC):
         pass
 
     @abstractmethod
-    def train(self, rnnModel, batchSize):
+    def compile(self, rnnModel):
+        pass
+
+    @abstractmethod
+    def build(self, rnnModel, batchSize):
+        pass
+
+    @abstractmethod
+    def printModelSummary(self, buildRnnModel):
+        pass
+
+    @abstractmethod
+    def createData(self, vocabSize, numberOfSample, sequenceLength):
+        pass
+
+    @abstractmethod
+    def train(self, x, y, compiledRnnModel, batchSize):
+        pass
+
+    @abstractmethod
+    def loadModel(self):
+        pass
+
+    @abstractmethod
+    def generateText(self, loadedModel, inputText):
         pass

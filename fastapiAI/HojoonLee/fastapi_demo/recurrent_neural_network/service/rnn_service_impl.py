@@ -16,5 +16,25 @@ class RecurrentNeuralNetworkServiceImpl(RecurrentNeuralNetworkService):
         # rnn 모델 생성
         rnnModel = self.recurrentNeuralNetworkRepositoryImpl.createRnnModel(self.VOCAB_SIZE, self.EMBEDDING_DEMENSION,
                                                                             self.RNN_UNITS, self.BATCH_SIZE)
+        # rnn 모델 build
+        buildRnnModel = self.recurrentNeuralNetworkRepositoryImpl.build(rnnModel, self.BATCH_SIZE)
+        # rnn 모델 빌드 이후 모델 정보 보기
+        self.recurrentNeuralNetworkRepositoryImpl.printModelSummary(buildRnnModel)
+        # rnn모델 컴파일
+        compiledRnnModel = self.recurrentNeuralNetworkRepositoryImpl.compile(rnnModel)
 
-        self.recurrentNeuralNetworkRepositoryImpl.train(rnnModel, self.BATCH_SIZE)
+        # 가상의 입력 데이터 만들기
+        virtualX, virtualY = self.recurrentNeuralNetworkRepositoryImpl.createData(self.VOCAB_SIZE, 1000, 100)
+        # 모델 학습
+        fittedRnnModel = self.recurrentNeuralNetworkRepositoryImpl.train(virtualX, virtualY, compiledRnnModel, self.BATCH_SIZE)
+        # 모델 저장
+        fittedRnnModel.save('rnn_model.h5')
+
+    def predictText(self, inputText):
+        print("service -> predictText()")
+
+        # 학습모델 불러오기
+        loadedModel = self.recurrentNeuralNetworkRepositoryImpl.loadModel()
+
+        # 모델과 입력데이터로 추론하기
+        return self.recurrentNeuralNetworkRepositoryImpl.generateText(loadedModel, inputText)
