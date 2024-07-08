@@ -25,6 +25,7 @@ class RecurrentNeuralNetworkRepositoryImpl(RecurrentNeuralNetworkRepository):
     def createRnnModel(self, vocabSize, embedingDimension, rnnUnits, batchSize):
         print('repository -> createRnnModel()')
 
+        # 기본 RNN 구조
         model = Sequential([
             # embedding(임베딩)은 text를 vactor로 사상(map) 하는 작업힙니다.
             # 그렇기에 사실 임베딩 보다는 mapToVector 혹은 textToVector
@@ -41,7 +42,7 @@ class RecurrentNeuralNetworkRepositoryImpl(RecurrentNeuralNetworkRepository):
             # batchSize는 한 번에 처리할 샘플 숫자를 의미합니다.
             # 단어 하난하나를 정확하게 인식해야 하므로 단연히 '1'입니다.
             # 그리고 None은 시퀀스 길이가 가변적임을 의미합니다.(글자 길이가 고정이 아니란 뜻)
-            Embedding(vocabSize, embedingDimension, batch_input_shape=[batchSize, None]),
+            Embedding(vocabSize, embedingDimension, batch_input_shape=[batchSize, None]),           # vocabSize=65였고 embedingDimension은 256이었음  / Embedding = vocabSize(65)를 입력?받고 embedingDimension(256)으로 변환하여 Embedding에 담음
 
             # rnnUnits의 경우 RNN Layer 숫자를 의미합니다.
             # 결론적으로 RNN 출력 벡터의 차원을 결정하게 됩니다.
@@ -94,16 +95,19 @@ class RecurrentNeuralNetworkRepositoryImpl(RecurrentNeuralNetworkRepository):
     def generateText(self, loadedRnnModel, inputText):
         # ord(char)를 통해 문자를 ASCII코드로 변환합니다.
         # tf.expand_dims()를 통해 모델 입력에 맞게 차원을 확장합니다.
-        numGenerate = 100
-        # inputEval = [ord(char) for char in inputText]
+        numGenerate = 100       # 인풋 뒤에 100글자 생성하겠다는 뜻
+
+        # 65 범주 안에 넣을 수 있도록 inputText를 매칭시킴
         charToIndex = { data:index for index, data in enumerate(inputText) }
-        # print(f"charToIndex: {charToIndex}")
+
+        # 중복 제거
         inputEval = [charToIndex[char] if char in charToIndex else 0 for char in inputText]
         tfInputEval = tf.expand_dims(inputEval, 0)
 
         #생성된 텍스트를 저장
         generatedText = []
-        # 무작위성을 제어하기 위한 엔트로피용 변수
+
+        # temperature -> 무작위성을 제어하기 위한 엔트로피용 변수 / 엔트로피란? -> 불확실성 즉, 엔트로피가 높다는 것은 확실하지 않다. 엔트로피가 낮으면 확실하다.
         # (보편적으로 값이 낮을수록 더 예측 가능하며 높을수록 무작위성이 높아짐)
         # 그러나 어차피 지금은 데이터 자체가 무작위라 별다른 효과가 없음
         temperature = 1.0
@@ -113,28 +117,30 @@ class RecurrentNeuralNetworkRepositoryImpl(RecurrentNeuralNetworkRepository):
 
         # 실질적인 텍스트 생성
         for index in range(numGenerate):
-            predictions = loadedRnnModel(tfInputEval)
+            predictions = loadedRnnModel(tfInputEval)   # [1, 5, 65]
             # tf.squeeze()는 메서드 이름에서 느껴지듯이 쥐어짜내는 것입니다.
             # 쥐어짜서 아예 차원을 축소시켜버립니다.
             # 수건이나 타올의 물을 쥐어짠다 생각하는 느낌으로 축소라 보면 되겠습니다.
             # 그래도 솔직히 squeeze보다는 reduceDimension()이 더 직관적이라고 봅니다.
             # 어쨰 되었뜬 0을 지정하였으므로 첫 번쨰 차원을 제거합니다.
             # 즉, 크가기 1인 척 번쨰 차원이 제거됩니다.
-            tfPredictions = tf.squeeze(predictions, 0)
+            tfPredictions = tf.squeeze(predictions, 0)      # [5, 65]      # 다시 차원을 낮춤. 아까 차원을 확장한 것은 gpu에 올리기 위해 확장(1, 5, 65)했던 것이고 gpu에서 다 처리 했으니 다시 우리가 알아볼 수 있게 차원을 낮춤[5, 65]
 
+            # ?????????????
             entropicalPredicitions = tfPredictions / temperature
+
             # tf.random.categorical 파트는 주어진 예측 확률 분포에서 하나의 문자를 무작위로 선택합니다.
             # 이 녀석은 num_samples의 샘플을 무작위로 선택합니다.
             # [-1, 0]의 의미는 굉장히 독특한데
-            # [-1] 은 마지막 배치를 선택
+            # [-1] 은 마지막 배치를 선택     /    왜 마지막일까? RNN특성상 가장 마지막 값이 가장 학습이 잘된 값이므르 그걸 batch의 정보로만 활용한다.
             # [0]은 첫 번째 샘플을 선택
-            # 여기서 뽑혀 나오는 것은 예측된 문자의 인덱스라고 보면 되겠습니다.
+            # predictedId는 예측된 문자의 인덱스라고 보면 되겠습니다.
             predictedId = tf.random.categorical(entropicalPredicitions, num_samples=1)[-1, 0].numpy()
 
-            tfInputEval = tf.expand_dims([predictedId], 0)
-            generatedText.append(chr(predictedId))
+            tfInputEval = tf.expand_dims([predictedId], 0)      # (predictedId = 1) -> (1,1)로 확장
+            generatedText.append(chr(predictedId))      # 십진수를 다시 문자화
 
-        return inputText + ''.join(generatedText)
+        return inputText + ''.join(generatedText)       # list를 str로 바꿔서 이어줌 / join()은 리스트 안에 있는 것들을 다 str으로 붙여주는 함수임
 
 
 
