@@ -9,3 +9,7 @@ class OrdersRepository(ABC):
     @abstractmethod
     def findById(self, orderId):
         pass
+
+    @abstractmethod
+    def findAllByAccount(self, account, pageNumber, pageSize):
+        pass

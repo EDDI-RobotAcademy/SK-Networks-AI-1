@@ -25,6 +25,8 @@ async def cnnBasedImagePredict(file: UploadFile = File(...),
                                Depends(injectConvolutionNeuralNetworkService)):
 
     try:
+        file = await file.read()
+        print('controller -> cnnBasedImagePredict()')
         predictedClass = convolutionNeuralNetworkService.imagePredict(file)
         return JSONResponse(content={"predictedClass": predictedClass})
     except Exception as e:
