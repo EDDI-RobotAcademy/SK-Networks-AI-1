@@ -1,8 +1,15 @@
 export interface OrderState {
-    orderList: OrderItem[];
+    orderList: Orders[];
     order: OrderItem | null
-//     loading: boolean;
-//     error: string | null;
+    currentPageNumber: number
+    totalPageNumber: number
+}
+
+export interface Orders {
+    orderId: number
+    orderName: string
+    orderDate: string
+    ordersItemTotalPrice: number
 }
 
 export interface OrderItem {
@@ -15,6 +22,8 @@ export interface OrderItem {
 const state: OrderState = {
     orderList: [],
     order: null,
+    currentPageNumber: 1,
+    totalPageNumber: 1,
 }
 
 export default state
