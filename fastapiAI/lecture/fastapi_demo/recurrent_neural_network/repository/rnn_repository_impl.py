@@ -4,6 +4,7 @@ from tensorflow.keras.layers import Embedding, SimpleRNN, Dense
 from recurrent_neural_network.repository.rnn_repository import RecurrentNeuralNetworkRepository
 
 import tensorflow as tf
+import numpy as np
 
 
 class RecurrentNeuralNetworkRepositoryImpl(RecurrentNeuralNetworkRepository):
@@ -68,4 +69,58 @@ class RecurrentNeuralNetworkRepositoryImpl(RecurrentNeuralNetworkRepository):
     def printModelSummary(self, buildRnnModel):
         buildRnnModel.summary()
 
+    def createData(self, vocabSize, numberOfSample, sequenceLength):
+        xData = np.random.randint(0, vocabSize, (numberOfSample, sequenceLength))
+        yData = np.roll(xData, shift=-1, axis=1)
 
+        return xData, yData
+
+    def train(self, x, y, compiledRnnModel, batchSize):
+        compiledRnnModel.fit(x, y, epochs=1, batch_size=batchSize)
+        return compiledRnnModel
+
+    def loadModel(self):
+        return tf.keras.models.load_model('rnn_model.h5')
+
+    def generateText(self, loadedRnnModel, inputText):
+        # ord(char)를 통해 문자를 ASCII 코드로 변환합니다.
+        # tf.expand_dims()를 통해 모델 입력에 맞게 차원을 확장합니다.
+        numGenerate = 100
+        inputEval = [ord(char) for char in inputText]
+        tfInputEval = tf.expand_dims(inputEval, 0)
+
+        # 생성된 텍스트를 저장
+        generatedText = []
+        # 무작위성을 제어하기 위한 엔트로피용 변수
+        # (보편적으로 값이 낮을수록 더 예측 가능하며 높을수록 무작위성이 높아짐)
+        # 그러나 어차피 지금은 데이터 자체가 무작위라 별다른 효과가 없음
+        temperature = 1.0
+
+        # 모델 상태 초기화
+        loadedRnnModel.reset_states()
+
+        # 실질적인 텍스트 생성
+        for index in range(numGenerate):
+            predictions = loadedRnnModel(tfInputEval)
+            print(f"tfInputEval: {tfInputEval}")
+            # tf.squeeze()는 매서드 이름에서 느껴지듯이 쥐어짜내는 것입니다.
+            # 쥐어짜서 아예 차원을 축소시켜버립니다.
+            # 수건이나 타올의 물을 쥐어짠다 생각하는 느낌으로 축소라 보면 되겠습니다.
+            # 그래도 솔직히 squeeze 보다는 reduceDimension()이 더 직관적이라고 봅니다.
+            # 어찌 되었든 0을 지정하였으므로 첫 번째 차원을 제거합니다.
+            # 즉 크기가 1인 첫 번쨰 차원이 제거됩니다.
+            tfPredictions = tf.squeeze(predictions, 0)
+
+            entropicalPredicitions = tfPredictions / temperature
+            # tf.random.categorical() 파트는 주어진 예측 확률 분포에서 하나의 문자를 무작위로 선택합니다.
+            # 이 녀석은 num_samples의 샘플을 무작위로 선택합니다.
+            # [-1, 0] 의 의미는 굉장히 독특한데
+            # [-1] 은 마지막 배치를 선택
+            # [0] 은 첫 번째 샘플을 선택
+            # 여기서 뽑혀 나오는 것은 예측된 문자의 인덱스라고 보면 되겠습니다.
+            predictedId = tf.random.categorical(entropicalPredicitions, num_samples=1)[-1, 0].numpy()
+
+            tfInputEval = tf.expand_dims([predictedId], 0)
+            generatedText.append(chr(predictedId))
+
+        return inputText + ''.join(generatedText)
