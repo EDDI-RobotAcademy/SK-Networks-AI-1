@@ -13,6 +13,26 @@ class RecurrentNeuralNetworkServiceImpl(RecurrentNeuralNetworkService):
 
     def textTrain(self):
         print('service -> textTrain()')
+
+        virtualX, virtualY = self.recurrentNeuralNetworkRepository.createData(self.VOCAB_SIZE, 1000, 100)
+
         rnnModel = self.recurrentNeuralNetworkRepository.createRnnModel(
             self.VOCAB_SIZE, self.EMBEDDING_DIMENSION, self.RNN_UNITS, self.BATCH_SIZE)
-        self.recurrentNeuralNetworkRepository.train(rnnModel, self.BATCH_SIZE)
+
+        buildRnnModel = self.recurrentNeuralNetworkRepository.build(rnnModel, self.BATCH_SIZE)
+        self.recurrentNeuralNetworkRepository.printModelSummary(buildRnnModel)
+
+        compiledRnnModel = self.recurrentNeuralNetworkRepository.compile(rnnModel)
+        fittedRnnModel = self.recurrentNeuralNetworkRepository.train(
+            virtualX, virtualY, compiledRnnModel, self.BATCH_SIZE)
+
+        fittedRnnModel.save('rnn_model.h5')
+
+    def textPredict(self, inputText):
+        print('service -> textPredict()')
+
+        loadedRnnModel = self.recurrentNeuralNetworkRepository.loadModel()
+        return self.recurrentNeuralNetworkRepository.generateText(loadedRnnModel, inputText)
+
+
+
