@@ -86,7 +86,11 @@ class RecurrentNeuralNetworkRepositoryImpl(RecurrentNeuralNetworkRepository):
         # ord(char)를 통해 문자를 ASCII 코드로 변환합니다.
         # tf.expand_dims()를 통해 모델 입력에 맞게 차원을 확장합니다.
         numGenerate = 100
-        inputEval = [ord(char) for char in inputText]
+        # inputEval = [ord(char) for char in inputText]
+        charToIndex = { data:index for index, data in enumerate(inputText) }
+        # print(f"charToIndex: {charToIndex}")
+        inputEval = [charToIndex[char] if char in charToIndex else 0 for char in inputText]
+        # print(f"inputEval: {inputEval}")
         tfInputEval = tf.expand_dims(inputEval, 0)
 
         # 생성된 텍스트를 저장
@@ -102,7 +106,7 @@ class RecurrentNeuralNetworkRepositoryImpl(RecurrentNeuralNetworkRepository):
         # 실질적인 텍스트 생성
         for index in range(numGenerate):
             predictions = loadedRnnModel(tfInputEval)
-            print(f"tfInputEval: {tfInputEval}")
+            # print(f"tfInputEval: {tfInputEval}")
             # tf.squeeze()는 매서드 이름에서 느껴지듯이 쥐어짜내는 것입니다.
             # 쥐어짜서 아예 차원을 축소시켜버립니다.
             # 수건이나 타올의 물을 쥐어짠다 생각하는 느낌으로 축소라 보면 되겠습니다.
