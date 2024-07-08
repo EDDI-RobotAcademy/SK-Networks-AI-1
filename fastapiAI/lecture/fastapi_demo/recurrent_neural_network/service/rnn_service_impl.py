@@ -16,4 +16,9 @@ class RecurrentNeuralNetworkServiceImpl(RecurrentNeuralNetworkService):
 
         rnnModel = self.recurrentNeuralNetworkRepositoryImpl.createRnnModel(
             self.VOCAB_SIZE, self.EMBEDDING_DIMENSION, self.RNN_UNITS, self.BATCH_SIZE)
-        self.recurrentNeuralNetworkRepositoryImpl.train(rnnModel, self.BATCH_SIZE)
+        buildRnnModel = self.recurrentNeuralNetworkRepositoryImpl.build(rnnModel, self.BATCH_SIZE)
+        self.recurrentNeuralNetworkRepositoryImpl.printModelSummary(buildRnnModel)
+
+        # compiledRnnModel = self.recurrentNeuralNetworkRepositoryImpl.compile(rnnModel)
+
+
