@@ -4,6 +4,7 @@ from tensorflow.keras.layers import Embedding, SimpleRNN, Dense
 from recurrent_neural_network.repository.rnn_repository import RecurrentNeuralNetworkRepository
 
 import tensorflow as tf
+import numpy as np
 
 
 class RecurrentNeuralNetworkRepositoryImpl(RecurrentNeuralNetworkRepository):
@@ -67,5 +68,15 @@ class RecurrentNeuralNetworkRepositoryImpl(RecurrentNeuralNetworkRepository):
 
     def printModelSummary(self, buildRnnModel):
         buildRnnModel.summary()
+
+    def createData(self, vocabSize, numberOfSample, sequenceLength):
+        xData = np.random.randint(0, vocabSize, (numberOfSample, sequenceLength))
+        yData = np.roll(xData, shift=-1, axis=1)
+
+        return xData, yData
+
+    def train(self, x, y, compiledRnnModel, batchSize):
+        compiledRnnModel.fit(x, y, epochs=1, batch_size=batchSize)
+        return compiledRnnModel
 
 
