@@ -1,3 +1,4 @@
+from account.repository.account_repository_impl import AccountRepositoryImpl
 from cart.repository.cart_item_repository_impl import CartItemRepositoryImpl
 from orders.entity.orders_status import OrderStatus
 from orders.repository.orders_item_repository_impl import OrdersItemRepositoryImpl
@@ -17,6 +18,7 @@ class OrdersServiceImpl(OrdersService):
             cls.__instance.__ordersItemRepository = OrdersItemRepositoryImpl.getInstance()
             cls.__instance.__cartItemRepository = CartItemRepositoryImpl.getInstance()
             cls.__instance.__productRepository = ProductRepositoryImpl.getInstance()
+            cls.__instance.__accountRepository = AccountRepositoryImpl.getInstance()
 
         return cls.__instance
 
@@ -89,4 +91,36 @@ class OrdersServiceImpl(OrdersService):
             print('Error reading order details:', e)
             raise e
 
+    def ordersList(self, accountId, data):
+        page = data.get('page')
 
+        account = self.__accountRepository.findById(accountId)
+        accountOrderPage = self.__ordersRepository.findAllByAccount(account, page)
+        # print(f"accountOrderPage: {accountOrderPage}")
+
+        pagenatedAccountOrderList = list(accountOrderPage.object_list)
+        accountOrdersItemList = self.__ordersItemRepository.findAllByOrderList(pagenatedAccountOrderList)
+        # print(f"accountOrdersItemList: {accountOrdersItemList}")
+
+        ordersList = []
+        for order in pagenatedAccountOrderList:
+            ordersItemList = [item for item in accountOrdersItemList if item.orders.id == order.id]
+            orderName = ", ".join([item.product.productName for item in ordersItemList])
+            totalPrice = sum(item.total_price() for item in ordersItemList)
+
+            # print(f"ordersItemList: {ordersItemList}, "
+            #       f"orderName: {orderName}, "
+            #       f"totalPrice: {totalPrice}")
+
+            ordersList.append({
+                'orderId': order.id,
+                'orderName': orderName,
+                'orderDate': order.created_date,
+                'ordersItemTotalPrice': totalPrice
+            })
+
+        return {
+            'orders': ordersList,
+            'currentPageNumber': accountOrderPage.number,
+            'totalPageNumber': accountOrderPage.paginator.num_pages
+        }

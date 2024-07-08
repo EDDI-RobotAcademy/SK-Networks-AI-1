@@ -5,7 +5,36 @@ from orders_analysis.repository.orders_analysis_repository import OrdersAnalysis
 
 import tensorflow as tf
 
+# 인공신경망(Artificial Nerual Network)는 사람의 뇌 신경망을 모방하여 만들어진 시스템입니다.
+# 패턴 인식 및 데이터 분류와 같은 작업에서 사용되며 기계 학습과 딥러닝에 있어 중요합니다.
 
+# 뉴런 <- 여러 신호를 입력 받음
+# 우리가 작성한 코드에선 input_shape에 해당함
+# 가중치 <- 각 입력에 가중치가 존재하여 학습하면서 이 값이 조정됨
+# 활성함수 <- 입력의 총합을 처리하여 최종 결과를 얻는데 사용함
+#            대표적인 녀석으로 sigmoid, ReLU, tanh, softmax 같은 것들이 있음
+
+# Layer는 Input Layer, Hidden Layer, Output Layer로 구성됩니다.
+# 입출력은 유일하지만 Hidden Layer는 더 다양하게 많이 구성 될 수 있습니다.
+# 위의 input_shape이 Input Layer에서 지정되어야 합니다.
+
+# 시그모이드는 출력을 0 ~ 1 사이로 압축합니다.
+# 즉 확률을 계산하기 위한 목적으로 사용합니다.
+# ReLU는 입력 값이 0 보다 작으면 0 크면 값을 그대로 유지합니다.
+# tanh의 경우 값을 -1 ~ 1 사이로 압축합니다.
+# 이와 같은 특성 때문에 데이터가 요동치는 경우에 적합합니다.
+
+# 보편적으로 ANN을 구성하는 방법은 아래와 같습니다.
+#
+# 1. 먼저 학습할 데이터를 확보합니다.
+# 2. 전처리를 진행합니다(쓸대없는 데이터, 이상치들 제거)
+# 3. 요상한 데이터가 없다면 신경망을 구성합니다.
+# 4. 구성한 신경망으로 학습을 진행합니다.
+# 5. 추론 시 빠르게 활용할 수 있도록 학습 정보를 저장합니다 (*.h5, *.keras)
+# 6. 추론을 요청하면 앞서 저장한 *.h5 및 *.keras 에서 정보를 읽어서 빠르게 응답합니다.
+
+# CNN: 컨볼루션 기반 신경망 -> 이미지 처리에 적합함
+# RNN: 피드백이 포함된 구조로 시간 순서가 있는 경우에 적합함
 class OrdersAnalysisRepositoryImpl(OrdersAnalysisRepository):
 
     # viewCount와 quantity 열을 추출하여 독립 변수 X와 종속 변수 y로 사용
