@@ -91,6 +91,36 @@ class OrdersServiceImpl(OrdersService):
             print('Error reading order details:', e)
             raise e
 
-    def ordersList(self, accountId):
+    def ordersList(self, accountId, data):
+        page = data.get('page')
+
         account = self.__accountRepository.findById(accountId)
-        accountOrder = self.__ordersRepository.findByAccount(account)
+        accountOrderPage = self.__ordersRepository.findAllByAccount(account, page)
+        # print(f"accountOrderPage: {accountOrderPage}")
+
+        pagenatedAccountOrderList = list(accountOrderPage.object_list)
+        accountOrdersItemList = self.__ordersItemRepository.findAllByOrderList(pagenatedAccountOrderList)
+        # print(f"accountOrdersItemList: {accountOrdersItemList}")
+
+        ordersList = []
+        for order in pagenatedAccountOrderList:
+            ordersItemList = [item for item in accountOrdersItemList if item.orders.id == order.id]
+            orderName = ", ".join([item.product.productName for item in ordersItemList])
+            totalPrice = sum(item.total_price() for item in ordersItemList)
+
+            # print(f"ordersItemList: {ordersItemList}, "
+            #       f"orderName: {orderName}, "
+            #       f"totalPrice: {totalPrice}")
+
+            ordersList.append({
+                'orderId': order.id,
+                'orderName': orderName,
+                'orderDate': order.created_date,
+                'ordersItemTotalPrice': totalPrice
+            })
+
+        return {
+            'orders': ordersList,
+            'currentPageNumber': accountOrderPage.number,
+            'totalPageNumber': accountOrderPage.paginator.num_pages
+        }
