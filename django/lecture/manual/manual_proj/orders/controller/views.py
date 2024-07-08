@@ -61,7 +61,10 @@ class OrdersView(viewsets.ViewSet):
             if not accountId:
                 raise ValueError('Invalid userToken')
 
-            ordersList = self.ordersService.ordersList(accountId)
+            page = data.get('page')
+            print(f"page: {page}")
+
+            ordersList = self.ordersService.ordersList(accountId, data)
 
             return Response(ordersList, status=status.HTTP_200_OK)
 
