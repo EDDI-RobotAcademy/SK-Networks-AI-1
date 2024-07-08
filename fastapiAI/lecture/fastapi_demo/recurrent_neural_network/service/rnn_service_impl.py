@@ -26,3 +26,10 @@ class RecurrentNeuralNetworkServiceImpl(RecurrentNeuralNetworkService):
         fittedRnnModel = self.recurrentNeuralNetworkRepositoryImpl.train(
                             virtualX, virtualY, compiledRnnModel, self.BATCH_SIZE)
         fittedRnnModel.save('rnn_model.h5')
+
+    def predictText(self, inputText):
+        print('service -> predictText()')
+
+        loadedRnnModel = self.recurrentNeuralNetworkRepositoryImpl.loadModel()
+        print(f"loadedRnnModel: {loadedRnnModel}")
+        return self.recurrentNeuralNetworkRepositoryImpl.generateText(loadedRnnModel, inputText)
