@@ -15,12 +15,12 @@
                             </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="item in order.order_items" :key="item.productId">
-                                    <td>{{ item.product_name }}</td>
-                                    <td>{{ item.price }}</td>
-                                    <td>{{ item.quantity }}</td>
-                                    <td>{{ item.price * item.quantity }}</td>
-                                </tr>
+                            <tr v-for="item in order.order_items" :key="item.productId">
+                                <td>{{ item.product_name }}</td>
+                                <td>{{ item.price }}</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>{{ item.price * item.quantity }}</td>
+                            </tr>
                             </tbody>
                         </v-table>
                         <v-divider></v-divider>
@@ -43,7 +43,7 @@
 
 <script>
 import { mapActions } from 'vuex';
-const orderModule = 'orderModule'
+const orderModule = 'orderModule';
 
 export default {
     props: {
@@ -59,21 +59,10 @@ export default {
     },
     computed: {
         orderTotal() {
-            if (!this.order || 
-                    !Array.isArray(this.order.order_items) || 
-                    this.order.order_items.length === 0) {
+            if (!this.order || !Array.isArray(this.order.order_items) || this.order.order_items.length === 0) {
                 return 0;
             }
-            return this.order.order_items.reduce(
-                (total, item) => { 
-                    console.log('item.price:', item.price)
-                    console.log('item.quantity:', item.quantity)
-                    const newTotal = total + item.price * item.quantity
-                    console.log('total:', total)
-                    return newTotal
-                },
-                0
-            );
+            return this.order.order_items.reduce((total, item) => total + item.price * item.quantity, 0);
         }
     },
     methods: {
@@ -90,16 +79,17 @@ export default {
                 console.error('주문 내역 확인 중 에러:', error)
             }
         },
-        goToBack () {
-            this.$router.push({ name: 'HomeView' })
+        goToBack() {
+            const page = this.$route.query.page || 1;
+            this.$router.push({ name: 'OrderListPage', query: { page } });
         }
     },
     created() {
         this.fetchOrderData();
-    }
+    },
 };
 </script>
 
-<style>
+<style scoped>
 /* 필요한 스타일을 여기에 추가합니다. */
 </style>
