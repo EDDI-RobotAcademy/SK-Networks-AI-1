@@ -23,6 +23,7 @@ from logistic_regression.controller.logistic_regression_controller import logist
 from orders_analysis.controller.orders_analysis_controller import ordersAnalysisRouter
 from post.controller.post_controller import postRouter
 from principal_component_analysis.controller.pca_controller import principalComponentAnalysisRouter
+from recurrent_neural_network.controller.rnn_controller import RecurrentNeuralNetworkRouter
 from tf_iris.controller.tf_iris_controller import tfIrisRouter
 from train_test_evaluation.controller.train_test_evaluation_controller import trainTestEvaluationRouter
 from polynomialRegression.controller.polynomial_regression_controller import polynomialRegressionRouter
@@ -196,6 +197,7 @@ app.include_router(gradientDescentRouter)
 # app.include_router(decisionTreeRouter)
 app.include_router(principalComponentAnalysisRouter)
 app.include_router(convolutionNeuralNetworkRouter)
+app.include_router(RecurrentNeuralNetworkRouter)
 # 여기까지 해야 router 연결됨
 
 async def testTopicConsume(app: FastAPI):
