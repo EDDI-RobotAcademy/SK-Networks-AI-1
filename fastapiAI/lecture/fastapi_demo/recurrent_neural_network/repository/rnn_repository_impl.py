@@ -7,10 +7,15 @@ import tensorflow as tf
 
 
 class RecurrentNeuralNetworkRepositoryImpl(RecurrentNeuralNetworkRepository):
-    def train(self, rnnModel, batchSize):
+    def build(self, rnnModel, batchSize):
         print('repository -> train()')
 
         rnnModel.build(tf.TensorShape([batchSize, None]))
+        return rnnModel
+
+    def compile(self, rnnModel):
+        rnnModel.compile(optimizer='adam', loss='sparse_categorical_crossentropy')
+        return rnnModel
 
     def createRnnModel(self, vocabSize, embeddingDimension, rnnUnits, batchSize):
         print('repository -> createRnnModel()')
@@ -59,5 +64,8 @@ class RecurrentNeuralNetworkRepositoryImpl(RecurrentNeuralNetworkRepository):
         ])
 
         return model
+
+    def printModelSummary(self, buildRnnModel):
+        buildRnnModel.summary()
 
 
