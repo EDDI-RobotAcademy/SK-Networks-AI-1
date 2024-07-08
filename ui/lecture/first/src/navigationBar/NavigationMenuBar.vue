@@ -119,7 +119,7 @@ export default {
             router.push('/cart/list')
         },
         goToOrder () {
-            router.push('/order')
+            router.push('/order/list')
         },
         goToPostPage () {
             router.push('/post/list')
