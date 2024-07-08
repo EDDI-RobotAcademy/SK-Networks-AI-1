@@ -25,3 +25,6 @@ class OrdersItemRepositoryImpl(OrdersItemRepository):
 
     def findAllByOrder(self, order):
         return OrdersItem.objects.filter(orders=order)
+
+    def findAllByOrderList(self, orderList):
+        return OrdersItem.objects.filter(orders__in=orderList)
