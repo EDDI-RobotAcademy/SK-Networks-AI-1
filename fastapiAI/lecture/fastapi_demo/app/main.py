@@ -24,6 +24,7 @@ from polynomialRegression.controller.polynomial_regression_controller import pol
 from post.controller.post_controller import postRouter
 from principal_component_analysis.controller.pca_controller import principalComponentAnalysisRouter
 from random_forest.controller.random_forest_controller import randomForestRouter
+from recurrent_neural_network.controller.rnn_controller import recurrentNeuralNetworkRouter
 from tf_iris.controller.tf_iris_controller import tfIrisRouter
 from train_test_evaluation.controller.train_test_evaluation_controller import trainTestEvaluationRouter
 
@@ -196,6 +197,7 @@ app.include_router(gradientDescentRouter)
 # app.include_router(decisionTreeRouter)
 app.include_router(principalComponentAnalysisRouter)
 app.include_router(convolutionNeuralNetworkRouter)
+app.include_router(recurrentNeuralNetworkRouter)
 
 async def testTopicConsume(app: FastAPI):
     consumer = app.state.kafka_test_topic_consumer

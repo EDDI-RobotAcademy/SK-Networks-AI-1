@@ -1,3 +1,5 @@
+from django.core.paginator import Paginator
+
 from orders.entity.orders import Orders
 from orders.repository.orders_repository import OrdersRepository
 
@@ -26,3 +28,12 @@ class OrdersRepositoryImpl(OrdersRepository):
 
     def findById(self, orderId):
         return Orders.objects.get(id=orderId)
+
+    def findAllByAccount(self, account, pageNumber=1, pageSize=10):
+        orders = Orders.objects.filter(account=account).order_by('-created_date')
+        paginator = Paginator(orders, pageSize)
+        pageObject = paginator.get_page(pageNumber)
+
+        return pageObject
+
+
