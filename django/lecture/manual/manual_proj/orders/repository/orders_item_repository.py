@@ -9,3 +9,7 @@ class OrdersItemRepository(ABC):
     @abstractmethod
     def findAllByOrder(self, order):
         pass
+
+    @abstractmethod
+    def findAllByOrderList(self, orderList):
+        pass
