@@ -13,6 +13,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from async_db.database import getMySqlPool, createTableIfNeccessary
+from convolution_neural_network.controller.cnn_controller import ConvolutionNeuralNetworkRouter
 # from decision_tree.controller.decision_tree_controller import decisionTreeRouter # .so 파일 이슈
 from exponential_regression.controller.exponential_regression_controller import exponentialRegressionRouter
 from gradient_descent.controller.gradient_descent_controller import gradientDescentRouter
@@ -23,6 +24,7 @@ from polynomialRegression.controller.polynomial_regression_controller import pol
 from post.controller.post_controller import postRouter
 from principal_component_analysis.controller.pca_controller import PrincipalComponentAnalysisRouter
 from random_forest.controller.random_forest_controller import randomForestRouter
+from recurrent_neural_network.controller.rnn_controller import recurrentNeuralNetworkRouter
 from tf_iris.controller.tf_iris_controller import tfIrisRouter
 from train_test_evaluation.controller.train_test_evaluation_controller import trainTestEvaluationRouter
 
@@ -188,7 +190,8 @@ app.include_router(OrdersAnalysisRouter)
 app.include_router(gradientDescentRouter)
 # app.include_router(decisionTreeRouter)
 app.include_router(PrincipalComponentAnalysisRouter)
-
+app.include_router(ConvolutionNeuralNetworkRouter)
+app.include_router(recurrentNeuralNetworkRouter)
 load_dotenv()
 
 origins = os.getenv("ALLOWED_ORIGINS", "").split(",")
