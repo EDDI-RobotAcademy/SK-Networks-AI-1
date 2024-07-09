@@ -78,4 +78,22 @@ class ConvolutionNeuralNetworkServiceImpl(ConvolutionNeuralNetworkService):
         predictionList = loadedModel.predict(testImageList)
         predictedClassList = np.argmax(predictionList, axis=1)
 
-        print(f"predictionList: {predictionList}, predictedClassList: {predictedClassList}")
+        # print(f"predictionList: {predictionList}, predictedClassList: {predictedClassList}")
+
+        accuracy = self.convolutionNeuralNetworkRepositoryImpl.checkAccuracy(
+                                                testLabelList, predictedClassList)
+        precision = self.convolutionNeuralNetworkRepositoryImpl.checkPrecision(
+                                                testLabelList, predictedClassList)
+        recall = self.convolutionNeuralNetworkRepositoryImpl.checkRecall(
+                                                testLabelList, predictedClassList)
+        f1Score = self.convolutionNeuralNetworkRepositoryImpl.checkF1Score(
+                                                testLabelList, predictedClassList)
+
+        evaluatedPerformance = {
+            "accuracy": accuracy,
+            "precision": precision,
+            "recall": recall,
+            "f1Score": f1Score,
+        }
+
+        return evaluatedPerformance
