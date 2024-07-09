@@ -62,4 +62,38 @@ class ConvolutionNeuralNetworkServiceImpl(ConvolutionNeuralNetworkService):
         predictedClass = self.targetClassName[np.argmax(prediction)]
         return predictedClass
 
+    def modelEvaluate(self):
+        loadedModel = self.convolutionNeuralNetworkRepositoryImpl.loadModel('cnn_model.h5')
 
+        (_, _), (testImageList, testLabelList) = (self.convolutionNeuralNetworkRepositoryImpl.loadCifar10Data())
+
+        selectedClassList = [3, 5]
+
+        testImageList, testLabelList = (self.convolutionNeuralNetworkRepositoryImpl.filteringClasses(
+            testImageList, testLabelList, self.TARGET_CIFAR10_CLASSES))
+
+        testImageList = testImageList.astype('float32') / 255.0
+
+        predictionlist = loadedModel.predict(testImageList)
+        predictedClassList = np.argmax(predictionlist, axis=1)
+
+        # print(f"predictionList: {predictionlist}, predictedClassList: {predictedClassList}")
+
+        accuracy = self.convolutionNeuralNetworkRepositoryImpl.checkAccuracy(testLabelList, predictedClassList)
+
+        # 정밀도
+        precision = self.convolutionNeuralNetworkRepositoryImpl.checkPrecision(testLabelList, predictedClassList)
+
+        # 재현율
+        recall = self.convolutionNeuralNetworkRepositoryImpl.checkRecall(testLabelList, predictedClassList)
+
+        f1Score = self.convolutionNeuralNetworkRepositoryImpl.checkF1Score(testLabelList, predictedClassList)
+
+        evaluatedPerformance = {
+            "accuracy": accuracy,
+            "precision": precision,
+            "recall": recall,
+            "f1Score": f1Score,
+        }
+
+        return evaluatedPerformance
