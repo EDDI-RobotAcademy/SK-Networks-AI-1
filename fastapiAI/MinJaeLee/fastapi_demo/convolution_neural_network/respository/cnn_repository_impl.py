@@ -4,6 +4,7 @@ import os
 import numpy as np
 from PIL import Image
 from fastapi import HTTPException
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 from tensorflow.python.client import device_lib
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
@@ -104,7 +105,7 @@ class ConvolutionNeuralNetworkRepositoryImpl(ConvolutionNeuralNetworkRepository)
         import tensorflow as tf
         os.environ["CUDA_VISIBLE_DEVICES"] = "0"
         print(device_lib.list_local_devices())
-        compiledModel.fit(trainGenerator, epochs=100, validation_data=testGenerator)
+        compiledModel.fit(trainGenerator, epochs=10, validation_data=testGenerator)
 
         return compiledModel
 
@@ -130,3 +131,18 @@ class ConvolutionNeuralNetworkRepositoryImpl(ConvolutionNeuralNetworkRepository)
 
         prediction = loadedModel.predict(scaledImage)
         return prediction
+
+    def checkAccuracy(self, testLabelList, predictedClassList):
+        print("repository -> checkAccuracy()")
+        return accuracy_score(testLabelList, predictedClassList)
+
+    def checkPrecision(self, testLabelList, predictedClassList):
+        print("repository -> checkPrecision()")
+        return precision_score(testLabelList, predictedClassList, average='weighted')
+
+    def checkRecall(self, testLabelList, predictedClassList):
+        print("repository -> checkRecall()")
+        return recall_score(testLabelList, predictedClassList, average='weighted')
+    def checkF1Score(self, testLabelList, predictedClassList):
+        print("repository -> checkF1Score()")
+        return f1_score(testLabelList, predictedClassList, average='weighted')

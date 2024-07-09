@@ -12,6 +12,9 @@ class PrincipalComponentAnalysisServiceImpl(PrincipalComponentAnalysisService):
 
         numberOfPoints, numberOfFeatures, numberOfComponents = (
             self.principalComponentAnalysisRepository.createPCASample())
+        print(numberOfPoints)
+        print(numberOfFeatures)
+        print(numberOfComponents)
 
         mean = self.principalComponentAnalysisRepository.configZeroMean(numberOfFeatures)
         covariance = self.principalComponentAnalysisRepository.configCovariance(numberOfFeatures)
