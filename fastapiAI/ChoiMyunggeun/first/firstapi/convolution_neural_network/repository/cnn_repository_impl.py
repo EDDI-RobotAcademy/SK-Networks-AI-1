@@ -1,15 +1,17 @@
 import io
 
 import numpy as np
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from keras.src.preprocessing.image import ImageDataGenerator
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
 from convolution_neural_network.repository.cnn_repository import ConvolutionNeuralNetworkRepository
 
-from tensorflow.keras import datasets, models, layers
 from tensorflow.keras.models import load_model
-
+from tensorflow.keras import datasets, models, layers
 from fastapi import HTTPException
+
 from PIL import Image
+
 
 class ConvolutionNeuralNetworkRepositoryImpl(ConvolutionNeuralNetworkRepository):
 
@@ -104,16 +106,17 @@ class ConvolutionNeuralNetworkRepositoryImpl(ConvolutionNeuralNetworkRepository)
         return model
 
     def fitModel(self, compiledModel, trainGenerator, testGenerator):
-        compiledModel.fit(trainGenerator, epochs=1, validation_data=testGenerator)
+        compiledModel.fit(trainGenerator, epochs=1000, validation_data=testGenerator)
 
         return compiledModel
 
     def readImageFile(self, file):
         try:
+            # from PIL import Image
             image = Image.open(io.BytesIO(file))
             return image
         except Exception as e:
-            raise HTTPException(status_code=400, detail=f'파일 읽는 중 에러 발생: {e}')
+            raise HTTPException(status_code=400, detail=f"파일 읽는 중 문제 발생: {e}")
 
     def loadModel(self, savedModelPath):
         return load_model(savedModelPath)
@@ -127,3 +130,15 @@ class ConvolutionNeuralNetworkRepositoryImpl(ConvolutionNeuralNetworkRepository)
 
         prediction = loadedModel.predict(scaledImage)
         return prediction
+
+    def checkAccuracy(self, testLabelList, predictedClassList):
+        return accuracy_score(testLabelList, predictedClassList)
+
+    def checkPrecision(self, testLabelList, predictedClassList):
+        return precision_score(testLabelList, predictedClassList, average='weighted')
+
+    def checkRecall(self, testLabelList, predictedClassList):
+        return recall_score(testLabelList, predictedClassList, average='weighted')
+
+    def checkF1Score(self, testLabelList, predictedClassList):
+        return f1_score(testLabelList, predictedClassList, average='weighted')
