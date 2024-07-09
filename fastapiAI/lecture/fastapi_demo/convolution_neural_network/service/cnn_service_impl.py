@@ -62,3 +62,20 @@ class ConvolutionNeuralNetworkServiceImpl(ConvolutionNeuralNetworkService):
 
         predictedClass = self.targetClassName[np.argmax(prediction)]
         return predictedClass
+
+    def modelEvaluate(self):
+        loadedModel = self.convolutionNeuralNetworkRepositoryImpl.loadModel('cnn_model.h5')
+
+        (_, _), (testImageList, testLabelList) = (
+            self.convolutionNeuralNetworkRepositoryImpl.loadCifar10Data())
+
+        testImageList, testLabelList = (
+            self.convolutionNeuralNetworkRepositoryImpl.filteringClasses(
+                testImageList, testLabelList, self.TARGET_CIFAR10_CLASSES))
+
+        testImageList = testImageList.astype('float32') / 255.0
+
+        predictionList = loadedModel.predict(testImageList)
+        predictedClassList = np.argmax(predictionList, axis=1)
+
+        print(f"predictionList: {predictionList}, predictedClassList: {predictedClassList}")
