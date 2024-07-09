@@ -114,7 +114,7 @@ export default {
     },
     methods: {
         async fetchFlightDataOnRandomForestAnalysis () {
-            const response = await fetch('http://localhost:33333/random-forest')
+            const response = await fetch('http://192.168.0.46:33333/random-forest')
             const data = await response.json()
 
             console.log('data:', data)
