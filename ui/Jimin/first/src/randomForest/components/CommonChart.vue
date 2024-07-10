@@ -1,6 +1,6 @@
 <template>
     <v-card>
-        <v-card-title className="headline">{{  title }}</v-card-title>
+        <v-card-title className="headline">{{ title }}</v-card-title>
         <v-card-text>
             <svg ref="chart"></svg>
         </v-card-text>

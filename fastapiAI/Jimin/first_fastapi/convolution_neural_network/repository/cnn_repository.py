@@ -39,3 +39,18 @@ class ConvolutionNeuralNetworkRepository(ABC):
     def predict(self, image, loadedModel):
         pass
 
+    @abstractmethod
+    def checkAccuracy(self, testLabelList, predictedClassList):
+        pass
+
+    @abstractmethod
+    def checkPrecision(self, testLabelList, predictedClassList):
+        pass
+
+    @abstractmethod
+    def checkRecall(self, testLabelList, predictedClassList):
+        pass
+
+    @abstractmethod
+    def checkF1Score(self, testLabelList, predictedClassList):
+        pass
