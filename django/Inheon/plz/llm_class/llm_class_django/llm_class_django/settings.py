@@ -42,11 +42,11 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'django_extensions',
-    'account',
     'board',
     'product',
+    'account',
     'cart',
-    'orders'
+    'orders',
 ]
 
 MIDDLEWARE = [

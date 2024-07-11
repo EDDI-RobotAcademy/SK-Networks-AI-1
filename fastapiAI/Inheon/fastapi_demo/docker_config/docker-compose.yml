@@ -1,0 +1,16 @@
+services:
+  zookeeper:
+    container_name: zookeeper-container
+    image: wurstmeister/zookeeper
+    ports:
+      - "${ZOOKEEPER_PORT}:${ZOOKEEPER_PORT}"
+
+  kafka:
+    container_name: kafka-container
+    image: wurstmeister/kafka
+    ports:
+      - "${KAFKA_PORT}:${KAFKA_PORT}"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: ${KAFKA_ADVERTISED_HOST_NAME}
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper-container:${ZOOKEEPER_PORT}
+      KAFKA_CREATE_TOPICS: ${KAFKA_CREATE_TOPICS}
