@@ -9,3 +9,7 @@ class ConvolutionNeuralNetworkService(ABC):
     @abstractmethod
     def imagePredict(self, file):
         pass
+
+    @abstractmethod
+    def modelEvaluate(self):
+        pass
