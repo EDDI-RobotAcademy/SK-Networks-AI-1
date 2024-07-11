@@ -14,7 +14,7 @@
 <script>
 import authenticationModule from '@/authentication/store/authenticationModule';
 import {useStore} from 'vuex'
-// const authenticationModule = 'authenticationModule'
+
 export default {
     setup () {
         const store = useStore()
