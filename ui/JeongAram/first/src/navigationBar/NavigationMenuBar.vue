@@ -7,7 +7,25 @@
         </v-btn>
         <v-spacer></v-spacer>
 
-        <!--v-menu>
+        <v-menu close-on-content-click>
+            <template v-slot:activator="{ props }">
+                <v-btn color="black" v-bind="props">
+                    <b>Just for Test</b>
+                    <span v-if="isTestItemsProcessed()" class="status-indicator">!</span>
+                </v-btn>
+            </template>
+            <v-list>
+                <v-list-item v-for="(item, index) in testItems"
+                            :key="index" @click="item.action">
+                    <v-list-item-title>
+                        {{ item.title }}
+                        <span v-if="item.processed" class="status-indicator">!</span>
+                    </v-list-item-title>
+                </v-list-item>
+            </v-list>
+        </v-menu>
+
+        <v-menu close-on-content-click>
             <template v-slot:activator="{ props }">
                 <v-btn color="white" v-bind="props">
                     <b>Activator Slot 테스트</b>
@@ -19,7 +37,7 @@
                     <v-list-item-title>{{  item.title  }}</v-list-item-title>
                 </v-list-item>
             </v-list>
-        </v-menu-->
+        </v-menu>
 
         <v-btn text @click="goToProductList" class="btn-text">
             <v-icon left>mdi-store</v-icon>
@@ -51,16 +69,18 @@ const authenticationModule = 'authenticationModule'
 export default {
     data () {
         return {
-            navigation_drawer: false,
-            // links: [{ icon: 'mdi-home', action: this.goToHome, route: '/'}],
-            accessToken: null,
-            isLogin: false,
-            // items: [
-            //     { title: 'Product', action: this.goToProductList() },
-            //     { title: 'Board', action: this.goToBoardList() },
-
-            // ]
-
+            // isLogin: !!localStorage.getItem("userToken"),
+            items: [
+                { title: 'Logistic Regression', action: () => { router.push('/logistic-regression-result') } },
+                { title: 'Random Forest', action: () => { router.push('/random-forest-result') } },
+                { title: 'Polynomial Regression', action: () => { router.push('/polynomial-regression-result') } },
+                { title: 'Exponential Regression', action: () => { router.push('/exponential-regression-result') } }
+            ],
+            testItems: [
+                { title: 'Kafka Test', processed: false, action: () => { router.push('/kafka/test') } },
+                { title: 'Test Analysis 2', processed: false, action: () => { router.push('/test-analysis-2-result') } },
+            ],
+            socket: null
         }
     },
     computed: {
@@ -88,10 +108,34 @@ export default {
         updateLoginStatus () {
             this.userToken = localStorage.getItem("userToken")
             this.isLogin = !!this.userToken
-        }   
+        },
+        updateProcessingStatus(data) {
+            if (data.message === "Processing completed.") {
+                console.log("처리 요청이 완료되었는지 체크")
+                const item = this.testItems.find(item => item.title === data.title);
+                if (item) {
+                    item.processed = true;
+                }
+
+                this.$store.state.kafkaTestModule.kafkaTestData = data
+            }
+        },
+        isTestItemsProcessed() {
+            return this.testItems.some(item => item.processed)
+        }
+
+
     },
     mounted () {
         console.log('navigation bar mounted()')
+
+        this.socket = new WebSocket('ws://192.168.0.46:33333/ws')
+
+        this.socket.onmessage = (event) => {
+            const data = JSON.parse(event.data)
+            console.log('received data:', data)
+            this.updateProcessingStatus(data)
+        }
 
         const userToken = localStorage.getItem("userToken")
         
@@ -108,8 +152,8 @@ export default {
         // this.updateLoginStatus()
         // window.addEventListener('storage', this.updateLoginStatus)
     },
-    // beforeUnmount () {
-    //     window.removeEventListener('storage', this.updateLoginStatus)
-    // }
+    beforeUnmount () {
+       this.socket.close()
+    }
 }
 </script>
