@@ -3,6 +3,8 @@ from django.db import models
 # Create your models here.
 # models.Model 이 적혀있는 부분이 실제로 Spring의 JPA와 같이
 # DB query 생성 자동화를 지원하도록 서포트 합니다
+
+
 class Board(models.Model):
     boardId = models.AutoField(primary_key=True)
     title = models.CharField(max_length=128, null=False)
