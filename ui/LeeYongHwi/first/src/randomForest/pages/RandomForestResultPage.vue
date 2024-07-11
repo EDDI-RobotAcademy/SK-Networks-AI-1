@@ -115,7 +115,7 @@ export default {
     },
     methods: {
         async fetchFlightDataOnRandomForestAnalysis () {
-            const response = await fetch('http://192.168.0.18:33333/random-forest')
+            const response = await fetch('http://192.168.0.49:33333/random-forest')
             const data = await response.json()
             // const response = await axiosInstance.fastapiAxiosInst.fetch('/random-forest')
             // const data = response.data
