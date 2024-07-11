@@ -10,6 +10,24 @@
         <v-menu close-on-content-click>
             <template v-slot:activator="{ props }">
                 <v-btn color="black" v-bind="props">
+                    <b>Just for Test</b>
+                    <span v-if="isTestItemsProcessed()" class="status-indicator">!</span>
+                </v-btn>
+            </template>
+            <v-list>
+                <v-list-item v-for="(item, index) in testItems" 
+                            :key="index" @click="item.action">
+                    <v-list-item-title>
+                        {{ item.title }}
+                        <span v-if="item.processed" class="status-indicator">!</span>
+                    </v-list-item-title>
+                </v-list-item>
+            </v-list>
+        </v-menu>
+
+        <v-menu close-on-content-click>
+            <template v-slot:activator="{ props }">
+                <v-btn color="black" v-bind="props">
                     <b>Regression Analysis</b>
                 </v-btn>
             </template>
@@ -71,9 +89,15 @@ export default {
                 { title: 'Kmeans Regression', action: () => { router.push('/kmeans-test-result')}},
                 { title: 'TensorFlowIrisTestResult Regression', action: () => { router.push('/tf-iris-result')}},
                 { title: 'TrainTestEvaluationResult Regression', action: () => { router.push('/train-test-evaluation-result')}},
-            ]
+            ],
+            testItems: [
+                { title: 'Kafka Test', processed: false, action: () => { router.push('/kafka/test') } },
+                { title: 'Test Analysis 2', processed: false, action: () => { router.push('/test-analysis-2-result') } },
+            ],
+            socket: null
         }
     },
+
     computed: {
         ...mapState(authenticationModule, ['isAuthenticated'])
     },
@@ -104,9 +128,32 @@ export default {
         goToPostPage () {
             router.push('/post/list')
         },
+        updateProcessingStatus(data) {
+            if (data.message === "Processing completed.") {
+                console.log("처리 요청이 완료되었는지 체크")
+                const item = this.testItems.find(item => item.title === data.title);
+                if (item) {
+                    item.processed = true;
+                }
+
+                this.$store.state.kafkaTestModule.kafkaTestData = data
+            }
+        },
+        isTestItemsProcessed() {
+            return this.testItems.some(item => item.processed);
+        }
     },
+
     mounted () {
         console.log('navigation bar mounted()')
+
+        this.socket = new WebSocket('ws://192.168.0.42:33333/ws');
+
+        this.socket.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            console.log('received data:', data)
+            this.updateProcessingStatus(data);
+        };
         
         const userToken = localStorage.getItem("userToken")
         if (userToken) {
@@ -119,11 +166,18 @@ export default {
             this.$store.state.authenticationModule.isAuthenticated = true
         }
     },
-    // beforeUnmount () {
-    //     console.log('navigation bar beforeUnmount()')
-    // },
-    // beforeUpdate () {
-    //     console.log('navigation bar beforeUpdate()')
-    // }
+    beforeUnmount() {
+        // WebSocket 연결 해제
+        this.socket.close();
+    }
 }
 </script>
+
+
+<style scoped>
+.status-indicator {
+    margin-left: 5px;
+    font-weight: bold;
+    color: red;
+}
+</style>

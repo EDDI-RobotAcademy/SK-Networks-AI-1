@@ -22,3 +22,6 @@ class OrdersItemRepositoryImpl(OrdersItemRepository):
     def create(self, orders, product, price, quantity):
         order_item = OrdersItem(orders=orders, product=product, price=price, quantity=quantity)
         order_item.save()
+
+    def findAllByOrder(self, order):
+        return OrdersItem.objects.filter(orders=order)
