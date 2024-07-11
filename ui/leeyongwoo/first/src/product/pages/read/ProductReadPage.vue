@@ -1,37 +1,37 @@
 <template>
-    <v-container>
-        <h2>Vue3 + Vuetify3 + TypeScript 상품 세부 사항 보기</h2>
+    <v-container class="bg-yellow-lighten-5">
         <v-card v-if="product">
-            <v-card-title>상품 정보</v-card-title>
-            <v-card-text>
+            <v-card-title class="bg-yellow-lighten-5">상품 정보</v-card-title>
+            <v-card-text class="bg-yellow-lighten-5">
                 <v-container>
                     <v-row>
-                        <v-col cols="12">
-                            <v-text-field v-model="product.productName" readonly label="상품명"/>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col cols="12">
-                            <v-text-field v-model="product.productDescription" readonly label="상품 설명"/>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col cols="12">
-                            <v-text-field v-model="product.productPrice" readonly label="가격" type="number"/>
-                        </v-col>
-                    </v-row>
-                    
-                    <v-row>
-                        <v-col cols="12">
-                            <v-img :src="getProductImageUrl(product.productImage)" aspect-ratio="1" class="grey lighten-2">
+                        <v-col cols="12" class="d-flex">
+                            <v-img :src="getProductImageUrl(product.productImage)" class="custom-img grey lighten-2"
+                                aspect-ratio="1">
                                 <template v-slot:placeholder>
                                     <v-row class="fill-height ma-0" align="center" justify="center">
-                                        <v-progress-circular indeterminate color="grey lighten-5"/>
+                                        <v-progress-circular indeterminate color="grey lighten-5" />
                                     </v-row>
                                 </template>
                             </v-img>
                         </v-col>
                     </v-row>
+                    <v-row>
+                        <v-col cols="12">
+                            <v-text-field v-model="product.productName" readonly label="상품명" />
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="12">
+                            <v-text-field v-model="product.productDescription" readonly label="상품 설명" />
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="12">
+                            <v-text-field v-model="product.productPrice" readonly label="가격" type="number" />
+                        </v-col>
+                    </v-row>
+
                 </v-container>
             </v-card-text>
         </v-card>
@@ -46,8 +46,7 @@
                 <v-icon>mdi-cart-plus</v-icon>
                 <span class="button-text">장바구니에 추가</span>
             </v-btn>
-            <router-link :to="{ name: 'ProductListPage' }" 
-                            class="router-link no-underline">
+            <router-link :to="{ name: 'ProductListPage' }" class="router-link no-underline">
                 <v-btn color="secondary" class="action-button">
                     <v-icon>mdi-arrow-left</v-icon>
                     <span class="button-text">목록으로 돌아가기</span>
@@ -76,10 +75,10 @@ export default {
     methods: {
         ...mapActions(productModule, ['requestProductToDjango']),
         ...mapActions(cartModule, ['requestAddCartToDjango']),
-        async onPurchase () {
+        async onPurchase() {
             console.log('구매하기 버튼 눌렀음')
         },
-        async onAddToCart () {
+        async onAddToCart() {
             console.log('장바구니에 추가 버튼 눌렀음')
             try {
                 const cartData = {
@@ -94,12 +93,12 @@ export default {
                 console.log('장바구니 추가 과정에서 에러 발생:', error);
             }
         },
-        getProductImageUrl (imageName) {
+        getProductImageUrl(imageName) {
             console.log('imageName:', imageName)
             return require('@/assets/images/uploadImages/' + imageName)
         },
     },
-    created () {
+    created() {
         this.requestProductToDjango(this.productId)
     },
 }
