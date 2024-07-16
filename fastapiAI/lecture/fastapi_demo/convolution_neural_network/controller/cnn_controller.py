@@ -38,4 +38,6 @@ async def cnnModelEvaluate(convolutionNeuralNetworkService: ConvolutionNeuralNet
 
     print(f"controller -> cnnModelEvaluate()")
 
-    convolutionNeuralNetworkService.modelEvaluate()
+    evaluatedPerformance = convolutionNeuralNetworkService.modelEvaluate()
+
+    return JSONResponse(content=evaluatedPerformance, status_code=status.HTTP_200_OK)
