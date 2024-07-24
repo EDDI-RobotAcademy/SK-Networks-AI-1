@@ -64,3 +64,41 @@ class ConvolutionNeuralNetworkServiceImpl(ConvolutionNeuralNetworkService):
         predictedClass = self.targetClassName[np.argmax(prediction)]
 
         return predictedClass
+
+    def modelEvaluate(self):
+        loadedModel = self.convolutionNeuralNetworkRepositoryImpl.loadModel('cnn_model.h5')
+        # cifar10 dataset에서 test data만 가져오기
+        (_, _), (testImageList, testLabelList) = self.convolutionNeuralNetworkRepositoryImpl.loadCifar10Data()
+
+        selectedClassList = [3,5]
+
+        # 개와 고양이 데이터만 가져오기
+        testImageList, testLabelList = (
+            self.convolutionNeuralNetworkRepositoryImpl.filteringClasses(
+                testImageList, testLabelList, self.TARGET_CIFAR10_CLASSES))
+        # test dataset 전처리 (float화 시켜주기)
+        testImageList = testImageList.astype('float32') / 255.0
+        # 모델 예측
+        predictionList = loadedModel.predict(testImageList)
+        predictedClassList = np.argmax(predictionList, axis=1)
+
+        # print(f"predictionList: {predictionList}, predictedClassList: {predictedClassList}")
+
+        # 정답과 예측값 보내서 accuracy 구하기
+        accuracy = self.convolutionNeuralNetworkRepositoryImpl.checkAccuracy(testLabelList, predictedClassList)
+        # precision 구하기
+        precision = self.convolutionNeuralNetworkRepositoryImpl.checkPrecision(testLabelList, predictedClassList)
+        # recall
+        recall = self.convolutionNeuralNetworkRepositoryImpl.checkRecall(testLabelList, predictedClassList)
+        # f1-score
+        f1_score = self.convolutionNeuralNetworkRepositoryImpl.checkF1score(testLabelList, predictedClassList)
+
+        # 4가지 지표에 대해서 성능평가
+        evaluatedPerformance = {
+            "accuracy": accuracy,
+            "precision": precision,
+            "recall": recall,
+            "f1Score": f1_score
+        }
+
+        return evaluatedPerformance

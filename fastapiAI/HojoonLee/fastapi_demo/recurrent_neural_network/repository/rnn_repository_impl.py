@@ -102,7 +102,7 @@ class RecurrentNeuralNetworkRepositoryImpl(RecurrentNeuralNetworkRepository):
 
         # 실질적인 텍스트 생성
         for index in range(numGenerate):
-            predictions = loadedModel(tfInputEval)
+            predictions = loadedModel(tfInputEval) # [1, 5, 65]
             # tf.squeeze() 메서드는 쥐어 짜내는 것입니다 >> 차원을 축소
             # predictions 의 0차원 부분을 없앤다.
             # print(f"before predictions shape : {predictions.shape}")

@@ -3,6 +3,8 @@ from PIL import Image
 import numpy as np
 from keras.src.preprocessing.image import ImageDataGenerator
 from fastapi import HTTPException
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+
 from convolution_neural_network.repository.cnn_repository import ConvolutionNeuralNetworkRepository
 
 from tensorflow.keras.models import load_model
@@ -130,3 +132,16 @@ class ConvolutionNeuralNetworkRepositoryImpl(ConvolutionNeuralNetworkRepository)
 
         return prediction
 
+    def checkAccuracy(self, testLabelList, predictedLabelList):
+        # scikit learn의 accuracy 구하는 함수 불러오기
+        return accuracy_score(testLabelList, predictedLabelList)
+
+    def checkPrecision(self, testLabelList, predictedLabelList):
+        # 가중치 평균 적용
+        return precision_score(testLabelList, predictedLabelList, average='weighted')
+
+    def checkRecall(self, testLabelList, predictedClassList):
+        return recall_score(testLabelList, predictedClassList, average='weighted')
+
+    def checkF1score(self, testLabelList, predictedClassList):
+        return f1_score(testLabelList, predictedClassList, average='weighted')

@@ -55,7 +55,7 @@ class RandomForestServiceImpl(RandomForestService):
         randomForestModel = self.__randomForestRepository.train(X_train, y_train)
         # 학습된 모델로 test 하기
         y_pred = self.__randomForestRepository.predict(randomForestModel, X_test)
-        # 예측값과 실제 정답사이 정확도 비교
+        # 예측값과 실제 정답 사이 정확도 비교
         accuracy, report, confusionMatrix = self.__randomForestRepository.evaluate(y_pred, y_test)
 
         # 스모트 적용해보기

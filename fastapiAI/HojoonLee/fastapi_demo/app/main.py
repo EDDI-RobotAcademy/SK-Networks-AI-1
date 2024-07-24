@@ -2,6 +2,7 @@ import asyncio
 import os
 import json
 
+import nltk
 from aiokafka import AIOKafkaProducer, AIOKafkaConsumer
 
 import aiomysql
@@ -27,6 +28,7 @@ from random_forest.controller.random_forest_controller import randomForestRouter
 from recurrent_neural_network.controller.rnn_controller import recurrentNeuralNetworkRouter
 from tf_iris.controller.tf_iris_controller import tfIrisRouter
 from train_test_evaluation.controller.train_test_evaluation_controller import trainTestEvaluationRouter
+from sentence_structure_analysis.controller.sentence_structure_analysis_controller import sentenceStructureAnalysisRouter
 
 import warnings
 # aiomysql 관련 warning 메세지 무시
@@ -177,6 +179,20 @@ async def testTopicConsume(app: FastAPI):
         except Exception as e:
             print(f"소비 중 에러 발생: {e}")
 
+# Sentence_Structure_Analysis
+def download_nltk_data():
+    nltk_data_path = os.path.join(os.path.expanduser("~"), "nltk_data")
+    if not os.path.exists(nltk_data_path):
+        os.makedirs(nltk_data_path)
+
+    if not os.path.exists(os.path.join(nltk_data_path, "corpora", "stopwords")):
+        nltk.download('stopwords', download_dir=nltk_data_path)
+
+    # punkt 다운로드 -> 걍 모든 문장 토큰화 (문법 상관없이)
+    if not os.path.exists(os.path.join(nltk_data_path, "tokenizers", "punkt")):
+        nltk.download('punkt', download_dir=nltk_data_path)
+
+download_nltk_data()
 
 app.include_router(logisticRegressionRouter)
 app.include_router(trainTestEvaluationRouter)
@@ -192,6 +208,7 @@ app.include_router(gradientDescentRouter)
 app.include_router(PrincipalComponentAnalysisRouter)
 app.include_router(ConvolutionNeuralNetworkRouter)
 app.include_router(recurrentNeuralNetworkRouter)
+app.include_router(sentenceStructureAnalysisRouter)
 load_dotenv()
 
 origins = os.getenv("ALLOWED_ORIGINS", "").split(",")

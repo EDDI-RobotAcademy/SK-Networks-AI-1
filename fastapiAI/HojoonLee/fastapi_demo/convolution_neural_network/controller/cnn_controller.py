@@ -27,3 +27,13 @@ async def cnnBasedImagePredict(file: UploadFile = File(...),
         return JSONResponse(content={"predictedClass": predictedClass})
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"잘못된 형식으로 요청을 보냈습니다: {e}")
+
+@ConvolutionNeuralNetworkRouter.post("/cnn-evaluate")
+async def cnnModelEvaluate(convolutionneuralNetworkService: ConvolutionNeuralNetworkServiceImpl =
+                           Depends(injectConvolutionNeuralNetworkService)):
+
+    print(f"controller -> cnnModelEvaluate()")
+
+    evaluatedPerformance = convolutionneuralNetworkService.modelEvaluate()
+
+    return JSONResponse(content=evaluatedPerformance, status_code=status.HTTP_200_OK)

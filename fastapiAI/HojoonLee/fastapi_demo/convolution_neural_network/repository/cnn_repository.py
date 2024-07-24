@@ -36,3 +36,19 @@ class ConvolutionNeuralNetworkRepository(ABC):
     @abstractmethod
     def loadModel(self, savedModelPath):
         pass
+
+    @abstractmethod
+    def checkAccuracy(self, testLabelList, predictedLabelList):
+        pass
+
+    @abstractmethod
+    def checkPrecision(self, testLabelList, predictedLabelList):
+        pass
+
+    @abstractmethod
+    def checkRecall(self, testLabelList, predictedClassList):
+        pass
+
+    @abstractmethod
+    def checkF1score(self, testLabelList, predictedClassList):
+        pass
