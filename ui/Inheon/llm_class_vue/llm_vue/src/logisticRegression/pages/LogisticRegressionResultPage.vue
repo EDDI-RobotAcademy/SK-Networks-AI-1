@@ -39,7 +39,7 @@ export default {
         async fetchLogisticRegressionData () {
             try {
                 const response = 
-                    await axiosInst.fastapiAxiosInst.get('/logistic-regression')
+                    await axiosInst.fastapiAxiosInst.get('/lr-train')
                 const data = response.data
                 console.log('result:', data)
 
