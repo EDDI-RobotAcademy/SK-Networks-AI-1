@@ -6,7 +6,7 @@ import accountModule from '@/account/store/accountModule'
 import cartModule from '@/cart/store/cartModule'
 import postModule from '@/post/store/postModule'
 import orderModule from '@/order/store/orderModule'
-
+import kafkaTestModule from '@/kafka/store/kafkaTestModule'
 
 export default createStore({
   state: {
@@ -25,5 +25,6 @@ export default createStore({
     cartModule,
     postModule,
     orderModule,
+    kafkaTestModule
   }
 })

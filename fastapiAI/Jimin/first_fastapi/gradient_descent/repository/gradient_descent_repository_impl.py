@@ -72,7 +72,7 @@ class GradientDescentRepositoryImpl(GradientDescentRepository):
         return selectedModel
 
     def loadModel(self, wantToBeLoadModel):
-        # entity를 구성핶기 때문에 이런식으로 가능
+        # entity를 구성했기 때문에 이런식으로 가능
         model = LinearRegressionModel() # model : y =wX + b(w, b 안정해진 값)
         # __call__에 의한 self.weight * X + self.intercept의 모델 반환
 

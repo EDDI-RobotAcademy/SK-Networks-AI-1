@@ -12,7 +12,7 @@
 <script>
 import * as d3 from 'd3'
 import axios from 'axios'
-import axiosInst from "@/utility/axiosInstance"
+import axiosInstance from "@/utility/axiosInstance"
 
 export default {
     name: 'ClusterVisualization',
@@ -25,7 +25,7 @@ export default {
     },
     async mounted() {
         try {
-            const response = await axios.get('http://localhost:33333/kmeans-test')
+            const response = await axiosInstance.fastapiAxiosInst.get('/kmeans-test')
             this.centers = response.data.centers
             this.labels = response.data.labels
             this.points = response.data.points

@@ -13,6 +13,8 @@ import PostRoutes from '@/post/router/PostRoutes'
 import KmeansRoutes from '@/kmeans/router/KmeansRoutes'
 import TensorFlowIrisTestRoutes from '@/tfIris/router/TensorFlowIrisTestRoutes'
 import CartRoutes from '@/cart/router/CartRoutes'
+import principalComponentAnalysisRoutes from '@/principalComponentAnalysis/router/PrincipalComponentAnalysisRoutes'
+import KafkaTestRoutes from '@/kafka/router/KafkaTestRoutes'
 
 const routes: Array<RouteRecordRaw> = [
   ...HomeRoutes,
@@ -33,6 +35,8 @@ const routes: Array<RouteRecordRaw> = [
   ...KmeansRoutes,
   ...TensorFlowIrisTestRoutes,
   ...CartRoutes,
+  ...principalComponentAnalysisRoutes,
+  ...KafkaTestRoutes,
 ]
 
 const router = createRouter({

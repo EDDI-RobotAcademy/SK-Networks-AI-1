@@ -27,7 +27,7 @@ async def createTableIfNeccessary(dbPool):
         async with connection.cursor() as cursor:
             # sql 파일 중 하나
             for filePath in sqlFileList:
-                with open(filePath, 'r') as file: # 읽기전용으로 파일 읽기
+                with open(filePath, 'r') as file: # 읽기 전용으로 파일 읽기
                     sql = file.read()
                     await cursor.execute(sql)
             # 실제 Memory에 배치되어 있는 정보들을 Disk I/O로 내림 -> 실제 DB는 Disk에 맺히기 때문

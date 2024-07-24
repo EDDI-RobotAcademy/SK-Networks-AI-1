@@ -38,8 +38,7 @@
                             </tr>
                             </tbody>
                         </v-table>
-                        <!-- divider를 넣으면 확실하게 경계선을 그어서 밑으로 내려감 -->
-                        <v-divider></v-divider> 
+                        <v-divider></v-divider>
                         <v-row>
                             <v-col>
                                 <v-btn color="blue" @click="confirmCheckout">Checkout</v-btn>
@@ -62,8 +61,9 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="blue darken-1" text 
-                        @click="isCheckoutDialogVisible = false">Cancel</v-btn>
-                    <v-btn color="blue darken-1" text @click="proceedToOrder">Confirm</v-btn>
+                            @click="isCheckoutDialogVisible = false">Cancel</v-btn>
+                    <v-btn color="blue darken-1" text 
+                            @click="proceedToOrder">Confirm</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -89,7 +89,6 @@ export default {
             if (!Array.isArray(this.cartItems) || this.cartItems.length === 0) {
                 return 0;
             }
-            // total이라는 변수(초기는 0)에 item(cartItems의 각각의 item)의 가격 * 수량값을 더하는 것
             return this.cartItems.reduce(
                 (total, item) => total + item.productPrice * item.quantity,
                 0
@@ -112,36 +111,39 @@ export default {
             // 수량 업데이트 로직
         },
         removeItem(item) {
-            // filter는 이 조건을 만족시키는 것들만 가져옴
-            this.cartItems = this.cartItems.filter(
-                cartItem => cartItem.cartItemId !== item.cartItemId);
-            this.selectedItems = this.selectedItems.filter(
-                selectedItem => selectedItem.cartItemId !== item.cartItemId);
+            this.cartItems = 
+                this.cartItems.filter(
+                    cartItem => cartItem.cartItemId !== item.cartItemId);
+            this.selectedItems = 
+                this.selectedItems.filter(
+                    selectedItem => selectedItem.cartItemId !== item.cartItemId);
         },
         confirmCheckout() {
             this.isCheckoutDialogVisible = true;
         },
         async proceedToOrder() {
             this.isCheckoutDialogVisible = false;
-            // const response = await this.requestCreateOrderToDjango()
+
             try {
-                const selectedCartItems = this.cartItems.filter(item => this.selectedItems.includes(item));
+                const selectedCartItems = 
+                    this.cartItems.filter(
+                        item => this.selectedItems.includes(item));
                 const orderItems = selectedCartItems.map(item => ({
                     cartItemId: item.cartItemId,
                     orderPrice: item.productPrice,
                     quantity: item.quantity
                 }));
                 console.log('orderItems:', orderItems)
-                const response = await this.requestCreateOrderToDjango({ items: orderItems });
-                const orderId = response.orderId;
-                console.log(orderId)
-                // this.$router.push({ name: 'OrderReadPage', params: { orderId: orderId.toString() } });
+                const orderId = await this.requestCreateOrderToDjango({ items: orderItems });
+
+                this.$router.push({ 
+                    name: 'OrderReadPage', 
+                    params: { orderId: orderId.toString() } 
+                });
 
             } catch (error) {
                 console.error('Order creation failed:', error);
             }
-
-            // this.$router.push({ name: 'OrderReadPage', params: { selectedItems: this.selectedItems } });
         },
         async fetchCartList() {
             try {
