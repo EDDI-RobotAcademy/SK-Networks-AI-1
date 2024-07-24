@@ -2,7 +2,8 @@ import io
 
 from PIL import Image
 from fastapi import HTTPException
-from keras.src.preprocessing.image import ImageDataGenerator
+from keras.preprocessing.image import ImageDataGenerator
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
 from convolution_neural_network.repository.cnn_repository import ConvolutionNeuralNetworkRepository
 
@@ -139,3 +140,15 @@ class ConvolutionNeuralNetworkRepositoryImpl(ConvolutionNeuralNetworkRepository)
         prediction = loadedModel.predict(scaledImage)
 
         return prediction
+
+    def checkAccuracy(self, testLabelList, predictedClassList):
+        return accuracy_score(testLabelList, predictedClassList)
+
+    def checkPrecision(self, testLabelList, predictedClassList):
+        return precision_score(testLabelList, predictedClassList, average='weighted')
+
+    def checkRecall(self, testLabelList, predictedClassList):
+        return recall_score(testLabelList, predictedClassList, average='weighted')
+
+    def checkF1Score(self, testLabelList, predictedClassList):
+        return f1_score(testLabelList, predictedClassList, average='weighted')
