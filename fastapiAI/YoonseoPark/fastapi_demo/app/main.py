@@ -3,6 +3,7 @@ import json
 import os
 
 import aiomysql
+import nltk
 from aiokafka import AIOKafkaProducer, AIOKafkaConsumer
 from aiokafka.admin import NewTopic, AIOKafkaAdminClient
 from aiokafka.errors import TopicAlreadyExistsError
@@ -24,6 +25,8 @@ from post.controller.post_controller import postRouter
 from principal_component_analysis.controller.pca_controller import principalComponentAnalysisRouter
 from random_forest.controller.random_forest_controller import randomForestRouter
 from recurrent_neural_network.controller.rnn_controller import recurrentNeuralNetworkRouter
+from sentence_structure_analysis.controller.sentence_structure_analysis_controller import \
+    sentenceStructureAnalysisRouter
 from tf_iris.controller.tf_iris_controller import tfIrisRouter
 from train_test_evaluation.controller.train_test_evaulation_controller import trainTestEvaluationRouter
 
@@ -60,16 +63,16 @@ async def create_kafka_topics():
         print(f"카프카 토픽 생성 실패: {e}")
     finally:
         await adminClient.close()
-
-
-# 현재는 deprecated 라고 나타나지만 lifespan 이란 것을 대신 사용하라고 나타나고 있음
-# 완전히 배제되지는 않았는데 애플리케이션이 시작할 때 실행할 함수를 지정함
-# 고로 애플리케이션 시작 시 비동기 처리가 가능한 DB를 구성한다 보면 됨
-
+#
+#
+# # 현재는 deprecated 라고 나타나지만 lifespan 이란 것을 대신 사용하라고 나타나고 있음
+# # 완전히 배제되지는 않았는데 애플리케이션이 시작할 때 실행할 함수를 지정함
+# # 고로 애플리케이션 시작 시 비동기 처리가 가능한 DB를 구성한다 보면 됨
+#
 import warnings
 
 warnings.filterwarnings("ignore", category=aiomysql.Warning)
-
+#
 async def lifespan(app: FastAPI):
     # Startup
     app.state.dbPool = await getMySqlPool()
@@ -167,6 +170,20 @@ def read_item(item_id: int, q: str = None):
 # 만들어 놓고 이런 부분이 좀 '짜치는데?' 하면서 점진적으로 개선시키는 것이 '애자일' 방식임
 # (생산성의 비밀임!)
 
+def download_nltk_data():
+    nltk_data_path = os.path.join(os.path.expanduser("~"), "nltk_data")
+    if not os.path.exists(nltk_data_path):
+        os.makedirs(nltk_data_path)
+
+    if not os.path.exists(os.path.join(nltk_data_path, "corpora", "stopwords")):
+        nltk.download('stopwords', download_dir=nltk_data_path)
+
+    # punkt 다운로드
+    if not os.path.exists(os.path.join(nltk_data_path, "tokenizers", "punkt")):
+        nltk.download('punkt', download_dir=nltk_data_path)
+
+download_nltk_data()
+
 app.include_router(logisticRegressionRouter)
 app.include_router(trainTestEvaluationRouter)
 app.include_router(polynomialRegressionRouter)
@@ -181,6 +198,7 @@ app.include_router(gradientDescentRouter)
 app.include_router(principalComponentAnalysisRouter)
 app.include_router(convolutionNeuralNetworkRouter)
 app.include_router(recurrentNeuralNetworkRouter)
+app.include_router(sentenceStructureAnalysisRouter)
 
 
 async def testTopicConsume(app: FastAPI):
