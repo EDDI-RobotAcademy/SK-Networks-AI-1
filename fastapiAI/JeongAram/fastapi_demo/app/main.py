@@ -27,6 +27,7 @@ from principal_component_analysis.controller.pca_controller import principalComp
 from recurrent_neural_network.controller.rnn_controller import RecurrentNeuralNetworkRouter
 from sentence_structure_analysis.controller.sentence_structure_analysis_controller import \
     sentenceStructureAnalysisRouter
+from srbcb.controller.srbcb_controller import srbcbRouter
 from tf_iris.controller.tf_iris_controller import tfIrisRouter
 from train_test_evaluation.controller.train_test_evaluation_controller import trainTestEvaluationRouter
 from polynomialRegression.controller.polynomial_regression_controller import polynomialRegressionRouter
@@ -215,7 +216,8 @@ app.include_router(gradientDescentRouter)
 app.include_router(principalComponentAnalysisRouter)
 app.include_router(convolutionNeuralNetworkRouter)
 app.include_router(RecurrentNeuralNetworkRouter)
-app.include_router(sentenceStructureAnalysisRouter)
+app.include_router(sentenceStructureAnalysisRouter),
+app.include_router(srbcbRouter),
 # 여기까지 해야 router 연결됨
 
 async def testTopicConsume(app: FastAPI):
