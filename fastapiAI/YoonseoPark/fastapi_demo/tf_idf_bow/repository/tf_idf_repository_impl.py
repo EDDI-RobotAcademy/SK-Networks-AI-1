@@ -28,18 +28,31 @@ class TfIdfBowRepositoryImpl(TfIdfBowRepository):
     TOP_RANK_LIST = 3
     SIMILARITY_THRESHOLD = 0.1
 
+    # 여기서 TOP_RANK_LIST를 3개로 지정하여 유사도가 높은 것 중 3개를 뽑습니다.
+    # 또한 제약 사항으로 THRESHOLD(임계치)를 줘서 유사도 10% 이상의 것만 추출하도록 만들었습니다.
+
     def findSimilar(self, message, countVetorizer, countMatrix):
         messageVector = countVetorizer.transform([message])
+
+        # 여기서 코사인 유사도를 뽑은 리스트를 가지게 됩니다.
         cosineSimilarityList = cosine_similarity(messageVector, countMatrix).flatten()
+
+        # 그 중 TOP RANK에 속하는 3가지만 뽑습니다.
         similarIndiceList = cosineSimilarityList.argsort()[-self.TOP_RANK_LIST:][::-1]
+
+        # 그 중에서도 THRESHOLD 값인 최소 임계치 (10%) 이상인 녀석들만 다시 추려냅니다.
         similarDocumentList = [(documentTitleListForTest[index], cosineSimilarityList[index])
                               for index in similarIndiceList
                               if cosineSimilarityList[index] >= self.SIMILARITY_THRESHOLD]
 
         return similarDocumentList
 
+    # 실질적으로 문장을 백터화하는 녀석입니다.
     def documentVectorization(self):
         countVectorizer = CountVectorizer()
+
+        # 상위의 배열에 기록되어 있는 문서 제목에 해당하는 문장을 가지고 벡터화를 진행합니다.
+        # 그리고 그 결과를 countMatrix에 저장합니다.
         countMatrix = countVectorizer.fit_transform(documentTitleListForTest)
 
         return countVectorizer, countMatrix
