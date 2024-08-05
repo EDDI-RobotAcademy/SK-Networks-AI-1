@@ -157,7 +157,7 @@ export default {
                 console.log('orderItems:', orderItems)
                 const response = await this.requestCreateOrderToDjango({ items: orderItems });
                 const orderId = response.orderId;
-
+                console.log('orderId :',orderId)
                 this.$router.push({ name: 'OrderReadPage', params: { orderId: orderId.toString() } });
 
             } catch (error) {

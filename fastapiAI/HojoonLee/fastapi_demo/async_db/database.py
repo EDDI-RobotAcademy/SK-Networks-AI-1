@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 import glob
 
 load_dotenv() # 아래 env 관련쓰니까 dotenv() 실행
+
 async def getMySqlPool():
     return await aiomysql.create_pool(
         host=os.getenv('MYSQL_HOST'),

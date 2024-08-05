@@ -53,7 +53,7 @@ if len(account_ids) < 7 :
         account_ids.append(account_id)
 
 for _ in range(10000):
-    account_id = random.choice(account_ids)
-    create_random_order(account_id)
+    account_id = random.choice(account_ids) # 계정 id 랜덤으로 선택
+    create_random_order(account_id) # 선택한 계정에 대해 주문을 작성
 
 print("sample data generation completed")
