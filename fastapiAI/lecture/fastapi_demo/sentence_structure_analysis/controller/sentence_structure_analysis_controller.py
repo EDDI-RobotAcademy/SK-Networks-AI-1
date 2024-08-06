@@ -25,8 +25,8 @@ async def sentenceTokenize(sentenceRequestForm: SentenceRequestForm,
 
 @sentenceStructureAnalysisRouter.post("/word-tokenize")
 async def wordTokenize(sentenceRequestForm: SentenceRequestForm,
-                            sentenceStructureAnalysisService: SentenceStructureAnalysisServiceImpl =
-                            Depends(injectSentenceStructureAnalysisService)):
+                       sentenceStructureAnalysisService: SentenceStructureAnalysisServiceImpl =
+                       Depends(injectSentenceStructureAnalysisService)):
 
     print(f"controller -> wordTokenize(): sentenceRequestForm: {sentenceRequestForm}")
 
