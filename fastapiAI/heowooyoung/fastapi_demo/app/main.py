@@ -29,6 +29,7 @@ from recurrent_neural_network.controller.rnn_controller import recurrentNeuralNe
 from sentence_structure_analysis.controller.sentence_structure_analysis_controller import \
     sentenceStructureAnalysisRouter
 from srbcb.controller.srbcb_controller import srbcbRouter
+from tf_idf_bow.controller.tf_idf_bow_controller import tfIdfBowRouter
 from tf_iris.controller.tf_iris_controller import tfIrisRouter
 from train_test_evaluation.controller.train_test_evaluation_controller import trainTestEvaluationRouter
 
@@ -225,7 +226,7 @@ app.include_router(convolutionNeuralNetworkRouter)
 app.include_router(recurrentNeuralNetworkRouter)
 app.include_router(srbcbRouter)
 app.include_router(sentenceStructureAnalysisRouter)
-
+app.include_router(tfIdfBowRouter)
 
 async def testTopicConsume(app: FastAPI):
     consumer = app.state.kafka_test_topic_consumer
