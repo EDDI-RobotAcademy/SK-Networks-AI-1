@@ -21,7 +21,6 @@ documentTitleListForTest = [
     "프랑스가 일장기를 그려넣은 것이 더 먼저 일어난 일이다.",
     "역시 프랑스는 유럽의 중궈다."
 ]
-fitTransform / transform
 
 class TfIdfBowRepositoryImpl(TfIdfBowRepository):
     TOP_RANK_LIST = 3
