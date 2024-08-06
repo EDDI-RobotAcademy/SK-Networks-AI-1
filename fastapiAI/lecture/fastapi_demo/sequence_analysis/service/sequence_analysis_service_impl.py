@@ -10,6 +10,15 @@ class SequenceAnalysisServiceImpl(SequenceAnalysisService):
         print(f"service -> predictNextSequence(): userSendMessage: {userSendMessage}")
 
         tokenizer = self.sequenceAnalysisRepository.createTokenizer(userSendMessage)
-        self.sequenceAnalysisRepository.extractSequence(tokenizer, userSendMessage)
+        totalWords, inputSequences = self.sequenceAnalysisRepository.extractSequence(tokenizer, userSendMessage)
 
-        return None
+        maxSequenceLength = max([len(x) for x in inputSequences])
+
+        paddedInputSequences = self.sequenceAnalysisRepository.paddingSequence(inputSequences, maxSequenceLength)
+        X, y = self.sequenceAnalysisRepository.separateInputAndOutputSequences(paddedInputSequences, totalWords)
+        trainedModel = self.sequenceAnalysisRepository.trainSequence(totalWords, maxSequenceLength, X, y)
+
+        generatedText = self.sequenceAnalysisRepository.generateText(
+            "오늘도", 2, trainedModel, maxSequenceLength, tokenizer)
+
+        return generatedText
