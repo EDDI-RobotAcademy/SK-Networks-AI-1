@@ -29,13 +29,14 @@ class TfIdfBowRepositoryImpl(TfIdfBowRepository):
 
     # 여기서 TOP_RANK_LIST를 3개로 지정하여 유사도가 높은 것 중 3개를 뽑습니다.
     # 또한 제약 사항으로 THRESHOLD(임계치)를 줘서 유사도 10% 이상의 것만 추출하도록 만들었습니다.
+
     def findSimilar(self, message, countVectorizer, countMatrix):
         messageVector = countVectorizer.transform([message])
         # 여기서 코사인 유사도를 뽑은 리스트를 가지게 됩니다.
         cosineSimilarityList = cosine_similarity(messageVector, countMatrix).flatten()
         # 그 중 TOP RANK에 속하는 3가지만 뽑습니다.
         similarIndiceList = cosineSimilarityList.argsort()[-self.TOP_RANK_LIST:][::-1]
-        # 그 중에서도 THRESHOLD 갑신 최소 임계치(10%) 이상인 녀석들만 다시 추려냅니다.
+        # 그 중에서도 THRESHOLD 값인 최소 임계치 (10%) 이상인 녀석들만 다시 추려냅니다.
         similarDocumentList = [(documentTitleListForTest[index], cosineSimilarityList[index])
                                for index in similarIndiceList
                                if cosineSimilarityList[index] >= self.SIMILARITY_THRESHOLD]
@@ -47,9 +48,7 @@ class TfIdfBowRepositoryImpl(TfIdfBowRepository):
         countVectorizer = CountVectorizer()
         # 상위의 배열에 기록되어 있는 문서 제목에 해당하는 문장을 가지고 벡터화를 진행합니다.
         # 그리고 그 결과를 countMatrix에 저장합니다.
-        # 이런 것들을 저장하는 DB를 벡터DB라고 하고 대표적으로 postDB, MongoDB 등이 있다.
         countMatrix = countVectorizer.fit_transform(documentTitleListForTest)
 
         return countVectorizer, countMatrix
-
 
