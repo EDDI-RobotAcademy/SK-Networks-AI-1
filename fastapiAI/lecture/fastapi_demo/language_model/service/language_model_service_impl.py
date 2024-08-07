@@ -31,6 +31,11 @@ class LanguageModelServiceImpl(LanguageModelService):
         text = self.__readShakespeareText()
         # print(f"text: {text}")
 
-        charToIndex, indexToChar = self.__languageModelRepository.preprocessForCreateUniqueCharacter(text)
+        characterList, charToIndex, indexToChar = (
+            self.__languageModelRepository.preprocessForCreateUniqueCharacter(text))
+
         textAsIndex = self.__languageModelRepository.preprocessForCreateTextIndex(text, charToIndex)
-        self.__languageModelRepository.createDataSet(text, textAsIndex)
+        examplesForEpoch, characterDataSet, sequenceList =(
+            self.__languageModelRepository.createDataSet(text, textAsIndex))
+
+        self.__languageModelRepository.trainModel(sequenceList, characterList)
