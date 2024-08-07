@@ -18,6 +18,7 @@ from convolution_neural_network.controller.cnn_controller import convolutionNeur
 from exponential_regression.controller.exponential_regression_controller import exponentialRegressionRouter
 from gradient_descent.controller.gradient_descent_controller import gradientDescentRouter
 from kmeans.controller.kmeans_controller import kmeansRouter
+from language_model.controller.language_model_controller import languageModelRouter
 from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
 from orders_analysis.controller.orders_analysis_controller import ordersAnalysisRouter
 from polynomialRegression.controller.polynomial_regression_controller import polynomialRegressionRouter
@@ -205,6 +206,7 @@ app.include_router(sentenceStructureAnalysisRouter)
 app.include_router(srbcbRouter)
 app.include_router(tfIdfBowRouter)
 app.include_router(sequenceAnalysisRouter)
+app.include_router(languageModelRouter)
 
 
 async def testTopicConsume(app: FastAPI):
