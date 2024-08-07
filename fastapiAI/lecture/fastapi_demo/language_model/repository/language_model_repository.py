@@ -13,3 +13,7 @@ class LanguageModelRepository(ABC):
     @abstractmethod
     def createDataSet(self, text, textAsIndex):
         pass
+
+    @abstractmethod
+    def trainModel(self, sequenceList, characterList):
+        pass
