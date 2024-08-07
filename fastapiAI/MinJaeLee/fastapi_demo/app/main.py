@@ -2,8 +2,9 @@ import asyncio
 import os
 import json
 
-from aiokafka.admin import AIOKafkaAdminClient, NewTopic
-from aiokafka.errors import TopicAlreadyExistsError
+import nltk
+# from aiokafka.admin import AIOKafkaAdminClient, NewTopic
+# from aiokafka.errors import TopicAlreadyExistsError
 from dotenv import load_dotenv
 from fastapi import FastAPI, WebSocketDisconnect, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
@@ -25,6 +26,11 @@ from post.controller.post_controller import postRouter
 from principal_component_analysis.controller.pca_controller import principalComponentAnalysisRouter
 from random_forest.controller.random_forest_controller import randomForestRouter
 from recurrent_neural_network.controller.rnn_controller import recurrentNeuralNetworkRouter
+from sentence_structure_analysis.controller.sentence_structure_analysis_controller import \
+    sentenceStructureAnalysisRouter
+from sequence_analysis.controller.sequence_analysis_controller import sequenceAnalysisRouter
+from srbcb.controller.srbcb_controller import srbcbRouter
+from tf_idf_bow.controller.tf_idf_bow_controller import tfIdfBowRouter
 from tf_iris.controller.tf_iris_controller import tfIrisRouter
 from train_test_evaluation.controller.train_test_evaluation_controller import trainTestEvaluationRouter
 
@@ -89,37 +95,37 @@ async def lifespan(app: FastAPI):
     app.state.dbPool = await getMySqlPool()
     await createDatabaseTableIfNeccessary(app.state.dbPool)
 
-    # 비동기 I/O 정지 이벤트 감지
-    app.state.stop_event = asyncio.Event()
-
-    # Kafka Producer (생산자)구성
-    app.state.kafka_producer = AIOKafkaProducer(
-        bootstrap_servers='localhost:9092',
-        client_id='fastapi-kafka-producer'
-    )
-
-    # Kafka Consumer (소비자) 구성
-    app.state.kafka_consumer = AIOKafkaConsumer(
-        'completion_topic',
-        bootstrap_servers='localhost:9092',
-        group_id="my_group",
-        client_id='fastapi-kafka-consumer'
-    )
-
-    # 자동 생성했던  test-topic 관련 소비자
-    app.state.kafka_test_topic_consumer = AIOKafkaConsumer(
-        'test-topic',
-        bootstrap_servers='localhost:9092',
-        group_id="another_group",
-        client_id='fastapi-kafka-consumer'
-    )
-
-    await app.state.kafka_producer.start()
-    await app.state.kafka_consumer.start()
-    await app.state.kafka_test_topic_consumer.start()
-
-    # asyncio.create_task(consume(app))
-    asyncio.create_task(testTopicConsume(app))
+    # # 비동기 I/O 정지 이벤트 감지
+    # app.state.stop_event = asyncio.Event()
+    #
+    # # Kafka Producer (생산자)구성
+    # app.state.kafka_producer = AIOKafkaProducer(
+    #     bootstrap_servers='localhost:9092',
+    #     client_id='fastapi-kafka-producer'
+    # )
+    #
+    # # Kafka Consumer (소비자) 구성
+    # app.state.kafka_consumer = AIOKafkaConsumer(
+    #     'completion_topic',
+    #     bootstrap_servers='localhost:9092',
+    #     group_id="my_group",
+    #     client_id='fastapi-kafka-consumer'
+    # )
+    #
+    # # 자동 생성했던  test-topic 관련 소비자
+    # app.state.kafka_test_topic_consumer = AIOKafkaConsumer(
+    #     'test-topic',
+    #     bootstrap_servers='localhost:9092',
+    #     group_id="another_group",
+    #     client_id='fastapi-kafka-consumer'
+    # )
+    #
+    # await app.state.kafka_producer.start()
+    # await app.state.kafka_consumer.start()
+    # await app.state.kafka_test_topic_consumer.start()
+    #
+    # # asyncio.create_task(consume(app))
+    # asyncio.create_task(testTopicConsume(app))
 
     try:
         yield
@@ -128,11 +134,11 @@ async def lifespan(app: FastAPI):
         app.state.dbPool.close()
         await app.state.dbPool.wait_closed()
 
-        app.state.stop_event.set()
-
-        await app.state.kafka_producer.stop()
-        await app.state.kafka_consumer.stop()
-        await app.state.kafka_test_topic_consumer.stop()
+        # app.state.stop_event.set()
+        #
+        # await app.state.kafka_producer.stop()
+        # await app.state.kafka_consumer.stop()
+        # await app.state.kafka_test_topic_consumer.stop()
 
 
 app = FastAPI(lifespan=lifespan)
@@ -154,6 +160,20 @@ def read_root():
 def read_item(item_id: int, q: str = None):
     return {"item_id": item_id, "q": q}
 
+
+def download_nltk_data():
+    nltk_data_path = os.path.join(os.path.expanduser("~"), "nltk_data")
+    if not os.path.exists(nltk_data_path):
+        os.makedirs(nltk_data_path)
+
+    if not os.path.exists(os.path.join(nltk_data_path, "corpora", "stopwords")):
+        nltk.download('stopwords', download_dir=nltk_data_path)
+
+        if not os.path.exists(os.path.join(nltk_data_path, "tokenizers", "punkt")):
+            nltk.download('punkt', download_dir=nltk_data_path)
+
+
+download_nltk_data()
 
 # 사실 현재 위의 코드는 매우 근본이 없는 .... 코드임
 # 왜냐하면 모든 로직을 main에 전부 따 때려박았기 때문
@@ -205,6 +225,10 @@ app.include_router(gradientDescentRouter)
 app.include_router(principalComponentAnalysisRouter)
 app.include_router(convolutionNeuralNetworkRouter)
 app.include_router(recurrentNeuralNetworkRouter)
+app.include_router(sentenceStructureAnalysisRouter)
+app.include_router(srbcbRouter)
+app.include_router(tfIdfBowRouter)
+app.include_router(sequenceAnalysisRouter)
 
 
 async def testTopicConsume(app: FastAPI):
@@ -272,5 +296,5 @@ async def websocket_endpoint(websocket: WebSocket):
 if __name__ == "__main__":
     import uvicorn
 
-    asyncio.run(create_kafka_topics())
-    uvicorn.run(app, host="192.168.0.25", port=33333)
+    # asyncio.run(create_kafka_topics())
+    uvicorn.run(app, host="127.0.0.1", port=33333)
