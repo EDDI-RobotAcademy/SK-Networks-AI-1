@@ -1,6 +1,9 @@
+import os
+
 import numpy as np
 import tensorflow
 from keras import Sequential
+from keras.src.callbacks import ModelCheckpoint
 from keras.src.layers import Embedding, LSTM, Dense
 from keras.src.losses import sparse_categorical_crossentropy
 
@@ -15,6 +18,8 @@ class LanguageModelRepositoryImpl(LanguageModelRepository):
 
     EMBEDDING_DIM = 256
     RNN_UNITS = 1024
+
+    EPOCHS = 20
 
     # 고유 문자 목록 생성
     def preprocessForCreateUniqueCharacter(self, text):
@@ -58,3 +63,10 @@ class LanguageModelRepositoryImpl(LanguageModelRepository):
 
         model.compile(optimizer='adam', loss=LanguageModelRepositoryImpl.__customLossFunction)
 
+        checkpointDirectory = './training_checkpoint'
+        checkpointPrefix = os.path.join(checkpointDirectory, "ckpt_{epoch}")
+        checkpointCallback = ModelCheckpoint(filepath=checkpointPrefix, save_weights_only=True)
+
+        model.fit(shuffledDataset, epochs=self.EPOCHS, callbacks=[checkpointCallback])
+
+        model.save('shakespeare_model.h5')
