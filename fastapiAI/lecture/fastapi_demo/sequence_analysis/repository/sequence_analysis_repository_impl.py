@@ -46,7 +46,7 @@ preDefinedUserMessage = [
     "이번달 내내 비가 왔다.",
     "일년 내내 비가 왔다.",
     "10년간 비가 왔다.",
-    "100년간 비가와서 잠겼다.",
+    "100년간 비가 와서 잠겼다.",
 ]
 
 # preDefinedUserMessage = [

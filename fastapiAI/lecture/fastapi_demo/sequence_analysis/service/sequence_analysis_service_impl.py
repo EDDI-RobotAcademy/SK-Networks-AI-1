@@ -19,6 +19,6 @@ class SequenceAnalysisServiceImpl(SequenceAnalysisService):
         trainedModel = self.sequenceAnalysisRepository.trainSequence(totalWords, maxSequenceLength, X, y)
 
         generatedText = self.sequenceAnalysisRepository.generateText(
-            "오늘도", 2, trainedModel, maxSequenceLength, tokenizer)
+            "비가 멈추지 않고", 3, trainedModel, maxSequenceLength, tokenizer)
 
         return generatedText
