@@ -1,3 +1,0 @@
-
-
-class ProductRepository(ABC):
