@@ -26,6 +26,7 @@ class LanguageModelRepositoryImpl(LanguageModelRepository):
     EPOCHS = 20
 
     SHAKESPEARE_MODEL_PATH = "shakespeare_model.h5"
+    GENERATION_COUNT = 1000
 
     # 고유 문자 목록 생성
     def preprocessForCreateUniqueCharacter(self, text):
@@ -69,16 +70,59 @@ class LanguageModelRepositoryImpl(LanguageModelRepository):
 
         model.compile(optimizer='adam', loss=LanguageModelRepositoryImpl.__customLossFunction)
 
-        checkpointDirectory = './training_checkpoint'
-        checkpointPrefix = os.path.join(checkpointDirectory, "ckpt_{epoch}")
-        checkpointCallback = ModelCheckpoint(filepath=checkpointPrefix, save_weights_only=True)
+        print(f"model: {model}")
 
-        model.fit(shuffledDataset, epochs=self.EPOCHS, callbacks=[checkpointCallback])
-
-        model.save('shakespeare_model.h5')
+        # checkpointDirectory = './training_checkpoint'
+        # checkpointPrefix = os.path.join(checkpointDirectory, "ckpt_{epoch}")
+        # checkpointCallback = ModelCheckpoint(filepath=checkpointPrefix, save_weights_only=True)
+        #
+        # model.fit(shuffledDataset, epochs=self.EPOCHS, callbacks=[checkpointCallback])
+        #
+        # model.save('shakespeare_model.h5')
 
     def requestToReadShakespeareModel(self):
-        with custom_object_scope({'custom_loss': LanguageModelRepositoryImpl.__customLossFunction}):
-            model = load_model(self.SHAKESPEARE_MODEL_PATH)
+        customObjects = {'__customLossFunction': LanguageModelRepositoryImpl.__customLossFunction}
 
-            return model
+        model = load_model(self.SHAKESPEARE_MODEL_PATH, custom_objects=customObjects)
+        return model
+
+    def convertTextToTensor(self, userInputText, charToIndex):
+        print("repository -> convertTextToTensor()")
+        input = [charToIndex[i] for i in userInputText]
+        print(f"userInputText: {userInputText}")
+        print(f"input: {input}")
+        inputTensor = tensorflow.expand_dims(input, 0)
+        print(f"inputTensor: {inputTensor}")
+
+        return inputTensor
+
+    def generateText(self, loadedModel, inputTensor, indexToChar):
+        print("repository -> generateText()")
+
+        # loadedModel.layers[1].stateful = False
+        # loadedModel.reset_states()
+
+        vocabularySize = len(indexToChar)
+
+        inferenceModel = Sequential([
+            Embedding(vocabularySize, self.EMBEDDING_DIM, batch_input_shape=[1, None]),
+            LSTM(self.RNN_UNITS, return_sequences=True, stateful=True, recurrent_initializer='glorot_uniform'),
+            Dense(vocabularySize)
+        ])
+        inferenceModel.build(tensorflow.TensorShape([1, None]))
+        inferenceModel.set_weights(loadedModel.get_weights())
+        inferenceModel.reset_states()
+
+        generatedText = []
+
+        for _ in range(self.GENERATION_COUNT):
+            # prediction = loadedModel(inputTensor)
+            predictionList = inferenceModel(inputTensor)
+            # print(f"prediction: {predictionList}")
+
+            squeezedPredictionList = tensorflow.squeeze(predictionList, 0)
+            predictedId = tensorflow.random.categorical(squeezedPredictionList, num_samples=1)[-1, 0].numpy()
+            inputTensor = tensorflow.expand_dims([predictedId], 0)
+            generatedText.append(indexToChar[predictedId])
+
+        return ''.join(generatedText)
