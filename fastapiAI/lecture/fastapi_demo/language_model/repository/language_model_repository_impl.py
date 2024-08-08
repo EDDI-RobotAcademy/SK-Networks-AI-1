@@ -70,13 +70,15 @@ class LanguageModelRepositoryImpl(LanguageModelRepository):
 
         model.compile(optimizer='adam', loss=LanguageModelRepositoryImpl.__customLossFunction)
 
-        checkpointDirectory = './training_checkpoint'
-        checkpointPrefix = os.path.join(checkpointDirectory, "ckpt_{epoch}")
-        checkpointCallback = ModelCheckpoint(filepath=checkpointPrefix, save_weights_only=True)
+        print(f"model: {model}")
 
-        model.fit(shuffledDataset, epochs=self.EPOCHS, callbacks=[checkpointCallback])
-
-        model.save('shakespeare_model.h5')
+        # checkpointDirectory = './training_checkpoint'
+        # checkpointPrefix = os.path.join(checkpointDirectory, "ckpt_{epoch}")
+        # checkpointCallback = ModelCheckpoint(filepath=checkpointPrefix, save_weights_only=True)
+        #
+        # model.fit(shuffledDataset, epochs=self.EPOCHS, callbacks=[checkpointCallback])
+        #
+        # model.save('shakespeare_model.h5')
 
     def requestToReadShakespeareModel(self):
         customObjects = {'__customLossFunction': LanguageModelRepositoryImpl.__customLossFunction}
@@ -96,8 +98,31 @@ class LanguageModelRepositoryImpl(LanguageModelRepository):
 
     def generateText(self, loadedModel, inputTensor, indexToChar):
         print("repository -> generateText()")
+
+        # loadedModel.layers[1].stateful = False
         # loadedModel.reset_states()
 
+        vocabularySize = len(indexToChar)
+
+        inferenceModel = Sequential([
+            Embedding(vocabularySize, self.EMBEDDING_DIM, batch_input_shape=[1, None]),
+            LSTM(self.RNN_UNITS, return_sequences=True, stateful=True, recurrent_initializer='glorot_uniform'),
+            Dense(vocabularySize)
+        ])
+        inferenceModel.build(tensorflow.TensorShape([1, None]))
+        inferenceModel.set_weights(loadedModel.get_weights())
+        inferenceModel.reset_states()
+
+        generatedText = []
+
         for _ in range(self.GENERATION_COUNT):
-            prediction = loadedModel(inputTensor)
-            print(f"prediction: {prediction}")
+            # prediction = loadedModel(inputTensor)
+            predictionList = inferenceModel(inputTensor)
+            # print(f"prediction: {predictionList}")
+
+            squeezedPredictionList = tensorflow.squeeze(predictionList, 0)
+            predictedId = tensorflow.random.categorical(squeezedPredictionList, num_samples=1)[-1, 0].numpy()
+            inputTensor = tensorflow.expand_dims([predictedId], 0)
+            generatedText.append(indexToChar[predictedId])
+
+        return ''.join(generatedText)
