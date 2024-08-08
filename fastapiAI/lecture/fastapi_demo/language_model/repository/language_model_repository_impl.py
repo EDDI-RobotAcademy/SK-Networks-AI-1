@@ -26,6 +26,7 @@ class LanguageModelRepositoryImpl(LanguageModelRepository):
     EPOCHS = 20
 
     SHAKESPEARE_MODEL_PATH = "shakespeare_model.h5"
+    GENERATION_COUNT = 1000
 
     # 고유 문자 목록 생성
     def preprocessForCreateUniqueCharacter(self, text):
@@ -78,7 +79,25 @@ class LanguageModelRepositoryImpl(LanguageModelRepository):
         model.save('shakespeare_model.h5')
 
     def requestToReadShakespeareModel(self):
-        with custom_object_scope({'custom_loss': LanguageModelRepositoryImpl.__customLossFunction}):
-            model = load_model(self.SHAKESPEARE_MODEL_PATH)
+        customObjects = {'__customLossFunction': LanguageModelRepositoryImpl.__customLossFunction}
 
-            return model
+        model = load_model(self.SHAKESPEARE_MODEL_PATH, custom_objects=customObjects)
+        return model
+
+    def convertTextToTensor(self, userInputText, charToIndex):
+        print("repository -> convertTextToTensor()")
+        input = [charToIndex[i] for i in userInputText]
+        print(f"userInputText: {userInputText}")
+        print(f"input: {input}")
+        inputTensor = tensorflow.expand_dims(input, 0)
+        print(f"inputTensor: {inputTensor}")
+
+        return inputTensor
+
+    def generateText(self, loadedModel, inputTensor, indexToChar):
+        print("repository -> generateText()")
+        # loadedModel.reset_states()
+
+        for _ in range(self.GENERATION_COUNT):
+            prediction = loadedModel(inputTensor)
+            print(f"prediction: {prediction}")
