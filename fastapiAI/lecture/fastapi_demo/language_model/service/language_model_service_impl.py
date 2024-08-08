@@ -33,8 +33,12 @@ class LanguageModelServiceImpl(LanguageModelService):
 
         characterList, charToIndex, indexToChar = (
             self.__languageModelRepository.preprocessForCreateUniqueCharacter(text))
+        print(f"characterList: {characterList}")
+        print(f"charToIndex: {charToIndex}, length(charToIndex): {len(charToIndex)}")
+        print(f"indexToChar: {indexToChar}, length(indexToChar): {len(indexToChar)}")
 
         textAsIndex = self.__languageModelRepository.preprocessForCreateTextIndex(text, charToIndex)
+        print(f"textAsIndex: {textAsIndex}, length(textAsIndex): {len(textAsIndex)}")
         examplesForEpoch, characterDataSet, sequenceList =(
             self.__languageModelRepository.createDataSet(text, textAsIndex))
 
@@ -50,8 +54,13 @@ class LanguageModelServiceImpl(LanguageModelService):
         characterList, charToIndex, indexToChar = (
             self.__languageModelRepository.preprocessForCreateUniqueCharacter(text))
 
+        print(f"charToIndex: {charToIndex}, length(charToIndex): {len(charToIndex)}")
+        print(f"indexToChar: {indexToChar}, length(indexToChar): {len(indexToChar)}")
+
         inputTensor = self.__languageModelRepository.convertTextToTensor(userInputText, charToIndex)
         generatedText = self.__languageModelRepository.generateText(
             loadedShakespeareModel, inputTensor, indexToChar)
+
+        print(f"generatedText: {generatedText}")
 
 
