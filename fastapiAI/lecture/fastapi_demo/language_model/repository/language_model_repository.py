@@ -21,3 +21,11 @@ class LanguageModelRepository(ABC):
     @abstractmethod
     def requestToReadShakespeareModel(self):
         pass
+
+    @abstractmethod
+    def convertTextToTensor(self, userInputText, charToIndex):
+        pass
+
+    @abstractmethod
+    def generateText(self, loadedModel, inputTensor, indexToChar):
+        pass

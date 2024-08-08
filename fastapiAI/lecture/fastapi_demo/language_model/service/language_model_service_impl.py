@@ -42,6 +42,16 @@ class LanguageModelServiceImpl(LanguageModelService):
 
     def predictWithModelingLanguage(self, userRequestForm):
         loadedShakespeareModel = self.__languageModelRepository.requestToReadShakespeareModel()
-        # loadedShakespeareModel = self.__requestToReadShakespeareModel()
-        print(f"loadedShakespeareModel: {loadedShakespeareModel}")
+        userInputText = userRequestForm.getWannaGetPostText()
+
+        # TODO: 임시 방편 <- 추후 charToIndex의 경우 벡터 DB등을 사용하여 관리해야함
+        #       위의 학습 진행 시 사용했던 것을 그대로 가져왔음
+        text = self.__readShakespeareText()
+        characterList, charToIndex, indexToChar = (
+            self.__languageModelRepository.preprocessForCreateUniqueCharacter(text))
+
+        inputTensor = self.__languageModelRepository.convertTextToTensor(userInputText, charToIndex)
+        generatedText = self.__languageModelRepository.generateText(
+            loadedShakespeareModel, inputTensor, indexToChar)
+
 
