@@ -6,5 +6,3 @@ class TfIrisRequestForm(BaseModel):
     sepal_width: float
     petal_length: float
     petal_width: float
-
-
