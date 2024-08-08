@@ -39,3 +39,9 @@ class LanguageModelServiceImpl(LanguageModelService):
             self.__languageModelRepository.createDataSet(text, textAsIndex))
 
         self.__languageModelRepository.trainModel(sequenceList, characterList)
+
+    def predictWithModelingLanguage(self, userRequestForm):
+        loadedShakespeareModel = self.__languageModelRepository.requestToReadShakespeareModel()
+        # loadedShakespeareModel = self.__requestToReadShakespeareModel()
+        print(f"loadedShakespeareModel: {loadedShakespeareModel}")
+
