@@ -17,3 +17,7 @@ class LanguageModelRepository(ABC):
     @abstractmethod
     def trainModel(self, sequenceList, characterList):
         pass
+
+    @abstractmethod
+    def requestToReadShakespeareModel(self):
+        pass

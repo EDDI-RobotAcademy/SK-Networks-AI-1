@@ -320,3 +320,6 @@ pyrightconfig.json
 
 # exclude *.npz
 *.npz
+
+# exclude training_checkpoint
+training_checkpoint
