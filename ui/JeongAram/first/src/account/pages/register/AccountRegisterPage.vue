@@ -78,7 +78,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions(authenticationModule, ['requestUserInfoToDjango', 'requestAddRedisAccessTokenTODjango']),
+        ...mapActions(authenticationModule, ['requestUserInfoToDjango', 'requestAddRedisAccessTokenToDjango']),
         ...mapActions(accountModule, [
             'requestNicknameDuplicationCheckToDjango',
             'requestCreateNewAccountToDjango',
@@ -127,7 +127,7 @@ export default {
                 const accessToken = localStorage.getItem("accessToken");
                 const email = accountInfo.email
                 console.log('register submitForm email:', email)
-                await this.requestAddRedisAccessTokenTODjango({ email, accessToken })
+                await this.requestAddRedisAccessTokenToDjango({ email, accessToken })
 
                 this.$router.push('/')
             }

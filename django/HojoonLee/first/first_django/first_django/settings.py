@@ -36,12 +36,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
     'corsheaders',
     'rest_framework',
     'board',
     'product',
     'account',
     'cart',
+    # order라 하면 db에서 지원하는 기본 order가 있어서 안됨
+    'orders',
 ]
 
 MIDDLEWARE = [

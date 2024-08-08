@@ -30,7 +30,11 @@ class CartItemRepositoryImpl(CartItemRepository):
             price=productPrice
         )
 
+    def findById(self, id):
+        return CartItem.objects.get(cartItemId=id)
+
     def findByCart(self, cart):
+                                ## 필터니깐 리스트로 가져온다.
         return list(CartItem.objects.filter(cart=cart))
 
     def findByProductId(self, productId):

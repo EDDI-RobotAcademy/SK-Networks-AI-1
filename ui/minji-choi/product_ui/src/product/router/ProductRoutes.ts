@@ -16,7 +16,7 @@ const ProductRoutes = [
     {
         path: '/product/product/read/:productId',
         name: 'ProductReadPage',
-        components: { // 왜 components?
+        components: { // 왜 components? // vue 페이지 안에 vue 페이지가 있는 경우 router의 구조를 변경해야함. read의 경우 list 안에 있음
             default: ProductReadPage,
         },
         props: {
@@ -32,7 +32,7 @@ const ProductRoutes = [
         props: {
             default: true
         }
-    }
+    },
 ]
 
 export default ProductRoutes

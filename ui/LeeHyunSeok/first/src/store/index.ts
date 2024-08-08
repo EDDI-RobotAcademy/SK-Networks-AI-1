@@ -6,6 +6,8 @@ import authenticationModule from "@/authentication/store/authenticationModule"
 import accountModule from '@/account/store/accountModule'
 import cartModule from "@/cart/store/cartModule";
 import postModule from '@/post/store/postModule'
+import orderModule from '@/order/store/orderModule'
+import kafkaTestModule from '@/kafka/store/kafkaTestModule'
 
 
 export default createStore({
@@ -24,5 +26,7 @@ export default createStore({
     accountModule,
     cartModule,
     postModule,
+    orderModule,
+    kafkaTestModule,
   }
 })

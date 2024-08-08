@@ -2,7 +2,6 @@ from typing import List, Optional
 
 from aiomysql import Pool
 
-import post
 from post.entity.models import Post
 from post.repository.post_repository import PostRepository
 
@@ -15,10 +14,10 @@ class PostRepositoryImpl(PostRepository):
         print("repository -> list()")
 
         async with self.dbPool.acquire() as connection:
-            #post에 있는 모든 id, title, content를 찾아와서 postList를 만들어 변환
-            async with connection.cursor() as cur:  #같은 커서를 가지고 있다면 (=여러 스레드가 같은 일을 요청) 비동긿 처리
-                await cur.execute("select id, title, content from post") # 쿼리문 실행 (by aiomysql )
-                result = await cur.fetchall()  #모든 정보 다 받을 거니까 fetchall
+            async with connection.cursor() as cur:
+                # post에 있는 모든 id, title, content를 찾아와서 postList를 만들어 반환
+                await cur.execute("select id, title, content from post")
+                result = await cur.fetchall()
                 postList = [Post(id=row[0], title=row[1], content=row[2]) for row in result]
                 return postList
 
@@ -27,7 +26,7 @@ class PostRepositoryImpl(PostRepository):
             #post에 있는 모든 id, title, content를 찾아와서 postList를 만들어 변환
             async with connection.cursor() as cur:
                 await cur.execute(
-                    "insert into post(title, content) values(%s,%s)",
+                    "insert into post (title, content) values (%s, %s)",
                     (post.title, post.content)
                 )
                 await connection.commit()
@@ -36,12 +35,12 @@ class PostRepositoryImpl(PostRepository):
                 return postId[0]
 
 
-    async  def findById(self, postId: int) -> Optional[post]:
+    async def findById(self, postId: int) -> Optional[Post]:
         async with self.dbPool.acquire() as connection:
             async with connection.cursor() as cur:
                 await cur.execute(
                     "select id, title, content from post where id = %s",
-                    (postId)
+                    (postId,)
                 )
                 result = await cur.fetchone()
                 if result:
