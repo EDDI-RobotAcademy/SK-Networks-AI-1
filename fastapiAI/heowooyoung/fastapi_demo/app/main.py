@@ -303,4 +303,4 @@ if __name__ == "__main__":
     import uvicorn
 
     # asyncio.run(create_kafka_topics())
-    uvicorn.run(app, host="192.168.0.3", port=33333)
+    uvicorn.run(app, host="192.168.0.42", port=33333)
