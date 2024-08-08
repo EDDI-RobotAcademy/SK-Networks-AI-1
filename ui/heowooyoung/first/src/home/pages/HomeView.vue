@@ -1,5 +1,5 @@
 <template>
-  <p>호미다</p>
+  <p>This is HOMI</p>
 </template>
 
 <script lang="ts">

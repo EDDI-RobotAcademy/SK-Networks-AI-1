@@ -17,4 +17,14 @@ class PlayerRepository:
 user1 = Player('11','zz')
 plrepo = PlayerRepository()
 plrepo.add(user1)
-plrepo.get(1)
+print(plrepo.get('11').nickname)
+
+class Game:
+    def __init__(self):
+        pass
+    def getid(self, player1, player2):
+        pass
+    def roll(self):
+        pass
+
+

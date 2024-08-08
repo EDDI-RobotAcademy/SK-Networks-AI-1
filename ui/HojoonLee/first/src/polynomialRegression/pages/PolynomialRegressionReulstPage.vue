@@ -7,6 +7,7 @@
 
 <script>
 import * as d3 from 'd3'
+import axiosInstance from '@/utility/axiosInstance';
 
 export default {
     data () {
@@ -18,9 +19,11 @@ export default {
     },
     async created () {
         try {
-            const response = await fetch('http://localhost:33333/polynomial-regression')
-            console.log('response', response)
-            const data = await response.json() // promise 부분에서 뭔 소리가 나서 await를 처리해야함 (반드시 데이터를 기다리도록)
+            const response = await axiosInstance.fastapiAxiosInst.get('/polynomial-regression')
+            const data = await response.data
+            // const response = await fetch('http://localhost:33333/polynomial-regression')
+            // console.log('response', response)
+            // const data = await response.json() // promise 부분에서 뭔 소리가 나서 await를 처리해야함 (반드시 데이터를 기다리도록)
             console.log('data:', data)
             this.regressionData = data
             this.drawChart()

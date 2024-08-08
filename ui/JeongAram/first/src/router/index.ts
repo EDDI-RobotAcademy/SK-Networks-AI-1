@@ -11,6 +11,12 @@ import ExponentialRegressionRoutes from '@/exponentialRegression/router/Exponent
 import PostRoutes from '@/post/router/PostRoutes'
 import KmeansRoutes from '@/kmeans/router/KmeansRoutes'
 import TensorFlowIrisTestRoutes from '@/tfIris/router/TensorFlowIrisTestRoutes'
+import CartRoutes from '@/cart/router/CartRoutes'
+import RandomForestRoutes from '@/randomForest/router/RandomForestRoutes'
+import OrderRoutes from '@/order/router/OrderRoutes'
+import PrincipalComponentAnalysisRoutes from '@/principalComponentAnalysis/router/PrincipalComponentAnalysisRoutes'
+import KafkaTestRoutes from '@/kafka/router/KafkaTestRoutes'
+
 
 
 const routes: Array<RouteRecordRaw> = [
@@ -26,9 +32,15 @@ const routes: Array<RouteRecordRaw> = [
   ...TrainTestEvaluationRoutes,
   ...PolynomialRegressionRoutes,
   ...ExponentialRegressionRoutes,
+  ...RandomForestRoutes,
   ...PostRoutes,
   ...KmeansRoutes,
   ...TensorFlowIrisTestRoutes,
+  ...CartRoutes,
+  ...OrderRoutes,
+  ...PrincipalComponentAnalysisRoutes,
+  ...KafkaTestRoutes,
+  
     // 항상 도메인의 router 추가했으면 main router 에도 추가해줘야함
 
 ]

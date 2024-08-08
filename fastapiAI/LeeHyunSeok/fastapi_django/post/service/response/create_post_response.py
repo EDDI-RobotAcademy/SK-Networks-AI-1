@@ -7,10 +7,9 @@ class CreatePostResponse(BaseModel):
     id: int
 
     # @classmethod
-    # def toCreateResponseForm(cls) -> 'CreatePostResponse':
+    # def toCreateResponseForm(cls) -> 'CreatePostResponseForm':
     #     return cls(id=id)
 
-
     @classmethod
-    def fromPost(cls,entity:Post) -> 'CreatePostResponse':
+    def fromPost(cls, entity: Post) -> 'CreatePostResponse':
         return cls(id=entity.id)

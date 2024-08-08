@@ -34,5 +34,15 @@ class CartItemRepositoryImpl(CartItemRepository):
     def update(self, cartItem):
         cartItem.save()
 
+    def findByCart(self, cart):
+        return list(CartItem.objects.filter(cart=cart))
+
+    def findById(self, id):
+        return CartItem.objects.get(cartItemId=id)
+
+    def findAllByProductId(self, productId):
+        return CartItem.objects.filter(product_id=productId)
+
+
 
 
