@@ -16,4 +16,4 @@ async def reviewTrain(reviewAnalysisService: ReviewAnalysisServiceImpl =
 
     reviewAnalysisService.reviewAnalysis()
 
-    return JSONResponse(content=None, status_code=status.HTTP_200_OK)
+    return JSONResponse(content={"message": "학습이 완료되었습니다"}, status_code=status.HTTP_200_OK)

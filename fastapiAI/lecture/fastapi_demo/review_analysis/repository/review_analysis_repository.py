@@ -17,3 +17,7 @@ class ReviewAnalysisRepository(ABC):
     @abstractmethod
     def tokenize(self, xTrain, xTest, reviewMaxLength):
         pass
+
+    @abstractmethod
+    def createModel(self, totalWordCount, reviewMaxLength, xPaddingTrainSequenceList, yTrain):
+        pass

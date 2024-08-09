@@ -1,3 +1,5 @@
+from keras import Sequential
+from keras.src.layers import Embedding, LSTM, Dense
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.preprocessing.text import Tokenizer
 from sklearn.model_selection import train_test_split
@@ -44,3 +46,20 @@ class ReviewAnalysisRepositoryImpl(ReviewAnalysisRepository):
         totalWordCount = len(self.token.word_index) + 1
 
         return xPaddingTrainSequenceList, xPaddingTestSequenceList, totalWordCount
+
+    def createModel(self, totalWordCount, reviewMaxLength, xPaddingTrainSequenceList, yTrain):
+
+        EMBEDDING_DIMENSION = 32
+        LSTM_OUTPUT = 64
+
+        model = Sequential()
+        model.add(Embedding(totalWordCount, EMBEDDING_DIMENSION, input_length=reviewMaxLength))
+        model.add(LSTM(LSTM_OUTPUT))
+        model.add(Dense(1, activation='sigmoid'))
+
+        model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+
+        model.fit(xPaddingTrainSequenceList, yTrain, epochs=200, batch_size=128)
+
+        model.save('review_analysis.h5')
+
