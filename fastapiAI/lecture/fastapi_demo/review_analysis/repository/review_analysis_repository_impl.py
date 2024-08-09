@@ -15,7 +15,7 @@ class ReviewAnalysisRepositoryImpl(ReviewAnalysisRepository):
 
     def preprocess(self, xData, yData, englishStop):
         xRemovedHtmlTagData = xData.replace({'<.*?>': ''}, regex=True)
-        xOnlyAlphabetData = xRemovedHtmlTagData.replace({'[^A-Za-z]': ''}, regex=True)
+        xOnlyAlphabetData = xRemovedHtmlTagData.replace({'[^A-Za-z\s]': ''}, regex=True)
 
         # 사용 데이터(xOnlyAlphabetData)는 실제 pandas로 인해 DataFrame 상태에 해당함
         # apply lambda를 통해서 각 프레임의 review 들에 대해 모두 적용

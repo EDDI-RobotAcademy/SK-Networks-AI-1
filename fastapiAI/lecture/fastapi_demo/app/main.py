@@ -295,4 +295,4 @@ async def websocket_endpoint(websocket: WebSocket):
 if __name__ == "__main__":
     import uvicorn
     # asyncio.run(create_kafka_topics())
-    uvicorn.run(app, host="192.168.0.18", port=33333)
+    uvicorn.run(app, host="192.168.0.33", port=33333)
