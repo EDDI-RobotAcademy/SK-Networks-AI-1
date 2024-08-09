@@ -1,4 +1,5 @@
 import io
+import tensorflow as tf
 
 import numpy as np
 from keras.src.preprocessing.image import ImageDataGenerator
@@ -6,7 +7,7 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 
 from convolution_neural_network.repository.cnn_repository import ConvolutionNeuralNetworkRepository
 
-from tensorflow.keras.models import load_model
+from keras.src.models import load_model
 from tensorflow.keras import datasets, models, layers
 from fastapi import HTTPException
 

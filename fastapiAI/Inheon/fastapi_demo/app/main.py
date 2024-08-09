@@ -17,7 +17,6 @@ from async_db.database import getMySqlPool, createTableIfNeccessary
 from convolution_neural_network.controller.cnn_controller import convolutionNeuralNetworkRouter
 # from decision_tree.controller.decision_tree_controller import decisionTreeRouter
 from exponential_regression.controller.exponential_regression_controller import exponentialRegressionRouter
-from gdft.controller.gdft_controller import gameDataFineTuningRouter
 from gradient_descent.controller.gradient_descent_controller import gradientDescentRouter
 from kmeans.controller.kmeans_controller import kmeansRouter
 from language_model.controller.language_model_controller import languageModelRouter
@@ -30,6 +29,7 @@ from random_forest.controller.random_forest_controller import randomForestRouter
 from recurrent_neural_network.controller.rnn_controller import recurrentNeuralNetworkRouter
 from sentence_structure_analysis.controller.sentence_structure_analysis_controller import \
     sentenceStructureAnalysisRouter
+from sentitest.controller.senticontrol import naturalLanguageProcessingRouter
 from sequence_analysis.controller.sequence_analysis_controller import sequenceAnalysisRouter
 from srbcb.controller.srbcb_controller import srbcbRouter
 from tf_idf_bow.controller.tf_idf_bow_controller import tfIdfBowRouter
@@ -229,10 +229,10 @@ app.include_router(convolutionNeuralNetworkRouter)
 app.include_router(recurrentNeuralNetworkRouter)
 app.include_router(srbcbRouter)
 app.include_router(tfIdfBowRouter)
-app.include_router(gameDataFineTuningRouter)
 app.include_router(sentenceStructureAnalysisRouter)
 app.include_router(sequenceAnalysisRouter)
 app.include_router(languageModelRouter)
+app.include_router(naturalLanguageProcessingRouter)
 
 
 async def testTopicConsume(app: FastAPI):
