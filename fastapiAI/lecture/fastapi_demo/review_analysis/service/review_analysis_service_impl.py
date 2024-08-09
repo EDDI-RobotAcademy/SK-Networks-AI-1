@@ -90,7 +90,8 @@ class ReviewAnalysisServiceImpl(ReviewAnalysisService):
             tokenizedWordList, maxlen=reviewMaxLength, padding='post', truncating='post')
         
         result = loadedReviewModel.predict(tokenizedPaddingWordList)
-        sentiment = "긍정" if result >= 0.7 else "부정"
+        print(f"result: {result}")
+
+        sentiment = "긍정" if result >= 0.8 else "부정"
 
         return sentiment
-    

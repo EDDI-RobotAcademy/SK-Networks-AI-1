@@ -15,7 +15,7 @@ class ReviewAnalysisRepositoryImpl(ReviewAnalysisRepository):
 
     def preprocess(self, xData, yData, englishStop):
         xRemovedHtmlTagData = xData.replace({'<.*?>': ''}, regex=True)
-        xOnlyAlphabetData = xRemovedHtmlTagData.replace({'[^A-Za-z\s]': ''}, regex=True)
+        xOnlyAlphabetData = xRemovedHtmlTagData.replace({'[^A-Za-z]': ''}, regex=True)
 
         # 사용 데이터(xOnlyAlphabetData)는 실제 pandas로 인해 DataFrame 상태에 해당함
         # apply lambda를 통해서 각 프레임의 review 들에 대해 모두 적용
@@ -59,7 +59,7 @@ class ReviewAnalysisRepositoryImpl(ReviewAnalysisRepository):
 
         model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
-        model.fit(xPaddingTrainSequenceList, yTrain, epochs=200, batch_size=128)
+        model.fit(xPaddingTrainSequenceList, yTrain, epochs=20, batch_size=128)
 
         model.save('review_analysis.h5')
 
