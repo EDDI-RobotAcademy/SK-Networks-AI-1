@@ -16,4 +16,5 @@ async def predictNextSequence(sequenceAnalysisRequestForm: SequenceAnalysisReque
     print(f"controller -> predictNextSequence(): sequenceAnalysisRequestForm: {sequenceAnalysisRequestForm}")
 
     predictedNextSequence = sequenceAnalysisService.predictNextSequence(sequenceAnalysisRequestForm.userSendMessage)
+
     return JSONResponse(content=predictedNextSequence, status_code=status.HTTP_200_OK)

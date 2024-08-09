@@ -1,5 +1,6 @@
 import os.path
 import requests
+from tensorflow.keras.models import load_model
 
 from language_model.repository.language_model_repository_impl import LanguageModelRepositoryImpl
 from language_model.service.language_model_service import LanguageModelService
@@ -25,6 +26,7 @@ class LanguageModelServiceImpl(LanguageModelService):
 
         return text
 
+
     def operateLanguageModel(self):
         self.__requestToAcquireShakespeareText()
         text = self.__readShakespeareText()
@@ -36,5 +38,21 @@ class LanguageModelServiceImpl(LanguageModelService):
             self.__languageModelRepository.createDataSet(text, textAsIndex))
 
         self.__languageModelRepository.trainModel(sequenceList, characterList)
+
+
+
+    def predictWithModelingLanguage(self, userRequestForm):
+        loadedShakespeareModel = self.__languageModelRepository.requestToReadShakespeareModel()
+        userInputText = userRequestForm.getWannaGetPostText()
+
+        # TODO: 임시 방편 <- 추후 charToIndex의 경우 벡터 DB 등을 사용하여 관리해야 함
+        #       위의 학습 진행 시 사용했던 것을 그대로 가져왔음
+        text = self.__readShakespeareText()
+        characterList, charToIndex, indexToChar = (
+            self.__languageModelRepository.preprocessForCreateUniqueCharacter(text))
+
+        inputTensor = self.__languageModelRepository.convertTextToTensor(userInputText, charToIndex)
+        self.__languageModelRepository.generateText(loadedShakespeareModel, inputTensor, indexToChar)
+
 
 
