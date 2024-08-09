@@ -15,7 +15,7 @@ class DecisionTreeRepository(ABC):
         pass
 
     @abstractmethod
-    def applyStandardScaler(self, data, featureNames):
+    def applyStandardScaler(self, trainDataFrame, testDataFrame, featureNames):
         pass
 
     @abstractmethod

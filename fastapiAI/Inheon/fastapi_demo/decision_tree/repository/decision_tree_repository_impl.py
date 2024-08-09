@@ -28,7 +28,7 @@ class DecisionTreeRepositoryImpl(DecisionTreeRepository):
         # 원래라면 fit 이후 transform을 해야함
         # 그러나 fit_transform은 이것을 한 번에 하도록 만들어줌
         # (사실 Domain 관점에선 좀 문제가 있으나 제공해주는 라이브러리이므로 그냥 사용)
-
+        
         # fit은 데이터를 분석하여 내부 파라미터를 학습하게 됨
         # transform은 학습된 내부 파라미터를 사용하여 데이터를 변환함
         # 고로 transform은 fit이 반드시 먼저 선행되어야 함
@@ -38,29 +38,33 @@ class DecisionTreeRepositoryImpl(DecisionTreeRepository):
         return trainDataFrame, testDataFrame
 
     def sliceTensor(self, scaledTrainDataFrame, scaledTestDataFrame):
-        # from_tensor_slices()는 padnas에서 읽은 데이터를
-        # Tensorflow 사용 primitives로 구성하기 위해 필요한 라이브러리입니다.
-        # 결론적으로 padnas 데이터 -> Tensorflow 데이터로 만들 때 사용한다고 파악하면 됩니다.
+        # from_tensor_slices()는 pandas에서 읽은 데이터를
+        # TensorFlow 사용 primitives로 구성하기 위해 필요한 라이브러리입니다.
+        # 결론적으로 pandas 데이터 -> TensorFlow 데이터로 만들 떄 사용한다고 파악하면 됩니다.
         trainDataFrameAfterSlice = tf.data.Dataset.from_tensor_slices(
             (dict(scaledTrainDataFrame.drop("target", axis=1)),
-             scaledTrainDataFrame['target'].astype(int))
+            scaledTrainDataFrame['target'].astype(int))
         )
         testDataFrameAfterSlice = tf.data.Dataset.from_tensor_slices(
-            (dict(scaledTestDataFrame.drop('target', axis = 1)),
+            (dict(scaledTestDataFrame.drop("target", axis=1)),
              scaledTestDataFrame['target'].astype(int))
         )
-        print(f"trainDataFrameAfterSlice: {trainDataFrameAfterSlice}")
 
         return trainDataFrameAfterSlice, testDataFrameAfterSlice
 
     def applyBatchSize(self, trainDataFrameAfterSlice, testDataFrameAfterSlice, batchSize):
-        readyForLearningTrainData = trainDataFrameAfterSlice.batch(batchSize)
-        readyForLearningTestData = testDataFrameAfterSlice.batch(batchSize)
+        readyForLearnTrainData = trainDataFrameAfterSlice.batch(batchSize)
+        readyForLearnTestData = testDataFrameAfterSlice.batch(batchSize)
 
-        return readyForLearningTrainData, readyForLearningTestData
+        return readyForLearnTrainData, readyForLearnTestData
 
     def learn(self, readyForLearnTrainData):
-        model = tfdf.keras.RandomForestModel(num_trees = 100, max_depth = 12, min_examples = 6)
+        model = tfdf.keras.RandomForestModel(num_trees=100, max_depth=12, min_examples=6)
         model.fit(readyForLearnTrainData)
 
         return model
+
+
+
+
+

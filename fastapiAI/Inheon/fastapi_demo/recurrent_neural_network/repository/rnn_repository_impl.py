@@ -58,7 +58,7 @@ class RecurrentNeuralNetworkRepositoryImpl(RecurrentNeuralNetworkRepository):
             # (전형적인 피드백 형태죠)
             # <- 다른 것에 대비하여 데이터 품질이 굉장히 중요한 녀석 중 하나
             SimpleRNN(rnnUnits, return_sequences=True, stateful=True, recurrent_initializer='glorot_uniform'),
-
+            
             # Dense를 통해 출력 벡터의 차원을 지정함
             # 입력에 대해 예측할 단어의 분포로 바라봐도 무방하겠음
             Dense(vocabSize)
@@ -87,7 +87,7 @@ class RecurrentNeuralNetworkRepositoryImpl(RecurrentNeuralNetworkRepository):
         # tf.expand_dims()를 통해 모델 입력에 맞게 차원을 확장합니다.
         numGenerate = 100
         # inputEval = [ord(char) for char in inputText]
-        charToIndex = {data: index for index, data in enumerate(inputText)}
+        charToIndex = { data:index for index, data in enumerate(inputText) }
         # print(f"charToIndex: {charToIndex}")
         inputEval = [charToIndex[char] if char in charToIndex else 0 for char in inputText]
         # print(f"inputEval: {inputEval}")

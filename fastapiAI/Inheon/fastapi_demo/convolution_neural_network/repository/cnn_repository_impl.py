@@ -1,13 +1,17 @@
 import io
+import tensorflow as tf
 
 import numpy as np
 from keras.src.preprocessing.image import ImageDataGenerator
-from tensorflow.keras import datasets, models, layers
-from tensorflow.keras.models import load_model
-from fastapi import HTTPException
-from PIL import Image
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
 from convolution_neural_network.repository.cnn_repository import ConvolutionNeuralNetworkRepository
+
+from keras.src.models import load_model
+from tensorflow.keras import datasets, models, layers
+from fastapi import HTTPException
+
+from PIL import Image
 
 
 class ConvolutionNeuralNetworkRepositoryImpl(ConvolutionNeuralNetworkRepository):
@@ -37,7 +41,7 @@ class ConvolutionNeuralNetworkRepositoryImpl(ConvolutionNeuralNetworkRepository)
         # 그러나 그래픽 카드는 0.xxx 도 표현할 수 있음
         # (고로 256개의 픽셀만 제어하는 것이 아니라 그 사이의 소수점까지 모두 다룰 수 있음)
         # 계산 정밀도를 높이기 위해 소수점인 0 ~ 1로 변환하는 것임
-
+        
         # 이미지를 랜덤하게 40도까지 회전시키면서 학습함 (비틀어져도 파악할 수 있어야하기 때문)
         # 랜덤하게 가로 방향 20% 이동
         # 높이(세로 방향)에 대해서도 동일
@@ -46,7 +50,7 @@ class ConvolutionNeuralNetworkRepositoryImpl(ConvolutionNeuralNetworkRepository)
         # 또한 뒤집기까지 시전하여 더더욱 정밀도를 높임
         # 이미지 변환 이후 빈 공간이 있다면 가장 가까운 픽셀로 값을 채움(fill 옵션)
         trainDataGenerator = ImageDataGenerator(
-            rescale=1. / 255,
+            rescale=1./255,
             rotation_range=40,
             width_shift_range=0.2,
             height_shift_range=0.2,
@@ -56,7 +60,7 @@ class ConvolutionNeuralNetworkRepositoryImpl(ConvolutionNeuralNetworkRepository)
             fill_mode='nearest',
         )
 
-        testDataGenerator = ImageDataGenerator(rescale=1. / 255)
+        testDataGenerator = ImageDataGenerator(rescale=1./255)
 
         trainGenerator = trainDataGenerator.flow(trainImageList, trainLabelList, batch_size=32)
         testGenerator = testDataGenerator.flow(testImageList, testLabelList, batch_size=32)
@@ -103,20 +107,24 @@ class ConvolutionNeuralNetworkRepositoryImpl(ConvolutionNeuralNetworkRepository)
         return model
 
     def fitModel(self, compiledModel, trainGenerator, testGenerator):
-        compiledModel.fit(trainGenerator, epochs=100, validation_data=testGenerator)
+        compiledModel.fit(trainGenerator, epochs=1000, validation_data=testGenerator)
 
         return compiledModel
 
     def readImageFile(self, file):
         try:
+            # from PIL import Image
             image = Image.open(io.BytesIO(file))
             return image
         except Exception as e:
-            raise HTTPException(status_code=400, detail=f'파일 읽는 중 문제 발생: {e}')
+            raise HTTPException(status_code=400, detail=f"파일 읽는 중 문제 발생: {e}")
+
+    def loadModel(self, savedModelPath):
+        return load_model(savedModelPath)
 
     def predict(self, image, loadedModel):
         resizedImage = image.resize((32, 32))
-        rgbConvertedImage = image.convert('RGB')
+        rgbConvertedImage = resizedImage.convert('RGB')
         arrayImage = np.array(rgbConvertedImage)
         dimExpandedArrayImage = np.expand_dims(arrayImage, axis=0)
         scaledImage = dimExpandedArrayImage / 255.0
@@ -124,5 +132,14 @@ class ConvolutionNeuralNetworkRepositoryImpl(ConvolutionNeuralNetworkRepository)
         prediction = loadedModel.predict(scaledImage)
         return prediction
 
-    def loadModel(self, savedModelPath):
-        return load_model(savedModelPath)
+    def checkAccuracy(self, testLabelList, predictedClassList):
+        return accuracy_score(testLabelList, predictedClassList)
+
+    def checkPrecision(self, testLabelList, predictedClassList):
+        return precision_score(testLabelList, predictedClassList, average='weighted')
+
+    def checkRecall(self, testLabelList, predictedClassList):
+        return recall_score(testLabelList, predictedClassList, average='weighted')
+
+    def checkF1Score(self, testLabelList, predictedClassList):
+        return f1_score(testLabelList, predictedClassList, average='weighted')

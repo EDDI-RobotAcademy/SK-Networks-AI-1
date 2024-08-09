@@ -10,7 +10,6 @@ from sklearn.model_selection import train_test_split
 # 생성한 router 이름으로 get, post 등등의 router를 구성할 수 있음
 logisticRegressionRouter = APIRouter()
 
-
 # @GetMapping
 # @RequestMapping(get)
 @logisticRegressionRouter.get("/logistic-regression")
@@ -27,7 +26,7 @@ def logistic_regression_test():
 
     print('X:', X)
     print('y:', y)
-
+    
     # 학습 모델로 Logistic Regression을 선택
     model = LogisticRegression()
     # 테스트 외의 훈련 데이터를 가지고 실제 회귀 분석 진행
@@ -49,12 +48,12 @@ def logistic_regression_test():
     # 결론적으로 회귀 분석에 여러 종류가 있는 이유는 여러 다양한 형태의 그래프를 표현하기 위해서임
     # 그리고 그 판단은 어쩔 수 없이 사람이 결정해줘야함
     # 무엇이 이 데이터에 더 적합한지
-
+    
     # 테스트용 좌표를 가지고 결과값을 추론
     # X = [(1, 2), (3, 4), (2, 3), ... ]
-    # y = [   1  ,    1  ,   1   , ... ]
+    # y = [   1  ,    1  ,   1   , ... ]   
     y_pred = model.predict(X_test)
-
+    
     # 예측치인 pred 값과 실제 테스트 셋인 test를
     # 비교하여 정확도가 어느정도인지 판별
     accuracy = accuracy_score(y_test, y_pred)

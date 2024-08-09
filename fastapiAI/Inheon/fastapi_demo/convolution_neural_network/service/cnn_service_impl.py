@@ -1,7 +1,7 @@
+import numpy as np
+
 from convolution_neural_network.repository.cnn_repository_impl import ConvolutionNeuralNetworkRepositoryImpl
 from convolution_neural_network.service.cnn_service import ConvolutionNeuralNetworkService
-
-import numpy as np
 
 
 class ConvolutionNeuralNetworkServiceImpl(ConvolutionNeuralNetworkService):
@@ -49,13 +49,51 @@ class ConvolutionNeuralNetworkServiceImpl(ConvolutionNeuralNetworkService):
         fittedModel.save('cnn_model.h5')
 
     def imagePredict(self, file):
-        print('service -> imagePredict()')
+        print("service -> imagePredict()")
+
         image = self.convolutionNeuralNetworkRepositoryImpl.readImageFile(file)
-        print('service -> imagePredict(): after readImageFile()')
+        print("service -> imagePredict(): after readImageFile()")
+
         loadedModel = self.convolutionNeuralNetworkRepositoryImpl.loadModel('cnn_model.h5')
-        print('service -> imagePredict(): after loadModel()')
+        print("service -> imagePredict(): after loadModel()")
+
         prediction = self.convolutionNeuralNetworkRepositoryImpl.predict(image, loadedModel)
-        print(f'prediction: {prediction}')
+        print(f"prediction: {prediction}")
 
         predictedClass = self.targetClassName[np.argmax(prediction)]
         return predictedClass
+
+    def modelEvaluate(self):
+        loadedModel = self.convolutionNeuralNetworkRepositoryImpl.loadModel('cnn_model.h5')
+
+        (_, _), (testImageList, testLabelList) = (
+            self.convolutionNeuralNetworkRepositoryImpl.loadCifar10Data())
+
+        testImageList, testLabelList = (
+            self.convolutionNeuralNetworkRepositoryImpl.filteringClasses(
+                testImageList, testLabelList, self.TARGET_CIFAR10_CLASSES))
+
+        testImageList = testImageList.astype('float32') / 255.0
+
+        predictionList = loadedModel.predict(testImageList)
+        predictedClassList = np.argmax(predictionList, axis=1)
+
+        # print(f"predictionList: {predictionList}, predictedClassList: {predictedClassList}")
+
+        accuracy = self.convolutionNeuralNetworkRepositoryImpl.checkAccuracy(
+                                                testLabelList, predictedClassList)
+        precision = self.convolutionNeuralNetworkRepositoryImpl.checkPrecision(
+                                                testLabelList, predictedClassList)
+        recall = self.convolutionNeuralNetworkRepositoryImpl.checkRecall(
+                                                testLabelList, predictedClassList)
+        f1Score = self.convolutionNeuralNetworkRepositoryImpl.checkF1Score(
+                                                testLabelList, predictedClassList)
+
+        evaluatedPerformance = {
+            "accuracy": accuracy,
+            "precision": precision,
+            "recall": recall,
+            "f1Score": f1Score,
+        }
+
+        return evaluatedPerformance
