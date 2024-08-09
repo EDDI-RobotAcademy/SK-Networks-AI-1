@@ -41,3 +41,6 @@ class ReviewAnalysisServiceImpl(ReviewAnalysisService):
         reviewMaxLength = self.__calculateReviewMaxLength(xTrain)
         xPaddingTrainSequenceList, xPaddingTestSequenceList, totalWordCount =(
             self.__reviewAnalysisRepository.tokenize(xTrain, xTest, reviewMaxLength))
+
+        self.__reviewAnalysisRepository.createModel(
+            totalWordCount, reviewMaxLength, xPaddingTrainSequenceList, yTrain)
