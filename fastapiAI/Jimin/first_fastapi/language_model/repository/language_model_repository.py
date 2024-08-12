@@ -16,3 +16,15 @@ class LanguageModelRepository(ABC):
     @abstractmethod
     def trainModel(self, sequenceList, characterList):
         pass
+
+    @abstractmethod
+    def requestToReadShakespeareModel(self):
+        pass
+
+    @abstractmethod
+    def convertTextToTensor(self, userInputText, charToIndex):
+        pass
+
+    @abstractmethod
+    def generateText(self, loadedModel, inputTensor, indexToChar):
+        pass
