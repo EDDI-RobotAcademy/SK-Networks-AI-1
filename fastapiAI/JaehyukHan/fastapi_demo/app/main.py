@@ -34,6 +34,12 @@ from tf_idf_bow.controller.tf_idf_bow_controller import tfIdfBowRouter
 from tf_iris.controller.tf_iris_controller import tfIrisRouter
 from train_test_evaluation.controller.train_test_evalutation_controller import trainTestEvaluationRouter
 
+import torch
+
+from transition_learning.controller.transition_learning_controller import transitionLearningRouter
+
+torch.set_default_device('mps')
+
 
 # async def create_kafka_topics():
 #     adminClient = AIOKafkaAdminClient(
@@ -228,6 +234,7 @@ app.include_router(sentenceStructureAnalysisRouter)
 app.include_router(srbcbRouter)
 app.include_router(tfIdfBowRouter)
 app.include_router(sequenceAnalysisRouter)
+app.include_router(transitionLearningRouter)
 
 
 # async def testTopicConsume(app: FastAPI):
@@ -301,4 +308,4 @@ if __name__ == "__main__":
     import uvicorn
 
     # asyncio.run(create_kafka_topics())
-    uvicorn.run(app, host="192.168.0.41", port=33333)
+    uvicorn.run(app, host="192.168.0.34", port=33333)
