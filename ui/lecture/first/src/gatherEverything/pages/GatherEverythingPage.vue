@@ -24,9 +24,12 @@ export default {
         },
         onClickListDice () {
             console.log("추론 버튼 누름")
+            this.requestAICommandToFastAPI(2)
         },
         onClickGetResult () {
             console.log("결과 확인 버튼 누름")
+            const processedAICommandResult = this.requestProcessedAICommandResultToFastAPI()
+            console.log('AI 명령 처리 결과:', processedAICommandResult)
         },
     }
 }

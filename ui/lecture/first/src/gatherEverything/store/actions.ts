@@ -11,6 +11,8 @@ export type AICommandActions = {
 
 const actions: AICommandActions = {
     async requestAICommandToFastAPI(context: ActionContext<AICommandState, any>, aiCommandNumber: number): Promise<void> {
+        console.log('requestAICommandToFastAPI -> aiCommandNumber:', aiCommandNumber)
+
         try {
             const res = await axiosInst.fastapiAxiosInst.post('/request-ai-command', {
                 command: aiCommandNumber
@@ -18,7 +20,7 @@ const actions: AICommandActions = {
             console.log('data:', res.data)
         } catch (error) {
             console.error('requestAICommandToFastAPI() 문제 발생:', error);
-            throw error
+            // throw error
         }
     },
     async requestProcessedAICommandResultToFastAPI(context: ActionContext<AICommandState, any>): Promise<void> {
