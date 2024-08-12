@@ -49,4 +49,34 @@ class TransitionLearningServiceImpl(TransitionLearningService):
             self.__transitionLearningRepository.prepareBertBaseMultilingualUncasedSentimentLearningSet())
         model.eval()
 
+        tokenizedUserInputText = tokenizer(
+            sentimentAnalysisRequestForm.sentence,
+            return_tensors="pt",
+            truncation=True
+        )
+        
+        with torch.no_grad():
+            outputList = model(**tokenizedUserInputText)
+            logitList = outputList.logits
+            prediction = torch.argmax(logitList, dim=-1).item()
+            
+        sentimentList = ["매우 부정", "부정", "중립", "긍정", "매우 긍정"]
+        sentiment = sentimentList[prediction]
 
+        return sentiment
+
+    def predictTextWithGPT2(self, gpt2PretrainedPredictionRequestForm):
+        modelName, tokenizer, model = (
+            self.__transitionLearningRepository.prepareGPT2PretrainedLearningSet())
+        model.eval()
+
+        # tokenizedUserInputText = tokenizer(
+        #     gpt2PretrainedPredictionRequestForm.text,
+        #     return_tensors="pt",
+        # )
+
+        encodedInputList = tokenizer.encode(gpt2PretrainedPredictionRequestForm.text, return_tensors="pt")
+        outputList = model.generate(encodedInputList, max_length=1000, num_return_sequences=1)
+        generatedText = tokenizer.decode(outputList[0], skip_special_tokens=True)
+
+        return generatedText
