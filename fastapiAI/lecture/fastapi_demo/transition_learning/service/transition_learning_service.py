@@ -9,3 +9,7 @@ class TransitionLearningService(ABC):
     @abstractmethod
     def transitionLearningWithsentimentAnalysis(self, sentimentAnalysisRequestForm):
         pass
+
+    @abstractmethod
+    def predictTextWithGPT2(self, gpt2PretrainedPredictionRequestForm):
+        pass

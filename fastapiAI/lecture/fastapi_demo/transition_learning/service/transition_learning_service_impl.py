@@ -64,3 +64,19 @@ class TransitionLearningServiceImpl(TransitionLearningService):
         sentiment = sentimentList[prediction]
 
         return sentiment
+
+    def predictTextWithGPT2(self, gpt2PretrainedPredictionRequestForm):
+        modelName, tokenizer, model = (
+            self.__transitionLearningRepository.prepareGPT2PretrainedLearningSet())
+        model.eval()
+
+        # tokenizedUserInputText = tokenizer(
+        #     gpt2PretrainedPredictionRequestForm.text,
+        #     return_tensors="pt",
+        # )
+
+        encodedInputList = tokenizer.encode(gpt2PretrainedPredictionRequestForm.text, return_tensors="pt")
+        outputList = model.generate(encodedInputList, max_length=1000, num_return_sequences=1)
+        generatedText = tokenizer.decode(outputList[0], skip_special_tokens=True)
+
+        return generatedText
