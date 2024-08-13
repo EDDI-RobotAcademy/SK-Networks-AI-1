@@ -121,42 +121,42 @@ export default {
         goToPostPage() {
             router.push('/post/list')
         },
-        updateProcessingStatus(data) {
-            if (data.message === "Processing completed.") {
-                console.log("처리 요청이 완료되었는지 체크")
-                const item = this.testItems.find(item => item.title === data.title);
-                if (item) {
-                    item.processed = true;
-                }
+        // updateProcessingStatus(data) {
+        //     if (data.message === "Processing completed.") {
+        //         console.log("처리 요청이 완료되었는지 체크")
+        //         const item = this.testItems.find(item => item.title === data.title);
+        //         if (item) {
+        //             item.processed = true;
+        //         }
 
-                this.$store.state.kafkaTestModule.kafkaTestData = data
-            }
-        },
-        isTestItemsProcessed() {
-            return this.testItems.some(item => item.processed);
-        }
+        //         this.$store.state.kafkaTestModule.kafkaTestData = data
+        //     }
+        // },
+        // isTestItemsProcessed() {
+        //     return this.testItems.some(item => item.processed);
+        // }
     },
     mounted() {
         console.log('navigation bar mounted()')
 
-        this.socket = new WebSocket('ws://192.168.0.25:33333/ws');
+        // this.socket = new WebSocket('ws://192.168.0.25:33333/ws');
 
-        this.socket.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-            console.log('received data:', data)
-            this.updateProcessingStatus(data);
-        };
+        // this.socket.onmessage = (event) => {
+        //     const data = JSON.parse(event.data);
+        //     console.log('received data:', data)
+        //     this.updateProcessingStatus(data);
+        // };
 
-        const userToken = localStorage.getItem("userToken")
+        // const userToken = localStorage.getItem("userToken")
 
-        if (userToken) {
-            console.log('You already have a userToken!!!')
-            this.$store.state.authenticationModule.isAuthenticated = true
-        }
+        // if (userToken) {
+        //     console.log('You already have a userToken!!!')
+        //     this.$store.state.authenticationModule.isAuthenticated = true
+        // }
     },
     beforeUnmount() {
         // WebSocket 연결 해제
-        this.socket.close();
+        // this.socket.close();
     }
 }
 </script>
