@@ -9,3 +9,7 @@ class TransitionLearningRepository(ABC):
     @abstractmethod
     def prepareBertBaseMultilingualUncasedSentimentLearningSet(self):
         pass
+
+    @abstractmethod
+    def prepareGPT2PretrainedLearningSet(self):
+        pass
