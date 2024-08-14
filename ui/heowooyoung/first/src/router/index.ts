@@ -11,13 +11,17 @@ import TrainTestEvaluationRoutes from '@/trainTestEvaluation/router/TrainTestEva
 import CartRoutes from "@/cart/router/CartRoutes";
 import PolynomialRegressionRoutes from '@/polynomialRegression/router/PolynomialRegressionRoutes'
 import ExponentialRegressionRoutes from '@/exponentialRegression/router/ExponentialRegressionRoutes'
+// import WordCloudRoutes from "@/wordCloud/router/WordCloudRoutes";
+// import NaturalLanguageProcessingRoutes from "@/naturalLanguageProcessing/router/NaturalLanguageProcessingRoutes";
 import RandomForestRoutes from '@/randomForest/router/RandomForestRoutes'
 import PostRoutes from '@/post/router/PostRoutes'
 import KmeansRoutes from "@/kmeans/router/KmeansRoutes";
 import TensorFlowIrisTestRoutes from '@/tfIris/router/TensorFlowIrisTestRoutes'
 import OrderRoutes from '@/order/router/OrderRoutes'
+import KafkaTestRoutes from "@/kafka/router/KafkaTestRoutes";
+// import FileS3TestRoutes from "@/fileS3/router/FileS3TestRoutes";
 import PrincipalComponentAnalysisRoutes from '@/principalComponentAnalysis/router/PrincipalComponentAnalysisRoutes'
-import KafkaTestRoutes from '@/kafka/router/KafkaTestRoutes'
+import GatherEverythingRoutes from '@/gatherEverything/router/GatherEverythingRoutes'
 
 const routes: Array<RouteRecordRaw> = [
   ...HomeRoutes,
@@ -34,13 +38,17 @@ const routes: Array<RouteRecordRaw> = [
   ...CartRoutes,
   ...PolynomialRegressionRoutes,
   ...ExponentialRegressionRoutes,
+  // ...WordCloudRoutes,
+  // ...NaturalLanguageProcessingRoutes,
   ...RandomForestRoutes,
   ...PostRoutes,
   ...KmeansRoutes,
   ...TensorFlowIrisTestRoutes,
   ...OrderRoutes,
-  ...PrincipalComponentAnalysisRoutes,
   ...KafkaTestRoutes,
+  // ...FileS3TestRoutes,
+  ...PrincipalComponentAnalysisRoutes,
+  ...GatherEverythingRoutes,
 ]
 
 const router = createRouter({
