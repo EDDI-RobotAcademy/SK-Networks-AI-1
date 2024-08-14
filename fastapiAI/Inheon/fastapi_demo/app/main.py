@@ -19,6 +19,7 @@ from convolution_neural_network.controller.cnn_controller import convolutionNeur
 from exponential_regression.controller.exponential_regression_controller import exponentialRegressionRouter
 from gradient_descent.controller.gradient_descent_controller import gradientDescentRouter
 from kmeans.controller.kmeans_controller import kmeansRouter
+from language_model.controller.language_model_controller import languageModelRouter
 from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
 from orders_analysis.controller.orders_analysis_controller import ordersAnalysisRouter
 from polynomialRegression.controller.polynomial_regression_controller import polynomialRegressionRouter
@@ -26,7 +27,10 @@ from post.controller.post_controller import postRouter
 from principal_component_analysis.controller.pca_controller import principalComponentAnalysisRouter
 from random_forest.controller.random_forest_controller import randomForestRouter
 from recurrent_neural_network.controller.rnn_controller import recurrentNeuralNetworkRouter
-from sentence_structure.controller.sentence_structure_analysis_controller import sentenceStructureAnalysisRouter
+from sentence_structure_analysis.controller.sentence_structure_analysis_controller import \
+    sentenceStructureAnalysisRouter
+from sentitest.controller.senticontrol import naturalLanguageProcessingRouter
+from sequence_analysis.controller.sequence_analysis_controller import sequenceAnalysisRouter
 from srbcb.controller.srbcb_controller import srbcbRouter
 from tf_idf_bow.controller.tf_idf_bow_controller import tfIdfBowRouter
 from tf_iris.controller.tf_iris_controller import tfIrisRouter
@@ -92,10 +96,10 @@ async def lifespan(app: FastAPI):
     app.state.dbPool = await getMySqlPool()
     await createTableIfNeccessary(app.state.dbPool)
 
-    # 비동기 I/O 정지 이벤트 감지
-    app.state.stop_event = asyncio.Event()
-
-    # Kafka Producer (생산자) 구성
+    # # 비동기 I/O 정지 이벤트 감지
+    # app.state.stop_event = asyncio.Event()
+    #
+    # # Kafka Producer (생산자) 구성
     # app.state.kafka_producer = AIOKafkaProducer(
     #     bootstrap_servers='localhost:9092',
     #     client_id='fastapi-kafka-producer'
@@ -131,11 +135,11 @@ async def lifespan(app: FastAPI):
         app.state.dbPool.close()
         await app.state.dbPool.wait_closed()
 
-        app.state.stop_event.set()
-
-        await app.state.kafka_producer.stop()
-        await app.state.kafka_consumer.stop()
-        await app.state.kafka_test_topic_consumer.stop()
+        # app.state.stop_event.set()
+        #
+        # await app.state.kafka_producer.stop()
+        # await app.state.kafka_consumer.stop()
+        # await app.state.kafka_test_topic_consumer.stop()
 
 
 app = FastAPI(lifespan=lifespan)
@@ -195,15 +199,17 @@ def read_item(item_id: int, q: str = None):
 # (빠른 습득 및 생산성의 비밀임 ㅇㅇ)
 
 def download_nltk_data():
-    nltk_data_path = os.path.join(os.path.expanduser('~'), 'nltk_data')
+    nltk_data_path = os.path.join(os.path.expanduser("~"), "nltk_data")
     if not os.path.exists(nltk_data_path):
         os.makedirs(nltk_data_path)
 
-    if not os.path.exists(os.path.join(nltk_data_path, 'corpora', 'stopwords')):
+    if not os.path.exists(os.path.join(nltk_data_path, "corpora", "stopwords")):
         nltk.download('stopwords', download_dir=nltk_data_path)
 
-    if not os.path.exists(os.path.join(nltk_data_path, 'tokenizers', 'punkt')):
+    # punkt 다운로드
+    if not os.path.exists(os.path.join(nltk_data_path, "tokenizers", "punkt")):
         nltk.download('punkt', download_dir=nltk_data_path)
+
 
 download_nltk_data()
 
@@ -221,9 +227,13 @@ app.include_router(gradientDescentRouter)
 app.include_router(principalComponentAnalysisRouter)
 app.include_router(convolutionNeuralNetworkRouter)
 app.include_router(recurrentNeuralNetworkRouter)
-app.include_router(sentenceStructureAnalysisRouter)
 app.include_router(srbcbRouter)
 app.include_router(tfIdfBowRouter)
+app.include_router(sentenceStructureAnalysisRouter)
+app.include_router(sequenceAnalysisRouter)
+app.include_router(languageModelRouter)
+app.include_router(naturalLanguageProcessingRouter)
+
 
 async def testTopicConsume(app: FastAPI):
     consumer = app.state.kafka_test_topic_consumer
@@ -296,4 +306,4 @@ if __name__ == "__main__":
     import uvicorn
 
     # asyncio.run(create_kafka_topics())
-    uvicorn.run(app, host="localhost", port=33333)
+    uvicorn.run(app, host="172.30.9.39", port=33333)

@@ -8,3 +8,4 @@ class SrbcbServiceImpl(SrbcbService):
 
     def predict(self, userSendMessage):
         return self.srbcbRepository.generateBotMessage(userSendMessage)
+

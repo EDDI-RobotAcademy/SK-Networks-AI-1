@@ -23,7 +23,7 @@ class ConvolutionNeuralNetworkRepository(ABC):
         pass
 
     @abstractmethod
-    def fitModel(self, compileModel, trainGenerator, testGenerator):
+    def fitModel(self, compiledModel, trainGenerator, testGenerator):
         pass
 
     @abstractmethod
@@ -31,9 +31,25 @@ class ConvolutionNeuralNetworkRepository(ABC):
         pass
 
     @abstractmethod
-    def predict(self, image,  loadedModel):
+    def loadModel(self, savedModelPath):
         pass
 
     @abstractmethod
-    def loadModel(self, savedModelPath):
+    def predict(self, image, loadedModel):
+        pass
+
+    @abstractmethod
+    def checkAccuracy(self, testLabelList, predictedClassList):
+        pass
+
+    @abstractmethod
+    def checkPrecision(self, testLabelList, predictedClassList):
+        pass
+
+    @abstractmethod
+    def checkRecall(self, testLabelList, predictedClassList):
+        pass
+
+    @abstractmethod
+    def checkF1Score(self, testLabelList, predictedClassList):
         pass
