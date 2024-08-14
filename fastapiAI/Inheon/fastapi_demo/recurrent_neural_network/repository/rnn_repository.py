@@ -7,11 +7,11 @@ class RecurrentNeuralNetworkRepository(ABC):
         pass
 
     @abstractmethod
-    def createRnnModel(self, vocabSize, embeddingDimension, rnnUnits, batchSize):
+    def compile(self, rnnModel):
         pass
 
     @abstractmethod
-    def compile(self, rnnModel):
+    def createRnnModel(self, vocabSize, embeddingDimension, rnnUnits, batchSize):
         pass
 
     @abstractmethod
@@ -19,11 +19,11 @@ class RecurrentNeuralNetworkRepository(ABC):
         pass
 
     @abstractmethod
-    def createData(self, vocabSize, numberOfSample, sequenceLenght):
+    def createData(self, vocabSize, numberOfSample, sequenceLength):
         pass
 
     @abstractmethod
-    def train(self, x, y, compliedRnnModel, batchSize):
+    def train(self, x, y, compiledRnnModel, batchSize):
         pass
 
     @abstractmethod

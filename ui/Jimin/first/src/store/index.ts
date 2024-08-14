@@ -8,6 +8,7 @@ import cartModule from '@/cart/store/cartModule'
 import postModule from '@/post/store/postModule'
 import orderModule from '@/order/store/orderModule'
 import kafkaTestModule from '@/kafka/store/kafkaTestModule'
+import aiCommandModule from '@/gatherEverything/store/aiCommandModule'
 
 export default createStore({
   state: {
@@ -26,7 +27,8 @@ export default createStore({
     cartModule,
     postModule,
     orderModule,
-    kafkaTestModule
+    kafkaTestModule,
+    aiCommandModule
     
   }
 })
