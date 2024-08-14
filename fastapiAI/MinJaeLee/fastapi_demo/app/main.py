@@ -21,6 +21,7 @@ from gradient_descent.controller.gradient_descent_controller import gradientDesc
 from kmeans.controller.kmeans_controller import kmeansRouter
 from language_model.controller.language_model_controller import languageModelRouter
 from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
+from openai_basic.controller.openai_basic_controller import openAIBasicRouter
 from order_analysis.controller.orders_analysis_controller import ordersAnalysisRouter
 from polynomialRegression.controller.polynomial_regression_controller import polynomialRegressionRouter
 from post.controller.post_controller import postRouter
@@ -234,7 +235,7 @@ app.include_router(sequenceAnalysisRouter)
 app.include_router(languageModelRouter)
 app.include_router(reviewAnalysisRouter)
 app.include_router(transitionLearningRouter)
-
+app.include_router(openAIBasicRouter)
 
 async def testTopicConsume(app: FastAPI):
     consumer = app.state.kafka_test_topic_consumer
