@@ -20,6 +20,7 @@ from exponential_regression.controller.exponential_regression_controller import 
 from gdft.controller.gdft_controller import gameDataFineTuningRouter
 from gradient_descent.controller.gradient_descent_controller import gradientDescentRouter
 from kmeans.controller.kmeans_controller import kmeansRouter
+from language_model.controller.language_model_controller import languageModelRouter
 from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
 from orders_analysis.controller.orders_analysis_controller import ordersAnalysisRouter
 from polynomialRegression.controller.polynomial_regression_controller import polynomialRegressionRouter
@@ -27,13 +28,15 @@ from post.controller.post_controller import postRouter
 from principal_component_analysis.controller.pca_controller import principalComponentAnalysisRouter
 from random_forest.controller.random_forest_controller import randomForestRouter
 from recurrent_neural_network.controller.rnn_controller import recurrentNeuralNetworkRouter
+from review_analysis.controller.review_analysis_controller import reviewAnalysisRouter
 from sentence_structure_analysis.controller.sentence_structure_analysis_controller import \
     sentenceStructureAnalysisRouter
+from sentitest.controller.senticontrol import naturalLanguageProcessingRouter
+from sequence_analysis.controller.sequence_analysis_controller import sequenceAnalysisRouter
 from srbcb.controller.srbcb_controller import srbcbRouter
 from tf_idf_bow.controller.tf_idf_bow_controller import tfIdfBowRouter
 from tf_iris.controller.tf_iris_controller import tfIrisRouter
 from train_test_evaluation.controller.train_test_evaluation_controller import trainTestEvaluationRouter
-
 
 async def create_kafka_topics():
     adminClient = AIOKafkaAdminClient(
@@ -68,7 +71,6 @@ async def create_kafka_topics():
     finally:
         await adminClient.close()
 
-
 # # 현재는 deprecated 라고 나타나지만 lifespan 이란 것을 대신 사용하라고 나타나고 있음
 # # 완전히 배제되지는 않았는데 애플리케이션이 시작할 때 실행될 함수를 지정함
 # # 고로 애플리케이션 시작 시 비동기 처리가 가능한 DB를 구성한다 보면 됨
@@ -87,7 +89,6 @@ async def create_kafka_topics():
 import warnings
 
 warnings.filterwarnings("ignore", category=aiomysql.Warning)
-
 
 async def lifespan(app: FastAPI):
     # Startup
@@ -142,12 +143,10 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
-
 # 웹 브라우저 상에서 "/" 을 입력하면 (key)Hello: (value)World가 리턴
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
-
 
 # 브라우저 상에 /items/4?q=test 같은 것을 넣으면
 # item_id로 4, q로는 "test"를 획득하게 됨
@@ -158,7 +157,6 @@ def read_root():
 @app.get("/items/{item_id}")
 def read_item(item_id: int, q: str = None):
     return {"item_id": item_id, "q": q}
-
 
 # 사실 현재 위의 코드는 매우 근본이 없는 .... 코드임
 # 왜냐하면 모든 로직을 main에 전부 따 때려박았기 때문
@@ -208,7 +206,6 @@ def download_nltk_data():
     if not os.path.exists(os.path.join(nltk_data_path, "tokenizers", "punkt")):
         nltk.download('punkt', download_dir=nltk_data_path)
 
-
 download_nltk_data()
 
 app.include_router(logisticRegressionRouter)
@@ -229,7 +226,10 @@ app.include_router(srbcbRouter)
 app.include_router(tfIdfBowRouter)
 app.include_router(gameDataFineTuningRouter)
 app.include_router(sentenceStructureAnalysisRouter)
-
+app.include_router(sequenceAnalysisRouter)
+app.include_router(languageModelRouter)
+app.include_router(reviewAnalysisRouter)
+app.include_router(naturalLanguageProcessingRouter)
 
 async def testTopicConsume(app: FastAPI):
     consumer = app.state.kafka_test_topic_consumer
@@ -258,7 +258,6 @@ async def testTopicConsume(app: FastAPI):
         except Exception as e:
             print(f"소비 중 에러 발생: {e}")
 
-
 load_dotenv()
 
 origins = os.getenv("ALLOWED_ORIGINS", "").split(",")
@@ -273,10 +272,8 @@ app.add_middleware(
 
 app.state.connections = set()
 
-
 class KafkaRequest(BaseModel):
     message: str
-
 
 @app.post("/kafka-endpoint")
 async def kafka_endpoint(request: KafkaRequest):
@@ -284,7 +281,6 @@ async def kafka_endpoint(request: KafkaRequest):
     await app.state.kafka_producer.send_and_wait("test-topic", json.dumps(eventData).encode())
 
     return {"status": "processing"}
-
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
@@ -297,9 +293,7 @@ async def websocket_endpoint(websocket: WebSocket):
     except WebSocketDisconnect:
         app.state.connections.remove(websocket)
 
-
 if __name__ == "__main__":
     import uvicorn
-
     # asyncio.run(create_kafka_topics())
-    uvicorn.run(app, host="192.168.0.6", port=33333)
+    uvicorn.run(app, host="192.168.0.7", port=33333)
