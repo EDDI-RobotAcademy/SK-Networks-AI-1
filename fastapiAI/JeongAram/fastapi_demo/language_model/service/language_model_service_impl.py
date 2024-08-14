@@ -39,3 +39,25 @@ class LanguageModelServiceImpl(LanguageModelService):
             self.__languageModelRepository.createDataSet(text, textAsIndex))
 
         self.__languageModelRepository.trainModel(sequenceList, characterList)
+
+
+    def predictWithModelingLanguage(self, userRequestForm):
+        loadedShakespeareModel = self.__languageModelRepository.requestToReadShakespeareModel()
+        userInputText = userRequestForm.getWannaGetPostText()
+
+        # TODO: 임시 방편 <- 추후 charToIndex 의 경우 벡터 DB 등을 사용하여 관리해야함
+        #       위의 학습 진행 시 사용했던 것을 그대로 가져왔음
+        text = self.__readShakespeareText()
+        characterList, charToIndex, indexToChar = (
+            self.__languageModelRepository.preprocessForCreateUniqueCharacter(text))
+
+        # 텍스트를 벡터로 변환
+        inputTensor = self.__languageModelRepository.convertTextToTensor(userInputText, charToIndex)
+        generateText = self.__languageModelRepository.generateText(
+            loadedShakespeareModel, inputTensor, indexToChar)
+
+        print(f"generatedText: {generateText}")
+
+
+
+
