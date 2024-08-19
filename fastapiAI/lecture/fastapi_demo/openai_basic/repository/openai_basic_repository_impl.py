@@ -3,6 +3,8 @@ import os
 import httpx
 from dotenv import load_dotenv
 from fastapi import HTTPException
+import openai
+
 
 from openai_basic.repository.openai_basic_repository import OpenAIBasicRepository
 
@@ -46,3 +48,14 @@ class OpenAIBasicRepositoryImpl(OpenAIBasicRepository):
             except (httpx.RequestError, ValueError) as e:
                 print(f"Request Error: {e}")
                 raise HTTPException(status_code=500, detail=f"REquest Error: {e}")
+
+    def sentimentAnalysis(self, userSendMessage):
+        response = openai.chat.completions.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant. 한글로 답변하자!"},
+                {"role": "user", "content": f"Analyze the sentiment of the following text:\n\n{userSendMessage}"}
+            ]
+        )
+        print(f"openai response: {response.json()}")
+        return response.choices[0].message.content.strip()
