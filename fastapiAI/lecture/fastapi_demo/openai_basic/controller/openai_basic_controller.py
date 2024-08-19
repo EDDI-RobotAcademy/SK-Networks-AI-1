@@ -19,3 +19,14 @@ async def talkWithOpenAI(openAITalkRequestForm: OpenAITalkRequestForm,
     openAIGeneratedText = await openAIBasicService.letsTalk(openAITalkRequestForm.userSendMessage)
 
     return JSONResponse(content=openAIGeneratedText, status_code=status.HTTP_200_OK)
+
+@openAIBasicRouter.post("/openai-sentiment")
+async def sentimentAnalysisWithOpenAI(openAITalkRequestForm: OpenAITalkRequestForm,
+                         openAIBasicService: OpenAIBasicServiceImpl =
+                         Depends(injectOpenAIBasicService)):
+
+    print(f"controller -> sentimentAnalysisWithOpenAI(): openAITalkRequestForm: {openAITalkRequestForm}")
+
+    analyzedSentiment = await openAIBasicService.sentimentAnalysis(openAITalkRequestForm.userSendMessage)
+
+    return JSONResponse(content=analyzedSentiment, status_code=status.HTTP_200_OK)
