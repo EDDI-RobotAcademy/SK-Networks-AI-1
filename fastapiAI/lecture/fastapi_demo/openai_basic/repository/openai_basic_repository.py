@@ -15,9 +15,13 @@ class OpenAIBasicRepository(ABC):
         pass
 
     @abstractmethod
-    def similarityAnalysis(self, userSendMessage):
+    def similarityAnalysis(self, userRequestPaperTitle, faissIndex):
         pass
 
     @abstractmethod
     def openAiBasedEmbedding(self, paperTitleList):
+        pass
+
+    @abstractmethod
+    def createL2FaissIndex(self, embeddingVectorDimension):
         pass

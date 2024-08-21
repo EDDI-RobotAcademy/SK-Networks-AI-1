@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
+from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 
 from openai_basic.controller.request_form.openai_audio_request_form import OpenAIAudioRequestForm
@@ -55,6 +56,9 @@ async def textSimilarityAnalysisWithOpenAI(
           f"openAIPaperSimilarityAnalysisRequestForm: {openAIPaperSimilarityAnalysisRequestForm}")
 
     analyzedSimilarityText = await openAIBasicService.textSimilarityAnalysis(
-        openAIPaperSimilarityAnalysisRequestForm.paperTitleList)
+        openAIPaperSimilarityAnalysisRequestForm.paperTitleList,
+        openAIPaperSimilarityAnalysisRequestForm.userRequestPaperTitle)
 
-    return JSONResponse(content=analyzedSimilarityText, status_code=status.HTTP_200_OK)
+    return JSONResponse(
+        content={"result": jsonable_encoder(analyzedSimilarityText)},
+        status_code=status.HTTP_200_OK)
