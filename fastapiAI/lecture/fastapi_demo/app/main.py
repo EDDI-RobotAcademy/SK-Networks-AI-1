@@ -39,6 +39,7 @@ from tf_idf_bow.controller.tf_idf_bow_controller import tfIdfBowRouter
 from tf_iris.controller.tf_iris_controller import tfIrisRouter
 from train_test_evaluation.controller.train_test_evaluation_controller import trainTestEvaluationRouter
 from transition_learning.controller.transition_learning_controller import transitionLearningRouter
+from vector_db.database import getMongoDBPool
 
 
 async def create_kafka_topics():
@@ -98,6 +99,8 @@ async def lifespan(app: FastAPI):
     app.state.dbPool = await getMySqlPool()
     await createTableIfNeccessary(app.state.dbPool)
 
+    app.state.vectorDBPool = await getMongoDBPool()
+
     # # 비동기 I/O 정지 이벤트 감지
     # app.state.stop_event = asyncio.Event()
     #
@@ -136,6 +139,9 @@ async def lifespan(app: FastAPI):
         # Shutdown
         app.state.dbPool.close()
         await app.state.dbPool.wait_closed()
+
+        app.state.vectorDBPool.close()
+        await app.state.vectorDBPool.wait_closed()
 
         # app.state.stop_event.set()
         #
