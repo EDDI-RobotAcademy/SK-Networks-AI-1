@@ -2,16 +2,17 @@ from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 
-from openai_basic.controller.request_form.openai_audio_request_form import OpenAIAudioRequestForm
+from motor.motor_asyncio import AsyncIOMotorDatabase
 from openai_basic.controller.request_form.openai_paper_similarity_analysis_request_form import \
     OpenAIPaperSimilarityAnalysisRequestForm
 from openai_basic.controller.request_form.openai_talk_request_form import OpenAITalkRequestForm
 from openai_basic.service.openai_basic_service_impl import OpenAIBasicServiceImpl
+from vector_db.database import getMongoDBPool
 
 openAIBasicRouter = APIRouter()
 
-async def injectOpenAIBasicService() -> OpenAIBasicServiceImpl:
-    return OpenAIBasicServiceImpl()
+async def injectOpenAIBasicService(vectorDbPool: AsyncIOMotorDatabase = Depends(getMongoDBPool)) -> OpenAIBasicServiceImpl:
+    return OpenAIBasicServiceImpl(vectorDbPool)
 
 @openAIBasicRouter.post("/lets-talk")
 async def talkWithOpenAI(openAITalkRequestForm: OpenAITalkRequestForm,
