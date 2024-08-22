@@ -25,3 +25,19 @@ class OpenAIBasicRepository(ABC):
     @abstractmethod
     def createL2FaissIndex(self, embeddingVectorDimension):
         pass
+
+    @abstractmethod
+    def createPromptTemplate(self):
+        pass
+
+    @abstractmethod
+    def loadOpenAILLM(self):
+        pass
+
+    @abstractmethod
+    def createLLMChain(self, llm , prompt):
+        pass
+
+    @abstractmethod
+    def runLLMChain(self, llmChain, userSendMessage):
+        pass
