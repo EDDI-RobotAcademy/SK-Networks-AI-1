@@ -1,6 +1,6 @@
 from sklearn.linear_model import LinearRegression
 
-from exponenetial_regression.repository.exponential_regression_repository import ExponentialRegressionRepository
+from exponential_regression.repository.exponential_regression_repository import ExponentialRegressionRepository
 import numpy as np
 
 class ExponentialRegressionRepositoryImpl(ExponentialRegressionRepository):
