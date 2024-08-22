@@ -1,11 +1,21 @@
 import os
 
 import httpx
+# pip install faiss-cpu
+import faiss
+from langchain.vectorstores import FAISS
+from langchain.embeddings import OpenAIEmbedding
+
+import numpy as np
+
 from dotenv import load_dotenv
 from fastapi import HTTPException
-from transformers.models import openai
+
+import openai
+
 
 from openai_basic.repository.openai_basic_repository import OpenAIBasicRepository
+from motor.motor_asyncio import AsyncIOMotorDatabase
 
 
 load_dotenv()
@@ -15,12 +25,21 @@ if not openaiApiKey:
     raise ValueError('API Key가 준비되어 있지 않습니다!')
 
 class OpenAIBasicRepositoryImpl(OpenAIBasicRepository):
+    SIMILARITY_TOP_RANK = 3
+
     headers = {
         'Authorization': f'Bearer {openaiApiKey}',
         'Content-Type': 'application/json'
     }
 
     OPENAI_CHAT_COMPLETIONS_URL = "https://api.openai.com/v1/chat/completions"
+
+    def __init__(self, vectorDbPool: AsyncIOMotorDatabase):
+        self.vectorDbPool = vectorDbPool
+        self.embeddingModel = OpenAIEmbedding(model=mongodb)
+
+    def __init__(self, vectorDbPool: AsyncIOMotorDatabase):
+        self.vectorDbPool = vectorDbPool
 
     async def generateText(self, userSendMessage):
         data = {
@@ -59,7 +78,6 @@ class OpenAIBasicRepositoryImpl(OpenAIBasicRepository):
         print(f"openai response: {response.json()}")
         return response.choices[0].message.content.strip()
 
-
     def audioAnalysis(self, audioFile):
         try:
             # 임시 파일 저장
@@ -84,6 +102,9 @@ class OpenAIBasicRepositoryImpl(OpenAIBasicRepository):
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
 
+    def embeddingList(self):
+        return self.vectorDbPool['embeddings']
+
     def openAiBasedEmbedding(self, paperTitleList):
         response = openai.embeddings.create(
             input=paperTitleList,
@@ -93,5 +114,15 @@ class OpenAIBasicRepositoryImpl(OpenAIBasicRepository):
         print(f"response: {response}")
         return response.data[0].embedding
 
-    def similarityAnalysis(self, paperTitleList):
-        pass
+    def createL2FaissIndex(self, embeddingVectorDimension):
+        return faiss.IndexFlatL2(embeddingVectorDimension)
+
+    def similarityAnalysis(self, userRequestPaperTitle, faissIndex):
+        embeddingUserRequest = np.array(
+            self.openAiBasedEmbedding(userRequestPaperTitle)).astype('float32').reshape(1, -1)
+        distanceList, indexList = faissIndex.search(embeddingUserRequest, self.SIMILARITY_TOP_RANK)
+
+        return indexList[0], distanceList[0]
+
+    def faissIndexFromVector(self, embeddingList):
+        return FAISS.from_vectors(vectors=embeddingList, embedding)
