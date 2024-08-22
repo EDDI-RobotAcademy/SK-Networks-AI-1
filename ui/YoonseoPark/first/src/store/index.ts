@@ -6,8 +6,8 @@ import authenticationModule from "@/authentication/store/authenticationModule"
 import accountModule from '@/account/store/accountModule'
 import cartModule from '@/cart/store/cartModule'
 import postModule from '@/post/store/postModule'
-import KafkaTestModule from '@/kafka/store/kafkaTestModule'
 import kafkaTestModule from '@/kafka/store/kafkaTestModule'
+import aiCommandModule from '@/gatherEverything/store/aiCommandModule'
 
 export default createStore({
   state: {
@@ -26,5 +26,6 @@ export default createStore({
     cartModule,
     postModule,
     kafkaTestModule,
+    aiCommandModule,
   }
 })

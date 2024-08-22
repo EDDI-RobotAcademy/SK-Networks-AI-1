@@ -132,7 +132,7 @@ export default {
                     item.processed = true;
                 }
 
-                this.$store.state.kafkaTestModule.kafkaTestData = data
+                // this.$store.state.kafkaTestModule.kafkaTestData = data
             }
         },
         isTestItemsProcessed() {
@@ -142,13 +142,13 @@ export default {
     mounted () {
         console.log('navigation bar mounted()')
 
-        this.socket = new WebSocket('ws://192.168.0.18:33333/ws');
+        // this.socket = new WebSocket('ws://192.168.0.18:33333/ws');
 
-        this.socket.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-            console.log('received data:', data)
-            this.updateProcessingStatus(data);
-        };
+        // this.socket.onmessage = (event) => {
+        //     const data = JSON.parse(event.data);
+        //     console.log('received data:', data)
+        //     this.updateProcessingStatus(data);
+        // };
         
         const userToken = localStorage.getItem("userToken")
 
@@ -159,7 +159,7 @@ export default {
     },
     beforeUnmount() {
         // WebSocket 연결 해제
-        this.socket.close();
+        // this.socket.close();
     }
 }
 </script>

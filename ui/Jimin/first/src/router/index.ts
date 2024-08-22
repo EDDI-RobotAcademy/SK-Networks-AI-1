@@ -16,6 +16,7 @@ import CartRoutes from '@/cart/router/CartRoutes'
 import OrderRoutes from '@/order/router/OrderRoutes'
 import PrincipalComponentAnalysisRoutes from '@/principalComponentAnalysis/router/PrincipalComponentAnalysisRoutes'
 import KafkaTestRoutes from '@/kafka/router/KafkaTestRoutes'
+import GatherEverythingRoutes from '@/gatherEverything/router/GatherEverythingRoutes'
 
 
 const routes: Array<RouteRecordRaw> = [
@@ -38,7 +39,8 @@ const routes: Array<RouteRecordRaw> = [
   ...CartRoutes,
   ...OrderRoutes,
   ...PrincipalComponentAnalysisRoutes,
-  ...KafkaTestRoutes
+  ...KafkaTestRoutes,
+  ...GatherEverythingRoutes
 ]
 
 const router = createRouter({

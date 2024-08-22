@@ -80,15 +80,12 @@ const authenticationModule = 'authenticationModule'
 export default {
     data () {
         return {
-            isLogin: !!localStorage.getItem("userToken"),
+            // isLogin: !!localStorage.getItem("userToken"),
             items: [
                 { title: 'Logistic Regression', action: () => { router.push('/logistic-regression-result') } },
                 { title: 'Random Forest', action: () => { router.push('/random-forest-result') } },
                 { title: 'Polynomial Regression', action: () => { router.push('/polynomial-regression-result') } },
-                { title: 'Exponential Regression', action: () => { router.push('/exponential-regression-result') } },
-                { title: 'Kmeans Regression', action: () => { router.push('/kmeans-test-result')}},
-                { title: 'TensorFlowIrisTestResult Regression', action: () => { router.push('/tf-iris-result')}},
-                { title: 'TrainTestEvaluationResult Regression', action: () => { router.push('/train-test-evaluation-result')}},
+                { title: 'Exponential Regression', action: () => { router.push('/exponential-regression-result') } }
             ],
             testItems: [
                 { title: 'Kafka Test', processed: false, action: () => { router.push('/kafka/test') } },
@@ -97,7 +94,6 @@ export default {
             socket: null
         }
     },
-
     computed: {
         ...mapState(authenticationModule, ['isAuthenticated'])
     },
@@ -123,7 +119,7 @@ export default {
             router.push('/cart/list')
         },
         goToOrder () {
-            router.push('/order')
+            router.push('/order/list')
         },
         goToPostPage () {
             router.push('/post/list')
@@ -136,39 +132,34 @@ export default {
                     item.processed = true;
                 }
 
-                this.$store.state.kafkaTestModule.kafkaTestData = data
+                // this.$store.state.kafkaTestModule.kafkaTestData = data
             }
         },
         isTestItemsProcessed() {
             return this.testItems.some(item => item.processed);
         }
     },
-
     mounted () {
         console.log('navigation bar mounted()')
 
-        this.socket = new WebSocket('ws://192.168.0.42:33333/ws');
+        // this.socket = new WebSocket('ws://192.168.0.18:33333/ws');
 
-        this.socket.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-            console.log('received data:', data)
-            this.updateProcessingStatus(data);
-        };
+        // this.socket.onmessage = (event) => {
+        //     const data = JSON.parse(event.data);
+        //     console.log('received data:', data)
+        //     this.updateProcessingStatus(data);
+        // };
         
         const userToken = localStorage.getItem("userToken")
+
         if (userToken) {
             console.log('You already have a userToken!!!')
-            // this.$store를 통해 Vue가 관리하는 Vuex 스토리지 접근
-            // Vuex 내에 존재하는 state 중 우리가 모듈로 만든
-            // authenticationModule의 isAuthenticated에 접근
-            // 실제 위의 ...mapState로 간편하게 접근했지만
-            // mount 중에는 불가하므로 아래와 같이 직접 처리
             this.$store.state.authenticationModule.isAuthenticated = true
         }
     },
     beforeUnmount() {
         // WebSocket 연결 해제
-        this.socket.close();
+        // this.socket.close();
     }
 }
 </script>

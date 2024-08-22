@@ -3,6 +3,7 @@ import json
 import os
 
 import aiomysql
+import nltk
 from aiokafka import AIOKafkaProducer, AIOKafkaConsumer
 from aiokafka.admin import NewTopic, AIOKafkaAdminClient
 from aiokafka.errors import TopicAlreadyExistsError
@@ -17,6 +18,7 @@ from convolution_neural_network.controller.cnn_controller import convolutionNeur
 from exponential_regression.controller.exponential_regression_controller import exponentialRegressionRouter
 from gradient_descent.controller.gradient_descent_controller import gradientDescentRouter
 from kmeans.controller.kmeans_controller import kmeansRouter
+from language_model.controller.language_model_controller import languageModelRouter
 from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
 from orders_analysis.controller.orders_analysis_controller import ordersAnalysisRouter
 from polynomialRegression.controller.polynomial_regression_controller import polynomialRegressionRouter
@@ -24,8 +26,15 @@ from post.controller.post_controller import postRouter
 from principal_component_analysis.controller.pca_controller import principalComponentAnalysisRouter
 from random_forest.controller.random_forest_controller import randomForestRouter
 from recurrent_neural_network.controller.rnn_controller import recurrentNeuralNetworkRouter
+from review_analysis.controller.review_analysis_controller import reviewAnalysisRouter
+from sentence_structure_analysis.controller.sentence_structure_analysis_controller import \
+    sentenceStructureAnalysisRouter
+from sequence_analysis.controller.sequence_analysis_controller import sequenceAnalysisRouter
+from srbcb.controller.srbcb_controller import srbcbRouter
+from tf_idf_bow.controller.tf_idf_bow_controller import tfIdfBowRouter
 from tf_iris.controller.tf_iris_controller import tfIrisRouter
 from train_test_evaluation.controller.train_test_evaulation_controller import trainTestEvaluationRouter
+from transition_learning.controller.transition_learning_controller import transitionLearningRouter
 
 
 async def create_kafka_topics():
@@ -60,16 +69,16 @@ async def create_kafka_topics():
         print(f"카프카 토픽 생성 실패: {e}")
     finally:
         await adminClient.close()
-
-
-# 현재는 deprecated 라고 나타나지만 lifespan 이란 것을 대신 사용하라고 나타나고 있음
-# 완전히 배제되지는 않았는데 애플리케이션이 시작할 때 실행할 함수를 지정함
-# 고로 애플리케이션 시작 시 비동기 처리가 가능한 DB를 구성한다 보면 됨
-
+#
+#
+# # 현재는 deprecated 라고 나타나지만 lifespan 이란 것을 대신 사용하라고 나타나고 있음
+# # 완전히 배제되지는 않았는데 애플리케이션이 시작할 때 실행할 함수를 지정함
+# # 고로 애플리케이션 시작 시 비동기 처리가 가능한 DB를 구성한다 보면 됨
+#
 import warnings
 
 warnings.filterwarnings("ignore", category=aiomysql.Warning)
-
+#
 async def lifespan(app: FastAPI):
     # Startup
     app.state.dbPool = await getMySqlPool()
@@ -167,6 +176,20 @@ def read_item(item_id: int, q: str = None):
 # 만들어 놓고 이런 부분이 좀 '짜치는데?' 하면서 점진적으로 개선시키는 것이 '애자일' 방식임
 # (생산성의 비밀임!)
 
+def download_nltk_data():
+    nltk_data_path = os.path.join(os.path.expanduser("~"), "nltk_data")
+    if not os.path.exists(nltk_data_path):
+        os.makedirs(nltk_data_path)
+
+    if not os.path.exists(os.path.join(nltk_data_path, "corpora", "stopwords")):
+        nltk.download('stopwords', download_dir=nltk_data_path)
+
+    # punkt 다운로드
+    if not os.path.exists(os.path.join(nltk_data_path, "tokenizers", "punkt")):
+        nltk.download('punkt', download_dir=nltk_data_path)
+
+download_nltk_data()
+
 app.include_router(logisticRegressionRouter)
 app.include_router(trainTestEvaluationRouter)
 app.include_router(polynomialRegressionRouter)
@@ -181,6 +204,13 @@ app.include_router(gradientDescentRouter)
 app.include_router(principalComponentAnalysisRouter)
 app.include_router(convolutionNeuralNetworkRouter)
 app.include_router(recurrentNeuralNetworkRouter)
+app.include_router(sentenceStructureAnalysisRouter)
+app.include_router(srbcbRouter)
+app.include_router(tfIdfBowRouter)
+app.include_router(sequenceAnalysisRouter)
+app.include_router(languageModelRouter)
+app.include_router(reviewAnalysisRouter)
+app.include_router(transitionLearningRouter)
 
 
 async def testTopicConsume(app: FastAPI):
@@ -250,4 +280,4 @@ async def websocket_endpoint(websocket:WebSocket):
 if __name__ == "__main__":
     import uvicorn
     asyncio.run(create_kafka_topics())
-    uvicorn.run(app, host="192.168.0.40", port=33333)
+    uvicorn.run(app, host="192.168.0.31", port=33333)

@@ -4,13 +4,13 @@ import os
 
 import aiomysql
 import nltk
-from aiokafka.admin import AIOKafkaAdminClient, NewTopic
-from aiokafka.errors import TopicAlreadyExistsError
+# from aiokafka.admin import AIOKafkaAdminClient, NewTopic
+# from aiokafka.errors import TopicAlreadyExistsError
 from dotenv import load_dotenv
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 
-from aiokafka import AIOKafkaProducer, AIOKafkaConsumer
+# from aiokafka import AIOKafkaProducer, AIOKafkaConsumer
 from pydantic import BaseModel
 
 from async_db.database import getMySqlPool, createTableIfNeccessary
@@ -22,6 +22,7 @@ from gradient_descent.controller.gradient_descent_controller import gradientDesc
 from kmeans.controller.kmeans_controller import kmeansRouter
 from language_model.controller.language_model_controller import languageModelRouter
 from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
+from openai_basic.controller.openai_basic_controller import openAIBasicRouter
 from orders_analysis.controller.orders_analysis_controller import ordersAnalysisRouter
 from polynomialRegression.controller.polynomial_regression_controller import polynomialRegressionRouter
 from post.controller.post_controller import postRouter
@@ -38,40 +39,41 @@ from tf_idf_bow.controller.tf_idf_bow_controller import tfIdfBowRouter
 from tf_iris.controller.tf_iris_controller import tfIrisRouter
 from train_test_evaluation.controller.train_test_evaluation_controller import trainTestEvaluationRouter
 from transition_learning.controller.transition_learning_controller import transitionLearningRouter
+from vector_db.database import getMongoDBPool
 
 
-async def create_kafka_topics():
-    adminClient = AIOKafkaAdminClient(
-        bootstrap_servers='localhost:9092',
-        loop=asyncio.get_running_loop()
-    )
-
-    try:
-        await adminClient.start()
-
-        topics = [
-            NewTopic(
-                "test-topic",
-                num_partitions=1,
-                replication_factor=1,
-            ),
-            NewTopic(
-                "completion-topic",
-                num_partitions=1,
-                replication_factor=1,
-            ),
-        ]
-
-        for topic in topics:
-            try:
-                await adminClient.create_topics([topic])
-            except TopicAlreadyExistsError:
-                print(f"Topic '{topic.name}' already exists, skipping creation")
-
-    except Exception as e:
-        print(f"카프카 토픽 생성 실패: {e}")
-    finally:
-        await adminClient.close()
+# async def create_kafka_topics():
+#     adminClient = AIOKafkaAdminClient(
+#         bootstrap_servers='localhost:9092',
+#         loop=asyncio.get_running_loop()
+#     )
+#
+#     try:
+#         await adminClient.start()
+#
+#         topics = [
+#             NewTopic(
+#                 "test-topic",
+#                 num_partitions=1,
+#                 replication_factor=1,
+#             ),
+#             NewTopic(
+#                 "completion-topic",
+#                 num_partitions=1,
+#                 replication_factor=1,
+#             ),
+#         ]
+#
+#         for topic in topics:
+#             try:
+#                 await adminClient.create_topics([topic])
+#             except TopicAlreadyExistsError:
+#                 print(f"Topic '{topic.name}' already exists, skipping creation")
+#
+#     except Exception as e:
+#         print(f"카프카 토픽 생성 실패: {e}")
+#     finally:
+#         await adminClient.close()
 
 # # 현재는 deprecated 라고 나타나지만 lifespan 이란 것을 대신 사용하라고 나타나고 있음
 # # 완전히 배제되지는 않았는데 애플리케이션이 시작할 때 실행될 함수를 지정함
@@ -96,6 +98,8 @@ async def lifespan(app: FastAPI):
     # Startup
     app.state.dbPool = await getMySqlPool()
     await createTableIfNeccessary(app.state.dbPool)
+
+    app.state.vectorDBPool = await getMongoDBPool()
 
     # # 비동기 I/O 정지 이벤트 감지
     # app.state.stop_event = asyncio.Event()
@@ -135,6 +139,9 @@ async def lifespan(app: FastAPI):
         # Shutdown
         app.state.dbPool.close()
         await app.state.dbPool.wait_closed()
+
+        app.state.vectorDBPool.close()
+        await app.state.vectorDBPool.wait_closed()
 
         # app.state.stop_event.set()
         #
@@ -233,6 +240,7 @@ app.include_router(languageModelRouter)
 app.include_router(reviewAnalysisRouter)
 app.include_router(naturalLanguageProcessingRouter)
 app.include_router(transitionLearningRouter)
+app.include_router(openAIBasicRouter)
 
 async def testTopicConsume(app: FastAPI):
     consumer = app.state.kafka_test_topic_consumer
