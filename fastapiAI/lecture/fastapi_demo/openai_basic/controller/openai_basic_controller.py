@@ -11,7 +11,9 @@ from vector_db.database import getMongoDBPool
 
 openAIBasicRouter = APIRouter()
 
-async def injectOpenAIBasicService(vectorDbPool: AsyncIOMotorDatabase = Depends(getMongoDBPool)) -> OpenAIBasicServiceImpl:
+async def injectOpenAIBasicService(
+        vectorDbPool: AsyncIOMotorDatabase = Depends(getMongoDBPool)) -> OpenAIBasicServiceImpl:
+
     return OpenAIBasicServiceImpl(vectorDbPool)
 
 @openAIBasicRouter.post("/lets-talk")
