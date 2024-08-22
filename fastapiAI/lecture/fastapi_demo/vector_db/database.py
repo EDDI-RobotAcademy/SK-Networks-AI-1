@@ -3,11 +3,12 @@ import urllib.parse
 
 import motor.motor_asyncio
 from dotenv import load_dotenv
+from motor.motor_asyncio import AsyncIOMotorDatabase
 
 load_dotenv()
 
 
-async def getMongoDBPool():
+async def getMongoDBPool() -> AsyncIOMotorDatabase:
     host=os.getenv('MONGO_HOST')
     port=int(os.getenv('MONGO_PORT'))
     user=os.getenv('MONGO_USER')

@@ -12,6 +12,7 @@ import openai
 
 
 from openai_basic.repository.openai_basic_repository import OpenAIBasicRepository
+from motor.motor_asyncio import AsyncIOMotorDatabase
 
 
 load_dotenv()
@@ -29,6 +30,9 @@ class OpenAIBasicRepositoryImpl(OpenAIBasicRepository):
     }
 
     OPENAI_CHAT_COMPLETIONS_URL = "https://api.openai.com/v1/chat/completions"
+
+    def __init__(self, vectorDbPool: AsyncIOMotorDatabase):
+        self.vectorDbPool = vectorDbPool
 
     async def generateText(self, userSendMessage):
         data = {
@@ -90,6 +94,9 @@ class OpenAIBasicRepositoryImpl(OpenAIBasicRepository):
 
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
+
+    def embeddingList(self):
+        return self.vectorDbPool['embeddings']
 
     def openAiBasedEmbedding(self, paperTitleList):
         response = openai.embeddings.create(
