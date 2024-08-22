@@ -58,3 +58,40 @@ class OpenAIBasicRepositoryImpl(OpenAIBasicRepository):
         )
         print(f"openai response: {response.json()}")
         return response.choices[0].message.content.strip()
+
+
+    def audioAnalysis(self, audioFile):
+        try:
+            # 임시 파일 저장
+            file_location = f"temp_{audioFile.filename}"
+            with open(file_location, "wb+") as file_object:
+                file_object.write(audioFile.file.read())
+
+            # Whisper API 호출
+            with open(file_location, "rb") as file:
+                transcript = openai.audio.transcriptions.create(
+                    model="whisper-1",
+                    file=file
+                )
+
+            # 임시 파일 삭제
+            os.remove(file_location)
+            print(f"transcript: {transcript}")
+
+            # return transcript['text']
+            return transcript.text
+
+        except Exception as e:
+            raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
+
+    def openAiBasedEmbedding(self, paperTitleList):
+        response = openai.embeddings.create(
+            input=paperTitleList,
+            model="text-embedding-ada-002"
+        )
+
+        print(f"response: {response}")
+        return response.data[0].embedding
+
+    def similarityAnalysis(self, paperTitleList):
+        pass
