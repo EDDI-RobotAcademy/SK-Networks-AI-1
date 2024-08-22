@@ -1,6 +1,6 @@
-from exponenetial_regression.repository.exponential_regression_repository_impl import \
+from exponential_regression.repository.exponential_regression_repository_impl import \
     ExponentialRegressionRepositoryImpl
-from exponenetial_regression.service.exponential_regression_service import ExponentialRegressionService
+from exponential_regression.service.exponential_regression_service import ExponentialRegressionService
 import numpy as np
 
 class ExponentialRegressionServiceImpl(ExponentialRegressionService):
