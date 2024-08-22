@@ -5,3 +5,6 @@ class OpenAIBasicRepository(ABC):
     @abstractmethod
     def generateText(self, userSendMessage):
         pass
+    @abstractmethod
+    def sentimentAnalysis(self, userSendMessage):
+        pass

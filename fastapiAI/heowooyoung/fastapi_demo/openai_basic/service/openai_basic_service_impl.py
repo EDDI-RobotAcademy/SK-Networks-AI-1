@@ -8,3 +8,6 @@ class OpenAIBasicServiceImpl(OpenAIBasicService):
 
     async def letsTalk(self, userSendMessage):
         return await self.__openAiBasicRepository.generateText(userSendMessage)
+
+    async def sentimentAnalysis(self, userSendMessage):
+        return self.__openAiBasicRepository.sentimentAnalysis(userSendMessage)
