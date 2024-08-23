@@ -57,3 +57,16 @@ class OpenAIBasicServiceImpl(OpenAIBasicService):
         return OpenAIPaperSimilarityAnalysisResponseForm.fromOpenAIPaperSimilarityAnalysis(
             indexList, distanceList, paperTitleList
         )
+
+    async def chatWithLangChain(self, userSendMessage):
+        prompt = self.__openAiBasicRepository.createPromptTemplate()
+        print(f"prompt: {prompt}")
+
+        llm = self.__openAiBasicRepository.loadOpenAILLM()
+        print(f"llm: {llm}")
+
+        llmChain = self.__openAiBasicRepository.createLLMChain(llm, prompt)
+        print(f"llmChain: {llmChain}")
+
+        result = self.__openAiBasicRepository.runLLMChain(llmChain, userSendMessage)
+        return result
