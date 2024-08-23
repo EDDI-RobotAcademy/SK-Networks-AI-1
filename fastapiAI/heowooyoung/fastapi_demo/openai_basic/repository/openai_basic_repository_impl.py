@@ -3,16 +3,16 @@ import os
 import httpx
 # pip install faiss-cpu
 import faiss
-from langchain.vectorstores import FAISS
-from langchain.embeddings import OpenAIEmbedding
-
 import numpy as np
 
 from dotenv import load_dotenv
 from fastapi import HTTPException
 
 import openai
-
+from langchain.chains.llm import LLMChain
+from langchain_community.chat_models import ChatOpenAI
+from langchain_community.llms.openai import OpenAI
+from langchain_core.prompts import PromptTemplate
 
 from openai_basic.repository.openai_basic_repository import OpenAIBasicRepository
 from motor.motor_asyncio import AsyncIOMotorDatabase
@@ -24,6 +24,8 @@ openaiApiKey = os.getenv('OPENAI_API_KEY')
 if not openaiApiKey:
     raise ValueError('API Key가 준비되어 있지 않습니다!')
 
+os.environ["OPENAI_API_KEY"] = openaiApiKey
+
 class OpenAIBasicRepositoryImpl(OpenAIBasicRepository):
     SIMILARITY_TOP_RANK = 3
 
@@ -32,11 +34,11 @@ class OpenAIBasicRepositoryImpl(OpenAIBasicRepository):
         'Content-Type': 'application/json'
     }
 
-    OPENAI_CHAT_COMPLETIONS_URL = "https://api.openai.com/v1/chat/completions"
+    templateQuery = """You are a helpful assistant.
+    {question}
+    Provide a detailed answer to the above question."""
 
-    def __init__(self, vectorDbPool: AsyncIOMotorDatabase):
-        self.vectorDbPool = vectorDbPool
-        self.embeddingModel = OpenAIEmbedding(model=mongodb)
+    OPENAI_CHAT_COMPLETIONS_URL = "https://api.openai.com/v1/chat/completions"
 
     def __init__(self, vectorDbPool: AsyncIOMotorDatabase):
         self.vectorDbPool = vectorDbPool
@@ -124,5 +126,17 @@ class OpenAIBasicRepositoryImpl(OpenAIBasicRepository):
 
         return indexList[0], distanceList[0]
 
-    def faissIndexFromVector(self, embeddingList):
-        return FAISS.from_vectors(vectors=embeddingList, embedding)
+    def createPromptTemplate(self):
+        return PromptTemplate(
+            input_variable=["question"],
+            template=self.templateQuery
+        )
+
+    def loadOpenAILLM(self):
+        return ChatOpenAI(model="gpt-3.5-turbo")
+
+    def createLLMChain(self, llm , prompt):
+        return LLMChain(llm=llm, prompt=prompt)
+
+    def runLLMChain(self, llmChain, userSendMessage):
+        return llmChain.run(userSendMessage)

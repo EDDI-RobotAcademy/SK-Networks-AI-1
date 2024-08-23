@@ -15,10 +15,12 @@ from pydantic import BaseModel
 
 from async_db.database import getMySqlPool, createTableIfNeccessary
 from convolution_neural_network.controller.cnn_controller import convolutionNeuralNetworkRouter
+from cot.cot_controller import cotRouter
 # from decision_tree.controller.decision_tree_controller import decisionTreeRouter
 from exponential_regression.controller.exponential_regression_controller import exponentialRegressionRouter
 from gradient_descent.controller.gradient_descent_controller import gradientDescentRouter
 from kmeans.controller.kmeans_controller import kmeansRouter
+from langchain_interconnect.controller.langchain_controller import langchainRouter
 from language_model.controller.language_model_controller import languageModelRouter
 from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
 from openai_basic.controller.openai_basic_controller import openAIBasicRouter
@@ -243,6 +245,8 @@ app.include_router(languageModelRouter)
 app.include_router(reviewAnalysisRouter)
 app.include_router(transitionLearningRouter)
 app.include_router(openAIBasicRouter)
+app.include_router(langchainRouter)
+app.include_router(cotRouter)
 
 async def testTopicConsume(app: FastAPI):
     consumer = app.state.kafka_test_topic_consumer

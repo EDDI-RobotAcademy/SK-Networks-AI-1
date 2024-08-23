@@ -44,19 +44,29 @@ class OpenAIBasicServiceImpl(OpenAIBasicService):
         #     self.__openAiBasicRepository.openAiBasedEmbedding(paperTitle)
         #     for paperTitle in paperTitleList]
 
-        faissIndex = self.__openAiBasicRepository.faissIndexFromVector(embeddingList)
-        print(f"faisssIndex: {faissIndex}")
+        embeddingVectorDimension = len(embeddingList[0])
+        faissIndex = self.__openAiBasicRepository.createL2FaissIndex(embeddingVectorDimension)
+        embeddingMatrix = np.array(embeddingList).astype('float32')
+        faissIndex.add(embeddingMatrix)
 
-        # embeddingVectorDimension = len(embeddingList[0])
-        # faissIndex = self.__openAiBasicRepository.createL2FaissIndex(embeddingVectorDimension)
-        # embeddingMatrix = np.array(embeddingList).astype('float32')
-        # faissIndex.add(embeddingMatrix)
-        #
-        # indexList, distanceList = (
-        #     self.__openAiBasicRepository.similarityAnalysis(userRequestPaperTitle, faissIndex))
+        indexList, distanceList = (
+            self.__openAiBasicRepository.similarityAnalysis(userRequestPaperTitle, faissIndex))
 
-        # print(f"indexList: {indexList}, distanceList: {distanceList}")
-        #
-        # return OpenAIPaperSimilarityAnalysisResponseForm.fromOpenAIPaperSimilarityAnalysis(
-        #     indexList, distanceList, paperTitleList
-        # )
+        print(f"indexList: {indexList}, distanceList: {distanceList}")
+
+        return OpenAIPaperSimilarityAnalysisResponseForm.fromOpenAIPaperSimilarityAnalysis(
+            indexList, distanceList, paperTitleList
+        )
+
+    async def chatWithLangChain(self, userSendMessage):
+        prompt = self.__openAiBasicRepository.createPromptTemplate()
+        print(f"prompt: {prompt}")
+
+        llm = self.__openAiBasicRepository.loadOpenAILLM()
+        print(f"llm: {llm}")
+
+        llmChain = self.__openAiBasicRepository.createLLMChain(llm, prompt)
+        print(f"llmChain: {llmChain}")
+
+        result = self.__openAiBasicRepository.runLLMChain(llmChain, userSendMessage)
+        return result

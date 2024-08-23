@@ -11,6 +11,9 @@ from vector_db.database import getMongoDBPool
 
 openAIBasicRouter = APIRouter()
 
+# async def injectOpenAIBasicService():
+#     return OpenAIBasicServiceImpl()
+
 async def injectOpenAIBasicService(
         vectorDbPool: AsyncIOMotorDatabase = Depends(getMongoDBPool)) -> OpenAIBasicServiceImpl:
 
@@ -64,4 +67,19 @@ async def textSimilarityAnalysisWithOpenAI(
 
     return JSONResponse(
         content={"result": jsonable_encoder(analyzedSimilarityText)},
+        status_code=status.HTTP_200_OK)
+
+@openAIBasicRouter.post("/chat-with-langchain")
+async def chatWithLangChain(
+        openAITalkRequestForm: OpenAITalkRequestForm,
+        openAIBasicService: OpenAIBasicServiceImpl =
+        Depends(injectOpenAIBasicService)):
+    print(f"controller -> textSimilarityAnalysisWithOpenAI(): "
+          f"openAITalkRequestForm: {openAITalkRequestForm}")
+
+    chatResponse = await openAIBasicService.chatWithLangChain(
+        openAITalkRequestForm.userSendMessage)
+
+    return JSONResponse(
+        content={"result": chatResponse},
         status_code=status.HTTP_200_OK)

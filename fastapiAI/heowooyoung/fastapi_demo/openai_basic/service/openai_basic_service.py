@@ -15,5 +15,9 @@ class OpenAIBasicService(ABC):
         pass
 
     @abstractmethod
-    def textSimilarityAnalysis(self, paperTitleList):
+    def textSimilarityAnalysis(self, paperTitleList, userRequestPaperTitle):
+        pass
+
+    @abstractmethod
+    def chatWithLangChain(self, userSendMessage):
         pass

@@ -27,5 +27,17 @@ class OpenAIBasicRepository(ABC):
         pass
 
     @abstractmethod
-    def faissIndexFromVector(self, embeddingList):
+    def createPromptTemplate(self):
+        pass
+
+    @abstractmethod
+    def loadOpenAILLM(self):
+        pass
+
+    @abstractmethod
+    def createLLMChain(self, llm , prompt):
+        pass
+
+    @abstractmethod
+    def runLLMChain(self, llmChain, userSendMessage):
         pass
