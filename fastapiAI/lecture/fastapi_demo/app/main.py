@@ -20,6 +20,7 @@ from exponential_regression.controller.exponential_regression_controller import 
 from gdft.controller.gdft_controller import gameDataFineTuningRouter
 from gradient_descent.controller.gradient_descent_controller import gradientDescentRouter
 from kmeans.controller.kmeans_controller import kmeansRouter
+from langchain_interconnect.controller.langchain_controller import langchainRouter
 from language_model.controller.language_model_controller import languageModelRouter
 from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
 from openai_basic.controller.openai_basic_controller import openAIBasicRouter
@@ -241,6 +242,7 @@ app.include_router(reviewAnalysisRouter)
 app.include_router(naturalLanguageProcessingRouter)
 app.include_router(transitionLearningRouter)
 app.include_router(openAIBasicRouter)
+app.include_router(langchainRouter)
 
 async def testTopicConsume(app: FastAPI):
     consumer = app.state.kafka_test_topic_consumer
