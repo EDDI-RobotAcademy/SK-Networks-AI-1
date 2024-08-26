@@ -84,12 +84,14 @@ training_data = [
     {"messages": [
         {"role": "system", "content": "You are a helpful assistant."},
         {"role": "user", "content": "유닛의 HP가 30일 때, 네더 블레이드가 1턴에 이 유닛을 정리할 수 있나요?"},
-        {"role": "assistant", "content": "네, 네더 블레이드는 1턴에 유닛을 정리할 수 있습니다. 네더 블레이드의 광역기는 10의 피해를 주고, 단일기는 20의 피해를 줍니다. 따라서 총 30의 피해를 줄 수 있습니다."}
+        {"role": "assistant", "content": "네, 네더 블레이드는 1턴에 유닛을 정리할 수 있습니다. "
+                                         "네더 블레이드의 광역기는 10의 피해를 주고, 단일기는 20의 피해를 줍니다. 따라서 총 30의 피해를 줄 수 있습니다."}
     ]},
     {"messages": [
         {"role": "system", "content": "You are a helpful assistant."},
         {"role": "user", "content": "유닛의 HP가 50일 때, 네더 블레이드가 1턴에 이 유닛을 정리할 수 있나요?"},
-        {"role": "assistant", "content": "아니요, 네더 블레이드는 1턴에 유닛을 정리할 수 없습니다. 네더 블레이드의 광역기는 10의 피해를 주고, 단일기는 20의 피해를 줍니다. 따라서 총 30의 피해를 줄 수 있습니다."}
+        {"role": "assistant", "content": "아니요, 네더 블레이드는 1턴에 유닛을 정리할 수 없습니다. "
+                                         "네더 블레이드의 광역기는 10의 피해를 주고, 단일기는 20의 피해를 줍니다. 따라서 총 30의 피해를 줄 수 있습니다."}
     ]}
 ]
 
@@ -138,7 +140,7 @@ def get_fine_tune_status(fine_tune_id: str):
 
 @openAiFineTuningTestRouter.post("/chat")
 def chat_with_model(query: Query):
-    fine_tuned_model = "ft:gpt-3.5-turbo-0613:personal::9j7Qf9fQ"
+    fine_tuned_model = "ft:gpt-3.5-turbo-0613:personal::A0KsTc6v"
     response = openai.chat.completions.create(
         model=fine_tuned_model,
         messages=[{"role": "user", "content": query.text}]
