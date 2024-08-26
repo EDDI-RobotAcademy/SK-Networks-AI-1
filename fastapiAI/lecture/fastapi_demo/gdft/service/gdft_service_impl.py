@@ -48,7 +48,8 @@ class GDFTServiceImpl(GDFTService):
         attentionMask = inputList['attention_mask']
 
         with torch.no_grad():
-            output = model.generate(inputIdList, attention_mask=attentionMask, max_length=200, num_return_sequences=1, pad_token_id=tokenizer.pad_token_id)
+            output = model.generate(inputIdList, attention_mask=attentionMask,
+                                    max_length=200, num_return_sequences=1, pad_token_id=tokenizer.pad_token_id)
 
         response = tokenizer.decode(output[0], skip_special_tokens=True)
         return {"response": response}
