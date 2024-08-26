@@ -34,3 +34,5 @@ async def answerWithCoT(cotRequestForm: CotRequestForm):
     response = cot_chain.run(cotRequestForm.userSendQuestion)
 
     return JSONResponse(content=response, status_code=status.HTTP_200_OK)
+
+
