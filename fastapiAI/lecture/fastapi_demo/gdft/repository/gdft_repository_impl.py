@@ -32,7 +32,8 @@ class GDFTRepositoryImpl(GDFTRepository):
 
     def loadDataset(self, tokenizer):
         BLOCK_SIZE = 128
-        encodedData = tokenizer("\n\n".join(gameRules), return_tensors="pt", padding=True, truncation=True, max_length=BLOCK_SIZE)
+        encodedData = tokenizer("\n\n".join(gameRules), return_tensors="pt",
+                                padding=True, truncation=True, max_length=BLOCK_SIZE)
         dataset = Dataset.from_dict({
             'input_ids': encodedData['input_ids'],
             'attention_mask': encodedData['attention_mask'],
