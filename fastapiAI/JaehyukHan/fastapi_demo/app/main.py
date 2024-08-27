@@ -19,7 +19,9 @@ from convolution_neural_network.controller.cnn_controller import convolutionNeur
 from exponential_regression.controller.exponential_regression_controller import exponentialRegressionRouter
 from gradient_descent.controller.gradient_descent_controller import gradientDescentRouter
 from kmeans.controller.kmeans_controller import kmeansRouter
+from langchain_interconnect.controller.langchain_controller import langchainRouter
 from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
+from openai_basic.controller.openai_basic_controller import openAIBasicRouter
 from orders_analysis.controller.orders_analysis_controller import ordersAnalysisRouter
 from polynomialRegression.controller.polymonial_regression_controller import polynomialRegressionRouter
 from post.controller.post_controller import postRouter
@@ -33,6 +35,13 @@ from srbcb.controller.srbcb_controller import srbcbRouter
 from tf_idf_bow.controller.tf_idf_bow_controller import tfIdfBowRouter
 from tf_iris.controller.tf_iris_controller import tfIrisRouter
 from train_test_evaluation.controller.train_test_evalutation_controller import trainTestEvaluationRouter
+
+import torch
+
+from transition_learning.controller.transition_learning_controller import transitionLearningRouter
+from vector_db.database import getMongoDBPool
+
+torch.set_default_device('mps')
 
 
 # async def create_kafka_topics():
@@ -94,6 +103,8 @@ async def lifespan(app: FastAPI):
     app.state.dbPool = await getMySqlPool()
     await createTableIfNeccessary(app.state.dbPool)
 
+    app.state.VectorDBPool = await getMongoDBPool()
+
     # # 비동기 I/O 정지 이벤트 감지
     # app.state.stop_event = asyncio.Event()
     #
@@ -132,6 +143,9 @@ async def lifespan(app: FastAPI):
         # Shutdown
         app.state.dbPool.close()
         await app.state.dbPool.wait_closed()
+
+        app.state.vectorDBPool.close()
+        await app.state.vectorDBPool.wait_closed()
 
         # app.state.stop_event.set()
         #
@@ -228,6 +242,9 @@ app.include_router(sentenceStructureAnalysisRouter)
 app.include_router(srbcbRouter)
 app.include_router(tfIdfBowRouter)
 app.include_router(sequenceAnalysisRouter)
+app.include_router(transitionLearningRouter)
+app.include_router(openAIBasicRouter)
+app.include_router(langchainRouter)
 
 
 # async def testTopicConsume(app: FastAPI):

@@ -16,16 +16,21 @@ from pydantic import BaseModel
 
 from async_db.database import getMySqlPool, createTableIfNeccessary
 from convolution_neural_network.controller.cnn_controller import convolutionNeuralNetworkRouter
+from cot.cot_controller import cotRouter
 # from decision_tree.controller.decision_tree_controller import decisionTreeRouter
 from exponential_regression.controller.exponential_regression_controller import exponentialRegressionRouter
 from gradient_descent.controller.gradient_descent_controller import gradientDescentRouter
 from kmeans.controller.kmeans_controller import kmeansRouter
+from langchain_interconnect.controller.langchain_controller import langchainRouter
 from language_model.controller.language_model_controller import languageModelRouter
 from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
+from openai_basic.controller.openai_basic_controller import openAIBasicRouter
+from openai_test.controller.openai_test_controller import openAITestRouter
 from orders_analysis.controller.orders_analysis_controller import ordersAnalysisRouter
 from post.controller.post_controller import postRouter
 from principal_component_analysis.controller.pca_controller import principalComponentAnalysisRouter
 from recurrent_neural_network.controller.rnn_controller import RecurrentNeuralNetworkRouter
+from review_analysis.controller.review_analysis_controller import reviewAnalysisRouter
 from sentence_structure_analysis.controller.sentence_structure_analysis_controller import \
     sentenceStructureAnalysisRouter
 from sequence_analysis.controller.sequence_analysis_controller import sequenceAnalysisRouter
@@ -35,6 +40,9 @@ from tf_iris.controller.tf_iris_controller import tfIrisRouter
 from train_test_evaluation.controller.train_test_evaluation_controller import trainTestEvaluationRouter
 from polynomialRegression.controller.polynomial_regression_controller import polynomialRegressionRouter
 from random_forest.controller.random_forest_controller import randomForestRouter
+from transition_learning.controller.transition_learning_controller import transitionLearningRouter
+from vector_db.database import getMongoDBPool
+
 
 async def create_kafka_topics():
     adminClient = AIOKafkaAdminClient(
@@ -90,6 +98,8 @@ async def lifespan(app: FastAPI):
     app.state.dbPool = await getMySqlPool()
     await createTableIfNeccessary(app.state.dbPool)
 
+    app.state.vertorDBPool = await getMongoDBPool()
+
     # # 비동기 I/O 정지 이벤트 감지
     # app.state.stop_event = asyncio.Event()
     #
@@ -128,6 +138,9 @@ async def lifespan(app: FastAPI):
         #Shutdown
         app.state.dbPool.close()
         await app.state.dbPool.wait_closed()
+
+        app.state.vectorDBPool.close()
+        await app.state.vertorDBPool.wait_closed()
         #
         # app.state.stop_event.set()
         #
@@ -224,6 +237,14 @@ app.include_router(srbcbRouter),
 app.include_router(tfIdfBowRouter),
 app.include_router(sequenceAnalysisRouter),
 app.include_router(languageModelRouter),
+app.include_router(reviewAnalysisRouter),
+app.include_router(transitionLearningRouter),
+app.include_router(openAIBasicRouter),
+app.include_router(langchainRouter),
+app.include_router(cotRouter),
+
+
+app.include_router(openAITestRouter),
 # 여기까지 해야 router 연결됨
 
 async def testTopicConsume(app: FastAPI):
@@ -293,4 +314,4 @@ async def websocket_endpoint(websocket: WebSocket):
 if __name__ == "__main__":
     import uvicorn
     # asyncio.run(create_kafka_topics())
-    uvicorn.run(app, host="192.168.0.46", port=33333)
+    uvicorn.run(app, host="192.168.0.26", port=33333)
