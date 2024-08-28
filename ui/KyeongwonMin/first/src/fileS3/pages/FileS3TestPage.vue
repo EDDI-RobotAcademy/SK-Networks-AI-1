@@ -47,7 +47,7 @@ export default defineComponent({
             this.uploadError = null;
 
             const params = {
-                Bucket: 'llm-lecture-bucket',
+                Bucket: 'first-tcp-bucket',
                 Key: this.selectedFile!.name,
                 Body: this.selectedFile,
                 ACL: 'private' as ObjectCannedACL
@@ -69,7 +69,7 @@ export default defineComponent({
         },
         async listFiles() {
             const params = {
-                Bucket: 'llm-lecture-bucket'
+                Bucket: 'first-tcp-bucket'
             };
 
             try {
@@ -82,7 +82,7 @@ export default defineComponent({
         },
         async deleteFile(key: string) {
             const params = {
-                Bucket: 'llm-lecture-bucket',
+                Bucket: 'first-tcp-bucket',
                 Key: key
             };
 
@@ -95,7 +95,7 @@ export default defineComponent({
         },
         async getFile(key: string) {
             const params = {
-                Bucket: 'llm-lecture-bucket',
+                Bucket: 'first-tcp-bucket',
                 Key: key
             };
 
@@ -108,7 +108,7 @@ export default defineComponent({
         },
         async setFileAcl() {
             const params = {
-                Bucket: 'llm-lecture-bucket',
+                Bucket: 'first-tcp-bucket',
                 Key: this.fileKey,
                 ACL: 'public-read' as ObjectCannedACL
             };
