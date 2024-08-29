@@ -192,7 +192,7 @@ class Query(BaseModel):
 
 @rlhfFineTuningRouter.post("/chat")
 def chat_with_model(query: Query):
-    fine_tuned_model = "ft:gpt-3.5-turbo-0613:personal::A1FjnQg4"
+    fine_tuned_model = "ft:gpt-3.5-turbo-0613:personal::A1OYQ8PB"
     response = openai.chat.completions.create(
         model=fine_tuned_model,
         messages=[{"role": "user", "content": query.text}]
