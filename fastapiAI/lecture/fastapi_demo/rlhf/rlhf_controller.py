@@ -81,6 +81,11 @@ trainingData = [
     ]},
     {"messages": [
         {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "네더 블레이드가 단일기로 줄 수 있는 데미지가 얼마야?"},
+        {"role": "assistant", "content": "네더 블레이드의 단일기로 줄 수 있는 데미지는 20입니다."}
+    ]},
+    {"messages": [
+        {"role": "system", "content": "You are a helpful assistant."},
         {"role": "user", "content": "네더 블레이드의 광역기 데미지가 몇인가요?"},
         {"role": "assistant", "content": "네더 블레이드의 광역기로 줄 수 있는 데미지는 10입니다."}
     ]},
