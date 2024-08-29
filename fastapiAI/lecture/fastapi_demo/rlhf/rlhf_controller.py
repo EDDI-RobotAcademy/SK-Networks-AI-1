@@ -11,10 +11,13 @@ openai.api_key = os.getenv('OPENAI_API_KEY')
 if not openai.api_key:
     raise ValueError("API key not found. Please set the OPENAI_API_KEY environment variable.")
 
+# Reinforcement Learning from Human Feedback
 rlhfFineTuningRouter = APIRouter()
 
 # 피드백 데이터 저장
 feedbackData = []
+
+# 이전 파인 튜닝 데이터 그대로 가져오면 됩니다
 trainingData = [
     {"messages": [
         {"role": "system", "content": "You are a helpful assistant."},
@@ -101,6 +104,7 @@ class Feedback(BaseModel):
     prompt: str
     response: str
     feedback: str  # 'positive' 또는 'negative'
+    betterResponse: str = None
 
 
 # 피드백을 수집하는 엔드포인트
@@ -112,11 +116,13 @@ def giveFeedback(feedback: Feedback):
 
 # 피드백을 처리하여 새로운 훈련 데이터를 생성하는 함수
 def processFeedback():
-    trainingData = []
     for item in feedbackData:
         if item['feedback'] == 'negative':
             # 부정적인 피드백에 대한 개선된 응답을 수집
-            betterResponse = input(f"How would you improve the response for the prompt: '{item['prompt']}'?")
+            betterResponse = item.get('betterResponse')
+            if not betterResponse:
+                betterResponse = f"이것은 잘못된 답변입니다: {item.get('response')}"
+
             newTrainingExample = {
                 "messages": [
                     {"role": "system", "content": "You are a helpful assistant."},
@@ -127,8 +133,8 @@ def processFeedback():
             trainingData.append(newTrainingExample)
 
     # # 생성된 훈련 데이터를 파일로 저장
-    # if trainingData:
-    #     saveTrainingData(trainingData)
+    if trainingData:
+        saveTrainingData(trainingData)
 
 
 # 새로운 훈련 데이터를 저장하는 함수
