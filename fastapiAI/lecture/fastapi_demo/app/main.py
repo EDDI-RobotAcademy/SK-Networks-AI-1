@@ -33,6 +33,7 @@ from principal_component_analysis.controller.pca_controller import principalComp
 from random_forest.controller.random_forest_controller import randomForestRouter
 from recurrent_neural_network.controller.rnn_controller import recurrentNeuralNetworkRouter
 from review_analysis.controller.review_analysis_controller import reviewAnalysisRouter
+from rlhf.rlhf_controller import rlhfFineTuningRouter
 from sentence_structure_analysis.controller.sentence_structure_analysis_controller import \
     sentenceStructureAnalysisRouter
 from sentitest.controller.senticontrol import naturalLanguageProcessingRouter
@@ -247,6 +248,7 @@ app.include_router(openAIBasicRouter)
 app.include_router(langchainRouter)
 app.include_router(cotRouter)
 app.include_router(openAiFineTuningTestRouter)
+app.include_router(rlhfFineTuningRouter)
 
 async def testTopicConsume(app: FastAPI):
     consumer = app.state.kafka_test_topic_consumer
