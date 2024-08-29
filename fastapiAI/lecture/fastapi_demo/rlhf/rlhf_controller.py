@@ -41,6 +41,11 @@ trainingData = [
     ]},
     {"messages": [
         {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "네더 블레이드가 단일기로 줄 수 있는 피해량은 20입니다."},
+        {"role": "assistant", "content": "네더 블레이드의 단일기 피해량은 20입니다."}
+    ]},
+    {"messages": [
+        {"role": "system", "content": "You are a helpful assistant."},
         {"role": "user", "content": "네더 블레이드의 단일기는 20의 피해를 줍니다."},
         {"role": "assistant", "content": "네더 블레이드의 단일기는 20의 피해를 줍니다."}
     ]},
