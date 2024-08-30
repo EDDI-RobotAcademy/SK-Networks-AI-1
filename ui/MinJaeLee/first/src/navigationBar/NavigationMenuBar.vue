@@ -15,7 +15,8 @@
                 </v-btn>
             </template>
             <v-list>
-                <v-list-item v-for="(item, index) in testItems" :key="index" @click="item.action">
+                <v-list-item v-for="(item, index) in testItems" 
+                            :key="index" @click="item.action">
                     <v-list-item-title>
                         {{ item.title }}
                         <span v-if="item.processed" class="status-indicator">!</span>
@@ -31,7 +32,8 @@
                 </v-btn>
             </template>
             <v-list>
-                <v-list-item v-for="(item, index) in items" :key="index" @click="item.action">
+                <v-list-item v-for="(item, index) in items"
+                             :key="index" @click="item.action">
                     <v-list-item-title>{{ item.title }}</v-list-item-title>
                 </v-list-item>
             </v-list>
@@ -67,6 +69,7 @@
         </v-btn>
     </v-app-bar>
 </template>
+
 <script>
 import '@mdi/font/css/materialdesignicons.css'
 import router from '@/router'
@@ -75,7 +78,7 @@ import { mapActions, mapState } from 'vuex'
 const authenticationModule = 'authenticationModule'
 
 export default {
-    data() {
+    data () {
         return {
             // isLogin: !!localStorage.getItem("userToken"),
             items: [
@@ -96,63 +99,63 @@ export default {
     },
     methods: {
         ...mapActions(authenticationModule, ['requestLogoutToDjango']),
-        goToHome() {
+        goToHome () {
             router.push('/')
         },
-        goToProductList() {
+        goToProductList () {
             router.push('/product/list')
         },
-        goToBoardList() {
+        goToBoardList () {
             router.push('/board/list')
         },
-        signIn() {
+        signIn () {
             router.push('/account/login')
         },
-        signOut() {
+        signOut () {
             this.requestLogoutToDjango()
             router.push('/')
         },
-        goToCart() {
+        goToCart () {
             router.push('/cart/list')
         },
-        goToOrder() {
-            router.push('/order')
+        goToOrder () {
+            router.push('/order/list')
         },
-        goToPostPage() {
+        goToPostPage () {
             router.push('/post/list')
         },
-        // updateProcessingStatus(data) {
-        //     if (data.message === "Processing completed.") {
-        //         console.log("처리 요청이 완료되었는지 체크")
-        //         const item = this.testItems.find(item => item.title === data.title);
-        //         if (item) {
-        //             item.processed = true;
-        //         }
+        updateProcessingStatus(data) {
+            if (data.message === "Processing completed.") {
+                console.log("처리 요청이 완료되었는지 체크")
+                const item = this.testItems.find(item => item.title === data.title);
+                if (item) {
+                    item.processed = true;
+                }
 
-        //         this.$store.state.kafkaTestModule.kafkaTestData = data
-        //     }
-        // },
-        // isTestItemsProcessed() {
-        //     return this.testItems.some(item => item.processed);
-        // }
+                // this.$store.state.kafkaTestModule.kafkaTestData = data
+            }
+        },
+        isTestItemsProcessed() {
+            return this.testItems.some(item => item.processed);
+        }
     },
-    mounted() {
+    mounted () {
         console.log('navigation bar mounted()')
 
-        // this.socket = new WebSocket('ws://192.168.0.25:33333/ws');
+        // this.socket = new WebSocket('ws://192.168.0.18:33333/ws');
 
         // this.socket.onmessage = (event) => {
         //     const data = JSON.parse(event.data);
         //     console.log('received data:', data)
         //     this.updateProcessingStatus(data);
         // };
+        
+        const userToken = localStorage.getItem("userToken")
 
-        // const userToken = localStorage.getItem("userToken")
-
-        // if (userToken) {
-        //     console.log('You already have a userToken!!!')
-        //     this.$store.state.authenticationModule.isAuthenticated = true
-        // }
+        if (userToken) {
+            console.log('You already have a userToken!!!')
+            this.$store.state.authenticationModule.isAuthenticated = true
+        }
     },
     beforeUnmount() {
         // WebSocket 연결 해제
