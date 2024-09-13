@@ -41,6 +41,11 @@ trainingData = [
     ]},
     {"messages": [
         {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "네더 블레이드가 단일기로 줄 수 있는 피해량은 20입니다."},
+        {"role": "assistant", "content": "네더 블레이드의 단일기 피해량은 20입니다."}
+    ]},
+    {"messages": [
+        {"role": "system", "content": "You are a helpful assistant."},
         {"role": "user", "content": "네더 블레이드의 단일기는 20의 피해를 줍니다."},
         {"role": "assistant", "content": "네더 블레이드의 단일기는 20의 피해를 줍니다."}
     ]},
@@ -76,8 +81,18 @@ trainingData = [
     ]},
     {"messages": [
         {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "네더 블레이드가 단일기로 줄 수 있는 데미지가 얼마야?"},
+        {"role": "assistant", "content": "네더 블레이드의 단일기로 줄 수 있는 데미지는 20입니다."}
+    ]},
+    {"messages": [
+        {"role": "system", "content": "You are a helpful assistant."},
         {"role": "user", "content": "네더 블레이드의 광역기 데미지가 몇인가요?"},
         {"role": "assistant", "content": "네더 블레이드의 광역기로 줄 수 있는 데미지는 10입니다."}
+    ]},
+    {"messages": [
+        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "user", "content": "네더 블레이드가 단일기로 줄 수 있는 피해량은 얼마야?"},
+        {"role": "assistant", "content": "네더 블레이드의 단일기로 줄 수 있는 피해량은 20입니다."}
     ]},
     {"messages": [
         {"role": "system", "content": "You are a helpful assistant."},
@@ -155,7 +170,10 @@ def startFineTuning():
     fileId = response.id
     fineTuneResponse = openai.fine_tuning.jobs.create(
         training_file=fileId,
-        model="gpt-3.5-turbo-0613"
+        model="gpt-3.5-turbo-0613",
+        hyperparameters={
+            "n_epochs": 20
+        }
     )
     return fineTuneResponse.id
 
@@ -187,7 +205,7 @@ class Query(BaseModel):
 
 @rlhfFineTuningRouter.post("/chat")
 def chat_with_model(query: Query):
-    fine_tuned_model = "ft:gpt-3.5-turbo-0613:personal::A1FjnQg4"
+    fine_tuned_model = "ft:gpt-3.5-turbo-0613:personal::A1P7BX3v"
     response = openai.chat.completions.create(
         model=fine_tuned_model,
         messages=[{"role": "user", "content": query.text}]

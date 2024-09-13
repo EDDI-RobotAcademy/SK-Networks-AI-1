@@ -21,10 +21,12 @@ from exponential_regression.controller.exponential_regression_controller import 
 from game_fine_tuning.gft_controller import openAiFineTuningTestRouter
 from gdft.controller.gdft_controller import gameDataFineTuningRouter
 from gradient_descent.controller.gradient_descent_controller import gradientDescentRouter
+from image_generation.controller.image_generation_controller import imageGenerationRouter
 from kmeans.controller.kmeans_controller import kmeansRouter
 from langchain_interconnect.controller.langchain_controller import langchainRouter
 from language_model.controller.language_model_controller import languageModelRouter
 from logistic_regression.controller.logistic_regression_controller import logisticRegressionRouter
+from multi_modal.controller.multi_modal_controller import multiModalRouter
 from openai_basic.controller.openai_basic_controller import openAIBasicRouter
 from orders_analysis.controller.orders_analysis_controller import ordersAnalysisRouter
 from polynomialRegression.controller.polynomial_regression_controller import polynomialRegressionRouter
@@ -249,6 +251,8 @@ app.include_router(langchainRouter)
 app.include_router(cotRouter)
 app.include_router(openAiFineTuningTestRouter)
 app.include_router(rlhfFineTuningRouter)
+app.include_router(imageGenerationRouter)
+app.include_router(multiModalRouter)
 
 async def testTopicConsume(app: FastAPI):
     consumer = app.state.kafka_test_topic_consumer
