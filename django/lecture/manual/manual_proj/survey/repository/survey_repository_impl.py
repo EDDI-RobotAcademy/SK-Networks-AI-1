@@ -31,3 +31,9 @@ class SurveyRepositoryImpl(SurveyRepository):
 
         except IntegrityError:
             return False
+
+    def findSurveyById(self, survey_id):
+        try:
+            return Survey.objects.get(id=survey_id)
+        except Survey.DoesNotExist:
+            return None

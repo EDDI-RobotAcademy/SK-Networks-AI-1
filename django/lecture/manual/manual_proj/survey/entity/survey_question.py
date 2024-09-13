@@ -16,5 +16,5 @@ class SurveyQuestion(models.Model):
         return f"{self.question_text} ({self.get_survey_type_display()})"
 
     class Meta:
-        db_table = 'survey'
+        db_table = 'survey_question'
         app_label = 'survey'

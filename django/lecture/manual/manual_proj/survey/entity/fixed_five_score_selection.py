@@ -10,5 +10,5 @@ class FixedFiveScoreSelection(models.Model):
         return f"{self.question.question_text} - {self.score}"
 
     class Meta:
-        db_table = 'survey'
+        db_table = 'fixed_five_score_selection'
         app_label = 'survey'
