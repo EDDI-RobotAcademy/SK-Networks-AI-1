@@ -10,5 +10,5 @@ class SurveySelection(models.Model):
         return self.selection_text
 
     class Meta:
-        db_table = 'survey'
+        db_table = 'survey_selection'
         app_label = 'survey'

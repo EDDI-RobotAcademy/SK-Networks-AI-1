@@ -10,5 +10,5 @@ class FixedBooleanSelection(models.Model):
         return f"{self.question.question_text} - {'Yes' if self.is_true else 'No'}"
 
     class Meta:
-        db_table = 'survey'
+        db_table = 'fixed_boolean_selection'
         app_label = 'survey'

@@ -16,5 +16,5 @@ class SurveyAnswer(models.Model):
         return f"Answer to {self.question.question_text}"
 
     class Meta:
-        db_table = 'survey'
+        db_table = 'survey_answer'
         app_label = 'survey'

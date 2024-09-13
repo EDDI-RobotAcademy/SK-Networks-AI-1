@@ -22,3 +22,18 @@ class SurveyView(viewsets.ViewSet):
 
         return Response(isCreated, status=status.HTTP_200_OK)
 
+    def createSurveyQuestion(self, request):
+        data = request.data
+        survey_id = data.get('survey_id')
+        question_text = data.get('question')
+        survey_type = data.get('survey_type')
+
+        if not survey_id or not question_text:
+            return Response({"error": "설문 ID와 질문 내용이 필요합니다"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            self.surveyService.createSurveyQuestion(survey_id, question_text, survey_type)
+            return Response({"success": "질문이 추가되었습니다"}, status=status.HTTP_200_OK)
+        except ValueError as e:
+            return Response({"error": str(e)}, status=status.HTTP_404_NOT_FOUND)
+
