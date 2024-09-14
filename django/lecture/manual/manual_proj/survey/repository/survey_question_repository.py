@@ -6,6 +6,11 @@ class SurveyQuestionRepository(ABC):
         pass
 
     @abstractmethod
-    def findBySurveyId(self, survey_id):
+    def findSurveyQuestionListBySurveyId(self, survey_id):
         pass
+
+    @abstractmethod
+    def findById(self, survey_question_id):
+        pass
+
     

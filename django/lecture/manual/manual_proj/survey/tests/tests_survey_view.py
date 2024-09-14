@@ -8,26 +8,30 @@ class SurveyServiceTest(TestCase):
 
     @patch('survey.service.survey_service_impl.SurveyRepositoryImpl')
     def test_create_survey_success(self, MockSurveyRepositoryImpl):
+        mockSurvey = MagicMock(spec=Survey)
+        mockSurvey.title = "Test Survey"
+        mockSurvey.description = "Test Description"
+
         mockRepository = MockSurveyRepositoryImpl.getInstance.return_value
-        mockRepository.create.return_value = True
+        mockRepository.create.return_value = mockSurvey
 
         SurveyServiceImpl._SurveyServiceImpl__instance = None
         surveyService = SurveyServiceImpl.getInstance()
 
         result = surveyService.createSurvey("Test Survey", "Test Description")
 
-        self.assertTrue(result)
+        self.assertEqual(result, mockSurvey)
         mockRepository.create.assert_called_once_with("Test Survey", "Test Description")
 
     @patch('survey.service.survey_service_impl.SurveyRepositoryImpl')
     def test_create_survey_failure(self, MockSurveyRepositoryImpl):
         mockRepository = MockSurveyRepositoryImpl.getInstance.return_value
-        mockRepository.create.return_value = False
+        mockRepository.create.return_value = None
 
         SurveyServiceImpl._SurveyServiceImpl__instance = None
         surveyService = SurveyServiceImpl.getInstance()
 
         result = surveyService.createSurvey("Test Survey", "Test Description")
 
-        self.assertFalse(result)
+        self.assertIsNone(result)
         mockRepository.create.assert_called_once_with("Test Survey", "Test Description")

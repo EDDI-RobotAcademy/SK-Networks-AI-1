@@ -7,5 +7,5 @@ class SurveyRepository(ABC):
         pass
 
     @abstractmethod
-    def findSurveyById(self, survey_id):
+    def findById(self, survey_id):
         pass
