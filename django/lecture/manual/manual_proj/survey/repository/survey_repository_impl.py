@@ -27,12 +27,12 @@ class SurveyRepositoryImpl(SurveyRepository):
             survey = Survey(title=title, description=description, status=SurveyStatus.PENDING)
             survey.save()
 
-            return True
+            return survey
 
         except IntegrityError:
-            return False
+            return None
 
-    def findSurveyById(self, survey_id):
+    def findById(self, survey_id):
         try:
             return Survey.objects.get(id=survey_id)
         except Survey.DoesNotExist:

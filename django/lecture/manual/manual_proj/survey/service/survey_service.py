@@ -9,3 +9,7 @@ class SurveyService(ABC):
     @abstractmethod
     def createSurveyQuestion(self, survey_id, question_text, survey_type):
         pass
+
+    @abstractmethod
+    def createSurveySelection(self, question_id, selection_text):
+        pass
