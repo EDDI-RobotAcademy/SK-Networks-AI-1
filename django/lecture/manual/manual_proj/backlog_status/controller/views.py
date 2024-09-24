@@ -1,12 +1,21 @@
-from django.shortcuts import render
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 
-from backlog.service.backlog_status_service_impl import BacklogStatusServiceImpl
+from backlog_status.service.backlog_status_service_impl import BacklogStatusServiceImpl
 
 
 class BacklogStatusView(viewsets.ViewSet):
     backlogStatusService = BacklogStatusServiceImpl.getInstance()
+
+    def createBacklogStatus(self, request):
+        data = request.data
+        backlogId = data.get('backlogId')
+        status = data.get('status')
+
+
+        createdBacklogStatus = self.backlogService.createBacklogStatus(backlogId, status)
+
+        return Response(createdBacklogStatus, status=status.HTTP_200_OK)
 
     def modifyBacklogStatus(self, request):
         data = request.data

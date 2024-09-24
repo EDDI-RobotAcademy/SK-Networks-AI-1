@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 
 class BacklogStatusRepository(ABC):
     @abstractmethod
-    def create(self, title):
+    def create(self, backlog, status):
         pass
 
     @abstractmethod

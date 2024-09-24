@@ -1,6 +1,6 @@
 from django.db import models
 
-from backlog.entity.backlog_status_type import BacklogStatusType
+from backlog_status.entity.backlog_status_type import BacklogStatusType
 
 
 class BacklogStatus(models.Model):

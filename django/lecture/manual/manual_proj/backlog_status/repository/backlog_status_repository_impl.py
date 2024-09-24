@@ -1,8 +1,8 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 
-from backlog.entity.backlog_status import BacklogStatus
-from backlog.repository.backlog_status_repository import BacklogStatusRepository
+from backlog_status.entity.backlog_status import BacklogStatus
+from backlog_status.repository.backlog_status_repository import BacklogStatusRepository
 
 
 class BacklogStatusRepositoryImpl(BacklogStatusRepository):
@@ -21,9 +21,9 @@ class BacklogStatusRepositoryImpl(BacklogStatusRepository):
 
         return cls.__instance
 
-    def create(self, status):
+    def create(self, backlog, status):
         try:
-            backlogStatus = BacklogStatus(status=status)
+            backlogStatus = BacklogStatus(backlog=backlog, status=status)
             backlogStatus.save()
 
             return backlogStatus
