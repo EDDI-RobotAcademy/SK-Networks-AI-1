@@ -23,7 +23,7 @@ class BacklogStatusServiceImpl(BacklogStatusService):
 
         return cls.__instance
 
-    def createBacklogStatus(self, backlogId):
+    def createBacklogStatus(self, backlogId, status):
         try:
             backlog = self.__backlogRepository.findById(backlogId)
 
