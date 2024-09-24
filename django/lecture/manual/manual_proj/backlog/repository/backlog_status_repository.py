@@ -1,11 +1,11 @@
 from abc import ABC, abstractmethod
 
 
-class BacklogRepository(ABC):
+class BacklogStatusRepository(ABC):
     @abstractmethod
     def create(self, title):
         pass
 
     @abstractmethod
-    def findById(self, backlogId):
+    def modify(self, backlog, status):
         pass
