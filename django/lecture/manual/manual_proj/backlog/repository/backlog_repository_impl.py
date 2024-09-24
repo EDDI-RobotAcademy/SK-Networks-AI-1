@@ -1,3 +1,4 @@
+from backlog.entity.backlog import Backlog
 from backlog.repository.backlog_repository import BacklogRepository
 
 from django.db import IntegrityError
@@ -21,10 +22,10 @@ class BacklogRepositoryImpl(BacklogRepository):
 
     def create(self, title):
         try:
-            survey = Backlog(title=title)
-            survey.save()
+            backlog = Backlog(title=title)
+            backlog.save()
 
-            return survey
+            return backlog
 
         except IntegrityError:
             return None

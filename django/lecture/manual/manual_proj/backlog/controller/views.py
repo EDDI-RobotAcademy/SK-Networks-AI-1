@@ -18,6 +18,6 @@ class BacklogView(viewsets.ViewSet):
         if not title:
             return Response({"error": "제목이 필요합니다"}, status=status.HTTP_400_BAD_REQUEST)
 
-        isCreated = self.backlogService.createBacklog(title)
+        createdBacklog = self.backlogService.createBacklog(title)
 
-        return Response(isCreated, status=status.HTTP_200_OK)
+        return Response(createdBacklog, status=status.HTTP_200_OK)

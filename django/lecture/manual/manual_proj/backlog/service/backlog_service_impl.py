@@ -2,9 +2,6 @@ from backlog.repository.backlog_repository_impl import BacklogRepositoryImpl
 from backlog.service.backlog_service import BacklogService
 
 
-
-
-
 class BacklogServiceImpl(BacklogService):
     __instance = None
 
@@ -24,9 +21,12 @@ class BacklogServiceImpl(BacklogService):
         return cls.__instance
 
     def createBacklog(self, title):
+        if not isinstance(title, str):
+            raise ValueError("Title must be a string")
+
         try:
             return self.__backlogRepository.create(title)
 
         except Exception as e:
-            print('Error creating order:', e)
+            print('Error creating backlog:', e)
             raise e
