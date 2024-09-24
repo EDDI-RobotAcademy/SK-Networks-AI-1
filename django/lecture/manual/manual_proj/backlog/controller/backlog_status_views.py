@@ -22,5 +22,4 @@ class BacklogStatusView(viewsets.ViewSet):
             return Response(isSuccess, status=status.HTTP_200_OK)
 
         except Exception as e:
-            # 예외 처리 및 에러 응답 반환
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

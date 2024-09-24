@@ -34,7 +34,6 @@ class BacklogRepositoryImpl(BacklogRepository):
 
     def findById(self, backlogId):
         try:
-            # Assuming Backlog is a Django model
             backlog = Backlog.objects.get(id=backlogId)
             return backlog
         except ObjectDoesNotExist:
