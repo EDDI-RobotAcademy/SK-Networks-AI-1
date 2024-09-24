@@ -31,4 +31,5 @@ urlpatterns = [
     path('orders/', include('orders.urls')),
     path('survey/', include('survey.urls')),
     path('backlog/', include('backlog.urls')),
+    path('backlog-status/', include('backlog_status.urls')),
 ]

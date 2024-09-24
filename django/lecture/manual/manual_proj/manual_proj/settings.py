@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'orders',
     'survey',
     'backlog',
+    'backlog_status',
 ]
 
 MIDDLEWARE = [
