@@ -10,4 +10,3 @@ class Backlog(models.Model):
 
     class Meta:
         db_table = 'backlog'
-        app_label = 'backlog'

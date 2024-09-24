@@ -3,9 +3,9 @@ from abc import ABC, abstractmethod
 
 class BacklogDomainRepository(ABC):
     @abstractmethod
-    def create(self, domain):
+    def create(self, backlog, status):
         pass
 
     @abstractmethod
-    def findById(self, backlogDomainId):
+    def modify(self, backlog, domain):
         pass

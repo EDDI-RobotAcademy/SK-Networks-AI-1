@@ -1,8 +1,8 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 
-from backlog.entity.backlog_domain import BacklogDomain
-from backlog.repository.backlog_domain_repository import BacklogDomainRepository
+from backlog_domain.entity.backlog_domain import BacklogDomain
+from backlog_domain.repository.backlog_domain_repository import BacklogDomainRepository
 
 
 class BacklogDomainRepositoryImpl(BacklogDomainRepository):
@@ -21,9 +21,9 @@ class BacklogDomainRepositoryImpl(BacklogDomainRepository):
 
         return cls.__instance
 
-    def create(self, domain):
+    def create(self, backlog, domain):
         try:
-            backlogDomain = BacklogDomain(domain=domain)
+            backlogDomain = BacklogDomain(backlog=backlog, domain=domain)
             backlogDomain.save()
 
             return backlogDomain
