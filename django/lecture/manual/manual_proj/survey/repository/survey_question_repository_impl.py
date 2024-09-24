@@ -30,7 +30,7 @@ class SurveyQuestionRepositoryImpl(SurveyQuestionRepository):
             question.save()
             return question
 
-        except IntegrityError:
+        except IntegrityError as e:
             raise IntegrityError(f"Error creating survey question: {e}")
 
     def findSurveyQuestionListBySurveyId(self, survey_id):
