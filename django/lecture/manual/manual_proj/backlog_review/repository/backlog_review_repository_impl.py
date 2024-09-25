@@ -1,11 +1,11 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 
-from backlog_domain.entity.backlog_domain import BacklogDomain
-from backlog_domain.repository.backlog_domain_repository import BacklogDomainRepository
+from backlog_review.entity.backlog_review import BacklogReview
+from backlog_review.repository.backlog_review_repository import BacklogReviewRepository
 
 
-class BacklogDomainRepositoryImpl(BacklogDomainRepository):
+class BacklogReviewRepositoryImpl(BacklogReviewRepository):
     __instance = None
 
     def __new__(cls):
@@ -21,23 +21,23 @@ class BacklogDomainRepositoryImpl(BacklogDomainRepository):
 
         return cls.__instance
 
-    def create(self, backlog, domain):
+    def create(self, backlog, review):
         try:
-            backlogDomain = BacklogDomain(backlog=backlog, domain=domain)
-            backlogDomain.save()
+            backlogReview = BacklogReview(backlog=backlog, review=review)
+            backlogReview.save()
 
-            return backlogDomain
+            return backlogReview
 
         except IntegrityError:
             return None
 
-    def modify(self, backlog, domain):
+    def modify(self, backlog, review):
         try:
-            backlogDomain = BacklogDomain.objects.get(backlog=backlog)
+            backlogReview = BacklogReview.objects.get(backlog=backlog)
 
-            backlogDomain.domain = domain
-            backlogDomain.save()
-            return backlogDomain
+            backlogReview.review = review
+            backlogReview.save()
+            return backlogReview
 
         except ObjectDoesNotExist:
             raise ValueError(f"No backlog domain found for backlog ID {backlog.id}")
