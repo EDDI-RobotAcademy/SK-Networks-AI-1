@@ -32,4 +32,5 @@ urlpatterns = [
     path('survey/', include('survey.urls')),
     path('backlog/', include('backlog.urls')),
     path('backlog-status/', include('backlog_status.urls')),
+    path('backlog-domain/', include('backlog_domain.urls')),
 ]

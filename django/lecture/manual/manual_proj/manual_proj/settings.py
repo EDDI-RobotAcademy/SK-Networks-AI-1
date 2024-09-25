@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'survey',
     'backlog',
     'backlog_status',
+    'backlog_domain',
+    'backlog_success_criteria',
 ]
 
 MIDDLEWARE = [

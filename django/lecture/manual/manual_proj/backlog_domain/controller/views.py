@@ -19,3 +19,12 @@ class BacklogDomainView(viewsets.ViewSet):
         createdBacklogDomain = self.backlogDomainService.createBacklogDomain(backlogId, domain)
 
         return Response(createdBacklogDomain, status=status.HTTP_200_OK)
+
+    def modifyBacklogDomain(self, request):
+        data = request.data
+        backlogId = data.get('backlogId')
+        domain = data.get('domain')
+
+        modifiedBacklogDomain = self.backlogDomainService.modifyBacklogDomain(backlogId, domain)
+
+        return Response(modifiedBacklogDomain, status=status.HTTP_200_OK)
