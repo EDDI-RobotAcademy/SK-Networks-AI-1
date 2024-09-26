@@ -1,11 +1,11 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 
-from backlog.entity.backlog_domain import BacklogDomain
-from backlog.repository.backlog_domain_repository import BacklogDomainRepository
+from backlog_todo_check.entity.backlog_todo_check import BacklogTodoCheck
+from backlog_todo_check.repository.backlog_todo_check_repository import BacklogTodoCheckRepository
 
 
-class BacklogDomainRepositoryImpl(BacklogDomainRepository):
+class BacklogTodoCheckRepositoryImpl(BacklogTodoCheckRepository):
     __instance = None
 
     def __new__(cls):
@@ -21,23 +21,23 @@ class BacklogDomainRepositoryImpl(BacklogDomainRepository):
 
         return cls.__instance
 
-    def create(self, domain):
+    def create(self, backlog, isChecked):
         try:
-            backlogDomain = BacklogDomain(domain=domain)
-            backlogDomain.save()
+            backlogTodoCheck = BacklogTodoCheck(backlog=backlog, isChecked=isChecked)
+            backlogTodoCheck.save()
 
-            return backlogDomain
+            return backlogTodoCheck
 
         except IntegrityError:
             return None
 
-    def modify(self, backlog, domain):
+    def modify(self, backlog, isChecked):
         try:
-            backlogDomain = BacklogDomain.objects.get(backlog=backlog)
+            backlogTodoCheck = BacklogTodoCheck.objects.get(backlog=backlog)
 
-            backlogDomain.domain = domain
-            backlogDomain.save()
-            return backlogDomain
+            backlogTodoCheck.isChecked = isChecked
+            backlogTodoCheck.save()
+            return backlogTodoCheck
 
         except ObjectDoesNotExist:
             raise ValueError(f"No backlog domain found for backlog ID {backlog.id}")

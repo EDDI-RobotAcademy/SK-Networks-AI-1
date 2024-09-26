@@ -12,8 +12,7 @@ class BacklogStatusView(viewsets.ViewSet):
         backlogId = data.get('backlogId')
         status = data.get('status')
 
-
-        createdBacklogStatus = self.backlogService.createBacklogStatus(backlogId, status)
+        createdBacklogStatus = self.backlogStatusService.createBacklogStatus(backlogId, status)
 
         return Response(createdBacklogStatus, status=status.HTTP_200_OK)
 
