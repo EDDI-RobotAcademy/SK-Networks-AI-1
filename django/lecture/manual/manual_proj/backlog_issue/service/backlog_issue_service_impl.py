@@ -1,10 +1,9 @@
-
+from backlog.repository.backlog_domain_repository_impl import BacklogDomainRepositoryImpl
 from backlog.repository.backlog_repository_impl import BacklogRepositoryImpl
-from backlog_domain.repository.backlog_domain_repository_impl import BacklogDomainRepositoryImpl
-from backlog_domain.service.backlog_domain_service import BacklogDomainService
+from backlog_issue.service.backlog_issue_service import BacklogIssueService
 
 
-class BacklogDomainServiceImpl(BacklogDomainService):
+class BacklogIssueServiceImpl(BacklogIssueService):
     __instance = None
 
     def __new__(cls):
@@ -12,7 +11,7 @@ class BacklogDomainServiceImpl(BacklogDomainService):
             cls.__instance = super().__new__(cls)
 
             cls.__instance.__backlogRepository = BacklogRepositoryImpl.getInstance()
-            cls.__instance.__backlogDomainRepository = BacklogDomainRepositoryImpl.getInstance()
+            cls.__instance.__backlogIssueRepository = BacklogIssueRepositoryImpl.getInstance()
 
         return cls.__instance
 
@@ -23,27 +22,27 @@ class BacklogDomainServiceImpl(BacklogDomainService):
 
         return cls.__instance
 
-    def createBacklogDomain(self, backlogId, domain):
+    def createBacklogIssue(self, backlogId, issue):
         try:
             backlog = self.__backlogRepository.findById(backlogId)
 
             if not backlog:
                 raise ValueError(f"Backlog with id {backlogId} does not exist")
 
-            return self.__backlogDomainRepository.create(backlog, domain)
+            return self.__backlogIssueRepository.create(backlog, issue)
 
         except Exception as e:
             print('Error creating backlog:', e)
             raise e
 
-    def modifyBacklogDomain(self, backlogId, domain):
+    def modifyBacklogIssue(self, backlogId, issue):
         try:
             backlog = self.__backlogRepository.findById(backlogId)
 
             if not backlog:
                 raise ValueError(f"Backlog with id {backlogId} does not exist")
 
-            return self.__backlogDomainRepository.modify(backlog, domain)
+            return self.__backlogIssueRepository.modify(backlog, issue)
 
         except Exception as e:
             print('Error creating backlog:', e)
