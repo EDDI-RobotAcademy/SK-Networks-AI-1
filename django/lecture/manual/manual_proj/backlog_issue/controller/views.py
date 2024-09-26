@@ -2,6 +2,7 @@ from django.shortcuts import render
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 
+from backlog_issue.service.backlog_issue_service_impl import BacklogIssueServiceImpl
 from oauth.service.redis_service_impl import RedisServiceImpl
 
 

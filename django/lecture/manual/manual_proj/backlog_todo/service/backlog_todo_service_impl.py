@@ -1,9 +1,10 @@
+
 from backlog.repository.backlog_repository_impl import BacklogRepositoryImpl
-from backlog_issue.repository.backlog_domain_repository_impl import BacklogIssueRepositoryImpl
-from backlog_issue.service.backlog_issue_service import BacklogIssueService
+from backlog_todo.repository.backlog_todo_repository_impl import BacklogTodoRepositoryImpl
+from backlog_todo.service.backlog_todo_service import BacklogTodoService
 
 
-class BacklogIssueServiceImpl(BacklogIssueService):
+class BacklogTodoServiceImpl(BacklogTodoService):
     __instance = None
 
     def __new__(cls):
@@ -11,7 +12,7 @@ class BacklogIssueServiceImpl(BacklogIssueService):
             cls.__instance = super().__new__(cls)
 
             cls.__instance.__backlogRepository = BacklogRepositoryImpl.getInstance()
-            cls.__instance.__backlogIssueRepository = BacklogIssueRepositoryImpl.getInstance()
+            cls.__instance.__backlogTodoRepository = BacklogTodoRepositoryImpl.getInstance()
 
         return cls.__instance
 
@@ -22,27 +23,27 @@ class BacklogIssueServiceImpl(BacklogIssueService):
 
         return cls.__instance
 
-    def createBacklogIssue(self, backlogId, issue):
+    def createBacklogTodo(self, backlogId, todo):
         try:
             backlog = self.__backlogRepository.findById(backlogId)
 
             if not backlog:
                 raise ValueError(f"Backlog with id {backlogId} does not exist")
 
-            return self.__backlogIssueRepository.create(backlog, issue)
+            return self.__backlogTodoRepository.create(backlog, todo)
 
         except Exception as e:
             print('Error creating backlog:', e)
             raise e
 
-    def modifyBacklogIssue(self, backlogId, issue):
+    def modifyBacklogTodo(self, backlogId, todo):
         try:
             backlog = self.__backlogRepository.findById(backlogId)
 
             if not backlog:
                 raise ValueError(f"Backlog with id {backlogId} does not exist")
 
-            return self.__backlogIssueRepository.modify(backlog, issue)
+            return self.__backlogTodoRepository.modify(backlog, todo)
 
         except Exception as e:
             print('Error creating backlog:', e)
