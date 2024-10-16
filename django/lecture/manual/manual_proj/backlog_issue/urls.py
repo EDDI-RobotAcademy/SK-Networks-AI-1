@@ -1,6 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
+from backlog_issue.controller.views import BacklogIssueView
 
 router = DefaultRouter()
 router.register(r'backlog_issue', BacklogIssueView, basename='backlog-issue')
