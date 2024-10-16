@@ -48,6 +48,9 @@ INSTALLED_APPS = [
     'backlog',
     'backlog_status',
     'backlog_domain',
+    'backlog_review',
+    'backlog_issue',
+    'backlog_map_number',
     'backlog_success_criteria',
 ]
 
