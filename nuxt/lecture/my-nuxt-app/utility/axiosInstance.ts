@@ -5,18 +5,21 @@ let djangoAxiosInst: AxiosInstance | null = null
 let fastapiAxiosInst: AxiosInstance | null = null
 
 export function createAxiosInstances() {
+    const config = useRuntimeConfig()
+
+    const mainApiUrl: string = config.public.MAIN_API_URL as string
+    const aiBaseUrl: string = config.public.AI_BASE_URL as string
+
     if (!djangoAxiosInst) {
-        const config = useRuntimeConfig()
         djangoAxiosInst = axios.create({
-            baseURL: config.public.MAIN_API_URL,
+            baseURL: mainApiUrl,
             timeout: 2500,
         })
     }
     
     if (!fastapiAxiosInst) {
-        const config = useRuntimeConfig()
         fastapiAxiosInst = axios.create({
-            baseURL: config.public.AI_BASE_URL,
+            baseURL: aiBaseUrl,
             timeout: 2500,
         })
     }

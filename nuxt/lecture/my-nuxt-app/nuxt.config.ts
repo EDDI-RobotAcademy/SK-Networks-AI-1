@@ -23,11 +23,18 @@ export default defineNuxtConfig({
   modules: [
     'vuetify-nuxt-module',
     '@pinia/nuxt',
-    '~/board/index.ts'
+    '~/board/index.ts',
   ],
 
   imports: {
     dirs: ['./stores']
+  },
+
+  components: {
+    dirs: [
+      '~/components', // 기본 경로
+      '~/navigationBar',
+    ]
   },
 
   runtimeConfig: {
