@@ -1,3 +1,4 @@
+from ai_request.repository.ai_request_repository_impl import AiRequestRepositoryImpl
 from ai_request.service.ai_request_service import AiRequestService
 from backlog.repository.backlog_repository_impl import BacklogRepositoryImpl
 
