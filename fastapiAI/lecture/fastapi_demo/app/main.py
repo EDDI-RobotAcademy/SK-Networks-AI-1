@@ -13,6 +13,7 @@ from fastapi.middleware.cors import CORSMiddleware
 # from aiokafka import AIOKafkaProducer, AIOKafkaConsumer
 from pydantic import BaseModel
 
+from ai_request.ai_request_controller import aiCommandRouter
 from async_db.database import getMySqlPool, createTableIfNeccessary
 from convolution_neural_network.controller.cnn_controller import convolutionNeuralNetworkRouter
 from cot.cot_controller import cotRouter
@@ -103,9 +104,9 @@ warnings.filterwarnings("ignore", category=aiomysql.Warning)
 async def lifespan(app: FastAPI):
     # Startup
     app.state.dbPool = await getMySqlPool()
-    await createTableIfNeccessary(app.state.dbPool)
+    # await createTableIfNeccessary(app.state.dbPool)
 
-    app.state.vectorDBPool = await getMongoDBPool()
+    # app.state.vectorDBPool = await getMongoDBPool()
 
     # # 비동기 I/O 정지 이벤트 감지
     # app.state.stop_event = asyncio.Event()
@@ -146,8 +147,8 @@ async def lifespan(app: FastAPI):
         app.state.dbPool.close()
         await app.state.dbPool.wait_closed()
 
-        app.state.vectorDBPool.close()
-        await app.state.vectorDBPool.wait_closed()
+        # app.state.vectorDBPool.close()
+        # await app.state.vectorDBPool.wait_closed()
 
         # app.state.stop_event.set()
         #
@@ -254,6 +255,8 @@ app.include_router(rlhfFineTuningRouter)
 app.include_router(imageGenerationRouter)
 app.include_router(multiModalRouter)
 
+app.include_router(aiCommandRouter)
+
 async def testTopicConsume(app: FastAPI):
     consumer = app.state.kafka_test_topic_consumer
 
@@ -320,4 +323,4 @@ async def websocket_endpoint(websocket: WebSocket):
 if __name__ == "__main__":
     import uvicorn
     # asyncio.run(create_kafka_topics())
-    uvicorn.run(app, host="192.168.0.33", port=33333)
+    uvicorn.run(app, host="0.0.0.0", port=33333)

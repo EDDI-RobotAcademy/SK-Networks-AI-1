@@ -24,6 +24,7 @@ export default defineNuxtConfig({
     'vuetify-nuxt-module',
     '@pinia/nuxt',
     '~/board/index.ts',
+    '~/aiRequest/index.ts',
   ],
 
   imports: {
