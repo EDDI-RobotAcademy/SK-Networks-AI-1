@@ -22,9 +22,9 @@ class AiRequestServiceImpl(AiRequestService):
 
         return cls.__instance
 
-    def aiRequestToFastAPI(self, userToken, data):
+    def aiRequestToFastAPI(self, userToken, command, data):
         try:
-            return self.__aiRequestRepository.aiRequest(userToken, data)
+            return self.__aiRequestRepository.aiRequest(userToken, command, data)
 
         except Exception as e:
             print('Error creating backlog:', e)
