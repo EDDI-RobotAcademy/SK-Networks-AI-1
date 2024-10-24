@@ -15,8 +15,9 @@ class AiRequestView(viewsets.ViewSet):
     def aiRequestToFastAPI(self, request):
         data = request.data
         userToken = data.get('userToken')
+        command = data.get('command')
         data = data.get('data')
 
-        requestComplete = self.AiRequestService.aiRequestToFastAPI(userToken, data)
+        requestComplete = self.AiRequestService.aiRequestToFastAPI(userToken, command, data)
 
         return Response(requestComplete, status=status.HTTP_200_OK)
