@@ -96,6 +96,7 @@ export default {
       testItems: [
         { title: 'Kafka Test', processed: false, action: () => router.push('/kafka/test') },
         { title: 'Test Analysis 2', processed: false, action: () => router.push('/test-analysis-2-result') },
+        { title: 'AI Request To Django', processed: false, action: () => router.push('/ai-request/send') },
       ],
       socket: null,
     });

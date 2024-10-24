@@ -37,4 +37,5 @@ urlpatterns = [
     path('backlog-map-number/', include('backlog_map_number.urls')),
     path('backlog-review/', include('backlog_review.urls')),
     path('backlog-issue/', include('backlog_issue.urls')),
+    path('ai-request/', include('ai_request.urls')),
 ]
